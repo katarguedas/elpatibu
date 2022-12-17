@@ -1,0 +1,26 @@
+{
+  "name": "elpatibu",
+  "version": "1.0.0",
+  "description": "elektronisches Patiententagebuch",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katarguedas/elpatibu.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/katarguedas/elpatibu/issues"
+  },
+  "homepage": "https://github.com/katarguedas/elpatibu#readme",
+  "dependencies": {
+    "concurrently": "^7.6.0",
+    "luxon": "^3.1.1"
+  }
+}
