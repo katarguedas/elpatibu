@@ -5,7 +5,7 @@ import NavBar from '../components/NavBar'
 import React from "react"
 
 import styled from "styled-components"
-import { ContentGroup, Main, PageTitle } from "../styled/globalStyles"
+import { ContentGroup, MainGroup, PageTitle } from "../styled/globalStyles"
 
 //---------------------------------------------------------
 
@@ -14,10 +14,10 @@ const CreateDiary = () => {
     return (
         <ContentGroup>
             <Header />
-            <Main>
+            <MainGroup>
                 <NavBar />
                 <PageTitle>Neues Tagebuch erstellen</PageTitle>
-            </Main>
+            </MainGroup>
             <Footer />
         </ContentGroup>
     )

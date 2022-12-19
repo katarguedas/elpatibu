@@ -20,23 +20,32 @@ const Header = () => {
     const hanadleLogout = () => {
         // Logout();
         setUser(!user)
-        navigate('/welcome')
+        navigate('/welcome');
     }
 
+    const handleLogin = () => {
+        navigate('/login');
+    }
+
+    const handleRegister = () => {
+        navigate('/register')
+    }
     return (
         <HeaderGroup>
             {
                 user ?
                     <StyledHeader>
                         <Logo />
-                        <LogoutButton onClick={hanadleLogout} >Abmelden</LogoutButton>
+                        <ButtonGroup>
+                            <LogoutButton onClick={hanadleLogout} >Abmelden</LogoutButton>
+                        </ButtonGroup>
                     </StyledHeader>
                     :
                     <StyledHeader>
                         <Logo />
                         <ButtonGroup>
-                            <LoginButton>Anmelden</LoginButton>
-                            <RegisterButton>Registrieren</RegisterButton>
+                            <LoginButton onClick={handleLogin} >Anmelden</LoginButton>
+                            <RegisterButton onClick={handleRegister} >Registrieren</RegisterButton>
                         </ButtonGroup>
                     </StyledHeader>
             }
@@ -61,6 +70,7 @@ const ButtonGroup = styled.div`
   display: flex;
   flex-direction: row;
   margin: 0.25rem;
+  align-items: center;
 `
 
 const HeaderGroup = styled.div`

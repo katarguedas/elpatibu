@@ -4,11 +4,12 @@ import styled from "styled-components"
 
 const ContentGroup = styled.div`
 width: 85%;
+min-height: 90%;
 margin-left: auto;
 margin-right: auto;
 `
 
-const Main = styled.div`
+const MainGroup = styled.div`
   display: flex;
   flex-direction: row;
 `
@@ -18,6 +19,25 @@ const PageTitle = styled.h1`
   padding: 0 0 0 0.75rem;
 `
 
+const InputField = styled.input`
+  border: 1.25px solid #BC1B1A;
+  &:focus{
+    border: 1.25px solid #F09F04;
+  };
+  outline: none;
+  border-radius: 0.25rem;
+  height: 1.75rem;
+  font-size: 1.15rem;
+  padding: 0.15rem;
+  width: 240px;
+`
+
+const LabelText = styled.div`
+  width: 110px;
+  font-weight: 500;
+  height: 1.45rem;
+  font-size: 1.15rem;
+  `
 //---------------------------------------------------------
 
-export { ContentGroup, Main, PageTitle}
+export { ContentGroup, MainGroup, PageTitle, InputField, LabelText}

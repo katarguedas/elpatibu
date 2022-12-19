@@ -56,15 +56,17 @@ const NavGroup = styled.div`
   background-color: #fff;
   border-right: 2.5px solid #A8D93C;
   width: 20%;
+  background-image: linear-gradient(to right, #ffffff, #A8D93C);
 `
 
 const HomeIcon = styled(RxHome)`
   padding: 0.5rem;
   margin: 1.5rem;
+  border: 2.0px solid #A8D93C;
   border-radius: 0.5rem;
-  font-size: 2.0rem;
-  color: #745805;
-  background-color: #A8D93C;
+  font-size: 2.5rem;
+  color: #000;
+  background-color: #fff;
   &:hover{
     border: 2px solid #BC1B1A;
   }
@@ -74,5 +76,6 @@ const DateBox = styled.div`
   padding: 0.25rem;
   margin: 1.0rem;
   font-weight: 600;
+  font-size: 1.1rem;
 
 `

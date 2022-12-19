@@ -2,7 +2,7 @@ import Header from "../components/Header"
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
 
-import { ContentGroup, Main } from "../styled/globalStyles"
+import { ContentGroup, MainGroup } from "../styled/globalStyles"
 
 //---------------------------------------------------------
 
@@ -11,9 +11,9 @@ const DiaryData = () => {
     return (
         <ContentGroup>
             <Header />
-            <Main>
+            <MainGroup>
                 <NavBar />
-            </Main>
+            </MainGroup>
             <Footer />
         </ContentGroup>
     )

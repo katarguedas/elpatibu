@@ -23,6 +23,9 @@ const LoginButton = styled(Button)`
   border: 2.5px solid #A8D93C;
   &:hover{
     background-color: #F09F04;
+  };
+  &:active{
+    background-color: #F1B505;
   }
 `
 
@@ -30,6 +33,9 @@ const LogoutButton = styled(Button)`
   border: 2.5px solid #F1B505;
   &:hover{
     background-color: #F09F04;
+  };
+  &:active{
+    background-color: #F1B505;
   }
   
 `
@@ -37,6 +43,20 @@ const RegisterButton = styled(Button)`
   border: 2.5px solid #F09F04;
   &:hover{
     background-color: #F09F04;
+  };
+  &:active{
+    background-color: #F1B505;
+  }
+`
+
+const LoginSendButton = styled(Button)`
+  border: 2.5px solid #A8D93C;
+  margin-top: 1.5rem;
+  &:hover{
+    background-color: #F09F04;
+  };
+  &:active{
+    background-color: #F1B505;
   }
 `
 
@@ -49,10 +69,11 @@ const NavButton = styled.button`
   background-color: #fff;
   &:hover {
     background-color: #A8D93C;
-    border-color: #BE8D62;
+    border-color: #BC1B1A;
   }
   font-size: 1.0rem;
   font-weight: 600;
 `
 
-export {Button, LoginButton, LogoutButton, RegisterButton, NavButton} ;
+
+export {Button, LoginButton, LogoutButton, RegisterButton, LoginSendButton, NavButton} ;
