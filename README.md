@@ -1,2 +1,2 @@
 # elpatibu
-elektronisches Patientenbuch
+elektronisches Patienten-Tagebuch

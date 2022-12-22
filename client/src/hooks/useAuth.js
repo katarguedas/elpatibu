@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 const useAuth = () => {
 
     const [token, setToken] = useState();
-    const [user, setUser] = useState(true);
+    const [user, setUser] = useState('');
     const [userData, setUserData] = useState();
     const [loginData, setLoginData] = useState(
         {
@@ -48,30 +48,48 @@ const useAuth = () => {
             redirect: 'follow'
         };
 
-        const response = await fetch("/api/login", requestOptions)
+        await fetch("/api/login", requestOptions)
             .then(response => response.json())
             .then(response => {
-                console.log(response)
+                // console.log(response)
                 localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(response))
 
                 setToken(response.access)
 
                 const jwtDecoded = jwt_decode(response.access);
-                console.log(jwtDecoded) 
+                console.log(jwtDecoded.name) 
 
                 setUser(jwtDecoded.email)
                 setUserData(jwtDecoded.name)
 
-                return(user)
+                console.log("user hat sich eingeloggt")
             })
             .catch(error => console.log('error', error));
-
+            return(user);
     }
-
 
     //---------------------------------------------------------
 
+    const removeCookie = async() => {
+        var requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'aplication/json',
+            },
+            redirect: 'follow'
+        };
+        await fetch('/clear-cookie', requestOptions)
+        //  .then(response => response.json())
+    };
 
+    //---------------------------------------------------------
+
+    const logout = () => {
+        localStorage.removeItem(LOCAL_STORAGE_KEY)
+        removeCookie()
+    }
+
+    //---------------------------------------------------------
 
     const addUser = async () => {
 
@@ -94,7 +112,7 @@ const useAuth = () => {
             redirect: 'follow'
         };
 
-        const response = await fetch("/api/register", requestOptions)
+        await fetch("/api/register", requestOptions)
             .then((response) => response.json())
             .then(response => {
                 console.log("response", response)
@@ -122,7 +140,7 @@ const useAuth = () => {
 
 
 
-    return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser];
+    return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout];
 
 }
 

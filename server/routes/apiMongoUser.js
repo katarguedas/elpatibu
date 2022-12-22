@@ -36,12 +36,11 @@ router.post('/api/login', async (req, res) => {
     console.log(isPasswordValid);
 
     if (isPasswordValid) {
-      console.log("passwort passt")
       const accessToken = jwt.sign(
         {
           id: user.id,
           email: user.email,
-          userName: user.name
+          name: user.name
         }, process.env.EXPRESS_ACCESS_JWT_KEY,
         {
           expiresIn: '15m'
@@ -61,7 +60,7 @@ router.post('/api/login', async (req, res) => {
         // maxAge: 24 * 60 * 60 * 1000 // 1 day
         maxAge: 48 * 60 * 60 * 1000
       });
-      console.log("accessToken:", accessToken)
+      // console.log("accessToken:", accessToken)
       res.status(200).send({ status: "ok", message: "user verified", access: accessToken });
       return;
     }
@@ -75,9 +74,9 @@ router.post('/api/login', async (req, res) => {
 router.post('/api/register', async (req, res) => {
   console.log("test")
   const encryptedPassword = await bcrypt.hash(req.body.pwd, 10);
-  console.log("email:", req.body.email)
-  console.log("name:", req.body.name)
-  console.log("pwd:", encryptedPassword)
+  // console.log("email:", req.body.email)
+  // console.log("name:", req.body.name)
+  // console.log("pwd:", encryptedPassword)
   try {
     const result = await User.create({
       id: req.body.id,
@@ -98,6 +97,14 @@ router.post('/api/register', async (req, res) => {
     }
   }
 })
+
+//------------------------------------------------------
+
+
+// Delete cookie
+router.get('/clear-cookie', (req, res) => {
+  res.clearCookie('jwt').send();
+});
 
 //------------------------------------------------------
 

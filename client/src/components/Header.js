@@ -12,13 +12,14 @@ import styled from 'styled-components';
 
 const Header = () => {
 
-    const { user, setUser } = useUserContext();
+    const { user, setUser, logout } = useUserContext();
 
     const navigate = useNavigate();
     console.log(user)
 
     const hanadleLogout = () => {
-        // Logout();
+        console.log("logout")
+        logout();
         setUser(!user)
         navigate('/welcome');
     }
@@ -61,6 +62,12 @@ export default Header
 // Styled-Components
 //---------------------------------------------------------
 
+const HeaderGroup = styled.div`
+  border-bottom: 3px solid #BC1B1A;
+  background-color: #fff;
+  padding: 0.5rem;
+`
+
 const StyledHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -73,8 +80,3 @@ const ButtonGroup = styled.div`
   align-items: center;
 `
 
-const HeaderGroup = styled.div`
-  border-bottom: 3px solid #BC1B1A;
-  background-color: #fff;
-  padding: 0.5rem;
-`

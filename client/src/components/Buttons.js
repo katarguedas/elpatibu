@@ -67,8 +67,12 @@ const NavButton = styled.button`
   border: 2.5px solid #A8D93C;
   border-radius: 1.0rem;
   background-color: #fff;
-  &:hover {
-    background-color: #A8D93C;
+  &:hover{
+    background-color: #F1B505;
+    border-color: #BC1B1A;
+  }
+  :active{
+    background-color: #F09F04;
     border-color: #BC1B1A;
   }
   font-size: 1.0rem;

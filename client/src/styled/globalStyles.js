@@ -4,7 +4,7 @@ import styled from "styled-components"
 
 const ContentGroup = styled.div`
 width: 85%;
-min-height: 90%;
+/* min-height: 90%; */
 margin-left: auto;
 margin-right: auto;
 `
@@ -17,6 +17,14 @@ const MainGroup = styled.div`
 const PageTitle = styled.h1`
   margin: 1.5rem;
   padding: 0 0 0 0.75rem;
+`
+
+const TitleH2 = styled.h2`
+  margin: 1.5rem;
+`
+
+const StP = styled.p`
+  margin: 1.5rem;
 `
 
 const InputField = styled.input`
@@ -40,4 +48,4 @@ const LabelText = styled.div`
   `
 //---------------------------------------------------------
 
-export { ContentGroup, MainGroup, PageTitle, InputField, LabelText}
+export { ContentGroup, MainGroup, PageTitle, InputField, LabelText, TitleH2, StP}

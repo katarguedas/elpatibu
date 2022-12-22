@@ -3,7 +3,7 @@ import Footer from '../components/Footer'
 import LoginForm from "../components/forms/LoginForm"
 import { useUserContext } from "../providers/userContext"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import styled from "styled-components"
 import { ContentGroup, PageTitle } from "../styled/globalStyles"
@@ -19,7 +19,11 @@ const Login = () => {
 
     const navigate = useNavigate();
 
+//............................................
+
     const clearState = () => setLoginData("")
+
+//............................................
 
     const handleChange = e => {
         setLoginData({
@@ -31,10 +35,10 @@ const Login = () => {
     const handleSubmit = e => {
         e.preventDefault();
         verifyUser()
+        console.log("user?", user)
         clearState()
-        if(user) 
-          navigate('/dashboard')
     }
+
 
     const handleMouseEnter = (e) => {
         e.preventDefault()
@@ -45,7 +49,16 @@ const Login = () => {
         e.preventDefault()
         setType("password")
     }
+//............................................
+    useEffect(() => {
+        if(user) 
+          {
+            console.log("user",user)
+            navigate('/dashboard')
+        }
+    }, [user])
 
+//............................................
 
     return (
         <ContentGroup>

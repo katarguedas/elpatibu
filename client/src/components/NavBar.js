@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { RxHome } from "react-icons/rx";
 
 import styled from 'styled-components';
+import { StGiBook, StGiWhiteBook, StGiCalendar } from './Icons';
 
 //---------------------------------------------------------
 
@@ -31,9 +32,9 @@ const NavBar = () => {
     return (
         <NavGroup>
             <HomeIcon onClick={handleClickDashboard} />
-            <NavButton onClick={handleClickOpenDiary} >zum Tagebuch</NavButton>
-            <NavButton onClick={handleClickCreateDiary} >neues Tagebuch</NavButton>
-            <NavButton onClick={handleClickCalendar} >zum Kalender</NavButton>
+            <NavButton onClick={handleClickOpenDiary} >zum Tagebuch<StGiBook/></NavButton>
+            <NavButton onClick={handleClickCreateDiary} >neues Tagebuch<StGiWhiteBook/></NavButton>
+            <NavButton onClick={handleClickCalendar} >zum Kalender<StGiCalendar/></NavButton>
             <DateBox>
                 <Date />
             </DateBox>
@@ -69,6 +70,10 @@ const HomeIcon = styled(RxHome)`
   background-color: #fff;
   &:hover{
     border: 2px solid #BC1B1A;
+    background-color: #F1B505;
+  }
+  :active{
+    background-color: #F09F04;
   }
 `
 

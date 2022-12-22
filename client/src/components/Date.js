@@ -12,11 +12,19 @@ const Date = () => {
 
     return (
         <div>
-
             {currentDate}
         </div>
     )
 }
 
+export const fullDate = () => {
+
+    const now = DateTime.now();
+    let today = now.toLocaleString(DateTime.DATE_HUGE)
+    console.log(today)
+    return(today)
+
+}
 
 export default Date;
+
