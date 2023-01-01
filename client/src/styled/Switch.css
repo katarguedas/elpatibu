@@ -9,9 +9,9 @@
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
-    width: 4.0rem;
-    height: 1.8rem;
-    background: #BE8D62;
+    width: 3.0rem;
+    height: 1.6rem;
+    background: #BC1B1A;
     border: 1.5px solid rgb(102, 100, 100);
     border-radius: 100px;
     position: relative;
@@ -23,8 +23,8 @@
     position: absolute;
     top: 0.15rem;
     left: 0.15rem;
-    width: 1.5rem;
-    height: 1.3rem;
+    width: 1.1rem;
+    height: 1.1rem;
     border-radius: 1.5rem;
     transition: 0.2s;
     background: #fff;
@@ -37,5 +37,5 @@
   }
   
   .react-switch-label:active .react-switch-button {
-    width: 1.7rem;
+    width: 1.5rem;
   }

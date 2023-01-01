@@ -15,7 +15,6 @@ const Header = () => {
     const { user, setUser, logout } = useUserContext();
 
     const navigate = useNavigate();
-    console.log(user)
 
     const hanadleLogout = () => {
         console.log("logout")

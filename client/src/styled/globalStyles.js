@@ -25,6 +25,7 @@ const TitleH2 = styled.h2`
 
 const StP = styled.p`
   margin: 1.5rem;
+  font-size: 1.1rem;
 `
 
 const InputField = styled.input`
@@ -40,6 +41,11 @@ const InputField = styled.input`
   width: 240px;
 `
 
+const FormField = styled.form`
+  margin-bottom: 4.0rem;
+  box-sizing: border-box;
+`
+
 const LabelText = styled.div`
   width: 110px;
   font-weight: 500;
@@ -48,4 +54,4 @@ const LabelText = styled.div`
   `
 //---------------------------------------------------------
 
-export { ContentGroup, MainGroup, PageTitle, InputField, LabelText, TitleH2, StP}
+export { ContentGroup, MainGroup, PageTitle, InputField, LabelText, TitleH2, StP, FormField}

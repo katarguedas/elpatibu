@@ -1,55 +1,262 @@
 import Header from "../components/Header"
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
+import SwitchToggle from "../components/SwitchToggle"
+import Input from "../components/forms/Input"
+import Panel from "../components/Panel"
+import { SendButton } from "../components/Buttons"
 
-import React from "react"
+import { useDataContext } from "../providers/dataContext"
+
+import React, { useEffect } from "react"
 import { useState } from "react"
 
-import { v4 as uuidv4 } from 'uuid';
+import { BiRightArrow, BiDownArrow, BiSquare, BiCheckSquare } from "react-icons/bi";
 
 import styled from "styled-components"
-import { ContentGroup, MainGroup, PageTitle, TitleH2, StP } from "../styled/globalStyles"
+import { ContentGroup, MainGroup, PageTitle, TitleH2, StP, FormField } from "../styled/globalStyles"
 
 //---------------------------------------------------------
 
 const CreateDiary = () => {
 
-    const [open, setOpen] = useState({
-        vital: false,
-        symptoms: false,
-        meteorosensitivity: false,
-        sleep: false,
-        weight: false,
-        wellBeeing: false,
-        mood: false
-    })
+    const {items, setItems, createNewDiary} = useDataContext();
 
-    // const [open, setOpen] = useState([
+    const [on, setOn] = useState(false)
+    const [diaryName, setDiaryName] = useState()
+
+    // const [items, setItems] = useState([
     //     {
     //         id: uuidv4(),
     //         group: 'vital',
     //         name: 'Vitalwerte',
-    //         toggle: false
+    //         visible: false,
+    //         itemList: [
+    //             {
+    //                 item: 'temperature',
+    //                 label: 'Temperatur',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'pressureHigh',
+    //                 label: 'Systolischer Blutdruck',
+    //                 selected: true,
+    //             },
+    //             {
+    //                 item: 'pressureLow',
+    //                 label: 'Diastolischer Blutdruck',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'pulse',
+    //                 label: 'Puls',
+    //                 selected: true,
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         id: uuidv4(),
+    //         group: 'weight',
+    //         name: 'Körpergewicht',
+    //         visible: false,
+    //         itemList: [
+    //             {
+    //                 item: 'weight',
+    //                 label: 'Körpergewicht',
+    //                 selected: false,
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         id: uuidv4(),
+    //         group: 'wellBeing',
+    //         name: 'Allgemeines Wohlbefinden',
+    //         visible: false,
+    //         itemList: [
+    //             {
+    //                 item: 'wellBeing',
+    //                 label: 'Wohlbefinden',
+    //                 selected: false,
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         id: uuidv4(),
+    //         group: 'mood',
+    //         name: 'Stimmung',
+    //         visible: false,
+    //         itemList: [
+    //             {
+    //                 item: 'mood',
+    //                 label: 'Stimmung',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'moodSwings',
+    //                 label: 'Stimmungsschwankungen',
+    //                 selected: false,
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         id: uuidv4(),
+    //         group: 'sleep',
+    //         name: 'Schlaf',
+    //         visible: false,
+    //         itemList: [
+    //             {
+    //                 item: 'hours',
+    //                 label: 'Anzahl der Schlafstunden',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'interruption',
+    //                 label: 'Schlafunterbrechungen',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'restful',
+    //                 label: 'Erholung durch Schlaf',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'medication',
+    //                 label: 'Medikamenteneinnahme',
+    //                 selected: false,
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         id: uuidv4(),
+    //         group: 'meteorosensitivity',
+    //         name: 'Wetterfühligkeit',
+    //         visible: false,
+    //         itemList: [
+    //             {
+    //                 item: 'headache',
+    //                 label: 'Kopfschmerzen',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'fatigue',
+    //                 label: 'Müdigkeit / Erschöpfung',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'circulationProblems',
+    //                 label: 'Kreislaufprobleme',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'insomnia',
+    //                 label: 'Schlafstörungen',
+    //                 selected: false,
+    //             }
+    //         ]
     //     },
     //     {
     //         id: uuidv4(),
     //         group: 'symptoms',
     //         name: 'Symptome',
-    //         toggle: false
+    //         visible: false,
+    //         itemList: [
+    //             {
+    //                 item: 'pain',
+    //                 label: 'Schmerzen',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'nausea',
+    //                 label: 'Übelkeit',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'vomiting',
+    //                 label: 'Erbrechen',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'diarrhea',
+    //                 label: 'Durchfall',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'pyrosis',
+    //                 label: 'Sodbrennen',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'fatigue',
+    //                 label: 'Erschöpfung / Müdigkeit',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'insomnia',
+    //                 label: 'Schlaflosigkeit',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'vertigo',
+    //                 label: 'Schwindelgefühl',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'appetiteLoss',
+    //                 label: 'Appetitlosigkeit',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'fingerTingling',
+    //                 label: 'Kribbeln in den Fingern / fingerspitzen',
+    //                 selected: false,
+    //             },
+    //             {
+    //                 item: 'memoryDisorder',
+    //                 label: 'Gedächtnisstörungen',
+    //                 selected: false,
+    //             }
+    //         ]
     //     }
     // ])
 
-    const handleToggle = (e) => {
-        console.log(e, open, typeof e)
 
-        setOpen({
-            ...open,
-            [e]: !open[e],
-        })
+    const handleClick = (id) => {
+        setItems(items.map((e) => {
+            if (e.id === id)
+                e.visible = !e.visible;
+            return e;
+        }));
     }
 
-    console.log("vital", open.vital)
-    console.log("symptoms", open.symptoms)
+    const handleSelect = (id, el) => {
+        const indexG = items.findIndex((e) => e.id === id);
+        const indexI = items[indexG].itemList.findIndex((e) => e.item === el);
+        setItems(
+            [...items], items[indexG].itemList[indexI].selected = !items[indexG].itemList[indexI].selected
+        )
+    }
+
+    const sendAndCreate = () => {
+        console.log("Erstelle Diary")
+        createNewDiary()
+    }
+
+    useEffect(() => {
+        if (on === true) {
+            setItems(items.map((e) => {
+                e.visible = true;
+                return e;
+            }))
+        } else {
+            setItems(items.map((e) => {
+                e.visible = false;
+                return e;
+            }))
+        }
+    }, [on])
+
+
+    console.log(items)
 
 
     return (
@@ -61,59 +268,32 @@ const CreateDiary = () => {
                     <PageTitle>Neues Tagebuch</PageTitle>
                     <TitleH2>Erstelle Dein individuelles Patienten-Tagebuch
                     </TitleH2>
-                    <StP>Wähle aus den nachfolgenden Optionen die Werte aus, die Du dokumentieren möchtest. </StP>
+                    {/* <StP>Möchtest Du Deinem Tagebuch einen Namen geben?</StP>
+                    <FormField onSubmit={handleSubmit}>
+                        <Input onChange={(e) => setDiaryName(e.target.value)} />
+                    </FormField> */}
+                    <StP>Wähle nun aus den nachfolgenden Optionen die Werte aus, die Du dokumentieren möchtest. </StP>
 
-                    
- 
-                    <ValueGroup>
-                        <Accordion onClick={() => handleToggle('vital')} >Vitalwerte</Accordion>
-                        {
-                            open.vital &&
-                            <Panel>test  {open.vital}</Panel>
-                        }
-                    </ValueGroup>
-                    <ValueGroup>
-                        <Accordion onClick={() => handleToggle('symptoms')} >Symptome</Accordion>
-                        {
-                            open.symptoms &&
-                            <Panel>test</Panel>
-                        }
-                    </ValueGroup>
-                    <ValueGroup>
-                        <Accordion onClick={() => handleToggle('meteorosensitivity')} >Wetterfühligkeit</Accordion>
-                        {
-                            open.meteorosensitivity &&
-                            <Panel>test</Panel>
-                        }
-                    </ValueGroup>
-                    <ValueGroup>
-                        <Accordion onClick={() => handleToggle('sleep')} >Schlaf</Accordion>
-                        {
-                            open.sleep &&
-                            <Panel>test</Panel>
-                        }
-                    </ValueGroup>
-                    <ValueGroup>
-                        <Accordion onClick={() => handleToggle('weight')} >Körpergewicht</Accordion>
-                        {
-                            open.weight &&
-                            <Panel>test</Panel>
-                        }
-                    </ValueGroup>
-                    <ValueGroup>
-                        <Accordion onClick={() => handleToggle('wellBeeing')} >Allgemeines Wohlbefinden</Accordion>
-                        {
-                            open.wellBeeing &&
-                            <Panel>test</Panel>
-                        }
-                    </ValueGroup>
-                    <ValueGroup>
-                        <Accordion onClick={() => handleToggle('mood')} >Stimmung</Accordion>
-                        {
-                            open.mood &&
-                            <Panel>test</Panel>
-                        }
-                    </ValueGroup> 
+                    <SwithcGroup>
+                        <SwitchToggle isOn={on} handleToggle={() => setOn(!on)} />
+                        <SwitchText>alle aufklappen</SwitchText>
+                    </SwithcGroup>
+                    {
+                        items &&
+                        items.map(e => (
+                            <ItemGroup key={e.id}>
+                                <Accordion onClick={() =>
+                                    handleClick(e.id)} >
+                                    {!e.visible && <StBiRightArrow></StBiRightArrow>}
+                                    {e.visible && <StBiDownArrow></StBiDownArrow>}
+                                    {e.name}
+                                </Accordion>
+
+                                <Panel itemGroup={e} handleSelect={handleSelect} ></Panel>
+                            </ItemGroup>
+                        ))
+                    }
+                    <SendButton onClick={sendAndCreate} >erstellen</SendButton>
                 </DashboardGroup>
             </MainGroup>
             <Footer />
@@ -135,18 +315,35 @@ const DashboardGroup = styled.div`
   flex-direction: column;
   text-align: left;
   margin-left: 0.75rem;
+  margin-bottom: 3.0rem;
 `
 
-const ValueGroup = styled.div`
+const SwitchText = styled.span`
+padding: 0.5rem; 
+margin-bottom: -0.45rem; 
+font-weight: 500;
+`
+const SwithcGroup = styled.div`
+  display: inline-flex; 
+  align-items: center;
+`
+
+const ItemGroup = styled.div`
 
 `
 
 const Accordion = styled.div`
-  border: 1px solid orange;
+  border: 1.5px solid #F1B505;
   border-top-right-radius: 1.5rem;
-  border-bottom-left-radius: 1.5rem;
-  /* border-radius: 1.5rem; */
+  border-top-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
   background-color: #bbe268;
+  &:hover{
+    background-color: #F1B505;
+  }
+  :active{
+    background-color: #F09F04;
+  }
   padding: 0.5rem 0.5rem 0.5rem 1.5rem;
   margin: 0.5rem 1.5rem;
   font-size: 1.25rem;
@@ -154,15 +351,27 @@ const Accordion = styled.div`
   /* transition: 0.4s; */
 `
 
-const Panel = styled.div`
-  background-color: #f1f1f1;
-  text-align: left;
-  position: relative;
-  top: -2.75rem;
-  z-index: -1;
-  padding: 2.0rem 0.5rem 0.0rem 1.5rem;
-  margin: 1.5rem;
-  border-bottom-left-radius: 1.5rem;
-  /* border-bottom-right-radius: 1.25rem; */
+const StBiRightArrow = styled(BiRightArrow)`
+  font-size: 1.0rem;
+  margin-right: 0.5rem;
+`
 
+const StBiDownArrow = styled(BiDownArrow)`
+  font-size: 1.0rem;
+  margin-right: 0.5rem;
+`
+
+const StBiSquare = styled(BiSquare)`
+  font-size: 1.1rem;
+  margin-right: 0.75rem;
+  margin-bottom: -0.2rem;
+`
+const StBiCheckSquare = styled(BiCheckSquare)`
+  font-size: 1.1rem;
+  margin-right: 0.75rem;
+  margin-bottom: -0.2rem;
+`
+
+const Item = styled.div`
+  margin: 0.25rem;
 `

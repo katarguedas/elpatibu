@@ -1,9 +1,9 @@
 import { useUserContext } from "../../providers/userContext";
-import { LoginSendButton } from "../Buttons";
+import { SendButton } from "../Buttons";
 
 import { RxEyeOpen } from "react-icons/rx";
 import styled from 'styled-components';
-import { InputField, LabelText } from "../../styled/globalStyles";
+import { InputField, LabelText, FormField } from "../../styled/globalStyles";
 
 //---------------------------------------------------------
 
@@ -39,7 +39,7 @@ const LoginForm = ({handleSubmit, handleChange, handleMouseEnter, handleMouseLea
                     <RxEyeOpen style={{fontSize: '20px'}} />
                 </EyeGroup>
             </InputLabel>
-            <LoginSendButton type="submit">senden</LoginSendButton>
+            <SendButton type="submit">senden</SendButton>
         </FormField>
 
     )
@@ -48,12 +48,6 @@ const LoginForm = ({handleSubmit, handleChange, handleMouseEnter, handleMouseLea
 export default LoginForm;
 
 //---------------------------------------------------------
-
-const FormField = styled.form`
-  margin-bottom: 4.0rem;
-  box-sizing: border-box;
-
-`
 
 const InputLabel = styled.label`
   display: inline-flex;

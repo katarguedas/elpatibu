@@ -19,4 +19,4 @@ const [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken,
 }
 
 
-export {UserContextProvider, useUserContext}
+export {UserContextProvider, useUserContext};

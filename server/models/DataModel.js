@@ -1,20 +1,45 @@
 const mongoose = require('mongoose');
+// const {Schema} = mongoose;
 
 //------------------------------------------------
 
+const testDataSchema = new mongoose.Schema({
+    date: [Date],
+    temperature: [Number]
+})
 
-const dataSchema = new mongoose.Schema({
+
+const dateSchema = new mongoose.Schema({
     id: String,
-    
+    date1pd: [String],
+    date2pd: [Date],
+    date3pd: Date,
+})
+
+const temperatureSchema = new mongoose.Schema({
+    id: String,
+    label: String,
+    unit: String,
+    values: [Number],
+    date: [Date],
+    // date: { type: Schema.Types.ObjectId, ref: 'DateData' }
+})
+
+const dataSetSchema = new mongoose.Schema({
+    id: String,
+    diaryName: String,
     vital: {
-        temperature: [Number],
+        // temperature: { type: Schema.Types.ObjectId, ref: 'Temperature' },
         pressureHigh: [Number],
         pressureLow: [Number],
         pulse: [Number]
     },
     weight: [Number],
-    wellBeeing: [Number],
-    mood: [String],
+    wellBeing: [Number],
+    mood: {
+        mood: [String],
+        moodSwing: [Number]
+    },
     sleep: {
         hours: [Number],
         interruption: [Number],
@@ -44,10 +69,19 @@ const dataSchema = new mongoose.Schema({
 
     },
     medication: {
-        
+
     }
 })
 
-const User = mongoose.model('User', userSchema)
 
-module.exports = User;
+const TestData = mongoose.model('Testdata', testDataSchema)
+const DateData = mongoose.model('DateData', dateSchema)
+const Temperature = mongoose.model('Temperature', temperatureSchema)
+const DataSet = mongoose.model('DataSet', dataSetSchema)
+
+
+// module.exports = Temperature;
+// module.exports = DataSet;
+// module.exports = DateData;
+
+module.exports= { Temperature, TestData, DateData, DataSet};

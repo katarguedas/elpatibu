@@ -13,6 +13,8 @@ const bcrypt = require('bcrypt');
 const { request } = require('express');
 
 const apiUser = require('./routes/apiMongoUser')
+const apiData = require('./routes/apiMongoData')
+
 
 
 //------------------------------------------------------
@@ -27,17 +29,27 @@ app.use(cors())
 
 app.use(async function (req, res, next) {
   mongoose.set('strictQuery', true);
-  await mongoose.connect(MONGO_URI);
+  try {
+    await mongoose.connect(MONGO_URI);
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.log(error)
+  }
   next();
 })
 
 app.use(apiUser);
+app.use(apiData);
 
 //------------------------------------------------------
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
+
+
+
+
 
 
 

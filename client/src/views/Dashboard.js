@@ -2,37 +2,87 @@ import Header from "../components/Header"
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
 
-import React from "react"
+import { Testdat } from "../components/Testdat"
+
+import React, { useEffect, useState } from "react"
 
 import styled from "styled-components"
 import { ContentGroup, MainGroup, PageTitle, TitleH2 } from "../styled/globalStyles"
 import { fullDate } from "../components/Date"
 import { useUserContext } from "../providers/userContext"
+import LineChart from "../components/charts/LineChart"
+import TimeChart from "../components/charts/TimeChart"
+import { useDataContext } from "../providers/dataContext"
+
 
 //---------------------------------------------------------
 
 const Dashboard = () => {
 
+    const [flag, setFlag] = useState(false);
+    const [x, setX] = useState();
+    const [y, setY] = useState();
     const { userData } = useUserContext();
+    const { tempData, setTempData, saveTemp,  getTemp, tempResults } = useDataContext();
 
-    console.log("userData", userData)
+    const res = Testdat()
+    // console.log(res)
+    // console.log("\n", res[0], "\n", res[1])
+    // console.log(res[0].label)
+    // console.log(tempData.label)
+    // console.log(tempData)
+    // const xValues = res.date;
+    // const yValues = res.values;
+
+    useEffect(() => {
+        setTempData({
+            ...tempData, values: res[0], date: res[1]
+        })
+        setFlag(true)
+    }, [])
+
+    const handleChange = () => {
+
+        if (flag) {
+            console.log("Temp speichern aufrufen")
+            saveTemp(tempData);
+        }
+    }
+
+    const handleGetData = () => {
+        console.log("hole Temperaturdaten")
+        getTemp('300e46f7-8b37-40cc-bd17-48cd75b74981')
+        console.log("test",tempResults)
+        setX(tempResults.date);
+        setY(tempResults.values)
+    }
+
+
+    console.log(tempData)
+    console.log("tempResults",tempResults)
+
+    // console.log("userData", userData)
     return (
         <ContentGroup>
             <Header />
             <MainGroup>
                 <NavBar />
                 <DashboardGroup>
-                    <PageTitle>Hallo {userData},</PageTitle>
                     <StFullDay>
                         Heute ist {fullDate()}.
                     </StFullDay>
+                    <PageTitle>Hallo {userData},</PageTitle>
+
                     <TitleH2>
                         Deine kommenden Termine
                     </TitleH2>
-                    <Item/>
+                    <Item />
                     <TitleH2>
                         und Erinnerungen:
                     </TitleH2>
+                    <div onClick={handleChange} style={{ margin: '1.0rem', fontWeight: '600', padding: '3px', width: '90px', color: 'blue', border: '1px solid blue'}} >Speichere Daten</div>
+                    <div onClick={handleGetData} style={{ margin: '1.0rem', fontWeight: '600', padding: '3px', width: '90px', color: 'blue', border: '1px solid blue'}} >hole Daten</div>
+                    {x && <TimeChart xValues={x} yValues={y} />}
                 </DashboardGroup>
             </MainGroup>
             <Footer />
@@ -52,13 +102,13 @@ const DashboardGroup = styled.div`
   flex-direction: column;
   text-align: left;
   margin-left: 0.75rem;
+  width: 80%;
 `
 const StFullDay = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   justify-content: flex-end;
-  position: relative;
-  left: 45%;
-  /* top: 40%; */
+  text-align: right;
+  margin-top: 1.0rem;
 `
 
 const Item = styled.div`

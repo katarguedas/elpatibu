@@ -47,7 +47,7 @@ const useAuth = () => {
             body: raw,
             redirect: 'follow'
         };
-
+        
         await fetch("/api/login", requestOptions)
             .then(response => response.json())
             .then(response => {

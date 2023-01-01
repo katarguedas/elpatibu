@@ -1,42 +1,32 @@
 import Header from "../components/Header"
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
+import LineChart from "../components/charts/LineChart"
 
-import React from "react"
-
-import styled from "styled-components"
-import { ContentGroup, MainGroup, PageTitle } from "../styled/globalStyles"
+import { ContentGroup, MainGroup } from "../styled/globalStyles"
 
 //---------------------------------------------------------
 
-const Calendar = () => {
-
-
-    let date = new Date();
-    console.log(date)
+const Test = () => {
 
     return (
         <ContentGroup>
             <Header />
             <MainGroup>
                 <NavBar />
-                <Calendargroup>
-                    <PageTitle>Kalender</PageTitle>
-                 <div>   </div>
-                </Calendargroup>
+                <div>
+
+<LineChart />
+                </div>
             </MainGroup>
             <Footer />
         </ContentGroup>
     )
 }
 
-export default Calendar;
-
+export default Test;
 
 //---------------------------------------------------------
 // Styled-Components
 //---------------------------------------------------------
 
-const Calendargroup = styled.div`
-  margin: 0;
-`

@@ -75,6 +75,7 @@ const HomeIcon = styled(RxHome)`
   :active{
     background-color: #F09F04;
   }
+  box-shadow: rgba(0, 0, 0, 0.25) 2.4px 2.4px 3.2px;
 `
 
 const DateBox = styled.div`
@@ -82,5 +83,4 @@ const DateBox = styled.div`
   margin: 1.0rem;
   font-weight: 600;
   font-size: 1.1rem;
-
 `

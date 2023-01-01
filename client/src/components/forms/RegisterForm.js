@@ -1,9 +1,9 @@
 import { useUserContext } from "../../providers/userContext";
-import { LoginSendButton } from "../Buttons";
+import { SendButton } from "../Buttons";
 
 import { RxEyeOpen } from "react-icons/rx";
 import styled from 'styled-components';
-import { InputField, LabelText } from "../../styled/globalStyles";
+import { InputField, LabelText, FormField } from "../../styled/globalStyles";
 
 //---------------------------------------------------------
 
@@ -50,7 +50,7 @@ const RegisterForm = ({ handleSubmit, handleChange, handleMouseEnter, handleMous
                 </EyeGroup>
             </RegisterLabel>
 
-            <LoginSendButton type="submit">senden</LoginSendButton>
+            <SendButton type="submit">senden</SendButton>
         </FormField>
 
     )
@@ -60,12 +60,6 @@ export default RegisterForm;
 
 //---------------------------------------------------------
 
-const FormField = styled.form`
-  margin-bottom: 4.0rem;
-  /* border: 1px solid black; */
-  box-sizing: border-box;
-
-`
 
 const RegisterLabel = styled.label`
   display: inline-flex;

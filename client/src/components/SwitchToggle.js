@@ -6,11 +6,6 @@ import styled from "styled-components";
 
 const SwitchToggle = ({ isOn, handleToggle }) => {
 
-    // const handleToggle = (isOn) => {
-    //     setValues(values.map((e) => {
-    //         e.visible = isOn;
-    //     }))
-    // }
 
     return (
         <div style={{marginBottom: '0.75rem'}}>
