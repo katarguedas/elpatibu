@@ -12,7 +12,8 @@ import { DataContextProvider } from './providers/dataContext';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-
+import { ThemeProvider } from 'styled-components';
+import { theme } from './styled/theme'
 
 //---------------------------------------------------------
 
@@ -23,22 +24,24 @@ function App() {
 
   return (
     <div className="App">
-      <DataContextProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={user ? <Dashboard /> : <Login />} />
-            <Route path='/welcome' element={<LandingPage />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/dashboard' element={<Dashboard />} />
-            <Route path='/createDiary' element={<CreateDiary />} />
-            <Route path='/newDiary' element={<NewDiary />} />
-            <Route path='/openDiary' element={<OpenDiary />} />
-            <Route path='/diaryData' element={<DiaryData />} />
-            <Route path='/calendar' element={<Calendar />} />
-          </Routes>
-        </BrowserRouter>
-      </DataContextProvider>
+      <ThemeProvider theme={theme} >
+        <DataContextProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={user ? <Dashboard /> : <Login />} />
+              <Route path='/welcome' element={<LandingPage />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/register' element={<Register />} />
+              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/createDiary' element={<CreateDiary />} />
+              <Route path='/newDiary' element={<NewDiary />} />
+              <Route path='/openDiary' element={<OpenDiary />} />
+              <Route path='/diaryData' element={<DiaryData />} />
+              <Route path='/calendar' element={<Calendar />} />
+            </Routes>
+          </BrowserRouter>
+        </DataContextProvider>
+      </ThemeProvider>
     </div>
   );
 }

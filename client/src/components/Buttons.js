@@ -20,46 +20,57 @@ const Button = styled.button`
   align-content: center;
 `
 const LoginButton = styled(Button)`
-  border: 2.5px solid #A8D93C;
+  border: 2.5px solid ${(props) => props.theme.colors.second};
   &:hover{
-    background-color: #A8D93C;
+    background-color: ${(props) => props.theme.colors.fourth};
+    border: 2.5px solid ${(props) => props.theme.colors.third};
   };
   &:active{
-    background-color: #F1B505;
+    background-color: ${(props) => props.theme.colors.third};
+    transform: translateY(1.5px);
   }
   box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
 `
+
 
 const LogoutButton = styled(Button)`
-  border: 2.5px solid #F1B505;
+  border: 2.5px solid ${(props) => props.theme.colors.second};
   &:hover{
-    background-color: #F09F04;
+    background-color: ${(props) => props.theme.colors.fourth};
+    border: 2.5px solid ${(props) => props.theme.colors.third};
   };
   &:active{
-    background-color: #F1B505;
-  }
-  box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
-  
-`
-const RegisterButton = styled(Button)`
-  border: 2.5px solid #F09F04;
-  &:hover{
-    background-color: #F09F04;
-  };
-  &:active{
-    background-color: #F1B505;
+    background-color: ${(props) => props.theme.colors.third};
+    transform: translateY(1.5px);
   }
   box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
 `
 
-const SendButton = styled(Button)`
-  border: 2.5px solid #A8D93C;
-  margin-top: 1.5rem;
+
+const RegisterButton = styled(Button)`
+  border: 2.5px solid ${(props) => props.theme.colors.second};
   &:hover{
-    background-color: #F09F04;
+    background-color: ${(props) => props.theme.colors.fourth};
+    border: 2.5px solid ${(props) => props.theme.colors.third};
   };
   &:active{
-    background-color: #F1B505;
+    background-color: ${(props) => props.theme.colors.third};
+    transform: translateY(1.5px);
+  }
+  box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
+`
+
+
+const SendButton = styled(Button)`
+  border: 2.5px solid ${(props) => props.theme.colors.second};
+  margin-top: 1.5rem;
+  &:hover{
+    background-color: ${(props) => props.theme.colors.fourth};
+    border: 2.5px solid ${(props) => props.theme.colors.third};
+  };
+  &:active{
+    background-color: ${(props) => props.theme.colors.third};
+    transform: translateY(1.5px);
   }
   box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
 `
@@ -68,16 +79,17 @@ const NavButton = styled.button`
   width: 7.0rem;
   height: 7.0rem;
   margin: 1.0rem;
-  border: 2.5px solid #A8D93C;
+  border: 2.5px solid ${(props) => props.theme.colors.second};
   border-radius: 1.0rem;
   background-color: #fff;
   &:hover{
-    background-color: #F1B505;
-    border-color: #BC1B1A;
+    background-color: ${(props) => props.theme.colors.fourth};
+    border: 2.5px solid ${(props) => props.theme.colors.third};
   }
   :active{
-    background-color: #F09F04;
-    border-color: rgb(188, 27, 26);
+    background-color: ${(props) => props.theme.colors.third};
+    border-color: ${(props) => props.theme.colors.third};
+    transform: translateY(1.5px);
   }
   font-size: 1.0rem;
   font-weight: 600;

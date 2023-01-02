@@ -1,7 +1,7 @@
 import { NavButton } from './Buttons';
 import Date from './Date';
 
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { RxHome } from "react-icons/rx";
 
 import styled from 'styled-components';
@@ -55,25 +55,26 @@ const NavGroup = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #fff;
-  border-right: 2.5px solid #A8D93C;
+  border-right: 2.5px solid ${(props) => props.theme.colors.third};
   width: 20%;
-  background-image: linear-gradient(to right, #ffffff, #A8D93C);
+  background-image: linear-gradient(to right, #fff, ${(props) => props.theme.colors.third});
 `
 
 const HomeIcon = styled(RxHome)`
   padding: 0.5rem;
   margin: 1.5rem;
-  border: 2.0px solid #A8D93C;
+  border: 2.0px solid ${(props) => props.theme.colors.second};
   border-radius: 0.5rem;
   font-size: 2.5rem;
   color: #000;
   background-color: #fff;
   &:hover{
-    border: 2px solid #BC1B1A;
-    background-color: #F1B505;
+    background-color: ${(props) => props.theme.colors.fourth};
+    border: 2.5px solid ${(props) => props.theme.colors.third};
   }
   :active{
-    background-color: #F09F04;
+    background-color: ${(props) => props.theme.colors.fourth};
+    transform: translateY(1.5px);
   }
   box-shadow: rgba(0, 0, 0, 0.25) 2.4px 2.4px 3.2px;
 `

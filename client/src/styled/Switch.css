@@ -11,8 +11,8 @@
     cursor: pointer;
     width: 3.0rem;
     height: 1.6rem;
-    background: #BC1B1A;
-    border: 1.5px solid rgb(102, 100, 100);
+    background: #fff;
+    border: 1.5px solid #4f5461;
     border-radius: 100px;
     position: relative;
     transition: background-color .2s;
@@ -26,8 +26,9 @@
     width: 1.1rem;
     height: 1.1rem;
     border-radius: 1.5rem;
+    border: 1px solid #4f5461;
     transition: 0.2s;
-    background: #fff;
+    background: #C9D3F2;
     box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
   }
   

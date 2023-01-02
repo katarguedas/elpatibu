@@ -43,9 +43,9 @@ const StPanel = styled.div`
   /* z-index: -1; */
   padding: 2.0rem 0.5rem 0.0rem 1.5rem;
   margin: 1.5rem;
-  border-left: 1px solid #F1B505;
-  border-bottom: 1px solid #F1B505;
-  border-right: 1px solid #F1B505;
+  border-left: 1px solid ${(props) => props.theme.colors.first};
+  border-bottom: 1px solid ${(props) => props.theme.colors.first};
+  border-right: 2px solid ${(props) => props.theme.colors.first};
   border-bottom-right-radius: 1.5rem;
 `
 

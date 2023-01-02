@@ -62,7 +62,7 @@ export default Header
 //---------------------------------------------------------
 
 const HeaderGroup = styled.div`
-  border-bottom: 3px solid #BC1B1A;
+  border-bottom: 3px solid ${(props) => props.theme.colors.first};
   background-color: #fff;
   padding: 0.5rem;
 `

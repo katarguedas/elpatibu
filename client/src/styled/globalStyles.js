@@ -1,6 +1,10 @@
-import styled from "styled-components"
+import styled, { createGlobalStyle } from "styled-components"
 
 //---------------------------------------------------------
+
+const globalStyles = createGlobalStyle`
+// ...
+`
 
 const ContentGroup = styled.div`
 width: 85%;
@@ -29,9 +33,10 @@ const StP = styled.p`
 `
 
 const InputField = styled.input`
-  border: 1.25px solid #BC1B1A;
+  border: 2px solid ${(props) => props.theme.colors.second};
   &:focus{
-    border: 1.25px solid #F09F04;
+    border: 1.25px solid ${(props) => props.theme.colors.second};
+    background-color: ${(props) => props.theme.colors.fifth};
   };
   outline: none;
   border-radius: 0.25rem;
@@ -53,5 +58,7 @@ const LabelText = styled.div`
   font-size: 1.15rem;
   `
 //---------------------------------------------------------
+
+export default globalStyles;
 
 export { ContentGroup, MainGroup, PageTitle, InputField, LabelText, TitleH2, StP, FormField}

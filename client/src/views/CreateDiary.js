@@ -283,7 +283,8 @@ const CreateDiary = () => {
                         items.map(e => (
                             <ItemGroup key={e.id}>
                                 <Accordion onClick={() =>
-                                    handleClick(e.id)} >
+                                    handleClick(e.id)} 
+                                    shadow={e.visible}>
                                     {!e.visible && <StBiRightArrow></StBiRightArrow>}
                                     {e.visible && <StBiDownArrow></StBiDownArrow>}
                                     {e.name}
@@ -333,21 +334,23 @@ const ItemGroup = styled.div`
 `
 
 const Accordion = styled.div`
-  border: 1.5px solid #F1B505;
+  border: 1.5px solid ${(props) => props.theme.colors.first};
   border-top-right-radius: 1.5rem;
   border-top-left-radius: 1.5rem;
   border-bottom-right-radius: 1.5rem;
-  background-color: #bbe268;
+  background-color: ${(props) => props.theme.colors.fourth};
   &:hover{
-    background-color: #F1B505;
+    background-color: ${(props) => props.theme.colors.third};
+    border-color: ${(props) => props.theme.colors.second};
   }
   :active{
-    background-color: #F09F04;
+    background-color: #fff;
   }
   padding: 0.5rem 0.5rem 0.5rem 1.5rem;
   margin: 0.5rem 1.5rem;
   font-size: 1.25rem;
   font-weight: 500;
+  box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
   /* transition: 0.4s; */
 `
 
@@ -361,17 +364,17 @@ const StBiDownArrow = styled(BiDownArrow)`
   margin-right: 0.5rem;
 `
 
-const StBiSquare = styled(BiSquare)`
-  font-size: 1.1rem;
-  margin-right: 0.75rem;
-  margin-bottom: -0.2rem;
-`
-const StBiCheckSquare = styled(BiCheckSquare)`
-  font-size: 1.1rem;
-  margin-right: 0.75rem;
-  margin-bottom: -0.2rem;
-`
+// const StBiSquare = styled(BiSquare)`
+//   font-size: 1.1rem;
+//   margin-right: 0.75rem;
+//   margin-bottom: -0.2rem;
+// `
+// const StBiCheckSquare = styled(BiCheckSquare)`
+//   font-size: 1.1rem;
+//   margin-right: 0.75rem;
+//   margin-bottom: -0.2rem;
+// `
 
-const Item = styled.div`
-  margin: 0.25rem;
-`
+// const Item = styled.div`
+//   margin: 0.25rem;
+// `
