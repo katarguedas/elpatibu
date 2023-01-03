@@ -2,28 +2,32 @@ import Header from "../components/Header"
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
 import SwitchToggle from "../components/SwitchToggle"
-import Input from "../components/forms/Input"
+// import Input from "../components/forms/Input"
 import Panel from "../components/Panel"
 import { SendButton } from "../components/Buttons"
 
 import { useDataContext } from "../providers/dataContext"
 
-import React, { useEffect } from "react"
-import { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { BiRightArrow, BiDownArrow, BiSquare, BiCheckSquare } from "react-icons/bi";
+import { BiRightArrow, BiDownArrow } from "react-icons/bi";
 
 import styled from "styled-components"
-import { ContentGroup, MainGroup, PageTitle, TitleH2, StP, FormField } from "../styled/globalStyles"
+import { ContentGroup, MainGroup, PageTitle, TitleH2, StP } from "../styled/globalStyles"
+import { useUserContext } from "../providers/userContext"
 
 //---------------------------------------------------------
 
 const CreateDiary = () => {
 
-    const {items, setItems, createNewDiary} = useDataContext();
+    const { items, setItems, createNewDiary } = useDataContext();
+    const { user, anyChange, checkToken } = useUserContext();
 
     const [on, setOn] = useState(false)
     const [diaryName, setDiaryName] = useState()
+
+
 
     // const [items, setItems] = useState([
     //     {
@@ -219,6 +223,12 @@ const CreateDiary = () => {
     //     }
     // ])
 
+    let location = useLocation();
+    const navigate = useNavigate();
+
+    if (!user)
+        navigate('/login')
+
 
     const handleClick = (id) => {
         setItems(items.map((e) => {
@@ -240,6 +250,10 @@ const CreateDiary = () => {
         console.log("Erstelle Diary")
         createNewDiary()
     }
+
+    useEffect(() => {
+        checkToken();
+    }, [location, anyChange])
 
     useEffect(() => {
         if (on === true) {
@@ -283,7 +297,7 @@ const CreateDiary = () => {
                         items.map(e => (
                             <ItemGroup key={e.id}>
                                 <Accordion onClick={() =>
-                                    handleClick(e.id)} 
+                                    handleClick(e.id)}
                                     shadow={e.visible}>
                                     {!e.visible && <StBiRightArrow></StBiRightArrow>}
                                     {e.visible && <StBiDownArrow></StBiDownArrow>}

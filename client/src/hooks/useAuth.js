@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 
 import jwt_decode from "jwt-decode";
 
@@ -24,30 +25,29 @@ const useAuth = () => {
         })
     const [regMessage, setRegMessage] = useState('')
     const [flag, setFlag] = useState(999)
+    const [anyChange, setAnyChange] = useState(false)
 
     const LOCAL_STORAGE_KEY = 'access token';
 
 
     //---------------------------------------------------------
 
+    const verifyUser = async () => {
 
-    const verifyUser = async() => {
-
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        var raw = JSON.stringify({
+        const raw = JSON.stringify({
             "email": loginData.email,
             "pwd": loginData.pwd
         });
 
         var requestOptions = {
             method: 'POST',
-            headers: myHeaders,
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: raw,
             redirect: 'follow'
         };
-        
+
         await fetch("/api/login", requestOptions)
             .then(response => response.json())
             .then(response => {
@@ -57,7 +57,7 @@ const useAuth = () => {
                 setToken(response.access)
 
                 const jwtDecoded = jwt_decode(response.access);
-                console.log(jwtDecoded.name) 
+                console.log(jwtDecoded.name)
 
                 setUser(jwtDecoded.email)
                 setUserData(jwtDecoded.name)
@@ -65,12 +65,73 @@ const useAuth = () => {
                 console.log("user hat sich eingeloggt")
             })
             .catch(error => console.log('error', error));
-            return(user);
+        return (user);
     }
 
     //---------------------------------------------------------
 
-    const removeCookie = async() => {
+    const refreshToken = async (user) => {
+        // console.log("refreshToken wird aufgerufen mit user ")
+
+        var requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "email": user,
+            }),
+            redirect: 'follow'
+        };
+
+        await fetch('/api/refreshToken', requestOptions)
+            .then(response => response.json())
+            .then(response => {
+                // console.log("response", response)
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(response))
+
+                // setToken(response.access)
+                // const jwtDecoded = jwt_decode(response.access);
+                // setUser(jwtDecoded.email)
+                // setUserData(jwtDecoded.name)
+            })
+            .catch(error => {
+                console.log("error", error)
+                logout()
+            })
+    }
+
+    //---------------------------------------------------------
+
+    const checkToken = () => {
+
+        const lsToken = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
+        // console.log("access token vorhanden?: ", lsToken)
+
+        if (lsToken !== null) {
+            const decodedJwt = jwt_decode(lsToken.access)
+            setUser(decodedJwt.email)
+
+            if (decodedJwt.exp * 1000 > Date.now()) {
+                // console.log(decodedJwt.email)
+                console.log("Zeit noch nicht abgelaufen. Refreshe den Zugangstoken.")
+                refreshToken(decodedJwt.email);
+            } else {
+                console.log("Token abgelaufen")
+                logout()
+            }
+        }
+        else {
+            console.log("Logout")
+            logout()
+        }
+    }
+
+
+    //---------------------------------------------------------
+
+    const removeCookie = async () => {
+
         var requestOptions = {
             method: 'GET',
             headers: {
@@ -82,11 +143,13 @@ const useAuth = () => {
         //  .then(response => response.json())
     };
 
+
     //---------------------------------------------------------
 
     const logout = () => {
         localStorage.removeItem(LOCAL_STORAGE_KEY)
         removeCookie()
+        setUser('')
     }
 
     //---------------------------------------------------------
@@ -97,8 +160,8 @@ const useAuth = () => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        console.log("id", registerData.id)
-        var raw = JSON.stringify({
+        // console.log("id", registerData.id)
+        const credentials = JSON.stringify({
             "id": uuidv4(),
             "email": registerData.email,
             "name": registerData.name,
@@ -108,7 +171,7 @@ const useAuth = () => {
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
-            body: raw,
+            body: credentials,
             redirect: 'follow'
         };
 
@@ -140,7 +203,7 @@ const useAuth = () => {
 
 
 
-    return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout];
+    return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, anyChange, setAnyChange, checkToken];
 
 }
 

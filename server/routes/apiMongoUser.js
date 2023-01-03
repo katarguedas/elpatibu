@@ -5,6 +5,7 @@ const User = require('../models/UserModel')
 
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
+const cookieparser = require('cookie-parser');
 
 const dotenv = require('dotenv');
 dotenv.config()
@@ -19,10 +20,12 @@ router.use((req, res, next) => {
   next();
 })
 
+router.use(cookieparser());
+
 //----ROUTES---------------------------------------------
 
 
-//--- verify user ---------------------------------------
+//--- verify user -- LOGIN ------------------------------
 
 router.post('/api/login', async (req, res) => {
 
@@ -43,7 +46,7 @@ router.post('/api/login', async (req, res) => {
           name: user.name
         }, process.env.EXPRESS_ACCESS_JWT_KEY,
         {
-          expiresIn: '15m'
+          expiresIn: '1m'
         }
       );
       const refreshToken = jwt.sign(
@@ -51,7 +54,7 @@ router.post('/api/login', async (req, res) => {
           email: user.email
         }, process.env.EXPRESS_REFRESH_TOKEN_KEY,
         {
-          expiresIn: '48h'
+          expiresIn: '3m'
         });
       // Assigning refresh token in http-only cookie 
       res.cookie('jwt', refreshToken, {
@@ -64,12 +67,55 @@ router.post('/api/login', async (req, res) => {
       res.status(200).send({ status: "ok", message: "user verified", access: accessToken });
       return;
     }
-    res.status(400).send({status: "error", message: "Invalid password or email", error})
+    res.status(400).send({ status: "error", message: "Invalid password or email", error })
   }
 })
 
-//--- add user ------------------------------------------
 
+//--- refresh Token  -------------------------------------
+
+router.post('/api/refreshToken', async (req, res) => {
+  // console.log("req", req.body)
+
+  const user = await User.findOne({ email: req.body.email })
+
+  // console.log("user gefunden?", user)
+
+  if (!user) {
+    res.status(400).send({ status: "error", message: "Invalid user"})
+  } else {
+    if (req.cookies?.jwt) {
+      const refreshToken = req.cookies.jwt;
+      // console.log("refreshToken", refreshToken)
+
+      jwt.verify(refreshToken, process.env.EXPRESS_REFRESH_TOKEN_KEY, err => {
+        if (err) {
+          console.log("Error refreshing accessToken")
+          return res.status(406).json({status: 'error', message: 'Unauthorized' })
+        }
+        else {
+          console.log("token refreshed")
+          const accessToken = jwt.sign({
+            id: user.id,
+            email: user.email,
+            name: user.name
+          },
+            process.env.EXPRESS_ACCESS_JWT_KEY,
+            {
+              expiresIn: '1m',
+            });
+          return res.status(200).send({ status: 'ok', message: 'authorized', access: accessToken });
+        }
+      })
+    } else {
+      res.status(400).send({ status: 'error', message: 'invalid user' })
+      return;
+    }
+  }
+
+})
+
+//--- add user ------------------------------------------
 
 router.post('/api/register', async (req, res) => {
   console.log("test")

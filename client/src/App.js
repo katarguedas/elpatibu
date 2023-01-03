@@ -32,7 +32,8 @@ function App() {
               <Route path='/welcome' element={<LandingPage />} />
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
-              <Route path='/dashboard' element={<Dashboard />} />
+              {/* <Route path='/dashboard' element={user ? <Dashboard /> : <Login />} /> */}
+              <Route path='/dashboard' element={ <Dashboard /> } />
               <Route path='/createDiary' element={<CreateDiary />} />
               <Route path='/newDiary' element={<NewDiary />} />
               <Route path='/openDiary' element={<OpenDiary />} />

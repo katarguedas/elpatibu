@@ -22,7 +22,7 @@ export const fullDate = () => {
 
     const now = DateTime.now();
     let today = now.toLocaleString(DateTime.DATE_HUGE)
-    console.log(today)
+    // console.log(today)
     return(today)
 
 }

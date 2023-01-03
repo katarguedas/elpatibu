@@ -56,7 +56,7 @@ export const Testdat = () => {
 
 
     // console.log("typeof", typeof(tempData))
-    console.log(tempData)
+    // console.log(tempData)
 
     return [temper, tsArray]
 }
