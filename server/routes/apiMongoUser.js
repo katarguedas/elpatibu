@@ -46,7 +46,7 @@ router.post('/api/login', async (req, res) => {
           name: user.name
         }, process.env.EXPRESS_ACCESS_JWT_KEY,
         {
-          expiresIn: '1m'
+          expiresIn: '10m'
         }
       );
       const refreshToken = jwt.sign(
@@ -54,14 +54,14 @@ router.post('/api/login', async (req, res) => {
           email: user.email
         }, process.env.EXPRESS_REFRESH_TOKEN_KEY,
         {
-          expiresIn: '3m'
+          expiresIn: '24h'
         });
       // Assigning refresh token in http-only cookie 
       res.cookie('jwt', refreshToken, {
         httpOnly: true,
         sameSite: 'None', secure: true,
         // maxAge: 24 * 60 * 60 * 1000 // 1 day
-        maxAge: 48 * 60 * 60 * 1000
+        maxAge: 24 * 60 * 60 * 1000
       });
       // console.log("accessToken:", accessToken)
       res.status(200).send({ status: "ok", message: "user verified", access: accessToken });
@@ -102,7 +102,7 @@ router.post('/api/refreshToken', async (req, res) => {
           },
             process.env.EXPRESS_ACCESS_JWT_KEY,
             {
-              expiresIn: '1m',
+              expiresIn: '10m',
             });
           return res.status(200).send({ status: 'ok', message: 'authorized', access: accessToken });
         }

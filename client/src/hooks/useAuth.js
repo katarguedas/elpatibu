@@ -34,7 +34,7 @@ const useAuth = () => {
 
     const verifyUser = async () => {
 
-        const raw = JSON.stringify({
+        const credentials = JSON.stringify({
             "email": loginData.email,
             "pwd": loginData.pwd
         });
@@ -44,7 +44,7 @@ const useAuth = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: raw,
+            body: credentials,
             redirect: 'follow'
         };
 

@@ -22,8 +22,8 @@ const PatibuLogo = styled.div`
   height: 2.5rem;
   margin: 0.5rem;
   padding: 0.25rem;
-  border: solid 2px #BC1B1A;
+  border: solid 2px ${(props) => props.theme.colors.first};
   border-radius: 1.0rem;
-  background-color: #A8D93C;
+  background-color: ${(props) => props.theme.colors.second};
   font-weight: 500;
 `

@@ -55,26 +55,28 @@ const NavGroup = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #fff;
-  border-right: 2.5px solid ${(props) => props.theme.colors.third};
+  border-right: 2.5px solid ${(props) => props.theme.colors.col10};
   width: 20%;
-  background-image: linear-gradient(to right, #fff, ${(props) => props.theme.colors.third});
+  background-image: linear-gradient(to right, #fff, ${(props) => props.theme.colors.col10});
 `
 
 const HomeIcon = styled(RxHome)`
   padding: 0.5rem;
   margin: 1.5rem;
-  border: 2.0px solid ${(props) => props.theme.colors.second};
+  margin-left: 3.0rem;
+  border: 2.0px solid ${(props) => props.theme.colors.white};
   border-radius: 0.5rem;
   font-size: 2.5rem;
   color: #000;
   background-color: #fff;
   &:hover{
-    background-color: ${(props) => props.theme.colors.fourth};
-    border: 2.5px solid ${(props) => props.theme.colors.third};
+    background-color: ${(props) => props.theme.colors.col23};
+    border: 2.5px solid ${(props) => props.theme.colors.col21};
   }
   :active{
-    background-color: ${(props) => props.theme.colors.fourth};
+    background-color: ${(props) => props.theme.colors.col20};
     transform: translateY(1.5px);
+    border-color: #FFF4DE;
   }
   box-shadow: rgba(0, 0, 0, 0.25) 2.4px 2.4px 3.2px;
 `

@@ -348,17 +348,19 @@ const ItemGroup = styled.div`
 `
 
 const Accordion = styled.div`
-  border: 1.5px solid ${(props) => props.theme.colors.first};
+  border: 1.5px solid ${(props) => props.theme.colors.col21};
   border-top-right-radius: 1.5rem;
   border-top-left-radius: 1.5rem;
   border-bottom-right-radius: 1.5rem;
-  background-color: ${(props) => props.theme.colors.fourth};
+  background-color: ${(props) => props.theme.colors.col20};
   &:hover{
-    background-color: ${(props) => props.theme.colors.third};
-    border-color: ${(props) => props.theme.colors.second};
+    background-color: ${(props) => props.theme.colors.col22};
+    border-color: ${(props) => props.theme.colors.col24};
+    color: white;
   }
   :active{
     background-color: #fff;
+    color: black;
   }
   padding: 0.5rem 0.5rem 0.5rem 1.5rem;
   margin: 0.5rem 1.5rem;

@@ -20,7 +20,7 @@ export default Footer
 
 const FooterGroup = styled.div`
   height: 4.0rem;
-  border-top: 3px solid ${(props) => props.theme.colors.first};
+  border-top: 3px solid ${(props) => props.theme.colors.col10};
   background-color: #fff;
   font-size: 1.0rem;
   font-weight: 500;

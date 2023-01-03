@@ -33,10 +33,10 @@ const StP = styled.p`
 `
 
 const InputField = styled.input`
-  border: 2px solid ${(props) => props.theme.colors.second};
+  border: 2px solid ${(props) => props.theme.colors.col10};
   &:focus{
-    border: 1.25px solid ${(props) => props.theme.colors.second};
-    background-color: ${(props) => props.theme.colors.fifth};
+    border: 1px solid ${(props) => props.theme.colors.col11};
+    background-color: ${(props) => props.theme.colors.white};
   };
   outline: none;
   border-radius: 0.25rem;

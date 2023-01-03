@@ -12,7 +12,7 @@
     width: 3.0rem;
     height: 1.6rem;
     background: #fff;
-    border: 1.5px solid #4f5461;
+    border: 1.5px solid #1B545C;
     border-radius: 100px;
     position: relative;
     transition: background-color .2s;
@@ -26,9 +26,9 @@
     width: 1.1rem;
     height: 1.1rem;
     border-radius: 1.5rem;
-    border: 1px solid #4f5461;
+    border: 1px solid #1B545C;
     transition: 0.2s;
-    background: #C9D3F2;
+    background: #56878E;
     box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
   }
   
