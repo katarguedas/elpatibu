@@ -1,4 +1,4 @@
-import { LoginButton, LogoutButton, RegisterButton } from "./Buttons";
+import { AuthButton } from "./Buttons";
 import Logo from '../components/Logo'
 
 import { useUserContext } from "../providers/userContext";
@@ -37,15 +37,15 @@ const Header = () => {
                     <StyledHeader>
                         <Logo />
                         <ButtonGroup>
-                            <LogoutButton onClick={hanadleLogout} >Abmelden</LogoutButton>
+                            <AuthButton onClick={hanadleLogout} >Abmelden</AuthButton>
                         </ButtonGroup>
                     </StyledHeader>
                     :
                     <StyledHeader>
                         <Logo />
                         <ButtonGroup>
-                            <LoginButton onClick={handleLogin} >Anmelden</LoginButton>
-                            <RegisterButton onClick={handleRegister} >Registrieren</RegisterButton>
+                            <AuthButton onClick={handleLogin} >Anmelden</AuthButton>
+                            <AuthButton onClick={handleRegister} >Registrieren</AuthButton>
                         </ButtonGroup>
                     </StyledHeader>
             }

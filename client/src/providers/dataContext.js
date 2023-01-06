@@ -9,10 +9,10 @@ const useDataContext = () => useContext(DataContext);  // Das ist der CustomHook
 
 const DataContextProvider =({children}) => {
 
-const [items, setItems, createNewDiary, saveTemp, tempData, setTempData,  getTemp, tempResults] = useData();
+const [items, setItems, createNewDiary, saveTemp, tempData, setTempData,  getTemp, tempResults, diary, setDiary] = useData();
 
     return(
-        <DataContext.Provider value={{ items, setItems, createNewDiary, saveTemp, tempData, setTempData, getTemp, tempResults }} >
+        <DataContext.Provider value={{ items, setItems, createNewDiary, saveTemp, tempData, setTempData, getTemp, tempResults, diary, setDiary }} >
             {children}
         </DataContext.Provider>
     )

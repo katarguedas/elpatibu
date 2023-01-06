@@ -8,10 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const useData = () => {
 
-    const [diary, setDiary] = useState({
-        id: uuidv4(),
 
-    });
 
     const [items, setItems] = useState([
         {
@@ -23,21 +20,25 @@ const useData = () => {
                 {
                     item: 'temperature',
                     label: 'Temperatur',
-                    selected: false,
+                    unit: '°C',
+                    selected: true,
                 },
                 {
                     item: 'pressureHigh',
                     label: 'Systolischer Blutdruck',
+                    unit: 'mmHg',
                     selected: true,
                 },
                 {
                     item: 'pressureLow',
                     label: 'Diastolischer Blutdruck',
-                    selected: false,
+                    unit: 'mmHg',
+                    selected: true,
                 },
                 {
                     item: 'pulse',
                     label: 'Puls',
+                    unit: '1/Min',
                     selected: true,
                 }
             ]
@@ -51,6 +52,7 @@ const useData = () => {
                 {
                     item: 'weight',
                     label: 'Körpergewicht',
+                    unit: 'kg',
                     selected: false,
                 }
             ]
@@ -64,7 +66,8 @@ const useData = () => {
                 {
                     item: 'wellBeing',
                     label: 'Wohlbefinden',
-                    selected: false,
+                    unit: '',
+                    selected: true,
                 }
             ]
         },
@@ -77,11 +80,13 @@ const useData = () => {
                 {
                     item: 'mood',
                     label: 'Stimmung',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'moodSwings',
                     label: 'Stimmungsschwankungen',
+                    unit: '',
                     selected: false,
                 }
             ]
@@ -95,21 +100,25 @@ const useData = () => {
                 {
                     item: 'hours',
                     label: 'Anzahl der Schlafstunden',
+                    unit: 'Std.',
                     selected: false,
                 },
                 {
                     item: 'interruption',
                     label: 'Schlafunterbrechungen',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'restful',
                     label: 'Erholung durch Schlaf',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'medication',
                     label: 'Medikamenteneinnahme',
+                    unit: '',
                     selected: false,
                 }
             ]
@@ -123,21 +132,25 @@ const useData = () => {
                 {
                     item: 'headache',
                     label: 'Kopfschmerzen',
-                    selected: false,
+                    unit: '',
+                    selected: true,
                 },
                 {
                     item: 'fatigue',
                     label: 'Müdigkeit / Erschöpfung',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'circulationProblems',
                     label: 'Kreislaufprobleme',
-                    selected: false,
+                    unit: '',
+                    selected: true,
                 },
                 {
                     item: 'insomnia',
                     label: 'Schlafstörungen',
+                    unit: '',
                     selected: false,
                 }
             ]
@@ -151,56 +164,66 @@ const useData = () => {
                 {
                     item: 'pain',
                     label: 'Schmerzen',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'nausea',
                     label: 'Übelkeit',
-                    selected: false,
+                    selected: false, unit: '',
                 },
                 {
                     item: 'vomiting',
                     label: 'Erbrechen',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'diarrhea',
                     label: 'Durchfall',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'pyrosis',
                     label: 'Sodbrennen',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'fatigue',
                     label: 'Erschöpfung / Müdigkeit',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'insomnia',
                     label: 'Schlaflosigkeit',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'vertigo',
                     label: 'Schwindelgefühl',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'appetiteLoss',
                     label: 'Appetitlosigkeit',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'fingerTingling',
-                    label: 'Kribbeln in den Fingern / fingerspitzen',
+                    label: 'Kribbeln in den Fingern / Fingerspitzen',
+                    unit: '',
                     selected: false,
                 },
                 {
                     item: 'memoryDisorder',
                     label: 'Gedächtnisstörungen',
+                    unit: '',
                     selected: false,
                 }
             ]
@@ -213,19 +236,112 @@ const useData = () => {
             label: 'Temperatur',
             unit: '°C',
             values: [],
-            date: []
+            date: [],
         }
     )
 
+    const [diary, setDiary] = useState({
+        id: uuidv4(),
+        diaryName: 'Test1',
+        date: [],
+        vital: {
+            temperature: {
+                id: uuidv4(),
+                label: 'Temperatur',
+                unit: '°C',
+                values: []
+            },
+            pressureHigh: {
+                id: uuidv4(),
+                label: 'Systolischer Blutdruck',
+                unit: 'mmHg',
+                values: []
+            },
+            pressureLow: {
+                id: uuidv4(),
+                label: 'Diastolischer Blutdruck',
+                unit: 'mmHg',
+                values: []
+            },
+            pulse: {
+                id: uuidv4(),
+                label: 'Puls',
+                unit: '1/Min',
+                values: []
+            }
+        },
+        weight: {
+            id: uuidv4(),
+                label: 'Gewicht',
+                unit: 'kg',
+                values: []
+        },
+        wellBeing: {},
+        mood: {
+            mood: {},
+            moodSwing: {}
+        },
+        sleep: {
+            hours: {},
+            interruption: {},
+            restful: {},
+        },
+        meteorosensitivity: {
+            headache: {},
+            fartigue: {},
+            circulationProblems: {},
+            insomnia: {},
+        },
+        symptoms: {
+            pain: {},
+            nausea: {},
+            vomiting: {},
+            diarrhea: {},
+            pyrosis: {},
+            fatigue: {},
+            insomnia: {},
+            vertigo: {},
+            appetiteLoss: {},
+            fingerTingling: {},
+            memoryDisorder: {}
+        },
+    });
+
     const [tempResults, setTempResults] = useState("");
+
+
 
     const createNewDiary = () => {
 
+        console.log("items ", items)
+        console.log("diary ", diary)
+        newDiaryInBackend(diary);
     }
+
 
 
     const newDiaryInBackend = async () => {
 
+        let raw = JSON.stringify({
+            id: diary.id,
+            diaryName: diary.diaryName,
+            date: diary.date,
+        })
+
+        let requestOptions = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch('/api/newDiary', requestOptions)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+
+            })
+            .catch(error => console.log("error: ", error))
     }
 
     const saveTemp = async () => {
@@ -278,7 +394,7 @@ const useData = () => {
 
 
 
-    return [items, setItems, createNewDiary, saveTemp, tempData, setTempData, getTemp, tempResults];
+    return [items, setItems, createNewDiary, saveTemp, tempData, setTempData, getTemp, tempResults, diary, setDiary];
 
 }
 

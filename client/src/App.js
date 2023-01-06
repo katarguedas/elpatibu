@@ -2,7 +2,7 @@ import Dashboard from './views/Dashboard';
 import LandingPage from './views/LandingPage';
 import Calendar from './views/Calendar';
 import CreateDiary from './views/CreateDiary';
-import NewDiary from './views/NewDiary';
+import EditDiary from './views/EditDiary';
 import DiaryData from './views/DiaryData';
 import OpenDiary from './views/OpenDiary';
 import Login from './views/Login';
@@ -13,7 +13,7 @@ import { DataContextProvider } from './providers/dataContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { ThemeProvider } from 'styled-components';
-import { theme } from './styled/theme'
+import { theme } from './themes/theme'
 
 //---------------------------------------------------------
 
@@ -35,7 +35,7 @@ function App() {
               {/* <Route path='/dashboard' element={user ? <Dashboard /> : <Login />} /> */}
               <Route path='/dashboard' element={ <Dashboard /> } />
               <Route path='/createDiary' element={<CreateDiary />} />
-              <Route path='/newDiary' element={<NewDiary />} />
+              <Route path='/editDiary' element={<EditDiary />} />
               <Route path='/openDiary' element={<OpenDiary />} />
               <Route path='/diaryData' element={<DiaryData />} />
               <Route path='/calendar' element={<Calendar />} />

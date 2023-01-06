@@ -41,11 +41,11 @@ const StPanel = styled.div`
   top: -2.75rem;
   /* background-color: #f1f1f1; */
   /* z-index: -1; */
-  padding: 2.0rem 0.5rem 0.0rem 1.5rem;
+  padding: 2.0rem 0.5rem 0.25rem 1.5rem;
   margin: 1.5rem;
-  border-left: 1px solid ${(props) => props.theme.colors.fifth};
-  border-bottom: 1px solid ${(props) => props.theme.colors.fifth};
-  border-right: 2px solid ${(props) => props.theme.colors.fifth};
+  border-left: 1px solid ${(props) => props.theme.colors.col22};
+  border-bottom: 1px solid ${(props) => props.theme.colors.col22};
+  border-right: 1px solid ${(props) => props.theme.colors.col22};
   border-bottom-right-radius: 1.5rem;
 `
 

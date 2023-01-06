@@ -73,6 +73,7 @@ const HomeIcon = styled(RxHome)`
     background-color: ${(props) => props.theme.colors.col23};
     border: 2.5px solid ${(props) => props.theme.colors.col21};
   }
+  
   :active{
     background-color: ${(props) => props.theme.colors.col20};
     transform: translateY(1.5px);

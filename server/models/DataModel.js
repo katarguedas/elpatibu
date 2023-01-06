@@ -1,87 +1,251 @@
 const mongoose = require('mongoose');
-// const {Schema} = mongoose;
 
 //------------------------------------------------
 
-const testDataSchema = new mongoose.Schema({
-    date: [Date],
-    temperature: [Number]
-})
 
+//---children ------------------------------------------
 
 const dateSchema = new mongoose.Schema({
     id: String,
-    date1pd: [String],
-    date2pd: [Date],
-    date3pd: Date,
-})
+    diaryName: String,
+    values: [Date]
+});
 
-const temperatureSchema = new mongoose.Schema({
+const valuesSchema = new mongoose.Schema({
     id: String,
     label: String,
     unit: String,
     values: [Number],
-    date: [Date],
-    // date: { type: Schema.Types.ObjectId, ref: 'DateData' }
-})
+});
+
+// --------parent: ----------------------------------------------
 
 const dataSetSchema = new mongoose.Schema({
     id: String,
     diaryName: String,
+    date: [dateSchema],
     vital: {
-        // temperature: { type: Schema.Types.ObjectId, ref: 'Temperature' },
-        pressureHigh: [Number],
-        pressureLow: [Number],
-        pulse: [Number]
+        temperature: {valuesSchema},
+        pressureHigh: {valuesSchema},
+        pressureLow: {valuesSchema},
+        pulse: {valuesSchema},
     },
-    weight: [Number],
-    wellBeing: [Number],
+    weight: {valuesSchema},
+    wellBeing: {valuesSchema},
     mood: {
-        mood: [String],
-        moodSwing: [Number]
+        mood: {valuesSchema},
+        moodSwing: {valuesSchema},
     },
     sleep: {
-        hours: [Number],
-        interruption: [Number],
-        restful: [Number],
-        medication: [String]
+        hours: {valuesSchema},
+        interruption: {valuesSchema},
+        restful: {valuesSchema},
     },
-    meteorosensitivity: {
-        headache: [Number],
-        fatigue: [Number],
-        circulationProblems: [Number],
-        insomnia: [Number]
+    meteorosensitivity:
+    {
+        headache: {valuesSchema},
+        fatigue: {valuesSchema},
+        circulationProblems: {valuesSchema},
+        insomnia: {valuesSchema},
     },
     symptoms: {
-        pain: [Number],
-        nausea: [Number],
-        vomiting: [Number],
-        diarrhea: [Number],
-        pyrosis: [Number],
-        fatigue: [Number],
-        insomnia: [Number],
-        vertigo: [Number], //Schwindel
-        appetiteLoss: [Number],
-        fingerTingling: [Number],
-        memoryDisorder: [Number],
+        pain: {valuesSchema},
+        nausea: {valuesSchema},
+        vomiting: {valuesSchema},
+        diarrhea: {valuesSchema},
+        pyrosis: {valuesSchema},
+        fatigue: {valuesSchema},
+        insomnia: {valuesSchema},
+        vertigo: {valuesSchema},
+        appetiteLoss: {valuesSchema},
+        fingerTingling: {valuesSchema},
+        memoryDisorder: {valuesSchema}
     },
-    nutricion: {
+    // medication: {valuesSchema},
+});
 
-    },
-    medication: {
+const DataSet = mongoose.model('DataSet', dataSetSchema);
 
-    }
-})
-
-
-const TestData = mongoose.model('Testdata', testDataSchema)
-const DateData = mongoose.model('DateData', dateSchema)
-const Temperature = mongoose.model('Temperature', temperatureSchema)
-const DataSet = mongoose.model('DataSet', dataSetSchema)
+module.exports = { DataSet };
 
 
-// module.exports = Temperature;
-// module.exports = DataSet;
-// module.exports = DateData;
 
-module.exports= { Temperature, TestData, DateData, DataSet};
+//.........................
+
+// const dataSetSchema = new mongoose.Schema({
+//     id: String,
+//     diaryName: String,
+//     date: [dateSchema],
+//     vital: {
+//         temperature: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         pressureHigh: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         pressureLow: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         pulse: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//     },
+//     weight: {
+//         id: String,
+//         label: String,
+//         unit: String,
+//         values: [valuesSchema]
+//     },
+//     wellBeing: {
+//         id: String,
+//         label: String,
+//         unit: String,
+//         values: [valuesSchema]
+//     },
+//     mood: {
+//         mood: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         moodSwing: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         }
+//     },
+//     slep: {
+//         hours: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         interruption: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         restful: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         medication: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         }
+//     },
+//     meteorosensitivity: {
+//         headache: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         fatigue: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         circulationProblems: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         insomnia: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//     },
+//     symptoms: {
+//         pain: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         nausea: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         vomiting: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         diarrhea: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         pyrosis: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         fatigue: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         insomnia: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         vertigo: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         appetiteLoss: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         fingerTingling: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         },
+//         memoryDisorder: {
+//             id: String,
+//             label: String,
+//             unit: String,
+//             values: [valuesSchema]
+//         }
+//     },
+// });
