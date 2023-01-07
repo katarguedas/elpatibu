@@ -1,96 +1,31 @@
 import { useDataContext } from "../providers/dataContext"
 import { SendButton } from "./Buttons";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { InputField, FormField, LabelText } from "../styled/globalStyles";
 
 import styled from "styled-components";
-import { useNavigate } from "react-router";
+
 
 //---------------------------------------------------------
 
 const GetData = ({ id }) => {
 
-    const { items, diary } = useDataContext();
+    const { items, diary, setDiary } = useDataContext();
 
     const [open, setOpen] = useState(true);
+
+    const [clear, setClear] = useState(true)
+
+    const [saved, setSaved] = useState(false);
 
     const index1 = items.findIndex(e => {
         return (e.id === id)
     })
-    // console.log("Index1", index1)
-
-    // const index2 = items[index1].itemList.findIndex(e => {
-    //     return (e.item === item)
-    // })
-    // console.log("Index2", index2)
-
-
-    // switch (group) {
-    //     case 'vital':
-
-    // if (item === 'temperature')
-    //     return (<div><SaveTemperature /></div>)
-    return (
-
-        open ?
-            <SaveValues
-                index1={index1} open={open} setOpen={setOpen} />
-            : null
-    )
-    // if (item === 'pressureLow')
-    //     return (<div><SavePressureLow /></div>)
-    // if (item === 'pulse')
-    //     return (<div><SavePulse /></div>)
-    // savePressureHigh()
-    // savePressurelow()
-    // savePulse()
-    // break;
-    // default: 
-    // }
-
-}
-
-export default GetData;
-
-
-//-----------------------------------------------------------------------
-// export const SaveTemperature = ({item}) => {
-
-//     const { items } = useDataContext();
-//     // console.log("items:", items)
-//     return (
-//         <div>
-//             <StInputField></StInputField>
-//             <span style={{ width: '80px' }} >{items[0].itemList[0].unit}</span>
-//         </div>
-//     )
-// }
-
-//-----------------------------------------------------------------------
-
-// export const SavePressureHigh = ({item, index1, index2}) => {
-export const SaveValues = ({ index1, open, setOpen }) => {
-
-    const { items, diary, setDiary } = useDataContext();
-
-    const [clear, setClear] = useState(true)
-    const [values, setValues] = useState([])
-
-    const [saved, setSaved] = useState(false);
 
     const handleChange = (e) => {
 
-        // const dat = {
-        //     valueName: e.target.name,
-        //     value: e.target.value
-        // }
-        // console.log(dat)
-        // setValues({ ...values, dat })
-
-        // console.log(e.target.value)
-        // console.log("values", values)
 
         switch (e.target.name) {
             case 'temperature':
@@ -118,7 +53,6 @@ export const SaveValues = ({ index1, open, setOpen }) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        setValues({});
         setSaved(true);
         timing();
         // setOpen(!open)
@@ -129,8 +63,6 @@ export const SaveValues = ({ index1, open, setOpen }) => {
             setOpen(!open)
         }, 2000)        
     }
-
-    // console.log("open: ", open)
 
     return (
         <div style={{ margin: '0px', padding: '0px' }} >
@@ -144,7 +76,7 @@ export const SaveValues = ({ index1, open, setOpen }) => {
                                 // ref={}
                                 type='text'
                                 name={e.item}
-                                value={values.value}
+                                // value={}
                                 onChange={handleChange}
                             >
                             </StInputField>
@@ -159,30 +91,17 @@ export const SaveValues = ({ index1, open, setOpen }) => {
                         : null}
             </FormField>
 
-
         </div >
     )
+
 }
+
+export default GetData;
+
 
 
 //--------------------------------------------------------------------
 
-// export const SavePressureLow = (id, item) => {
-//     const { items } = useDataContext();
-//     return (<div><StInputField></StInputField>
-//         <span>{items[0].itemList[2].unit}</span>
-//     </div>)
-// }
-
-// export const SavePulse = (id, item) => {
-//     const { items } = useDataContext();
-//     return (<div><StInputField></StInputField>
-//         <span>{items[0].itemList[3].unit}</span>
-//     </div>)
-// }
-
-
-//--------------------------------------------------
 
 const StInputField = styled(InputField)`
   width: 100px;
