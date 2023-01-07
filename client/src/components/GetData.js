@@ -16,17 +16,15 @@ const GetData = ({ id }) => {
 
     const [open, setOpen] = useState(true);
 
-    const [clear, setClear] = useState(true)
-
     const [saved, setSaved] = useState(false);
+
+    const inputRefs = useRef([]);
 
     const index1 = items.findIndex(e => {
         return (e.id === id)
     })
 
     const handleChange = (e) => {
-
-
         switch (e.target.name) {
             case 'temperature':
                 setDiary({ ...diary },
@@ -49,47 +47,51 @@ const GetData = ({ id }) => {
 
     console.log(diary.vital)
 
-    // console.log(values)
 
     const handleSubmit = e => {
         e.preventDefault();
         setSaved(true);
         timing();
+        inputRefs.current.map(e => {
+            e.value = '';
+        })
         // setOpen(!open)
     }
 
     const timing = () => {
-        setInterval(() => {
+        setTimeout(() => {
             setOpen(!open)
-        }, 2000)        
+        }, 3000)
     }
 
     return (
         <div style={{ margin: '0px', padding: '0px' }} >
 
-            <FormField onSubmit={handleSubmit} >
-                {items[index1].itemList.map(e => (
-                    e.selected ?
-                        <InputLabel key={e.item} clear={clear}>
-                            <StLabelText>{e.label}</StLabelText>
-                            <StInputField
-                                // ref={}
-                                type='text'
-                                name={e.item}
-                                // value={}
-                                onChange={handleChange}
-                            >
-                            </StInputField>
-                            {e.unit}
-                        </InputLabel>
-                        : null
-                ))
-                }
-                <SendButton type="submit">senden</SendButton>
-                {saved ?
+            {open &&
+                <FormField onSubmit={handleSubmit} >
+                    {items[index1].itemList.map((e, i) => (
+                        e.selected ?
+                            <InputLabel key={e.item}>
+                                <StLabelText>{e.label}</StLabelText>
+                                <StInputField
+                                    id={e.item}
+                                    ref={el => inputRefs.current[i] = el}
+                                    type='text'
+                                    name={e.item}
+                                    onChange={handleChange}
+                                >
+                                </StInputField>
+                                {e.unit}
+                            </InputLabel>
+                            : null
+                    ))
+                    }
+                    <SendButton type="submit">senden</SendButton>
+                    {saved ?
                         <p>Werte wurden gespeichert.</p>
                         : null}
-            </FormField>
+                </FormField>
+            }
 
         </div >
     )
@@ -107,7 +109,6 @@ const StInputField = styled(InputField)`
   width: 100px;
   height: 2.0rem;
   margin: 0.25rem 1.0rem 0.5rem 0.5rem;
-  border-color: ${props => props.clear ? 'red' : 'black'}
   /* position: relative; */
   /* right: 40px; */
 `

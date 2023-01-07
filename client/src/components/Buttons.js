@@ -20,7 +20,7 @@ const Button = styled.button`
   align-content: center;
   /* color: ${(props) => props.theme.colors.col11}; */
 `
-
+//................................
 const AuthButton = styled(Button)`
   border: 2.5px solid ${(props) => props.theme.colors.col10};
   &:hover{
@@ -35,7 +35,7 @@ const AuthButton = styled(Button)`
   box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
 `
 
-
+//................................
 const SendButton = styled(Button)`
   margin-top: 1.5rem;
   border: 2.5px solid ${(props) => props.theme.colors.col10}; 
@@ -50,7 +50,7 @@ const SendButton = styled(Button)`
   }
   box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
 `
-
+//................................
 const NavButton = styled.button`
   width: 7.0rem;
   height: 7.0rem;
@@ -72,7 +72,7 @@ const NavButton = styled.button`
   font-weight: 600;
   box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
 `
-
+//................................
 const DiaryButton = styled.button`
   width: 10.0rem;
   height: 7.0rem;

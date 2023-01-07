@@ -41,28 +41,10 @@ const EditDiary = () => {
     // editItem()
   }
 
-  const checkData = (el) => {
 
-    const hilfsArr = [];
-    el.itemList.map(e => {
-      if (e.selected) {
-        console.log("e: ..............", e, "\n", e.selected)
-        // setCheck(true);
-        hilfsArr.push(e)
-        //.filter
-        // return ([]);
-      }
-      // setCheck(false)
-      return (false);
-    })
-  }
-
-
-
-  let test;
   // console.log("edit: ", edit)
 
-  // console.log(items)
+
   return (
     <ContentGroup>
       <Header />
@@ -74,26 +56,26 @@ const EditDiary = () => {
 
           {
             items.map((e, i) => (
-              
-                e.itemList.filter(e => e.selected == true).length > 0 &&
-                  <Items key={e.id} >
 
-                    <StAccordion visible={checkData(e)} onClick={handleClick}>
-                      {e.name}
+              e.itemList.filter(e => e.selected == true).length > 0 &&
+              <Items key={e.id} >
 
-                    </StAccordion>
-                    {edit ?
-                      <div>
-                        {/* <StDiv visible={checkData(e)}> */}
-                        <StDiv>
-                          <GetData id={e.id} ></GetData>
-                        </StDiv>
-                      </div>
+                <StAccordion onClick={handleClick}>
+                  {e.name}
 
-                      : null}
+                </StAccordion>
+                {edit ?
+                  <div>
 
-                  </Items>
-              
+                    <StDiv>
+                      <GetData id={e.id} ></GetData>
+                    </StDiv>
+                  </div>
+
+                  : null}
+
+              </Items>
+
             ))
           }
         </Group>
@@ -117,18 +99,15 @@ const Group = styled.div`
 `
 
 const StAccordion = styled(Accordion)`
-  /* display: ${props => (props.visible ? 'flex' : 'none')}; */
   border-radius: 1.5rem;
   border-color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.col30};
   &:hover {
-    background-color: ${(props) => props.theme.colors.col30};
+    background-color: ${(props) => props.theme.colors.col32};
     color: black;
   }
   box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
-  box-shadow: none;
-  background-color:  ${props => (props.visible ? '#a2a2fa' : '#dd1d1d')};
-  
+  box-shadow: none;  
 `
 
 const StBiRightArrow = styled(BiRightArrow)`
