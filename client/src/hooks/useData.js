@@ -249,24 +249,28 @@ const useData = () => {
                 id: uuidv4(),
                 label: 'Temperatur',
                 unit: '°C',
+                selected: false,
                 values: []
             },
             pressureHigh: {
                 id: uuidv4(),
                 label: 'Systolischer Blutdruck',
                 unit: 'mmHg',
+                selected: false,
                 values: []
             },
             pressureLow: {
                 id: uuidv4(),
                 label: 'Diastolischer Blutdruck',
                 unit: 'mmHg',
+                selected: false,
                 values: []
             },
             pulse: {
                 id: uuidv4(),
                 label: 'Puls',
                 unit: '1/Min',
+                selected: false,
                 values: []
             }
         },
@@ -274,6 +278,7 @@ const useData = () => {
             id: uuidv4(),
                 label: 'Gewicht',
                 unit: 'kg',
+                selected: false,
                 values: []
         },
         wellBeing: {},

@@ -82,54 +82,39 @@ export const SaveValues = ({ index1, open, setOpen }) => {
 
     const handleChange = (e) => {
 
-        const dat = {
-            valueName: e.target.name,
-            value: e.target.value
+        // const dat = {
+        //     valueName: e.target.name,
+        //     value: e.target.value
+        // }
+        // console.log(dat)
+        // setValues({ ...values, dat })
+
+        // console.log(e.target.value)
+        // console.log("values", values)
+
+        switch (e.target.name) {
+            case 'temperature':
+                setDiary({ ...diary },
+                    diary.vital.temperature.values = e.target.value);
+                break;
+            case 'pressureHigh':
+                setDiary({ ...diary },
+                    diary.vital.pressureHigh.values = e.target.value);
+                break;
+            case 'pressureLow':
+                setDiary({ ...diary },
+                    diary.vital.pressureLow.values = e.target.value);
+                break;
+            case 'pulse':
+                setDiary({ ...diary },
+                    diary.vital.pulse.values = e.target.value);
+                break;
         }
-        console.log(dat)
-        // setValues([...values], valueName = e.target.name)
-        setValues({ ...values, dat })
-
-        // setInit(prevState => ({
-        //     ...prevState,
-        //     [event.target.name]: value}))
-
-        // const addTodo = text => {
-        //     const todo =
-        //     {
-        //         id: uuidv4(),
-        //         text: text,
-        //         done: false
-        //     }
-
-        //     setTodos([...todos, todo])
-        //     addTodoToBackend(todo)
-        // }
-
-        console.log(e.target.value)
-        console.log("values", values)
-
-        // switch (e.target.name) {
-        //     case 'temperature':
-        //         setDiary({ ...diary },
-        //             diary.vital.temperature.values = e.target.value);
-        //         break;
-        //     case 'pressureHigh':
-        //         setDiary({ ...diary },
-        //             diary.vital.pressureHigh.values = e.target.value);
-        //         break;
-        //     case 'pressureLow':
-        //         setDiary({ ...diary },
-        //             diary.vital.pressureLow.values = e.target.value);
-        //         break;
-        //     case 'pulse':
-        //         setDiary({ ...diary },
-        //             diary.vital.pulse.values = e.target.value);
-        //         break;
-        // }
     }
 
-    console.log(values)
+    console.log(diary.vital)
+
+    // console.log(values)
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -145,8 +130,7 @@ export const SaveValues = ({ index1, open, setOpen }) => {
         }, 2000)        
     }
 
-    console.log("open: ", open)
-
+    // console.log("open: ", open)
 
     return (
         <div style={{ margin: '0px', padding: '0px' }} >
@@ -157,6 +141,7 @@ export const SaveValues = ({ index1, open, setOpen }) => {
                         <InputLabel key={e.item} clear={clear}>
                             <StLabelText>{e.label}</StLabelText>
                             <StInputField
+                                // ref={}
                                 type='text'
                                 name={e.item}
                                 value={values.value}

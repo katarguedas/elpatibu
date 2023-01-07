@@ -29,13 +29,13 @@ const Dashboard = () => {
     const navigate = useNavigate();
 
     const res = Testdat()
-    // console.log(res)
+    console.log("TestData", res)
     // console.log("\n", res[0], "\n", res[1])
     // console.log(res[0].label)
     // console.log(tempData.label)
     // console.log(tempData)
-    // const xValues = res.date;
-    // const yValues = res.values;
+    const xValues = res.date;
+    const yValues = res.values;
 
     if (!user)
       navigate('/login')
@@ -70,8 +70,9 @@ const Dashboard = () => {
         setY(tempResults.values)
     }
 
+    
     // console.log(tempData)
-    // console.log("tempResults",tempResults)
+    console.log("tempResults",tempResults)
 
         return (
             <ContentGroup>

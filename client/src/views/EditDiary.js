@@ -22,7 +22,7 @@ const EditDiary = () => {
   const { user, anyChange, checkToken } = useUserContext();
   const { items, setItems } = useDataContext();
 
-  const [edit, setEdit] = useState(true);
+  const [edit, setEdit] = useState(false);
   const [check, setCheck] = useState(false);
 
   let location = useLocation();
@@ -42,21 +42,24 @@ const EditDiary = () => {
   }
 
   const checkData = (el) => {
-    console.log("el", el.itemList)
 
+    const hilfsArr = [];
     el.itemList.map(e => {
       if (e.selected) {
         console.log("e: ..............", e, "\n", e.selected)
         // setCheck(true);
-        return (true);
+        hilfsArr.push(e)
+        //.filter
+        // return ([]);
       }
       // setCheck(false)
       return (false);
     })
-
   }
 
 
+
+  let test;
   // console.log("edit: ", edit)
 
   // console.log(items)
@@ -68,30 +71,29 @@ const EditDiary = () => {
         <Group>
 
           <PageTitle>Hier kannst Du neue Daten eingeben</PageTitle>
-          
+
           {
             items.map((e, i) => (
-              items &&
-              <Items key={e.id} >
+              
+                e.itemList.filter(e => e.selected == true).length > 0 &&
+                  <Items key={e.id} >
 
-                {checkData(e) ? <div>test</div> : null } 
+                    <StAccordion visible={checkData(e)} onClick={handleClick}>
+                      {e.name}
 
+                    </StAccordion>
+                    {edit ?
+                      <div>
+                        {/* <StDiv visible={checkData(e)}> */}
+                        <StDiv>
+                          <GetData id={e.id} ></GetData>
+                        </StDiv>
+                      </div>
 
-                <StAccordion  onClick={handleClick}>
-                  {e.name}
-                </StAccordion>
-                {edit ?
-                  <div>
-                    {/* <StDiv visible={checkData(e)}> */}
-                      <StDiv>
-                      <GetData id={e.id} ></GetData>
-                    </StDiv>
-                  </div>
+                      : null}
 
-                  : null}
-
-
-              </Items>
+                  </Items>
+              
             ))
           }
         </Group>
@@ -115,7 +117,7 @@ const Group = styled.div`
 `
 
 const StAccordion = styled(Accordion)`
-  
+  /* display: ${props => (props.visible ? 'flex' : 'none')}; */
   border-radius: 1.5rem;
   border-color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.col30};

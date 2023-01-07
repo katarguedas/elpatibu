@@ -2,12 +2,21 @@ const mongoose = require('mongoose');
 
 //------------------------------------------------
 
+const temperatureSchema = new mongoose.Schema({
+    id: String,
+    label: String,
+    unit: String,
+    values: [Number],
+    date: [Date],
+    // date: { type: Schema.Types.ObjectId, ref: 'DateData' }
+})
 
 //---children ------------------------------------------
 
 const dateSchema = new mongoose.Schema({
     id: String,
     diaryName: String,
+    selected: Boolean,
     values: [Date]
 });
 
@@ -65,8 +74,9 @@ const dataSetSchema = new mongoose.Schema({
 });
 
 const DataSet = mongoose.model('DataSet', dataSetSchema);
+const Temperature = mongoose.model('Temperature', temperatureSchema)
 
-module.exports = { DataSet };
+module.exports = { DataSet, Temperature };
 
 
 
