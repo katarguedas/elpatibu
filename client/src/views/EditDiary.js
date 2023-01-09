@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
-import { SendButton } from "../components/Buttons";
+// import { SendButton } from "../components/Buttons";
 
 import GetData from '../components/GetData'
 
@@ -12,38 +12,54 @@ import { useUserContext } from "../providers/userContext";
 import { BiRightArrow, BiDownArrow } from "react-icons/bi";
 
 import styled from "styled-components";
-import { ContentGroup, MainGroup, Accordion, PageTitle, TitleH2 } from "../styled/globalStyles"
+import { ContentGroup, MainGroup, Accordion, PageTitle } from "../styled/globalStyles"
 import { useDataContext } from "../providers/dataContext";
 
 //---------------------------------------------------------
 
 const EditDiary = () => {
 
-  const { user, anyChange, checkToken } = useUserContext();
-  const { items, setItems } = useDataContext();
+  const { user, checkToken } = useUserContext();
+  const { diary } = useDataContext();
 
   const [edit, setEdit] = useState(false);
-  const [check, setCheck] = useState(false);
 
   let location = useLocation();
   const navigate = useNavigate();
 
-  if (!user)
-    navigate('/login')
+  // console.log("selected? ", diary.groups[0].items[0].selected)
 
   useEffect(() => {
+    if (!user)
+      navigate('/login');
     checkToken();
-  }, [location, anyChange])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (!user)
+      navigate('/login');
+    checkToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location])
+
+  //   useEffect(() => {
+  //     if (!diary)
+  //       getDiaryFromBackend()
+  // }, [])
 
   const handleClick = () => {
-    console.log("test1")
     setEdit(!edit);
     // editItem()
   }
 
-
+  // console.log("DIARY", diary)
   // console.log("edit: ", edit)
 
+  // console.log(diary.groups)
+  // console.log(diary.groups[0].items.filter(e => e.selected == true).length)
+
+  // console.log("selected? ", diary.groups[0].items[0].selected)
 
   return (
     <ContentGroup>
@@ -54,21 +70,31 @@ const EditDiary = () => {
 
           <PageTitle>Hier kannst Du neue Daten eingeben</PageTitle>
 
-          {
-            items.map((e, i) => (
 
-              e.itemList.filter(e => e.selected == true).length > 0 &&
+          <div>Daten vorhanden?</div>
+          {diary ? <p>ja</p> : <p>nein, aber WARUM?</p>}
+
+          {
+            diary &&
+            diary.groups.map((e, i) => (
+              e.items.filter(e => e.selected === true).length > 0 &&
               <Items key={e.id} >
 
                 <StAccordion onClick={handleClick}>
-                  {e.name}
+
+                  {edit ?
+                    <StBiDownArrow></StBiDownArrow>
+                    :
+                    <StBiRightArrow></StBiRightArrow>
+                  }
+                  {e.label}
 
                 </StAccordion>
                 {edit ?
                   <div>
 
                     <StDiv>
-                      <GetData id={e.id} ></GetData>
+                      <GetData id={e.id} index={i} ></GetData>
                     </StDiv>
                   </div>
 
@@ -123,25 +149,6 @@ const StBiDownArrow = styled(BiDownArrow)`
 const Items = styled.div`
   margin-bottom: 0;
 `
-
-const DivRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`
-
-
-const Item = styled.div`
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  font-size: 1.15rem;
-  /* &:hover {
-    color: ${(props) => props.theme.colors.col21};
-    font-weight: 700;
-    cursor: pointer;
-  } */
-`
-
 
 const StDiv = styled.div` 
 /* display: ${props => props.visible ? 'flex' : 'none'}; */

@@ -9,13 +9,14 @@ const Panel = ({ itemGroup, handleSelect }) => {
 
     return (
         <StPanel visible={itemGroup.visible}>
-            {itemGroup.itemList.map(el => (
-                <Item key={el.item}>
+            {itemGroup.items.map(el => (
+                <Item key={el.
+                id}>
                     {
                         el.selected ?
-                            <StBiCheckSquare onClick={() => handleSelect(itemGroup.id, el.item)}></StBiCheckSquare>
+                            <StBiCheckSquare onClick={() => handleSelect(itemGroup.id, el.id)}></StBiCheckSquare>
                             :
-                            <StBiSquare onClick={() => handleSelect(itemGroup.id, el.item)}></StBiSquare>
+                            <StBiSquare onClick={() => handleSelect(itemGroup.id, el.id)}></StBiSquare>
                     }
                     {el.label}
                 </Item>
@@ -46,7 +47,9 @@ const StPanel = styled.div`
   border-left: 1px solid ${(props) => props.theme.colors.col22};
   border-bottom: 1px solid ${(props) => props.theme.colors.col22};
   border-right: 1px solid ${(props) => props.theme.colors.col22};
-  border-bottom-right-radius: 1.5rem;
+  border-right: 1px solid ${(props) => props.theme.colors.col22};
+  border-bottom-left-radius: 1.2rem;
+  border-bottom-right-radius: 1.2rem;
 `
 
 const StBiSquare = styled(BiSquare)`

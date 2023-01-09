@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema({
     unique: true
   },
     name: String,
-    pwd: String
+    pwd: String,
+    diaries: String
   })
 
   const User = mongoose.model('User', userSchema)

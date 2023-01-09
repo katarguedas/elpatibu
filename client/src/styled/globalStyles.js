@@ -47,6 +47,8 @@ const InputField = styled.input`
 `
 
 const FormField = styled.form`
+  display: flex;
+  flex-direction: column;
   margin-bottom: 4.0rem;
   box-sizing: border-box;
 `
@@ -62,7 +64,8 @@ const Accordion = styled.div`
 border: 1.5px solid ${(props) => props.theme.colors.col21};
 border-top-right-radius: 1.5rem;
 border-top-left-radius: 1.5rem;
-/* border-bottom-right-radius: 1.5rem; */
+border-bottom-right-radius: 1.5rem;
+border-bottom-left-radius: 1.5rem;
 background-color: ${(props) => props.theme.colors.col20};
 box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
 &:hover{

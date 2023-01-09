@@ -11,12 +11,14 @@ import React, { useEffect } from "react"
 
 import styled from "styled-components"
 import { ContentGroup, MainGroup, PageTitle } from "../styled/globalStyles"
+import { useDataContext } from "../providers/dataContext";
 
 //---------------------------------------------------------
 
 const OpenDiary = () => {
 
     const { user, anyChange, checkToken } = useUserContext();
+    const { diary, getDiaryFromBackend } = useDataContext();
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -35,6 +37,8 @@ const OpenDiary = () => {
     const handleShowResults = () =>{
         navigate('/DiaryData')
     }
+
+    console.log("DIARY: \n", diary)
 
     return (
         <ContentGroup>

@@ -13,19 +13,44 @@ const Date = () => {
     return (
         <div>
             {currentDate}
-            
+
         </div>
     )
 }
+
+//----------------------------------------------------------------
 
 export const fullDate = () => {
 
     const now = DateTime.now();
     let today = now.toLocaleString(DateTime.DATE_HUGE)
     // console.log(today)
-    return(today)
-
+    return (today)
 }
+
+
+//----------------------------------------------------------------
+
+export const todayDate = () => {
+    const dt = DateTime.local()
+    const year = dt.c.year
+    let month = dt.c.month
+    let day = dt.c.day
+
+    if (day < 10)
+        day = '0' + day;
+    if (month < 10)
+        month = '0' + month;
+
+    const datumStr = year + '-' + month + '-' + day + 'T12:00:00';
+    const datum = DateTime.fromISO(datumStr)
+    console.log("datum kriiert:", datum, "\n aus dem String: ", datumStr)
+
+    const ts = datum.toMillis()
+    console.log("ts:", ts)
+    return (ts);
+}
+
 
 export default Date;
 

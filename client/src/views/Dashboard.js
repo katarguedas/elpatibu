@@ -13,7 +13,7 @@ import { fullDate } from "../components/Date"
 import { useUserContext } from "../providers/userContext"
 import TimeChart from "../components/charts/TimeChart"
 import { useDataContext } from "../providers/dataContext"
-
+import { SendButton } from "../components/Buttons"
 
 //---------------------------------------------------------
 
@@ -22,14 +22,46 @@ const Dashboard = () => {
     const [flag, setFlag] = useState(false);
     const [x, setX] = useState();
     const [y, setY] = useState();
-    const { user, userData, anyChange, setAnyChange, checkToken } = useUserContext();
-    const { tempData, setTempData, saveTemp, getTemp, tempResults } = useDataContext();
+    const { user, userData, anyChange, checkToken } = useUserContext();
+    const { getDiaryFromBackend, diary, tempData, setTempData, saveTemp, getTemp, tempResults, diaryTemplate } = useDataContext();
+
 
     let location = useLocation();
     const navigate = useNavigate();
 
+    //........................
+
+    useEffect(() => {
+        if (!user)
+            navigate('/login')
+        checkToken();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location, anyChange])
+
+    console.log("userdata", userData)
+
+    //........................
+
+    useEffect(() => {
+
+        if (!diary) {
+            if (userData.diaryId) {
+                console.log("noch kein Diary da, schau nach, ob was im Backend ist")
+                getDiaryFromBackend(userData.diaryId)
+            }
+            else
+                console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
+        }
+        else {
+            console.log("Diary:", diary)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    //........................
+
     const res = Testdat()
-    console.log("TestData", res)
+    // console.log("TestData", res)
     // console.log("\n", res[0], "\n", res[1])
     // console.log(res[0].label)
     // console.log(tempData.label)
@@ -37,22 +69,23 @@ const Dashboard = () => {
     const xValues = res.date;
     const yValues = res.values;
 
-    if (!user)
-      navigate('/login')
+    //........................
 
     useEffect(() => {
         setTempData({
             ...tempData, values: res[0], date: res[1]
         })
         setFlag(true)
-        setAnyChange(!anyChange)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    console.log("DIARY:", diary)
+    console.log("diaryTemplate:", diaryTemplate)
 
-    useEffect(() => {
-        checkToken();
-    }, [location, anyChange])
+
+    const handleStart = () => {
+        navigate('/CreateDiary')
+    }
 
     const handleChange = () => {
 
@@ -62,6 +95,8 @@ const Dashboard = () => {
         }
     }
 
+    //........................
+
     const handleGetData = () => {
         console.log("hole Temperaturdaten")
         getTemp('300e46f7-8b37-40cc-bd17-48cd75b74981')
@@ -70,36 +105,43 @@ const Dashboard = () => {
         setY(tempResults.values)
     }
 
-    
-    // console.log(tempData)
-    console.log("tempResults",tempResults)
 
-        return (
-            <ContentGroup>
-                <Header />
-                <MainGroup>
-                    <NavBar />
-                    <DashboardGroup>
-                        <StFullDay>
-                            Heute ist {fullDate()}.
-                        </StFullDay>
-                        <PageTitle>Hallo {userData},</PageTitle>
 
-                        <TitleH2>
-                            Deine kommenden Termine
-                        </TitleH2>
-                        <Item />
-                        <TitleH2>
-                            und Erinnerungen:
-                        </TitleH2>
-                        <div onClick={handleChange} style={{ margin: '1.0rem', fontWeight: '600', padding: '3px', width: '90px', color: 'blue', border: '1px solid blue' }} >Speichere Daten</div>
-                        <div onClick={handleGetData} style={{ margin: '1.0rem', fontWeight: '600', padding: '3px', width: '90px', color: 'blue', border: '1px solid blue' }} >hole Daten</div>
-                        {x && <TimeChart xValues={x} yValues={y} />}
-                    </DashboardGroup>
-                </MainGroup>
-                <Footer />
-            </ContentGroup>
-        )
+    return (
+        <ContentGroup>
+            <Header />
+            <MainGroup>
+                <NavBar />
+                <DashboardGroup>
+                    <StFullDay>
+                        Heute ist {fullDate()}.
+                    </StFullDay>
+                    {userData &&
+                        <PageTitle>Hallo {userData.name},</PageTitle>
+                    }
+                    {!userData.diaryId ?
+                        <div>Du hast noch kein Tagebuch angelegt. <br></br>Hier kannst du eins anlegen<br></br>
+                            <SendButton onClick={handleStart} >Start</SendButton>
+                        </div>
+
+                        : <div>
+                            <TitleH2>
+                                Deine kommenden Termine
+                            </TitleH2>
+                            <Item />
+                            <TitleH2>
+                                und Erinnerungen:
+                            </TitleH2>
+                            <div onClick={handleChange} style={{ margin: '1.0rem', fontWeight: '600', padding: '3px', width: '90px', color: 'blue', border: '1px solid blue' }} >Speichere Daten</div>
+                            <div onClick={handleGetData} style={{ margin: '1.0rem', fontWeight: '600', padding: '3px', width: '90px', color: 'blue', border: '1px solid blue' }} >hole Daten</div>
+                            {x && <TimeChart xValues={x} yValues={y} />}
+                        </div>
+                    }
+                </DashboardGroup>
+            </MainGroup>
+            <Footer />
+        </ContentGroup>
+    )
 }
 
 export default Dashboard;

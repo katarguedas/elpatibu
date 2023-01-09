@@ -10,7 +10,7 @@ const useAuth = () => {
 
     const [token, setToken] = useState();
     const [user, setUser] = useState('');
-    const [userData, setUserData] = useState();
+    const [userData, setUserData] = useState()
     const [loginData, setLoginData] = useState(
         {
             email: "",
@@ -26,6 +26,8 @@ const useAuth = () => {
     const [regMessage, setRegMessage] = useState('')
     const [flag, setFlag] = useState(999)
     const [anyChange, setAnyChange] = useState(false)
+
+    const [diaryIdSaved, setDiaryIdSaved] = useState(false);
 
     const LOCAL_STORAGE_KEY = 'access token';
 
@@ -51,17 +53,18 @@ const useAuth = () => {
         await fetch("/api/login", requestOptions)
             .then(response => response.json())
             .then(response => {
-                // console.log(response)
+                console.log(response)
                 localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(response))
 
                 setToken(response.access)
 
                 const jwtDecoded = jwt_decode(response.access);
-                console.log(jwtDecoded.name)
+                console.log("\n",jwtDecoded, "\n", jwtDecoded.name, "\n", jwtDecoded.diaries)
 
                 setUser(jwtDecoded.email)
-                setUserData(jwtDecoded.name)
+                setUserData({name: jwtDecoded.name, diaryId: jwtDecoded.diaries})
 
+                console.log("UserData:", jwtDecoded)
                 console.log("user hat sich eingeloggt")
             })
             .catch(error => console.log('error', error));
@@ -127,7 +130,6 @@ const useAuth = () => {
         }
     }
 
-
     //---------------------------------------------------------
 
     const removeCookie = async () => {
@@ -165,7 +167,7 @@ const useAuth = () => {
             "id": uuidv4(),
             "email": registerData.email,
             "name": registerData.name,
-            "pwd": registerData.pwd
+            "pwd": registerData.pwd,
         });
 
         var requestOptions = {
@@ -200,10 +202,38 @@ const useAuth = () => {
 
     }
 
+    //----------------------------------------------------------
+
+    const saveDiaryId = async (id) => {
+        console.log(id)
+        let raw = JSON.stringify({
+            email: user,
+            diaryId: id
+        })
+        console.log("raw" , raw)
+
+        let requestOptions = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: raw,
+            redirect: 'follow'
+        };
+        fetch('api/saveDiaryId', requestOptions)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+                console.log("id gespeichert")
+                setDiaryIdSaved(true)   // Funktioniert nicht. WARUM????
+
+            })
+            .catch(error => console.log("error: ", error))
+    }
 
 
 
-    return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, anyChange, setAnyChange, checkToken];
+//-----------------------------------------------------------------
+
+    return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, anyChange, setAnyChange, checkToken, saveDiaryId, diaryIdSaved];
 
 }
 

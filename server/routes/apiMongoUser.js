@@ -31,6 +31,7 @@ router.post('/api/login', async (req, res) => {
 
   const user = await User.findOne({ email: req.body.email });
 
+  console.log("USER: ",user)
   if (!user) {
     res.status(400).send({ status: "error", message: "Invalid user", error: error })
   } else {
@@ -43,10 +44,11 @@ router.post('/api/login', async (req, res) => {
         {
           id: user.id,
           email: user.email,
-          name: user.name
+          name: user.name,
+          diaries: user.diaries
         }, process.env.EXPRESS_ACCESS_JWT_KEY,
         {
-          expiresIn: '10m'
+          expiresIn: '15m'
         }
       );
       const refreshToken = jwt.sign(
@@ -63,11 +65,11 @@ router.post('/api/login', async (req, res) => {
         // maxAge: 24 * 60 * 60 * 1000 // 1 day
         maxAge: 24 * 60 * 60 * 1000
       });
-      // console.log("accessToken:", accessToken)
+      console.log("accessToken:", accessToken)
       res.status(200).send({ status: "ok", message: "user verified", access: accessToken });
       return;
     }
-    res.status(400).send({ status: "error", message: "Invalid password or email", error })
+    res.status(400).send({ status: "error", message: "Invalid password or email" })
   }
 })
 
@@ -98,7 +100,8 @@ router.post('/api/refreshToken', async (req, res) => {
           const accessToken = jwt.sign({
             id: user.id,
             email: user.email,
-            name: user.name
+            name: user.name,
+            diaries: user.diaries
           },
             process.env.EXPRESS_ACCESS_JWT_KEY,
             {
@@ -151,6 +154,25 @@ router.post('/api/register', async (req, res) => {
 router.get('/clear-cookie', (req, res) => {
   res.clearCookie('jwt').send();
 });
+
+
+//------------------------------------------------------
+
+router.post('/api/saveDiaryId', async (req, res) => {
+  console.log("bin im backend")
+
+  console.log("body", req.body)
+  try {
+    const result = await User.findOneAndUpdate({ email: req.body.email},  {diaries: req.body.diaryId} , {new: true} )
+    console.log("\n result:", result)
+    res.status(200).send({status: 'OK', message: 'saved diaryId', result})
+  } catch (error) {
+    res.status(400).send({ status: "error", error })
+    console.log("error", error)
+      return;
+  }
+})
+
 
 //------------------------------------------------------
 

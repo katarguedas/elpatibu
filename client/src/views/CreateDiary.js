@@ -21,71 +21,103 @@ import { useUserContext } from "../providers/userContext"
 
 const CreateDiary = () => {
 
-    const { items, setItems, createNewDiary } = useDataContext();
+    const { diaryInit, diaryTemplate, setDiaryTemplate, createNewDiary } = useDataContext();
     const { user, anyChange, checkToken } = useUserContext();
 
-    const [on, setOn] = useState(false);
-    const [diaryName, setDiaryName] = useState();
-    const [created, setCreated] = useState();
+    const [on, setOn] = useState();
+    // const [diaryName, setDiaryName] = useState();
+    const [created, setCreated] = useState(false);
+    const [done, setDone] = useState(false);
 
 
     let location = useLocation();
     const navigate = useNavigate();
 
-    if (!user)
-        navigate('/login')
+    // console.log("INIT:", diaryInit)
+    // console.log("diaryTemplate", diaryTemplate)
 
+    useEffect(() => {
+        if (!user)
+            navigate('/login');
+        checkToken();
+        let temp = diaryInit;
+        setDiaryTemplate(temp);
+    }, [])
+
+    useEffect(() => {
+        if (!user)
+            navigate('/login');
+        checkToken();
+    }, [location, anyChange])
 
     const handleClick = (id) => {
-        setItems(items.map((e) => {
+        console.log("handleClick, id:", id)
+        setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map(e => {
             if (e.id === id)
                 e.visible = !e.visible;
             return e;
-        }));
+        }))
     }
 
-    const handleSelect = (id, el) => {
-        const indexG = items.findIndex((e) => e.id === id);
-        const indexI = items[indexG].itemList.findIndex((e) => e.item === el);
-        setItems(
-            [...items], items[indexG].itemList[indexI].selected = !items[indexG].itemList[indexI].selected
+    const handleSelect = (groupId, itemId) => {
+        const indexG = diaryTemplate.groups.findIndex((e) => e.id === groupId);
+        const indexI = diaryTemplate.groups[indexG].items.findIndex((e) =>
+            e.id ===
+            itemId);
+        console.log(itemId)
+        console.log("indizes:", indexG, indexI)
+
+        setDiaryTemplate(
+            { ...diaryTemplate }, diaryTemplate.groups[indexG].items[indexI].selected = !diaryTemplate.groups[indexG].items[indexI].selected
         )
+        console.log("selected? ", diaryTemplate.groups[indexG].items[indexI].selected)
     }
+
 
     const sendAndCreate = () => {
-        console.log("Erstelle Diary")
-        createNewDiary()
-        setCreated(true)
-        timing()
+        console.log("Erstelle diaryTemplate")
+        const res = createNewDiary(diaryTemplate.id);
+        if (res === true) {
+            console.log("alle checks ok")
+            setCreated(true);
+            setDone(true);
+            timing();
+            // setDiaryTemplate();
+        } else {
+            console.log("irgendwelche states sind noch nicht auf true. warum?")
+        }
     }
 
     const timing = () => {
         setTimeout(() => {
             setCreated(false)
-            navigate('/EditDiary')
-        }, 2000)        
+        }, 2000)
+    }
+
+
+    const navToDiary = () => {
+        navigate('/EditDiary')
     }
 
     useEffect(() => {
-        checkToken();
-    }, [location, anyChange])
-
-    useEffect(() => {
         if (on === true) {
-            setItems(items.map((e) => {
+            setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map((e) => {
                 e.visible = true;
                 return e;
             }))
-        } else {
-            setItems(items.map((e) => {
+        } else if (on === false) {
+            setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map((e) => {
                 e.visible = false;
                 return e;
             }))
         }
     }, [on])
 
-    // console.log(items)
+    // console.log("ON: ", on)
+    // console.log("DONE:", done)
+    // console.log("created", created)
 
+    console.log("diaryTemplate", diaryTemplate)
 
     return (
         <ContentGroup>
@@ -98,7 +130,7 @@ const CreateDiary = () => {
                     </TitleH2>
                     {/* <StP>Möchtest Du Deinem Tagebuch einen Namen geben?</StP>
                     <FormField onSubmit={handleSubmit}>
-                        <Input onChange={(e) => setDiaryName(e.target.value)} />
+                        <Input onChange={(e) => setdiaryTemplateName(e.target.value)} />
                     </FormField> */}
                     <StP>Wähle nun aus den nachfolgenden Optionen die Werte aus, die Du dokumentieren möchtest. </StP>
 
@@ -106,33 +138,44 @@ const CreateDiary = () => {
                         <SwitchToggle isOn={on} handleToggle={() => setOn(!on)} />
                         <SwitchText>alle aufklappen</SwitchText>
                     </SwithcGroup>
+
                     {
-                        items &&
-                        items.map(e => (
+                        diaryTemplate &&
+                        diaryTemplate.groups.map(e => (
                             <ItemGroup key={e.id}>
                                 <Accordion onClick={() =>
                                     handleClick(e.id)}
-                                // shadow={e.visible}
                                 >
                                     {!e.visible && <StBiRightArrow></StBiRightArrow>}
                                     {e.visible && <StBiDownArrow></StBiDownArrow>}
 
-                                    {e.name}
+                                    {e.label}
                                 </Accordion>
 
                                 <Panel itemGroup={e} handleSelect={handleSelect} ></Panel>
                             </ItemGroup>
                         ))
                     }
-                    <SendButton onClick={sendAndCreate} >erstellen</SendButton>
-                    {created ?
-                        <p>Tagebuch erfolgreich erstellt!</p>
-                        : null}
+
+                    {
+                        (created === false) &&
+                        (done === false) &&
+                        <SendButton onClick={sendAndCreate} >erstellen</SendButton>
+                    }
+                    {created &&
+                        <p style={{ fontWeight: '500' }} >Tagebuch erfolgreich erstellt!</p>
+                    }
+                    {(created === false) &&
+                        done &&
+                        <SendButton onClick={navToDiary} >zum Tagebuch</SendButton>
+                    }
+
                 </DashboardGroup>
             </MainGroup>
             <Footer />
         </ContentGroup>
     )
+
 }
 
 

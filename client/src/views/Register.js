@@ -59,7 +59,7 @@ const Register = () => {
             console.log("flag", flag)
         const timer = setTimeout(() => {
             navigate('/login');
-        }, 4000);
+        }, 3000);
         return() => {clearTimeout(timer)
         setFlag(999)};
           
