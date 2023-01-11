@@ -43,23 +43,12 @@ const EditDiary = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
 
-  //   useEffect(() => {
-  //     if (!diary)
-  //       getDiaryFromBackend()
-  // }, [])
 
   const handleClick = () => {
     setEdit(!edit);
     // editItem()
   }
 
-  // console.log("DIARY", diary)
-  // console.log("edit: ", edit)
-
-  // console.log(diary.groups)
-  // console.log(diary.groups[0].items.filter(e => e.selected == true).length)
-
-  // console.log("selected? ", diary.groups[0].items[0].selected)
 
   return (
     <ContentGroup>
@@ -69,10 +58,6 @@ const EditDiary = () => {
         <Group>
 
           <PageTitle>Hier kannst Du neue Daten eingeben</PageTitle>
-
-
-          <div>Daten vorhanden?</div>
-          {diary ? <p>ja</p> : <p>nein, aber WARUM?</p>}
 
           {
             diary &&

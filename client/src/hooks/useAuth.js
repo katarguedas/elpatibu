@@ -6,6 +6,7 @@ import jwt_decode from "jwt-decode";
 import { v4 as uuidv4 } from 'uuid';
 //---------------------------------------------------------
 
+
 const useAuth = () => {
 
     const [token, setToken] = useState();
@@ -31,6 +32,19 @@ const useAuth = () => {
 
     const LOCAL_STORAGE_KEY = 'access token';
 
+    //---------------------------------------------------------
+
+    useEffect(() => {
+        if(!user) {
+          const ls = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    
+    if (ls !== null) {
+      const decodedJwt = jwt_decode(ls.access)
+      setUserData({ name: decodedJwt.name, diaryId: decodedJwt.diaries })
+      setUser(decodedJwt.email);
+    }
+    }
+    }, [user])
 
     //---------------------------------------------------------
 
@@ -59,10 +73,10 @@ const useAuth = () => {
                 setToken(response.access)
 
                 const jwtDecoded = jwt_decode(response.access);
-                console.log("\n",jwtDecoded, "\n", jwtDecoded.name, "\n", jwtDecoded.diaries)
+                console.log("\n", jwtDecoded, "\n", jwtDecoded.name, "\n", jwtDecoded.diaries)
 
                 setUser(jwtDecoded.email)
-                setUserData({name: jwtDecoded.name, diaryId: jwtDecoded.diaries})
+                setUserData({ name: jwtDecoded.name, diaryId: jwtDecoded.diaries })
 
                 console.log("UserData:", jwtDecoded)
                 console.log("user hat sich eingeloggt")
@@ -76,32 +90,34 @@ const useAuth = () => {
     const refreshToken = async (user) => {
         // console.log("refreshToken wird aufgerufen mit user ")
 
-        var requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "email": user,
-            }),
-            redirect: 'follow'
-        };
+        if (user) {
+            var requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "email": user,
+                }),
+                redirect: 'follow'
+            };
 
-        await fetch('/api/refreshToken', requestOptions)
-            .then(response => response.json())
-            .then(response => {
-                // console.log("response", response)
-                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(response))
+            await fetch('/api/refreshToken', requestOptions)
+                .then(response => response.json())
+                .then(response => {
+                    // console.log("response", response)
+                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(response))
 
-                // setToken(response.access)
-                // const jwtDecoded = jwt_decode(response.access);
-                // setUser(jwtDecoded.email)
-                // setUserData(jwtDecoded.name)
-            })
-            .catch(error => {
-                console.log("error", error)
-                logout()
-            })
+                    setToken(response.access)
+                    const jwtDecoded = jwt_decode(response.access);
+                    setUser(jwtDecoded.email)
+                    setUserData({ name: jwtDecoded.name, diaryId: jwtDecoded.diaries })
+                })
+                .catch(error => {
+                    console.log("error", error)
+                    logout()
+                })
+        }
     }
 
     //---------------------------------------------------------
@@ -109,12 +125,12 @@ const useAuth = () => {
     const checkToken = () => {
 
         const lsToken = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
-        // console.log("access token vorhanden?: ", lsToken)
 
         if (lsToken !== null) {
             const decodedJwt = jwt_decode(lsToken.access)
             setUser(decodedJwt.email)
 
+            console.log("user:", user)
             if (decodedJwt.exp * 1000 > Date.now()) {
                 // console.log(decodedJwt.email)
                 console.log("Zeit noch nicht abgelaufen. Refreshe den Zugangstoken.")
@@ -210,7 +226,7 @@ const useAuth = () => {
             email: user,
             diaryId: id
         })
-        console.log("raw" , raw)
+        console.log("raw", raw)
 
         let requestOptions = {
             method: 'POST',
@@ -231,7 +247,7 @@ const useAuth = () => {
 
 
 
-//-----------------------------------------------------------------
+    //-----------------------------------------------------------------
 
     return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, anyChange, setAnyChange, checkToken, saveDiaryId, diaryIdSaved];
 

@@ -60,6 +60,42 @@ router.get('/api/getDiary', async (req, res) => {
   
 })
 
+//..............................................................
+
+router.post('/api/saveData', async(req, res) => {
+  console.log(req.body)
+
+  try {
+    const result =  Diary.findOneAndUpdate( { id: req.body.id, $match: { id: req.body.groupId, name: req.body.itemName } }, { $push: {values: "222"} } ,
+      { new: true,
+      // upsert: true,
+      rawResult: true })
+
+    // ([{ $match: { 'name.last': 'Ghost' } }]);
+
+
+    console.log("result",result)
+
+    res.status(200).send({ status: '0k', message: 'saved data'})
+  } catch (error) {
+    res.status(400).send({status: 'error', message: "Daten nicht gefunden", error})
+  }
+})
+
+
+
+// const tempCar = await Car.findOneAndUpdate(
+//   {
+//     make: req.params.make,
+//   },
+//   { $set: { "models.$[e1].reviews.$[e2]": result.value } },
+//   {
+//     arrayFilters: [
+//       { "e1.name": req.params.model },
+//       { "e2._id": req.params._id },
+//     ],
+//   }
+// );
 
 //............................................................
 
@@ -79,7 +115,7 @@ router.post('/api/saveTemperature', async (req, res) => {
   } catch (error) {
 
     console.log("ERROR", error)
-    res.status(400).send({ status: 'error', error })
+    res.status(400).send({ status: 'error' , error})
     return;
   }
 })

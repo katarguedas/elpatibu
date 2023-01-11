@@ -44,11 +44,11 @@ export const todayDate = () => {
 
     const datumStr = year + '-' + month + '-' + day + 'T12:00:00';
     const datum = DateTime.fromISO(datumStr)
-    console.log("datum kriiert:", datum, "\n aus dem String: ", datumStr)
+    // console.log("datum kriiert:", datum, "\n aus dem String: ", datumStr)
 
     const ts = datum.toMillis()
     console.log("ts:", ts)
-    return (ts);
+    return ts;
 }
 
 

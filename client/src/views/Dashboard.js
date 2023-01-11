@@ -22,7 +22,7 @@ const Dashboard = () => {
     const [flag, setFlag] = useState(false);
     const [x, setX] = useState();
     const [y, setY] = useState();
-    const { user, userData, anyChange, checkToken } = useUserContext();
+    const { user, userData, checkToken } = useUserContext();
     const { getDiaryFromBackend, diary, tempData, setTempData, saveTemp, getTemp, tempResults, diaryTemplate } = useDataContext();
 
 
@@ -31,12 +31,13 @@ const Dashboard = () => {
 
     //........................
 
+
     useEffect(() => {
         if (!user)
             navigate('/login')
         checkToken();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location, anyChange])
+    }, [location])
 
     console.log("userdata", userData)
 
@@ -44,6 +45,7 @@ const Dashboard = () => {
 
     useEffect(() => {
 
+        if(userData)
         if (!diary) {
             if (userData.diaryId) {
                 console.log("noch kein Diary da, schau nach, ob was im Backend ist")
@@ -56,7 +58,7 @@ const Dashboard = () => {
             console.log("Diary:", diary)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [location])
 
     //........................
 
@@ -107,6 +109,7 @@ const Dashboard = () => {
 
 
 
+    if(user)
     return (
         <ContentGroup>
             <Header />
@@ -119,7 +122,7 @@ const Dashboard = () => {
                     {userData &&
                         <PageTitle>Hallo {userData.name},</PageTitle>
                     }
-                    {!userData.diaryId ?
+                    {!userData?.diaryId ?
                         <div>Du hast noch kein Tagebuch angelegt. <br></br>Hier kannst du eins anlegen<br></br>
                             <SendButton onClick={handleStart} >Start</SendButton>
                         </div>

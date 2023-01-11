@@ -3,7 +3,7 @@ import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
 import { DiaryButton } from '../components/Buttons'
 import { useUserContext } from "../providers/userContext";
-import { StGiChart } from '../components/Icons'
+import { StGiChart, StBiListPlus } from '../components/Icons'
 import { StGiFountainPen } from '../components/Icons'
 
 import { useLocation, useNavigate } from "react-router-dom";
@@ -34,8 +34,12 @@ const OpenDiary = () => {
         navigate('/EditDiary')
     }
 
-    const handleShowResults = () =>{
+    const handleShowResults = () => {
         navigate('/DiaryData')
+    }
+
+    const handleAddValues =() => {
+        // ...
     }
 
     console.log("DIARY: \n", diary)
@@ -53,11 +57,13 @@ const OpenDiary = () => {
                             <StGiFountainPen />Daten eintragen</DiaryButton>
                         <DiaryButton onClick={handleShowResults}>
                             <StGiChart />Ergebnisse sehen</DiaryButton>
+                            <DiaryButton onClick={handleAddValues}>
+                            <StBiListPlus />Werte hinzufügen</DiaryButton>
                     </ButtonField>
                 </Group>
             </MainGroup>
             <Footer />
-        </ContentGroup>
+        </ContentGroup >
     )
 }
 
@@ -85,3 +91,4 @@ const ButtonField = styled.div`
   flex-direction: row;
   justify-content: space-around;
 `
+

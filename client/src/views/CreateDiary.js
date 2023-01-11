@@ -22,7 +22,7 @@ import { useUserContext } from "../providers/userContext"
 const CreateDiary = () => {
 
     const { diaryInit, diaryTemplate, setDiaryTemplate, createNewDiary } = useDataContext();
-    const { user, anyChange, checkToken } = useUserContext();
+    const { user, userData, anyChange, checkToken } = useUserContext();
 
     const [on, setOn] = useState();
     // const [diaryName, setDiaryName] = useState();
@@ -33,14 +33,15 @@ const CreateDiary = () => {
     let location = useLocation();
     const navigate = useNavigate();
 
-    // console.log("INIT:", diaryInit)
-    // console.log("diaryTemplate", diaryTemplate)
 
     useEffect(() => {
+        if((user) && (!userData))
+          checkToken();
         if (!user)
             navigate('/login');
         checkToken();
         let temp = diaryInit;
+
         setDiaryTemplate(temp);
     }, [])
 
@@ -48,7 +49,7 @@ const CreateDiary = () => {
         if (!user)
             navigate('/login');
         checkToken();
-    }, [location, anyChange])
+    }, [location])
 
     const handleClick = (id) => {
         console.log("handleClick, id:", id)
@@ -132,13 +133,17 @@ const CreateDiary = () => {
                     <FormField onSubmit={handleSubmit}>
                         <Input onChange={(e) => setdiaryTemplateName(e.target.value)} />
                     </FormField> */}
+                    {
+                        diaryTemplate &&
                     <StP>Wähle nun aus den nachfolgenden Optionen die Werte aus, die Du dokumentieren möchtest. </StP>
-
-                    <SwithcGroup>
-                        <SwitchToggle isOn={on} handleToggle={() => setOn(!on)} />
-                        <SwitchText>alle aufklappen</SwitchText>
-                    </SwithcGroup>
-
+                    }
+                    {
+                        diaryTemplate &&
+                        <SwithcGroup>
+                            <SwitchToggle isOn={on} handleToggle={() => setOn(!on)} />
+                            <SwitchText>alle aufklappen</SwitchText>
+                        </SwithcGroup>
+                    }
                     {
                         diaryTemplate &&
                         diaryTemplate.groups.map(e => (

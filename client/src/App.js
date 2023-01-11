@@ -32,10 +32,9 @@ function App() {
               <Route path='/welcome' element={<LandingPage />} />
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
-              {/* <Route path='/dashboard' element={user ? <Dashboard /> : <Login />} /> */}
-              <Route path='/dashboard' element={ <Dashboard /> } />
+              <Route path='/dashboard' element={user ? <Dashboard /> : <Login/> } />
               <Route path='/createDiary' element={<CreateDiary />} />
-              <Route path='/editDiary' element={<EditDiary />} />
+              <Route path='/editDiary' element={user ? <EditDiary /> : <Login/> } />
               <Route path='/openDiary' element={<OpenDiary />} />
               <Route path='/diaryData' element={<DiaryData />} />
               <Route path='/calendar' element={<Calendar />} />

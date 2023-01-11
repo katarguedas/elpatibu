@@ -2,6 +2,7 @@
 import { useState } from "react";
 
 import { v4 as uuidv4 } from 'uuid';
+
 import { useUserContext } from "../providers/userContext";
 
 //---------------------------------------------------------
@@ -10,226 +11,6 @@ import { useUserContext } from "../providers/userContext";
 const useData = () => {
 
     const { saveDiaryId, diaryIdSaved } = useUserContext()
-
-    // const [items, setItems] = useState([
-    //     {
-    //         id: uuidv4(),
-    //         group: 'vital',
-    //         name: 'Vitalwerte',
-    //         visible: false,
-    //         itemList: [
-    //             {
-    //                 item: 'temperature',
-    //                 label: 'Temperatur',
-    //                 unit: '°C',
-    //                 selected: true,
-    //             },
-    //             {
-    //                 item: 'pressureHigh',
-    //                 label: 'Systolischer Blutdruck',
-    //                 unit: 'mmHg',
-    //                 selected: true,
-    //             },
-    //             {
-    //                 item: 'pressureLow',
-    //                 label: 'Diastolischer Blutdruck',
-    //                 unit: 'mmHg',
-    //                 selected: true,
-    //             },
-    //             {
-    //                 item: 'pulse',
-    //                 label: 'Puls',
-    //                 unit: '1/Min',
-    //                 selected: true,
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         id: uuidv4(),
-    //         group: 'weight',
-    //         name: 'Körpergewicht',
-    //         visible: false,
-    //         itemList: [
-    //             {
-    //                 item: 'weight',
-    //                 label: 'Körpergewicht',
-    //                 unit: 'kg',
-    //                 selected: false,
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         id: uuidv4(),
-    //         group: 'wellBeing',
-    //         name: 'Allgemeines Wohlbefinden',
-    //         visible: false,
-    //         itemList: [
-    //             {
-    //                 item: 'wellBeing',
-    //                 label: 'Wohlbefinden',
-    //                 unit: '',
-    //                 selected: true,
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         id: uuidv4(),
-    //         group: 'mood',
-    //         name: 'Stimmung',
-    //         visible: false,
-    //         itemList: [
-    //             {
-    //                 item: 'mood',
-    //                 label: 'Stimmung',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'moodSwings',
-    //                 label: 'Stimmungsschwankungen',
-    //                 unit: '',
-    //                 selected: false,
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         id: uuidv4(),
-    //         group: 'sleep',
-    //         name: 'Schlaf',
-    //         visible: false,
-    //         itemList: [
-    //             {
-    //                 item: 'hours',
-    //                 label: 'Anzahl der Schlafstunden',
-    //                 unit: 'Std.',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'interruption',
-    //                 label: 'Schlafunterbrechungen',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'restful',
-    //                 label: 'Erholung durch Schlaf',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'medication',
-    //                 label: 'Medikamenteneinnahme',
-    //                 unit: '',
-    //                 selected: false,
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         id: uuidv4(),
-    //         group: 'meteorosensitivity',
-    //         name: 'Wetterfühligkeit',
-    //         visible: false,
-    //         itemList: [
-    //             {
-    //                 item: 'headache',
-    //                 label: 'Kopfschmerzen',
-    //                 unit: '',
-    //                 selected: true,
-    //             },
-    //             {
-    //                 item: 'fatigue',
-    //                 label: 'Müdigkeit / Erschöpfung',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'circulationProblems',
-    //                 label: 'Kreislaufprobleme',
-    //                 unit: '',
-    //                 selected: true,
-    //             },
-    //             {
-    //                 item: 'insomnia',
-    //                 label: 'Schlafstörungen',
-    //                 unit: '',
-    //                 selected: false,
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         id: uuidv4(),
-    //         group: 'symptoms',
-    //         name: 'Symptome',
-    //         visible: false,
-    //         itemList: [
-    //             {
-    //                 item: 'pain',
-    //                 label: 'Schmerzen',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'nausea',
-    //                 label: 'Übelkeit',
-    //                 selected: false, unit: '',
-    //             },
-    //             {
-    //                 item: 'vomiting',
-    //                 label: 'Erbrechen',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'diarrhea',
-    //                 label: 'Durchfall',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'pyrosis',
-    //                 label: 'Sodbrennen',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'fatigue',
-    //                 label: 'Erschöpfung / Müdigkeit',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'insomnia',
-    //                 label: 'Schlaflosigkeit',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'vertigo',
-    //                 label: 'Schwindelgefühl',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'appetiteLoss',
-    //                 label: 'Appetitlosigkeit',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'fingerTingling',
-    //                 label: 'Kribbeln in den Fingern / Fingerspitzen',
-    //                 unit: '',
-    //                 selected: false,
-    //             },
-    //             {
-    //                 item: 'memoryDisorder',
-    //                 label: 'Gedächtnisstörungen',
-    //                 unit: '',
-    //                 selected: false,
-    //             }
-    //         ]
-    //     }
-    // ])
 
     const [tempData, setTempData] = useState(
         {
@@ -240,8 +21,6 @@ const useData = () => {
             date: [],
         }
     );
-
-
 
     const [test, setTest] = useState({
         id: uuidv4(),
@@ -547,7 +326,7 @@ const useData = () => {
 
     const createNewDiary = (diaryId) => {
         console.log("ID:", diaryId)
-        console.log("diaryTemplate ", diaryTemplate)
+        // console.log("diaryTemplate ", diaryTemplate)
 
         // 
         if (diaryId) {
@@ -574,6 +353,8 @@ const useData = () => {
         setDiaryTemplate('');
         return(true)
     }
+
+    //................................................
 
     const newDiaryInBackend = async () => {
         console.log("diary in fkt als template:", diaryTemplate)
@@ -605,6 +386,7 @@ const useData = () => {
         return;
     }
 
+        //................................................
 
     const getDiaryFromBackend = async (id) => {
 
@@ -613,8 +395,6 @@ const useData = () => {
         let requestOptions = {
             method: 'GET',
         };
-
-        // const id = 'a55f7892-dbde-47b3-b97b-3f9f05db31c7';
 
         await fetch('/api/getDiary?id=' + id, requestOptions)
             .then(response => response.json())
@@ -628,30 +408,50 @@ const useData = () => {
 
 
 
-    const saveDataToBackend = async () => {
-        let raw = JSON.stringify({
-            // id: tempData.id,
-            // label: tempData.label,
-            // unit: tempData.unit,
-            // values: tempData.values,
-            // date: tempData.date,
-        })
+    //................................................
 
-        // let requestOptions = {
-        //     method: 'POST',
-        //     headers: { "Content-Type": "application/json" },
-        //     body: raw,
-        //     redirect: 'follow'
-        // };
+    const saveDataToBackend = async (id, groupId, items, update) => {
 
-        // await fetch('/api/saveTemperature', requestOptions)
-        //         .then(response => response.json())
-        //         .then(result => {
-        //             console.log("result", result.message)
-        //         })
-        //         .catch(error => console.log('error', error))
+        console.log(id)
+        console.log(groupId)
+        console.log(items)
+        console.log(update)
+
+        let raw = JSON.stringify(
+        //     {
+        //     id: id,
+        //     index: groupsId,
+        //     items: items,
+        //     update: update
+        // }
+        {
+            id: '823f432d-4066-4a6e-8e8f-e7c1f52fa812',
+            groupId: '358c9480-e196-403e-9b58-1ced53a034d3',
+            itemId: '32dbae8b-f324-49fd-9a8a-6fea721b7350',
+            itemName: 'temperature',
+            value: '100'
+        }
+        )
+
+        console.log("raw", raw)
+
+        let requestOptions = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: raw,
+            redirect: 'follow'
+        };
+
+        await fetch('/api/saveData', requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    console.log("result", result.message)
+                    console.log(result.data)
+                })
+                .catch(error => console.log('error', error))
     }
 
+    //-------------------------------------------------------------
 
     const saveTemp = async () => {
 
@@ -709,204 +509,3 @@ const useData = () => {
 
 export default useData;
 
-
-
-
-// const [diary, setDiary] = useState(
-//     {
-//         id: uuidv4(),
-//         diaryName: 'Test1',
-//         date: [],
-//         vital: {
-//             temperature: {
-//                 id: uuidv4(),
-//                 label: 'Temperatur',
-//                 unit: '°C',
-//                 selected: false,
-//                 values: []
-//             },
-//             pressureHigh: {
-//                 id: uuidv4(),
-//                 label: 'Systolischer Blutdruck',
-//                 unit: 'mmHg',
-//                 selected: false,
-//                 values: []
-//             },
-//             pressureLow: {
-//                 id: uuidv4(),
-//                 label: 'Diastolischer Blutdruck',
-//                 unit: 'mmHg',
-//                 selected: false,
-//                 values: []
-//             },
-//             pulse: {
-//                 id: uuidv4(),
-//                 label: 'Puls',
-//                 unit: '1/Min',
-//                 selected: false,
-//                 values: []
-//             }
-//         },
-//         weight: {
-//             id: uuidv4(),
-//             label: 'Gewicht',
-//             unit: 'kg',
-//             selected: false,
-//             values: []
-//         },
-//         wellBeing: {
-//             id: uuidv4(),
-//             label: 'Gewicht',
-//             unit: 'kg',
-//             selected: false,
-//             values: []
-//         },
-//         mood: {
-//             mood: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             moodSwing: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             }
-//         },
-//         sleep: {
-//             hours: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             interruption: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             restful: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//         },
-//         meteorosensitivity: {
-//             headache: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             fartigue: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             circulationProblems: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             insomnia: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//         },
-//         symptoms: {
-//             pain: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             nausea: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             vomiting: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             diarrhea: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             pyrosis: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             fatigue: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             insomnia: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             vertigo: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             appetiteLoss: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             fingerTingling: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             },
-//             memoryDisorder: {
-//                 id: uuidv4(),
-//                 label: 'Gewicht',
-//                 unit: 'kg',
-//                 selected: false,
-//                 values: []
-//             }
-//         },
-//     });
