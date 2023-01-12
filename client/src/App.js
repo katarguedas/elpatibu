@@ -33,11 +33,12 @@ function App() {
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/dashboard' element={user ? <Dashboard /> : <Login/> } />
-              <Route path='/createDiary' element={<CreateDiary />} />
+              <Route path='/createDiary' element={user ? <CreateDiary /> : <Login/> } />
               <Route path='/editDiary' element={user ? <EditDiary /> : <Login/> } />
-              <Route path='/openDiary' element={<OpenDiary />} />
+              <Route path='/openDiary' element={ user ? <OpenDiary /> : <Login/> } />
               <Route path='/diaryData' element={<DiaryData />} />
               <Route path='/calendar' element={<Calendar />} />
+              
             </Routes>
           </BrowserRouter>
         </DataContextProvider>

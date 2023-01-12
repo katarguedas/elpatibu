@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom";
 
 import styled from "styled-components"
-import { ContentGroup, MainGroup, PageTitle, TitleH2 } from "../styled/globalStyles"
+import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2 } from "../styled/globalStyles"
 import { fullDate } from "../components/Date"
 import { useUserContext } from "../providers/userContext"
 import TimeChart from "../components/charts/TimeChart"
@@ -25,19 +25,15 @@ const Dashboard = () => {
     const { user, userData, checkToken } = useUserContext();
     const { getDiaryFromBackend, diary, tempData, setTempData, saveTemp, getTemp, tempResults, diaryTemplate } = useDataContext();
 
-
     let location = useLocation();
     const navigate = useNavigate();
 
+    // console.log("USER?", user)
+    // console.log("USERDATA?", userData)
+    // console.log("DIARY?", diary)
+
     //........................
 
-
-    useEffect(() => {
-        if (!user)
-            navigate('/login')
-        checkToken();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location])
 
     console.log("userdata", userData)
 
@@ -58,16 +54,12 @@ const Dashboard = () => {
             console.log("Diary:", diary)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location])
+    }, [])
 
     //........................
 
     const res = Testdat()
-    // console.log("TestData", res)
-    // console.log("\n", res[0], "\n", res[1])
-    // console.log(res[0].label)
-    // console.log(tempData.label)
-    // console.log(tempData)
+
     const xValues = res.date;
     const yValues = res.values;
 
@@ -81,10 +73,8 @@ const Dashboard = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    console.log("DIARY:", diary)
-    console.log("diaryTemplate:", diaryTemplate)
 
-
+    //--------------------------
     const handleStart = () => {
         navigate('/CreateDiary')
     }
@@ -115,7 +105,7 @@ const Dashboard = () => {
             <Header />
             <MainGroup>
                 <NavBar />
-                <DashboardGroup>
+                <MainContent>
                     <StFullDay>
                         Heute ist {fullDate()}.
                     </StFullDay>
@@ -140,7 +130,7 @@ const Dashboard = () => {
                             {x && <TimeChart xValues={x} yValues={y} />}
                         </div>
                     }
-                </DashboardGroup>
+                </MainContent>
             </MainGroup>
             <Footer />
         </ContentGroup>

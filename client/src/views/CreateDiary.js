@@ -5,16 +5,15 @@ import SwitchToggle from "../components/SwitchToggle"
 // import Input from "../components/forms/Input"
 import Panel from "../components/Panel"
 import { SendButton } from "../components/Buttons"
+import {StBiDownArrow, StBiRightArrow} from '../components/Icons'
 
 import { useDataContext } from "../providers/dataContext"
 
 import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { BiRightArrow, BiDownArrow } from "react-icons/bi";
-
 import styled from "styled-components"
-import { ContentGroup, MainGroup, PageTitle, TitleH2, StP, Accordion } from "../styled/globalStyles"
+import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2, StP, Accordion } from "../styled/globalStyles"
 import { useUserContext } from "../providers/userContext"
 
 //---------------------------------------------------------
@@ -32,6 +31,10 @@ const CreateDiary = () => {
 
     let location = useLocation();
     const navigate = useNavigate();
+
+
+    console.log("USER?", user)
+    console.log("USERDATA?", userData)
 
 
     useEffect(() => {
@@ -125,7 +128,7 @@ const CreateDiary = () => {
             <Header />
             <MainGroup>
                 <NavBar />
-                <DashboardGroup>
+                <MainContent>
                     <PageTitle>Neues Tagebuch</PageTitle>
                     <TitleH2>Erstelle Dein individuelles Patienten-Tagebuch
                     </TitleH2>
@@ -148,13 +151,13 @@ const CreateDiary = () => {
                         diaryTemplate &&
                         diaryTemplate.groups.map(e => (
                             <ItemGroup key={e.id}>
-                                <Accordion onClick={() =>
-                                    handleClick(e.id)}
-                                >
+                                <Accordion  visible={e.visible} onClick={() =>
+                                    handleClick(e.id)} 
+                                > 
                                     {!e.visible && <StBiRightArrow></StBiRightArrow>}
                                     {e.visible && <StBiDownArrow></StBiDownArrow>}
 
-                                    {e.label}
+                                    {e.label} 
                                 </Accordion>
 
                                 <Panel itemGroup={e} handleSelect={handleSelect} ></Panel>
@@ -175,7 +178,7 @@ const CreateDiary = () => {
                         <SendButton onClick={navToDiary} >zum Tagebuch</SendButton>
                     }
 
-                </DashboardGroup>
+                </MainContent>
             </MainGroup>
             <Footer />
         </ContentGroup>
@@ -192,7 +195,7 @@ export default CreateDiary;
 //---------------------------------------------------------
 
 
-const DashboardGroup = styled.div`
+const CreateDiaryGroup = styled.div`
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -236,27 +239,5 @@ const ItemGroup = styled.div`
 //   box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
 // `
 
-const StBiRightArrow = styled(BiRightArrow)`
-  font-size: 1.0rem;
-  margin-right: 0.5rem;
-`
 
-const StBiDownArrow = styled(BiDownArrow)`
-  font-size: 1.0rem;
-  margin-right: 0.5rem;
-`
 
-// const StBiSquare = styled(BiSquare)`
-//   font-size: 1.1rem;
-//   margin-right: 0.75rem;
-//   margin-bottom: -0.2rem;
-// `
-// const StBiCheckSquare = styled(BiCheckSquare)`
-//   font-size: 1.1rem;
-//   margin-right: 0.75rem;
-//   margin-bottom: -0.2rem;
-// `
-
-// const Item = styled.div`
-//   margin: 0.25rem;
-// `

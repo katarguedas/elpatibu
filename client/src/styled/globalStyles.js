@@ -18,6 +18,14 @@ const MainGroup = styled.div`
   flex-direction: row;
 `
 
+const MainContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-left: 0.75rem;
+  flex-grow: 1;
+`
+
 const PageTitle = styled.h1`
   margin: 1.5rem;
   padding: 0 0 0 0.75rem;
@@ -61,29 +69,33 @@ const LabelText = styled.div`
   `
 
 const Accordion = styled.div`
-border: 1.5px solid ${(props) => props.theme.colors.col21};
-border-top-right-radius: 1.5rem;
-border-top-left-radius: 1.5rem;
-border-bottom-right-radius: 1.5rem;
-border-bottom-left-radius: 1.5rem;
-background-color: ${(props) => props.theme.colors.col20};
+color: ${(props) => props.theme.colors.col11};
+border: 0.5px solid ${(props) => props.theme.colors.col14};
+border-radius: 0.5rem;
+background-image: linear-gradient(to left, #fff, ${(props) => props.theme.colors.col24});
+/* background-image: ${ props => props.visible === true ? 'linear-gradient(toLeft, #fff, ${(props) => props.theme.colors.col24})' : 'linear-gradient(toLeft, #fff, ${(props) => props.theme.colors.col32})' }; */
+
+background-color: ${ props => props.visible === true ? props.theme.colors.col21 : props.theme.colors.col11 };
 box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
-&:hover{
-  background-color: ${(props) => props.theme.colors.col22};
-  border-color: ${(props) => props.theme.colors.col24};
-  color: white;
+
+&:hover {
+  background-color: ${(props) => props.theme.colors.col24};
+  background-image: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col23});
 }
 :active{
   background-color: #fff;
   color: black;
+  background-image: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col14});
 }
-padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+padding: 0.75rem 0.75rem 0.75rem 1.5rem;
 margin: 0.5rem 1.5rem;
 font-size: 1.25rem;
 font-weight: 500;
 `
+
+
 //---------------------------------------------------------
 
 export default globalStyles;
 
-export { ContentGroup, MainGroup, PageTitle, InputField, LabelText, TitleH2, StP, FormField, Accordion}
+export { ContentGroup, MainGroup, MainContent, PageTitle, InputField, LabelText, TitleH2, StP, FormField, Accordion}

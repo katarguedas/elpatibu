@@ -10,25 +10,50 @@ import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect } from "react"
 
 import styled from "styled-components"
-import { ContentGroup, MainGroup, PageTitle } from "../styled/globalStyles"
+import { ContentGroup, MainGroup, MainContent, PageTitle } from "../styled/globalStyles"
 import { useDataContext } from "../providers/dataContext";
 
 //---------------------------------------------------------
 
 const OpenDiary = () => {
 
-    const { user, anyChange, checkToken } = useUserContext();
+    const { user, userData, anyChange, checkToken } = useUserContext();
     const { diary, getDiaryFromBackend } = useDataContext();
 
     const location = useLocation();
     const navigate = useNavigate();
 
-    if (!user)
-        navigate('/login')
+    // console.log("USER?", user)
+    // console.log("USERDATA?", userData)
+    // console.log("DIARY?", diary)
+
+    //----------------------------
 
     useEffect(() => {
+        if (!user)
+            navigate('/login')
         checkToken();
-    }, [location, anyChange])
+    }, [location])
+
+
+
+    useEffect(() => {
+        if(userData)
+        if (!diary) {
+            if (userData.diaryId) {
+                console.log("noch kein Diary da, schau nach, ob was im Backend ist")
+                getDiaryFromBackend(userData.diaryId)
+            }
+            else
+                console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
+        }
+        else {
+            console.log("Diary:", diary)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+//------------------------------------------------------
 
     const handleEdit = () => {
         navigate('/EditDiary')
@@ -38,18 +63,18 @@ const OpenDiary = () => {
         navigate('/DiaryData')
     }
 
-    const handleAddValues =() => {
+    const handleAddValues = () => {
         // ...
     }
 
-    console.log("DIARY: \n", diary)
+    // console.log("DIARY: \n", diary)
 
     return (
         <ContentGroup>
             <Header />
             <MainGroup>
                 <NavBar />
-                <Group>
+                <MainContent>
                     <PageTitle>Dein persönliches Patienten-Tagebuch</PageTitle>
 
                     <ButtonField>
@@ -57,10 +82,10 @@ const OpenDiary = () => {
                             <StGiFountainPen />Daten eintragen</DiaryButton>
                         <DiaryButton onClick={handleShowResults}>
                             <StGiChart />Ergebnisse sehen</DiaryButton>
-                            <DiaryButton onClick={handleAddValues}>
+                        <DiaryButton onClick={handleAddValues}>
                             <StBiListPlus />Werte hinzufügen</DiaryButton>
                     </ButtonField>
-                </Group>
+                </MainContent>
             </MainGroup>
             <Footer />
         </ContentGroup >
@@ -75,7 +100,7 @@ export default OpenDiary;
 //---------------------------------------------------------
 
 
-const Group = styled.div`
+const OpenDiaryGroup = styled.div`
   display: flex;
   flex-direction: column;
   text-align: left;

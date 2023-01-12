@@ -13,19 +13,19 @@ const temperatureSchema = new mongoose.Schema({
 
 //---children ------------------------------------------
 
-const dateSchema = new mongoose.Schema({
-    id: String,
-    values: [Date]
-});
+// const dateSchema = new mongoose.Schema({
+//     id: String,
+//     values: [Date]
+// });
 
-const valuesSchema = new mongoose.Schema({
-    name: String,
-    id: String,
-    label: String,
-    unit: String,
-    selected: Boolean,
-    values: []
-});
+// const valuesSchema = new mongoose.Schema({
+//     name: String,
+//     id: String,
+//     label: String,
+//     unit: String,
+//     selected: Boolean,
+//     values: []
+// });
 
 
 const itemSchema = new mongoose.Schema({

@@ -65,7 +65,7 @@ const HomeIcon = styled(RxHome)`
   margin: 1.5rem;
   margin-left: 3.0rem;
   border: 2.0px solid ${(props) => props.theme.colors.white};
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   font-size: 2.5rem;
   color: #000;
   background-color: #fff;

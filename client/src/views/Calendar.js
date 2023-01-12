@@ -9,7 +9,7 @@ import { useUserContext } from "../providers/userContext"
 import { useLocation, useNavigate } from "react-router-dom";
 
 import styled from "styled-components"
-import { ContentGroup, MainGroup, PageTitle } from "../styled/globalStyles"
+import { ContentGroup, MainGroup, MainContent, PageTitle } from "../styled/globalStyles"
 
 //---------------------------------------------------------
 
@@ -39,10 +39,10 @@ const Calendar = () => {
             <Header />
             <MainGroup>
                 <NavBar />
-                <Calendargroup>
+                <MainContent>
                     <PageTitle>Kalender</PageTitle>
                  <div>   </div>
-                </Calendargroup>
+                </MainContent>
             </MainGroup>
             <Footer />
         </ContentGroup>

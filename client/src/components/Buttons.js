@@ -12,7 +12,7 @@ const Button = styled.button`
   background-color: #fff;
   font-size: 1.0rem;
   font-weight: 600;
-  border-radius: 1.0rem;
+  border-radius: 0.25rem;
   border: none;
   width: 9.0rem;
   height: 2.0rem;
@@ -22,11 +22,11 @@ const Button = styled.button`
 `
 //................................
 const AuthButton = styled(Button)`
-  border: 2.5px solid ${(props) => props.theme.colors.col10};
+  border: 2.0px solid ${(props) => props.theme.colors.col10};
   &:hover{
-    background-color: ${(props) => props.theme.colors.col22};
+    background-color: ${(props) => props.theme.colors.col20};
     color: white;
-    border: 2.5px solid ${(props) => props.theme.colors.white};
+    border: 2.5px solid ${(props) => props.theme.colors.col21};
   };
   &:active{
     background-color: ${(props) => props.theme.colors.col11};
@@ -38,11 +38,12 @@ const AuthButton = styled(Button)`
 //................................
 const SendButton = styled(Button)`
   margin-top: 1.5rem;
-  border: 2.5px solid ${(props) => props.theme.colors.col10}; 
+  border: 2.0px solid ${(props) => props.theme.colors.col10}; 
+  border-radius: 0.25rem;
   &:hover{
     background-color: ${(props) => props.theme.colors.col20};
     color: white;
-    border: 2.5px solid ${(props) => props.theme.colors.white};
+    border: 2.5px solid ${(props) => props.theme.colors.col21};
   };
   &:active{
     background-color: ${(props) => props.theme.colors.col11};
@@ -57,7 +58,7 @@ const NavButton = styled.button`
   margin: 1.0rem;
   margin-left: 2.5rem;
   border: 2.5px solid ${(props) => props.theme.colors.white};
-  border-radius: 1.0rem;
+  border-radius: 0.5rem;
   background-color: #fff;
   &:hover{
     background-color: ${(props) => props.theme.colors.col23};
@@ -78,7 +79,7 @@ const DiaryButton = styled.button`
   height: 7.0rem;
   margin: 1.0rem 1.0rem 1.0rem 3.0rem;
   border: 2.5px solid ${(props) => props.theme.colors.col23};
-  border-radius: 1.0rem;
+  border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -90,9 +91,9 @@ const DiaryButton = styled.button`
   border: 2.5px solid ${(props) => props.theme.colors.col13};
   background-color: ${(props) => props.theme.colors.col33};
   &:hover{
-    background-color: ${(props) => props.theme.colors.col20};
-    border-color: ${(props) => props.theme.colors.white};
-    color: white;
+    background-color: ${(props) => props.theme.colors.col23};
+    border-color: ${(props) => props.theme.colors.col21};
+    /* color: ${(props) => props.theme.colors.col12};; */
   }
   :active{
     background-color: ${(props) => props.theme.colors.col14};

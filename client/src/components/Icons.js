@@ -1,5 +1,5 @@
 import { GiNotebook, GiWhiteBook, GiCalendar, GiFountainPen, GiChart } from "react-icons/gi";
-import {BiListPlus} from "react-icons/bi";
+import {BiListPlus, BiRightArrow, BiDownArrow} from "react-icons/bi";
 
 import styled from "styled-components";
 //---------------------------------------------------------
@@ -37,7 +37,14 @@ const StBiListPlus = styled(BiListPlus)`
   font-size: 3.0rem;
   margin: 0.75rem;
 `
-
+const StBiRightArrow = styled(BiRightArrow)`
+  font-size: 1.0rem;
+  margin-right: 0.5rem;
+`
+const StBiDownArrow = styled(BiDownArrow)`
+  font-size: 1.0rem;
+  margin-right: 0.5rem;
+`
 
 //---------------------------------------------------------
-export { StGiBook, StGiWhiteBook, StGiCalendar, StGiChart, StGiFountainPen, StBiListPlus }
+export { StGiBook, StGiWhiteBook, StGiCalendar, StGiChart, StGiFountainPen, StBiListPlus, StBiRightArrow, StBiDownArrow }

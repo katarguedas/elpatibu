@@ -44,12 +44,12 @@ const StPanel = styled.div`
   /* z-index: -1; */
   padding: 2.0rem 0.5rem 0.25rem 1.5rem;
   margin: 1.5rem;
-  border-left: 1px solid ${(props) => props.theme.colors.col22};
-  border-bottom: 1px solid ${(props) => props.theme.colors.col22};
-  border-right: 1px solid ${(props) => props.theme.colors.col22};
-  border-right: 1px solid ${(props) => props.theme.colors.col22};
-  border-bottom-left-radius: 1.2rem;
-  border-bottom-right-radius: 1.2rem;
+  border-left: 1px solid ${(props) => props.theme.colors.col14};
+  border-bottom: 1px solid ${(props) => props.theme.colors.col14};
+  border-right: 1px solid ${(props) => props.theme.colors.col14};
+  border-right: 1px solid ${(props) => props.theme.colors.col14};
+  /* border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem; */
 `
 
 const StBiSquare = styled(BiSquare)`

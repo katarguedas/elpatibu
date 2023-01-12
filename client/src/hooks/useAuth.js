@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const useAuth = () => {
 
+
     const [token, setToken] = useState();
     const [user, setUser] = useState('');
     const [userData, setUserData] = useState()
@@ -34,17 +35,26 @@ const useAuth = () => {
 
     //---------------------------------------------------------
 
+ 
     useEffect(() => {
-        if(!user) {
-          const ls = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    
-    if (ls !== null) {
-      const decodedJwt = jwt_decode(ls.access)
-      setUserData({ name: decodedJwt.name, diaryId: decodedJwt.diaries })
-      setUser(decodedJwt.email);
-    }
-    }
-    }, [user])
+        if (!user) {
+            const ls = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+
+            if (ls !== null) {
+                const decodedJwt = jwt_decode(ls.access)
+                setUserData({ name: decodedJwt.name, diaryId: decodedJwt.diaries })
+                setUser(decodedJwt.email);
+                setToken(ls.access)
+            }
+        }
+    }, [])
+
+
+    useEffect(() => {
+        if((user) && (!userData))
+          checkToken();
+    }, [])
+
 
     //---------------------------------------------------------
 
@@ -129,6 +139,8 @@ const useAuth = () => {
         if (lsToken !== null) {
             const decodedJwt = jwt_decode(lsToken.access)
             setUser(decodedJwt.email)
+            setUserData({ name: decodedJwt.name, diaryId: decodedJwt.diaries })
+
 
             console.log("user:", user)
             if (decodedJwt.exp * 1000 > Date.now()) {

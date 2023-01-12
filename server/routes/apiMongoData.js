@@ -51,7 +51,7 @@ router.get('/api/getDiary', async (req, res) => {
 
     try {
       const result = await Diary.findOne({ id: req.query.id })
-      console.log("res", result)
+      // console.log("res", result)
       return res.status(200).send({ status: 'ok', message: 'Diary found', data: result });
     } catch (error) {
       res.status(400).send({ status: 'error', error })
@@ -67,14 +67,10 @@ router.post('/api/saveData', async(req, res) => {
 
   try {
     const result =  Diary.findOneAndUpdate( { id: req.body.id, $match: { id: req.body.groupId, name: req.body.itemName } }, { $push: {values: "222"} } ,
-      { new: true,
-      // upsert: true,
-      rawResult: true })
-
-    // ([{ $match: { 'name.last': 'Ghost' } }]);
+      { new: true, rawResult: true })
 
 
-    console.log("result",result)
+    // console.log("result",result)
 
     res.status(200).send({ status: '0k', message: 'saved data'})
   } catch (error) {

@@ -12,14 +12,14 @@ import { useUserContext } from "../providers/userContext";
 import { BiRightArrow, BiDownArrow } from "react-icons/bi";
 
 import styled from "styled-components";
-import { ContentGroup, MainGroup, Accordion, PageTitle } from "../styled/globalStyles"
+import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle } from "../styled/globalStyles"
 import { useDataContext } from "../providers/dataContext";
 
 //---------------------------------------------------------
 
 const EditDiary = () => {
 
-  const { user, checkToken } = useUserContext();
+  const { user, userData, checkToken, getDiaryFromBackend } = useUserContext();
   const { diary } = useDataContext();
 
   const [edit, setEdit] = useState(false);
@@ -27,22 +27,24 @@ const EditDiary = () => {
   let location = useLocation();
   const navigate = useNavigate();
 
-  // console.log("selected? ", diary.groups[0].items[0].selected)
+
+
 
   useEffect(() => {
-    if (!user)
-      navigate('/login');
-    checkToken();
+    if ((userData) && (user))
+      if (!diary) {
+        if (userData.diaryId) {
+          console.log("noch kein Diary da, schau nach, ob was im Backend ist")
+          getDiaryFromBackend(userData.diaryId)
+        }
+        else
+          console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
+      }
+      else {
+        console.log("Diary:", diary)
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  useEffect(() => {
-    if (!user)
-      navigate('/login');
-    checkToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location])
-
 
   const handleClick = () => {
     setEdit(!edit);
@@ -55,7 +57,7 @@ const EditDiary = () => {
       <Header />
       <MainGroup>
         <NavBar />
-        <Group>
+        <MainContent>
 
           <PageTitle>Hier kannst Du neue Daten eingeben</PageTitle>
 
@@ -65,7 +67,7 @@ const EditDiary = () => {
               e.items.filter(e => e.selected === true).length > 0 &&
               <Items key={e.id} >
 
-                <StAccordion onClick={handleClick}>
+                <Accordion visible={edit} onClick={handleClick}>
 
                   {edit ?
                     <StBiDownArrow></StBiDownArrow>
@@ -73,8 +75,9 @@ const EditDiary = () => {
                     <StBiRightArrow></StBiRightArrow>
                   }
                   {e.label}
+                  
 
-                </StAccordion>
+                </Accordion>
                 {edit ?
                   <div>
 
@@ -89,7 +92,7 @@ const EditDiary = () => {
 
             ))
           }
-        </Group>
+        </MainContent>
       </MainGroup>
       <Footer />
     </ContentGroup>
@@ -104,22 +107,26 @@ export default EditDiary;
 //---------------------------------------------------------
 
 
-const Group = styled.div`
+const EditDiaryGroup = styled.div`
   display: flex;
   flex-direction: column;
 `
 
-const StAccordion = styled(Accordion)`
-  border-radius: 1.5rem;
-  border-color: ${(props) => props.theme.colors.white};
-  background-color: ${(props) => props.theme.colors.col30};
-  &:hover {
-    background-color: ${(props) => props.theme.colors.col32};
-    color: black;
-  }
-  box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
-  box-shadow: none;  
-`
+
+// const StAccordion = styled(Accordion)`
+//   border-radius: 1.5rem;
+//   border: 1.5px solid ${(props) => props.theme.colors.col21};
+//   background-color: ${(props) => props.theme.colors.col20};
+//   &:hover{
+//   background-color: ${(props) => props.theme.colors.col22};
+//   border-color: ${(props) => props.theme.colors.col24};
+//   color: white;
+// }
+// :active{
+//   background-color: #fff;
+//   color: black;
+// }
+// `
 
 const StBiRightArrow = styled(BiRightArrow)`
   font-size: 1.0rem;
@@ -136,11 +143,7 @@ const Items = styled.div`
 `
 
 const StDiv = styled.div` 
-/* display: ${props => props.visible ? 'flex' : 'none'}; */
   flex-direction: column;
-  /* text-align: center; */
-  /* position: relative; */
-  /* top: -2.75rem; */
   padding: 0.25rem 0.5rem 0.25rem 0.5rem;
   margin: 1.25rem;
   font-size: 1.15rem;

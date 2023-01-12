@@ -19,7 +19,7 @@ import { useUserContext } from "../providers/userContext";
 const GetData = ({ index }) => {
 
     const { diary, setDiary, saveDataToBackend, getDiaryFromBackend } = useDataContext();
-    const { user, userData, checkToken, LOCAL_STORAGE_KEY} = useUserContext();
+    const { user, userData, checkToken} = useUserContext();
 
     const [saved, setSaved] = useState(false);
     const [done, setDone] = useState(false);
@@ -37,17 +37,24 @@ const GetData = ({ index }) => {
     let location = useLocation();
     const navigate = useNavigate();
 
+
+    console.log("USER?", user)
+    console.log("USERDATA?", userData)
+    console.log("DIARY?", diary)
+
     //-----------------------------------------------------------------
 
-
     useEffect(() => {
+        if((user) && (!userData))
+          checkToken();
         if (!user)
-            navigate('/login')
+            navigate('/login');
         checkToken();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location])
+    }, [])
+
 
     //........................
+
 
     useEffect(() => {
 
@@ -64,7 +71,7 @@ const GetData = ({ index }) => {
             console.log("Diary:", diary)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [location])
 
     //---------------------------
 
@@ -180,7 +187,7 @@ const GetData = ({ index }) => {
 
             {
                 <FormField onSubmit={handleSubmit} >
-                    {diary?.groups[index].items.map((e, i) => (
+                    {diary.groups[index].items.map((e, i) => (
                         e.selected ?
                             <InputLabel key={e.id}>
                                 <StLabelText>{e.label}</StLabelText>

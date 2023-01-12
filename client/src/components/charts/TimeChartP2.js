@@ -5,10 +5,11 @@ import 'chartjs-adapter-luxon';
 
 import annotationPlugin from 'chartjs-plugin-annotation';
 
+import { theme } from '../../themes/theme'
 
 //----------------------------------------------------------------------
 
-const TimeChartT = ({ xValues, yValues }) => {
+const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
 
     ChartJS.register(
         CategoryScale,
@@ -26,7 +27,9 @@ const TimeChartT = ({ xValues, yValues }) => {
 
     //................................................
 
-    
+    const testcolor = theme.colors.col10;
+    const l1 = theme.colors.col21;
+    const l2 = theme.colors.col10;
     
     const myColor1 = ['#BF5C54']
     const textColor = ['#1B545C']
@@ -37,19 +40,36 @@ const TimeChartT = ({ xValues, yValues }) => {
 
     //...................
 
-    const myData = xValues.map((e, i) => {
-        return ({ x: e, y: yValues[i] })
+    const pressureH = xValues.map((e, i) => {
+        return ({ x: e, y: y1Values[i] })
     })
-    console.log(typeof(myData))
+    const pressureL = xValues.map((e, i) => {
+        return ({ x: e, y: y2Values[i] })
+    })
+    // console.log(myData)
 
     const data = {
         // labels, //nur bei type: Line
         datasets: [
             {
-                // label: 'Körpertemperatur',
-                data: myData,
+                label: 'Systolischer Druck',
+                data: pressureH,
                 borderColor: myColor1,
                 backgroundColor: myColor1,
+                tension: 0,
+                borderWidth: 1,
+                spanGaps: true,
+                connect: false,
+                fill: false,
+                pointStyle: 'circle',
+                pointBorderColor: '#000',
+                radius: 6
+            },
+            {
+                label: 'diastolischer Druck',
+                data: pressureL,
+                borderColor: testcolor,
+                backgroundColor: testcolor,
                 tension: 0,
                 borderWidth: 1,
                 spanGaps: true,
@@ -69,66 +89,58 @@ const TimeChartT = ({ xValues, yValues }) => {
         responsive: true,
         plugins: {
             legend: {
-                display: false
+                display: true,
+                labels: {
+                    font: { size: 14 }
+                }
                 // position: 'top',
             },
             title: {
                 display: true,
-                text: 'Körpertemperatur',
+                text: 'Blutdruck',
                 font: { size: 22 },
                 color: textColor
             },
-            arbitraryLine: {
-                lineColor: 'red',
-                yPosition: 37,
-            },
             annotation: {
                 annotations: {
+                    // point1: {
+                    //     type: 'point',
+                    //     xValue: 1,
+                    //     yValue: 60,
+                    //     backgroundColor: 'rgba(255, 99, 132, 0.25)'
+                    //   },
                     line1: {
                         type: 'line',
-                        xMin: myData[7].x,
-                        xMax: myData[7].x,
-                        borderColor: 'rgb(255, 99, 132)',
+                        yMin: 120,
+                        yMax: 120,
+                        borderColor: l1,
                         borderWidth: 2,
+                        label: {
+                            display: true,
+                            content: 'Optimalwert',
+                            position: 'end',
+                            yAdjust: 15,
+                            padding: 5,
+                            backgroundColor: theme.colors.col34,
+                            color: theme.colors.col21
+                        }
                       },
-                    box1: {
-                        type: 'box',
-                        // xMin: 1669892400000,
-                        // xMin: 1669849200000,
-                        xMin: myData[0].x,
-                        xMax: myData[30].x,
-                        yMin: 36,
-                        yMax: 37.5,
-                        backgroundColor: bggreen,
-                        drawTime: 'beforeDatasetsDraw',
-                    },
-                    box2: {
-                        type: 'box',
-                        xMin: myData[0].x,
-                        xMax: myData[30].x,
-                        yMin: 37.5,
-                        yMax: 38,
-                        backgroundColor: bgyellow,
-                        drawTime: 'beforeDatasetsDraw',
-                    },
-                    box3: {
-                        type: 'box',
-                        xMin: myData[0].x,
-                        xMax: myData[30].x,
-                        yMin: 38,
-                        yMax: 39.0,
-                        backgroundColor: bgorange,
-                        drawTime: 'beforeDatasetsDraw',
-                    },
-                    box4: {
-                        type: 'box',
-                        xMin: myData[0].x,
-                        xMax: myData[30].x,
-                        yMin: 39.0,
-                        yMax: 40,
-                        backgroundColor: bgred,
-                        drawTime: 'beforeDatasetsDraw',
-                    }
+                      line2: {
+                        type: 'line',
+                        yMin: 80,
+                        yMax: 80,
+                        borderColor: l2,
+                        borderWidth: 2,
+                        label: {
+                            display: true,
+                            content: 'Optimalwert',
+                            position: 'end',
+                            yAdjust: 15,
+                            padding: 5,
+                            backgroundColor: theme.colors.col34,
+                            color: theme.colors.col11
+                        }
+                      }
                 }
             }
         },
@@ -157,17 +169,19 @@ const TimeChartT = ({ xValues, yValues }) => {
                 }
             },
             y: {
+                suggestedMin: 70, 
+                // suggestedMax: 200,
                 title: {
                     display: true,
-                    text: 'Temperatur [°C]',
+                    text: 'Druck [mmHg]',
                     font: { size: 18 },
                     color: textColor,
                     padding: 20
                 },
                 ticks: {
                     font: {size: 16},
-                },
-            },
+                }
+            }
         }
     };
 
@@ -176,7 +190,7 @@ const TimeChartT = ({ xValues, yValues }) => {
 
     return (
         <div >
-            <Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem'}}  options={options} data={data} redraw={true} />
+            <Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem'}}  options={options} data={data} redraw={true}  />
         </div>
     )
 };
@@ -184,5 +198,5 @@ const TimeChartT = ({ xValues, yValues }) => {
 
 
 
-export default TimeChartT;
+export default TimeChartP2;
 
