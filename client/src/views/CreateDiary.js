@@ -21,7 +21,7 @@ import { useUserContext } from "../providers/userContext"
 const CreateDiary = () => {
 
     const { diaryInit, diaryTemplate, setDiaryTemplate, createNewDiary } = useDataContext();
-    const { user, userData, anyChange, checkToken } = useUserContext();
+    const { user, userData, checkToken } = useUserContext();
 
     const [on, setOn] = useState();
     // const [diaryName, setDiaryName] = useState();
@@ -53,6 +53,8 @@ const CreateDiary = () => {
             navigate('/login');
         checkToken();
     }, [location])
+
+
 
     const handleClick = (id) => {
         console.log("handleClick, id:", id)

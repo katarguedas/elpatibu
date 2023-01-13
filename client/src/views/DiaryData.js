@@ -5,14 +5,13 @@ import NavBar from '../components/NavBar'
 // import TimeChartP2 from '../components/charts/TimeChartP2'
 import { createPData } from '../utils/testdata'
 import PlotVital from "../components/PlotVital"
+import PlotMeteo from "../components/PlotMeteo"
 import { StBiDownArrow, StBiRightArrow } from '../components/Icons'
-import { useState } from "react"
-
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"
 
 import { ContentGroup, MainGroup, MainContent, Accordion } from "../styled/globalStyles"
 import { useUserContext } from "../providers/userContext"
-import { useEffect } from "react"
+
 
 import styled from "styled-components"
 import { useDataContext } from "../providers/dataContext"
@@ -21,20 +20,37 @@ import { useDataContext } from "../providers/dataContext"
 
 const DiaryData = () => {
 
-    const { user, checkToken } = useUserContext();
-    const { diary } = useDataContext();
+    // const { user, checkToken } = useUserContext();
+    const { diary, setDiary } = useDataContext();
 
     const [edit, setEdit] = useState(false);
     // const [open, setOpen] = useState(false);
 
-
     //------------------
 
 
-
-    const handleClick = () => {
+    const handleClick = (id) => {
         setEdit(!edit);
+        console.log("ID", id)
+        setDiary({ ...diary }, diary.groups.map(e => {
+            console.log(e.visible)
+            if (e.id === id)
+                e.visible = false;
+            return e;
+        }))
     }
+
+    // useEffect(() => {
+    //     if(diary)
+    //     diary.groups.map(e => {
+    //         setDiary({ ...diary }, diary.groups.map((e) => {
+    //             e.visible = false;
+    //         }))
+    //         console.log("visible", e.visible)
+    //     }, [])
+    // })
+
+
 
     return (
         <ContentGroup>
@@ -45,10 +61,10 @@ const DiaryData = () => {
                     {
                         diary &&
                         diary.groups.map((e, i) => (
-
+                            e.items.filter(e => e.selected === true).length > 0 &&
                             <Items key={e.id} >
 
-                                { <Accordion visible={edit} onClick={handleClick}>
+                                {<Accordion visible={edit} onClick={() => handleClick (i)}>
 
                                     {edit ?
                                         <StBiDownArrow></StBiDownArrow>
@@ -57,11 +73,18 @@ const DiaryData = () => {
                                     }
                                     {e.label}
 
-                                </Accordion> }
-                                {
-                                    e.name === 'vital' &&
-                                    <PlotVital itemVital={e} />
-                                }
+                                </Accordion>}
+
+                                < ResultGroup >
+                                    {e.visible === true &&
+                                        e.name === 'vital' &&
+                                        <PlotVital itemVital={e} />
+                                    }
+                                    {e.visible &&
+                                        e.name === 'meteorosensitivity' &&
+                                        <PlotMeteo itemMeteo={e} />
+                                    }
+                                </ResultGroup>
                             </Items>
                         ))
                     }
@@ -92,3 +115,6 @@ const Items = styled.div`
   margin-bottom: 0;
 `
 
+const ResultGroup = styled.div`
+  /* display: ${props => props.visible === true ? 'flex' : 'none'}; */
+`

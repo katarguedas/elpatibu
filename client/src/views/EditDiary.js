@@ -24,10 +24,6 @@ const EditDiary = () => {
 
   const [edit, setEdit] = useState(false);
 
-  let location = useLocation();
-  const navigate = useNavigate();
-
-
 
 
   useEffect(() => {
