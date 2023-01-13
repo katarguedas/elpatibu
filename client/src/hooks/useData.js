@@ -22,13 +22,6 @@ const useData = () => {
         }
     );
 
-    const [test, setTest] = useState({
-        id: uuidv4(),
-        groups: [{
-            id: uuidv4(),
-            data: [2, 3]
-        }]
-    })
 
     const [diarySaved, setDiarySaved] = useState();
 
@@ -37,7 +30,6 @@ const useData = () => {
     const [diary, setDiary] = useState('');
 
     const [diaryInit, setDiaryInit] = useState({
-        // const diaryInit = {
         id: uuidv4(),
         diaryName: 'test',
         date: [],
@@ -351,7 +343,7 @@ const useData = () => {
         // console.log("diarySaved:", diarySaved)
 
         setDiaryTemplate('');
-        return(true)
+        return (true)
     }
 
     //................................................
@@ -386,7 +378,7 @@ const useData = () => {
         return;
     }
 
-        //................................................
+    //................................................
 
     const getDiaryFromBackend = async (id) => {
 
@@ -410,27 +402,23 @@ const useData = () => {
 
     //................................................
 
-    const saveDataToBackend = async (id, groupId, items, update) => {
+    const saveDataToBackend = async (id, groupId, items, ts, update) => {
 
-        console.log(id)
-        console.log(groupId)
-        console.log(items)
+        // console.log(id)
+        // console.log(groupId)
+        // console.log(items)
         console.log(update)
 
+        // saveDataToBackend(diary.id, diary.groups[index].id, diary.groups[index].items, update);
+
         let raw = JSON.stringify(
-        //     {
-        //     id: id,
-        //     index: groupsId,
-        //     items: items,
-        //     update: update
-        // }
-        {
-            id: '823f432d-4066-4a6e-8e8f-e7c1f52fa812',
-            groupId: '358c9480-e196-403e-9b58-1ced53a034d3',
-            itemId: '32dbae8b-f324-49fd-9a8a-6fea721b7350',
-            itemName: 'temperature',
-            value: '100'
-        }
+            {
+                id: id,
+                groupId: groupId,
+                items: items,
+                ts: ts,
+                update: update,
+            }
         )
 
         console.log("raw", raw)
@@ -443,12 +431,12 @@ const useData = () => {
         };
 
         await fetch('/api/saveData', requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                    console.log("result", result.message)
-                    console.log(result.data)
-                })
-                .catch(error => console.log('error', error))
+            .then(response => response.json())
+            .then(result => {
+                console.log("result", result.message)
+                console.log(result.data)
+            })
+            .catch(error => console.log('error', error))
     }
 
     //-------------------------------------------------------------

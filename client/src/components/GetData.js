@@ -19,9 +19,9 @@ import { useUserContext } from "../providers/userContext";
 const GetData = ({ index }) => {
 
     const { diary, setDiary, saveDataToBackend, getDiaryFromBackend } = useDataContext();
-    const { user, userData, checkToken} = useUserContext();
+    const { user, userData, checkToken } = useUserContext();
 
-    const [saved, setSaved] = useState(false);
+    const [saved, setSaved] = useState();
     const [done, setDone] = useState(false);
     const [update, setUpdate] = useState();
 
@@ -37,19 +37,19 @@ const GetData = ({ index }) => {
     let location = useLocation();
     const navigate = useNavigate();
 
+    const ts = todayDate();
 
-    console.log("USER?", user)
-    console.log("USERDATA?", userData)
+    // console.log("USER?", user)
+    // console.log("USERDATA?", userData)
     console.log("DIARY?", diary)
 
     //-----------------------------------------------------------------
 
     useEffect(() => {
-        if((user) && (!userData))
-          checkToken();
+        if ((user) && (!userData))
+            checkToken();
         if (!user)
             navigate('/login');
-        checkToken();
     }, [])
 
 
@@ -58,85 +58,33 @@ const GetData = ({ index }) => {
 
     useEffect(() => {
 
-        if(userData)
-        if (!diary) {
-            if (userData.diaryId) {
-                console.log("noch kein Diary da, schau nach, ob was im Backend ist")
-                getDiaryFromBackend(userData.diaryId)
+        console.log("USER?", user)
+        console.log("USERDATA?", userData)
+
+        if (userData)
+            if (!diary) {
+                if (userData.diaryId) {
+                    console.log("USER?", user)
+                    console.log("USERDATA?", userData)
+                    console.log("noch kein Diary da, schau nach, ob was im Backend ist")
+                    getDiaryFromBackend(userData.diaryId)
+                }
+                else
+                    console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
             }
-            else
-                console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
-        }
-        else {
-            console.log("Diary:", diary)
-        }
+            else {
+                // console.log("Diary:", diary)
+            }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location])
 
-    //---------------------------
+    //.............................
 
-    useEffect(() => {
-        if (saved === true)
-            setDone(true)
-    }, [saved])
-
-    //------------------------------
-
-    useEffect(() => {
-
-        let val = 0;
-        diary.groups[index].items.map((el, i) => {
-
-            data.map(element => {
-                if (element.name === el.name)
-                    val = element.value;
-                return val;
-            })
-
-            const ts = todayDate()
-
-            if (update === true) {
-                console.log("Aktualisiere die Daten")
-                const tsIndex = diary.date.findIndex(e => e === todayDate());
-                console.log(tsIndex)
-                setDiary({ ...diary }, diary.groups[index].items[i].values[tsIndex] = val)
-
-                setDiary({ ...diary }, diary.date = [...diary.date, ts])
-
-            } else if (update === false) {
-                console.log("Schreibe neue Daten")
-                setDiary({ ...diary },
-                    diary.groups[index].items[i].values = 
-                    [...diary.groups[index].items[i].values, val])
-
-                setDiary({ ...diary }, diary.date = [...diary.date, ts])
-            }
-        })
-
-    }, [update])
-
-    //-----------------------------------------
-
-    useEffect(() => {
-
-        if (saved)
-        saveDataToBackend(diary.id, diary.groups[index].id, diary.groups[index].items, update);
-    }, [saved])
-
-    //......................
-
-    const checkDate = (ts) => {
-        return diary.date.findIndex(e => e === ts)
-    }
-
-    const saveValues = () => {
-
-        //check time Data
-        const ts = todayDate()
-        console.log(ts)
+    const checkTs = () => {
 
         if (diary.date.length > 0) {
-            const res = checkDate(ts);
+            // checke, ob heutiges Datum bereits gespeichert
+            const res = diary.date.findIndex(e => e === ts);
 
             if (res >= 0) {
                 console.log("Heutiges Datum bereits vorhanden")
@@ -154,21 +102,89 @@ const GetData = ({ index }) => {
 
     //......................................
 
-    const handleChange = (e) => {
+    useEffect(() => {
 
-        setData([...data,
-        { name: e.target.name, value: e.target.value }])
-    }
+        if (update !== undefined) {
+
+            // heutiges Datum eintragen:
+            if ((update === false) && (saved !== true))
+                setDiary({ ...diary }, diary.date = [...diary.date, ts])
+
+            let val = null;
+
+            // bereite Die eingegebenen Daten vor
+            diary.groups[index].items.map((el, i) => {
+                console.log("item: ", el.name)
+                val = null;
+                data.map(element => {
+                    if (element.name === el.name)
+                        val = element.value;
+                    return val;
+                })
+
+                if (update === true) {
+                    console.log("Aktualisiere die Daten")
+                    const tsIndex = diary.date.findIndex(e => e === todayDate());
+                    // Wurde ein neuer Wert eingegeben so überschreibe den alten, wenn vorhanden, sonst schreibe ihn ans Ende. Wurde kein neuer Wert eingegeben, dann setze ihn auf 'Null', falls noch nich vorhanden.
+                    if (val !== null) {
+                        if (diary.groups[index].items[i].values.length === diary.date.length) {
+                            setDiary({ ...diary }, diary.groups[index].items[i].values[tsIndex] = val)
+                        }
+                        else {
+                            setDiary({ ...diary }, diary.groups[index].items[i].values =
+                                [...diary.groups[index].items[i].values, val])
+                        }
+                    } else if (val === null) {
+                        if (diary.groups[index].items[i].values.length < diary.date.length)
+                            setDiary({ ...diary }, diary.groups[index].items[i].values =
+                                [...diary.groups[index].items[i].values, val])
+                    }
+                    setSaved(true);
+                } else if (update === false) {
+                    console.log("Schreibe neue Daten")
+
+                    // neuen Wert eintragen:
+                    console.log("neuer Wert für:", diary.groups[index].items[i].name)
+                    setDiary({ ...diary },
+                        diary.groups[index].items[i].values =
+                        [...diary.groups[index].items[i].values, val])
+                    setSaved(true);
+                }
+            })
+        }
+    }, [update])
+
+    //---------------------------
+
+    useEffect(() => {
+        if (saved === true)
+            setDone(true)
+    }, [saved])
+
+    //------------------------------
+    console.log('update', update)
+    console.log('saved', saved)
+
+
+    //-----------------------------------------
+
+    useEffect(() => {
+        console.log("BIN im saveDataToBackend-useEffect, saved: ", saved)
+        if (saved === true) {
+            console.log("saved:", saved)
+            saveDataToBackend(diary.id, diary.groups[index].id, diary.groups[index].items, ts, update);
+            setSaved()
+        }
+    }, [saved])
+
 
     //.......................................
 
     const handleSubmit = e => {
 
-        saveValues();
+        checkTs();
         e.preventDefault();
 
-
-        setSaved(true);
         timing();
         inputRefs.current.map(e => {
             e.value = '';
@@ -178,8 +194,16 @@ const GetData = ({ index }) => {
 
     const timing = () => {
         setTimeout(() => {
-            setSaved(false);
+            // setSaved(false);
         }, 3000)
+    }
+
+    //......................................
+
+    const handleChange = (e) => {
+
+        setData([...data,
+        { name: e.target.name, value: e.target.value }])
     }
 
     return (

@@ -25,6 +25,13 @@ const EditDiary = () => {
   const [edit, setEdit] = useState(false);
 
 
+  useEffect(() => {
+    if ((user) && (!userData))
+        checkToken();
+}, [])
+
+//........................
+
 
   useEffect(() => {
     if ((userData) && (user))
@@ -44,7 +51,6 @@ const EditDiary = () => {
 
   const handleClick = () => {
     setEdit(!edit);
-    // editItem()
   }
 
 

@@ -50,10 +50,10 @@ const useAuth = () => {
     }, [])
 
 
-    useEffect(() => {
-        if((user) && (!userData))
-          checkToken();
-    }, [])
+    // useEffect(() => {
+    //     if((user) && (!userData))
+    //       checkToken();
+    // }, [])
 
 
     //---------------------------------------------------------

@@ -47,7 +47,7 @@ export const todayDate = () => {
     // console.log("datum kriiert:", datum, "\n aus dem String: ", datumStr)
 
     const ts = datum.toMillis()
-    console.log("ts:", ts)
+    // console.log("ts:", ts)
     return ts;
 }
 
