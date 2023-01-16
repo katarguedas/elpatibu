@@ -19,26 +19,26 @@ import { useDataContext } from "../providers/dataContext";
 
 const EditDiary = () => {
 
-  const { user, userData, checkToken, getDiaryFromBackend } = useUserContext();
+  const { user, userData, checkToken } = useUserContext();
+  const { getDiaryFromBackend } = useDataContext();
   const { diary } = useDataContext();
 
   const [edit, setEdit] = useState(false);
 
+  let location = useLocation();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if ((user) && (!userData))
-        checkToken();
-}, [])
-
-//........................
+  //........................
 
 
   useEffect(() => {
-    if ((userData) && (user))
+    // console.log("USER?", user)
+    // console.log("USERDATA?", userData)
+    if (userData)
       if (!diary) {
         if (userData.diaryId) {
           console.log("noch kein Diary da, schau nach, ob was im Backend ist")
-          getDiaryFromBackend(userData.diaryId)
+          getDiaryFromBackend(userData.diaryId);
         }
         else
           console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
@@ -48,6 +48,7 @@ const EditDiary = () => {
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
 
   const handleClick = () => {
     setEdit(!edit);
@@ -77,7 +78,7 @@ const EditDiary = () => {
                     <StBiRightArrow></StBiRightArrow>
                   }
                   {e.label}
-                  
+
 
                 </Accordion>
                 {edit ?

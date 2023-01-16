@@ -8,12 +8,11 @@ import 'chartjs-adapter-luxon';
 import annotationPlugin from 'chartjs-plugin-annotation';
 
 import { theme } from '../../themes/theme'
-import { BiNoEntry } from 'react-icons/bi';
 
 
 //----------------------------------------------------------------------
 
-const TBarChartNMD = ({ xVal, yVal, name }) => {
+const BarChartNMD = ({ xVal, yVal, name }) => {
 
     // console.log("x", xVal)
     // console.log("y", yVal)
@@ -46,12 +45,9 @@ const TBarChartNMD = ({ xVal, yVal, name }) => {
     //...................
 
 
-    let myData;
-    if (xVal && yVal) {
-        const myData = xVal.map((e, i) => {
-            return ({ x: e, y: yVal[i] })
-        })
-    }
+    const myData = xVal.map((e, i) => {
+        return ({ x: e, y: yVal[i] })
+    })
     // console.log(myData)
 
 
@@ -81,7 +77,7 @@ const TBarChartNMD = ({ xVal, yVal, name }) => {
         responsive: true,
         plugins: {
             legend: {
-                display: false,
+                display: true,
                 labels: {
                     font: { size: 14 }
                 }
@@ -95,22 +91,6 @@ const TBarChartNMD = ({ xVal, yVal, name }) => {
             },
             annotation: {
                 annotations: {
-                    line1: {
-                        type: 'line',
-                        yMin: 5,
-                        yMax: 5,
-                        borderColor: 'red',
-                        borderWidth: 2,
-                        label: {
-                            display: true,
-                            content: 'sehr starke Kopfschmerzen',
-                            position: 'end',
-                            yAdjust: -1,
-                            padding: 5,
-                            backgroundColor: theme.colors.col34,
-                            color: theme.colors.col21
-                        }
-                    }
                 }
             }
         },
@@ -124,17 +104,16 @@ const TBarChartNMD = ({ xVal, yVal, name }) => {
                     padding: 20
                 },
                 ticks: {
-                    font: { size: 16 },
+                    font: {size: 16},
                     maxRotation: 90,
                 },
                 grid: {
-                    display: false,
                     tickColor: 'grey'
                 }
             },
             y: {
-                suggestedMin: -1,
-                suggestedMax: 5.5,
+                suggestedMin: 0, 
+                suggestedMax: 5,
                 title: {
                     display: true,
                     text: 'Intensität',
@@ -143,8 +122,7 @@ const TBarChartNMD = ({ xVal, yVal, name }) => {
                     padding: 20
                 },
                 ticks: {
-                    font: { size: 16 },
-                    stepSize: 1
+                    font: {size: 16},
                 }
             }
         }
@@ -160,5 +138,5 @@ const TBarChartNMD = ({ xVal, yVal, name }) => {
 
 
 
-export default TBarChartNMD;
+export default BarChartNMD;
 

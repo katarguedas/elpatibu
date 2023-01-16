@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,7 +10,7 @@ import { useUserContext } from "../providers/userContext";
 
 const useData = () => {
 
-    const { saveDiaryId, diaryIdSaved } = useUserContext()
+    const { saveDiaryIdInBackend, diaryIdSaved } = useUserContext()
 
     const [tempData, setTempData] = useState(
         {
@@ -46,6 +46,7 @@ const useData = () => {
                         label: 'Temperatur',
                         unit: '°C',
                         selected: false,
+                        measurable: true,
                         values: []
                     },
                     {
@@ -54,6 +55,7 @@ const useData = () => {
                         label: 'Systolischer Blutdruck',
                         unit: 'mmHg',
                         selected: false,
+                        measurable: true,
                         values: []
                     },
                     {
@@ -62,6 +64,7 @@ const useData = () => {
                         label: 'Diastolischer Blutdruck',
                         unit: 'mmHg',
                         selected: false,
+                        measurable: true,
                         values: []
                     },
                     {
@@ -70,6 +73,7 @@ const useData = () => {
                         label: 'Pulse',
                         unit: '1/Min',
                         selected: false,
+                        measurable: true,
                         values: []
                     }
                 ]
@@ -86,6 +90,7 @@ const useData = () => {
                         label: 'Körpergewicht',
                         unit: 'kg',
                         selected: false,
+                        measurable: true,
                         values: []
                     },
                 ]
@@ -102,6 +107,7 @@ const useData = () => {
                         label: 'Allgemeines Wohlbefinden',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     }
                 ]
@@ -118,6 +124,7 @@ const useData = () => {
                         label: 'Stimmung',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -126,6 +133,7 @@ const useData = () => {
                         label: 'Stimmungsschwankungen',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     }
                 ]
@@ -142,6 +150,7 @@ const useData = () => {
                         label: 'Stunden Schlaf por Nacht',
                         unit: 'Std.',
                         selected: false,
+                        measurable: true,
                         values: []
                     },
                     {
@@ -150,6 +159,7 @@ const useData = () => {
                         label: 'Schlafunterbrechungen',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -158,6 +168,7 @@ const useData = () => {
                         label: 'Erholung durch Schlaf',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -166,6 +177,7 @@ const useData = () => {
                         label: 'Medikamenteneinnahme',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     }
                 ]
@@ -182,6 +194,7 @@ const useData = () => {
                         label: 'Kopfschmerzen',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -190,6 +203,7 @@ const useData = () => {
                         label: 'Müdigkeit / Erschöpfung',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -198,6 +212,7 @@ const useData = () => {
                         label: 'Kreislaufprobleme',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -206,6 +221,7 @@ const useData = () => {
                         label: 'Schlafstörungen',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     }
                 ]
@@ -222,6 +238,7 @@ const useData = () => {
                         label: 'Schmerzen',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -230,6 +247,7 @@ const useData = () => {
                         label: 'Übelkeit',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -238,6 +256,7 @@ const useData = () => {
                         label: 'Erbrechen',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -246,6 +265,7 @@ const useData = () => {
                         label: 'Durchfall',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -254,6 +274,7 @@ const useData = () => {
                         label: 'Sodbrennen',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -262,6 +283,7 @@ const useData = () => {
                         label: 'Müdigkeit / Abgeschlagenheit',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -270,6 +292,7 @@ const useData = () => {
                         label: 'Schlafstörungen',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -278,6 +301,7 @@ const useData = () => {
                         label: 'Schwindelgefühl',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -286,6 +310,7 @@ const useData = () => {
                         label: 'Appetitlosigkeit',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -294,6 +319,7 @@ const useData = () => {
                         label: 'Kribbeln in den Fingern',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     },
                     {
@@ -302,6 +328,7 @@ const useData = () => {
                         label: 'Gedaechtnisstörungen',
                         unit: '-',
                         selected: false,
+                        measurable: false,
                         values: []
                     }
                 ]
@@ -316,34 +343,21 @@ const useData = () => {
 
     //---------------------------------------------------------
 
+     useEffect(() => {
+        console.log("Dies ist ein Test");
+    }, [])
+
+    //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+    
     const createNewDiary = (diaryId) => {
         console.log("ID:", diaryId)
         // console.log("diaryTemplate ", diaryTemplate)
 
-        // 
         if (diaryId) {
             newDiaryInBackend();
-            saveDiaryId(diaryTemplate.id);
-
-            console.log("diaryIdSaved:", diaryIdSaved)
-            console.log("diarySaved:", diarySaved)
-            const tempDiary = diaryTemplate;
-            setDiary(tempDiary);
-            // if (diarySaved && diaryIdSaved) {
-
-            //     setDiaryTemplate('');
-            //     return (true)
-            // }
-            // else {
-            //     setDiaryTemplate();
-            //     return (false)
-            // }
+            saveDiaryIdInBackend(diaryTemplate.id);
         }
-        // console.log("diaryIdSaved:", diaryIdSaved)
-        // console.log("diarySaved:", diarySaved)
-
-        setDiaryTemplate('');
-        return (true)
     }
 
     //................................................
@@ -363,14 +377,13 @@ const useData = () => {
             body: raw,
             redirect: 'follow'
         };
-        fetch('/api/newDiary', requestOptions)
+        await fetch('/api/newDiary', requestOptions)
             .then(response => response.json())
             .then(response => {
                 console.log(response.data)
                 console.log("diary wird im backend gespeichert")
                 if (response.status = "ok") {
-                    console.log("yes")
-                    setDiarySaved(true) // Funktioniert nicht. WARUM????
+                    setDiarySaved(true) // Funktioniert nicht. 
                 }
                 return;
             })
@@ -392,7 +405,7 @@ const useData = () => {
             .then(response => response.json())
             .then(response => {
                 console.log("result", response.data)
-                console.log("response", response)
+                // console.log("response", response)
                 setDiary(response.data)     // HIER GUCKEN!!!!
             })
             .catch(error => console.log("error: ", error))
@@ -409,8 +422,6 @@ const useData = () => {
         // console.log(items)
         console.log(update)
 
-        // saveDataToBackend(diary.id, diary.groups[index].id, diary.groups[index].items, update);
-
         let raw = JSON.stringify(
             {
                 id: id,
@@ -424,7 +435,7 @@ const useData = () => {
         console.log("raw", raw)
 
         let requestOptions = {
-            method: 'POST',
+            method: 'PUT',
             headers: { "Content-Type": "application/json" },
             body: raw,
             redirect: 'follow'
@@ -434,7 +445,7 @@ const useData = () => {
             .then(response => response.json())
             .then(result => {
                 console.log("result", result.message)
-                console.log(result.data)
+                console.log(result)
             })
             .catch(error => console.log('error', error))
     }
@@ -454,7 +465,7 @@ const useData = () => {
                 date: tempData.date,
             })
 
-            console.log("                 raw:", raw)
+            // console.log("   raw:", raw)
 
             let requestOptions = {
                 method: 'POST',
@@ -490,8 +501,7 @@ const useData = () => {
 
 
 
-
-    return [diary, setDiary, diaryInit, diaryTemplate, setDiaryTemplate, createNewDiary, getDiaryFromBackend, saveDataToBackend, saveTemp, tempData, setTempData, getTemp, tempResults];
+    return [diary, setDiary, diaryInit, diaryTemplate, setDiaryTemplate, createNewDiary, getDiaryFromBackend, saveDataToBackend, saveTemp, tempData, setTempData, getTemp, tempResults, diarySaved];
 
 }
 

@@ -7,7 +7,7 @@ const globalStyles = createGlobalStyle`
 `
 
 const ContentGroup = styled.div`
-width: 85%;
+width: 90%;
 /* min-height: 90%; */
 margin-left: auto;
 margin-right: auto;

@@ -34,6 +34,7 @@ const itemSchema = new mongoose.Schema({
     label: String,
     unit: String,
     selected: Boolean,
+    measurable: Boolean,
     values: []
 })
 

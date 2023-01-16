@@ -20,8 +20,8 @@ import { useUserContext } from "../providers/userContext"
 
 const CreateDiary = () => {
 
-    const { diaryInit, diaryTemplate, setDiaryTemplate, createNewDiary } = useDataContext();
-    const { user, userData, checkToken } = useUserContext();
+    const { diaryInit, diaryTemplate, setDiaryTemplate, setDiary, createNewDiary, diarySaved } = useDataContext();
+    const { user, userData, checkToken, diaryIdSaved } = useUserContext();
 
     const [on, setOn] = useState();
     // const [diaryName, setDiaryName] = useState();
@@ -33,8 +33,8 @@ const CreateDiary = () => {
     const navigate = useNavigate();
 
 
-    console.log("USER?", user)
-    console.log("USERDATA?", userData)
+    // console.log("USER?", user)
+    // console.log("USERDATA?", userData)
 
 
     useEffect(() => {
@@ -76,22 +76,40 @@ const CreateDiary = () => {
         setDiaryTemplate(
             { ...diaryTemplate }, diaryTemplate.groups[indexG].items[indexI].selected = !diaryTemplate.groups[indexG].items[indexI].selected
         )
-        console.log("selected? ", diaryTemplate.groups[indexG].items[indexI].selected)
+        // console.log("selected? ", diaryTemplate.groups[indexG].items[indexI].selected)
     }
 
+    //......................................
 
-    const sendAndCreate = () => {
-        console.log("Erstelle diaryTemplate")
-        const res = createNewDiary(diaryTemplate.id);
-        if (res === true) {
-            console.log("alle checks ok")
+    useEffect(() => {
+        // console.log("diaryIdSaved:", diaryIdSaved)
+        //     console.log("diarySaved:", diarySaved)
+        if ((diaryIdSaved) && (diarySaved)) {
+            const tempDiary = diaryTemplate;
+                setDiary(tempDiary);
+                setDiaryTemplate('');
+                console.log("alle checks ok")
             setCreated(true);
             setDone(true);
             timing();
-            // setDiaryTemplate();
-        } else {
-            console.log("irgendwelche states sind noch nicht auf true. warum?")
         }
+    }, [diaryIdSaved, diarySaved])
+
+    //...........................................
+
+
+    const handleSendAndCreate = () => {
+        console.log("Erstelle diaryTemplate")
+        createNewDiary(diaryTemplate.id);
+        // if (res === true) {
+        //     console.log("alle checks ok")
+        //     setCreated(true);
+        //     setDone(true);
+        //     timing();
+        //     // setDiaryTemplate();
+        // } else {
+        //     console.log("irgendwelche states sind noch nicht auf true. warum?")
+        // }
     }
 
     const timing = () => {
@@ -119,11 +137,7 @@ const CreateDiary = () => {
         }
     }, [on])
 
-    // console.log("ON: ", on)
-    // console.log("DONE:", done)
-    // console.log("created", created)
-
-    console.log("diaryTemplate", diaryTemplate)
+    // console.log("diaryTemplate", diaryTemplate)
 
     return (
         <ContentGroup>
@@ -170,7 +184,7 @@ const CreateDiary = () => {
                     {
                         (created === false) &&
                         (done === false) &&
-                        <SendButton onClick={sendAndCreate} >erstellen</SendButton>
+                        <SendButton onClick={handleSendAndCreate} >erstellen</SendButton>
                     }
                     {created &&
                         <p style={{ fontWeight: '500' }} >Tagebuch erfolgreich erstellt!</p>
@@ -185,7 +199,6 @@ const CreateDiary = () => {
             <Footer />
         </ContentGroup>
     )
-
 }
 
 

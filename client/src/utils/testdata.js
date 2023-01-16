@@ -27,6 +27,7 @@ export const createTData = () => {
         temperature[i] = temperature[i] + 0.9;
         temperature[i + 3] = temperature[i + 3] - 0.3;
     }
+    // console.log("Temperatur", temperature)
 
     let tsArray = [];
     for (let k = 0; k < datestringArray.length; k++) {

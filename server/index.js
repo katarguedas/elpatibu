@@ -14,6 +14,7 @@ const { request } = require('express');
 
 const apiUser = require('./routes/apiMongoUser')
 const apiData = require('./routes/apiMongoData')
+const apiWeather = require('./routes/apiWeather')
 
 
 
@@ -38,16 +39,16 @@ app.use(async function (req, res, next) {
   next();
 })
 
+
 app.use(apiUser);
 app.use(apiData);
+app.use(apiWeather);
 
 //------------------------------------------------------
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
-
-
 
 
 

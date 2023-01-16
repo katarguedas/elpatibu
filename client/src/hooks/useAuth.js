@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 
-
 import jwt_decode from "jwt-decode";
 
 import { v4 as uuidv4 } from 'uuid';
@@ -33,6 +32,7 @@ const useAuth = () => {
 
     const LOCAL_STORAGE_KEY = 'access token';
 
+
     //---------------------------------------------------------
 
  
@@ -42,18 +42,18 @@ const useAuth = () => {
 
             if (ls !== null) {
                 const decodedJwt = jwt_decode(ls.access)
-                setUserData({ name: decodedJwt.name, diaryId: decodedJwt.diaries })
                 setUser(decodedJwt.email);
+                setUserData({ name: decodedJwt.name, diaryId: decodedJwt.diaries })
                 setToken(ls.access)
             }
         }
     }, [])
 
 
-    // useEffect(() => {
-    //     if((user) && (!userData))
-    //       checkToken();
-    // }, [])
+    useEffect(() => {
+        if((user) && (!userData))
+          checkToken();
+    }, [])
 
 
     //---------------------------------------------------------
@@ -232,7 +232,7 @@ const useAuth = () => {
 
     //----------------------------------------------------------
 
-    const saveDiaryId = async (id) => {
+    const saveDiaryIdInBackend = async (id) => {
         console.log(id)
         let raw = JSON.stringify({
             email: user,
@@ -246,7 +246,7 @@ const useAuth = () => {
             body: raw,
             redirect: 'follow'
         };
-        fetch('api/saveDiaryId', requestOptions)
+        await fetch('api/saveDiaryId', requestOptions)
             .then(response => response.json())
             .then(response => {
                 console.log(response)
@@ -261,7 +261,7 @@ const useAuth = () => {
 
     //-----------------------------------------------------------------
 
-    return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, anyChange, setAnyChange, checkToken, saveDiaryId, diaryIdSaved];
+    return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, anyChange, setAnyChange, checkToken, saveDiaryIdInBackend, diaryIdSaved];
 
 }
 

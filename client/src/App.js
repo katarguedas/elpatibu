@@ -36,7 +36,7 @@ function App() {
               <Route path='/createDiary' element={user ? <CreateDiary /> : <Login/> } />
               <Route path='/editDiary' element={user ? <EditDiary /> : <Login/> } />
               <Route path='/openDiary' element={ user ? <OpenDiary /> : <Login/> } />
-              <Route path='/diaryData' element={<DiaryData />} />
+              <Route path='/diaryData' element={ user ? <DiaryData /> : <Login/> } />
               <Route path='/calendar' element={<Calendar />} />
               
             </Routes>

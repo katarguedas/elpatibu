@@ -8,7 +8,7 @@ import PlotVital from "../components/PlotVital"
 import PlotMeteo from "../components/PlotMeteo"
 import { StBiDownArrow, StBiRightArrow } from '../components/Icons'
 import { useState, useEffect } from "react"
-
+import { useNavigate, useLocation } from "react-router"
 import { ContentGroup, MainGroup, MainContent, Accordion } from "../styled/globalStyles"
 import { useUserContext } from "../providers/userContext"
 
@@ -20,80 +20,100 @@ import { useDataContext } from "../providers/dataContext"
 
 const DiaryData = () => {
 
-    // const { user, checkToken } = useUserContext();
-    const { diary, setDiary } = useDataContext();
+  const { user, userData, checkToken } = useUserContext();
+  const { diary, setDiary, getDiaryFromBackend } = useDataContext();
 
-    const [edit, setEdit] = useState(false);
-    // const [open, setOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  // const [open, setOpen] = useState(false);
 
-    //------------------
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  //------------------
 
-    const handleClick = (id) => {
-        setEdit(!edit);
-        console.log("ID", id)
-        setDiary({ ...diary }, diary.groups.map(e => {
-            console.log(e.visible)
-            if (e.id === id)
-                e.visible = false;
-            return e;
-        }))
-    }
-
-    // useEffect(() => {
-    //     if(diary)
-    //     diary.groups.map(e => {
-    //         setDiary({ ...diary }, diary.groups.map((e) => {
-    //             e.visible = false;
-    //         }))
-    //         console.log("visible", e.visible)
-    //     }, [])
-    // })
+  console.log("diary?", diary)
 
 
+  useEffect(() => {
+    console.log("USER?", user)
+    console.log("USERDATA?", userData)
+    if (userData)
+      if (!diary) {
+        if (userData.diaryId) {
+          console.log("noch kein Diary da, schau nach, ob was im Backend ist")
+          getDiaryFromBackend(userData.diaryId);
+        }
+        else
+          console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
+      }
+      else {
+        console.log("Diary:", diary)
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-    return (
-        <ContentGroup>
-            <Header />
-            <MainGroup>
-                <NavBar />
-                <MainContent>
-                    {
-                        diary &&
-                        diary.groups.map((e, i) => (
-                            e.items.filter(e => e.selected === true).length > 0 &&
-                            <Items key={e.id} >
+  useEffect(() => {
+    if (!user)
+      navigate('/login')
+  }, [location])
 
-                                {<Accordion visible={edit} onClick={() => handleClick (i)}>
 
-                                    {edit ?
-                                        <StBiDownArrow></StBiDownArrow>
-                                        :
-                                        <StBiRightArrow></StBiRightArrow>
-                                    }
-                                    {e.label}
+  const handleClick = (id) => {
+    setEdit(!edit);
+    console.log("ID", id)
+    setDiary({ ...diary }, diary.groups.map(e => {
+      console.log(e.visible)
+      if (e.id === id)
+        e.visible = false;
+      return e;
+    }))
+  }
 
-                                </Accordion>}
 
-                                < ResultGroup >
-                                    {e.visible === true &&
-                                        e.name === 'vital' &&
-                                        <PlotVital itemVital={e} />
-                                    }
-                                    {e.visible &&
-                                        e.name === 'meteorosensitivity' &&
-                                        <PlotMeteo itemMeteo={e} />
-                                    }
-                                </ResultGroup>
-                            </Items>
-                        ))
-                    }
 
-                </MainContent>
-            </MainGroup>
-            <Footer />
-        </ContentGroup>
-    )
+
+  return (
+    <ContentGroup>
+      <Header />
+      <MainGroup>
+        <NavBar />
+        <MainContent>
+          {
+            diary &&
+            diary.groups.map((e, i) => (
+              e.items.filter(e => e.selected === true).length > 0 &&
+              <Items key={e.id} >
+
+                {<Accordion visible={edit} onClick={() => handleClick(i)}>
+
+                  {edit ?
+                    <StBiDownArrow></StBiDownArrow>
+                    :
+                    <StBiRightArrow></StBiRightArrow>
+                  }
+                  {e.label}
+
+                </Accordion>}
+
+                < ResultGroup  >
+                  {e.visible === true &&
+                    e.name === 'vital' &&
+                    <PlotVital itemVital={e} />
+                  }
+                  {e.visible &&
+                    e.name === 'meteorosensitivity' &&
+                    <PlotMeteo itemMeteo={e} />
+                  }
+                </ResultGroup>
+              </Items>
+            ))
+          }
+
+        </MainContent>
+      </MainGroup>
+      <Footer />
+    </ContentGroup>
+  )
 }
 
 export default DiaryData;

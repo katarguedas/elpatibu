@@ -62,15 +62,17 @@ router.get('/api/getDiary', async (req, res) => {
 //..............................................................
 
 router.put('/api/saveData', async (req, res) => {
-  console.log(req.body)
+
+  console.log("hier", req.body.ts)
+  console.log("hier", req.body.update)
 
   try {
     const response = await Diary.findOne({ id: req.body.id })
     // console.log(response)
 
     if (response !== null) {
-      if (req.body.update === 'false') {
-        // schreibe das neue Datum rein
+      if (req.body.update === false) {
+        console.log("hier, bin drin2")
         response.date.push(req.body.ts)
       }
 
@@ -82,26 +84,15 @@ router.put('/api/saveData', async (req, res) => {
                 el.values = element.values.slice()
               }
             })
-            // el.id === req.body.items.id ? el.values.push(req.body.value) : null
           })
           : null
       })
     }
 
-    // } else if (req.body.update === 'true') {
-    //   response
-    // response.groups.map(e => {
-    //   e.id === req.body.groupId ?
-    //   e.items.map(el => { 
-    //     el.id === req.body.itemId ? el.values[el.values.length - 1 ] = req.body.value : null
-    //   })
-    //   : null
-    // })
 
     response.save()
 
-
-    res.status(200).send({ status: '0k', message: 'saved data' })
+    res.status(201).send({ status: '0k', message: 'saved data' })
   } catch (error) {
     console.log("....................... \n nix gefunden")
     res.status(400).send({ status: 'error', message: "Daten nicht gefunden", error })

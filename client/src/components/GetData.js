@@ -1,6 +1,9 @@
 import { useDataContext } from "../providers/dataContext"
 import { SendButton } from "./Buttons";
 import { todayDate } from '../components/Date';
+import smiley1 from '../pictures/smiley01.png';
+import smiley3 from '../pictures/smiley03.png';
+import smiley5 from '../pictures/smiley05.png';
 
 import React from "react";
 import { useEffect, useRef, useState } from "react";
@@ -207,26 +210,91 @@ const GetData = ({ index }) => {
     }
 
     return (
-        <div style={{ margin: '0px', padding: '0px' }} >
-
+        <div style={{ display: 'flex', flexDirection: 'row' }} >
+            <div style={{ flexGrow: '1' }}  >
+            </div>
             {
-                <FormField onSubmit={handleSubmit} >
+                <FormField onSubmit={handleSubmit} style={{ flexGrow: '2' }} >
                     {diary.groups[index].items.map((e, i) => (
                         e.selected ?
-                            <InputLabel key={e.id}>
-                                <StLabelText>{e.label}</StLabelText>
-                                <StInputField
-                                    id={e.id}
-                                    ref={el => inputRefs.current[i] = el}
-                                    type='text'
-                                    name={e.name}
-                                    onChange={(e) => handleChange(e, index, i)}
-                                >
-                                </StInputField>
-                                {e.unit}
-                            </InputLabel>
+                            e.measurable ?
+                                <InputLabelH key={e.id} >
+                                    <StLabelText>{e.label}</StLabelText>
+
+                                    <StInputField
+                                        id={e.id}
+                                        ref={el => inputRefs.current[i] = el}
+                                        type='text'
+                                        name={e.name}
+                                        onChange={(e) => handleChange(e, index, i)}
+                                    >
+                                    </StInputField>
+                                    {e.unit}
+                                </InputLabelH >
+                                :
+                                <InputLabelV key={e.id} 
+                                style={{ marginTop: '0.5rem', backgroundColor: '#fafcfb', borderRadius: '0.5rem', border: '1px solid #9e9a9a'}}
+                                 >
+                                    <StLabelText style={{ width: '100%', margin: '0.75rem' }} >{e.label}</StLabelText>
+                                    <RadioGroup>
+                                        <RadioLabelText>
+                                            <img src={smiley1} alt="very good" />
+                                            <input
+                                                style={{ margin: '0.75rem' }}
+                                                name='scale'
+                                                type="radio"
+                                                value="option1"
+                                            />
+                                            Option 1
+                                        </RadioLabelText>
+                                        <RadioLabelText>
+                                            <img src={smiley3} alt="very good" />
+                                            <input
+                                                style={{ margin: '0.75rem' }}
+                                                name='scale'
+                                                type="radio"
+                                                value="option1"
+                                            />
+                                            Option 2
+                                        </RadioLabelText>
+                                        <RadioLabelText>
+                                            <img src={smiley3} alt="" />
+                                            <input
+                                                style={{ margin: '0.75rem' }}
+                                                name='scale'
+                                                type="radio"
+                                                value="option1"
+                                            />
+                                            Option 3
+                                        </RadioLabelText>
+                                        <RadioLabelText>
+                                            <img src={smiley3} alt="very good" />
+                                            <input
+                                                style={{ margin: '0.75rem' }}
+                                                name='scale'
+                                                type="radio"
+                                                value="option1"
+                                            />
+                                            Option 4
+                                        </RadioLabelText>
+                                        <RadioLabelText>
+                                            <img src={smiley5} alt="very good" />
+                                            <input
+                                                style={{ margin: '0.75rem' }}
+                                                name='scale'
+                                                type="radio"
+                                                value="option1"
+                                            // checked={true}
+                                            />
+                                            Option 5
+                                        </RadioLabelText>
+                                    </RadioGroup>
+                                    {/* <div style={{width: '100%', textAlign:'center'}} >____________________________________________________________</div> */}
+                                </InputLabelV>
+
                             : null
-                    ))
+                    
+                            )) 
                     }
 
                     {saved &&
@@ -236,11 +304,10 @@ const GetData = ({ index }) => {
                     {done === true ?
                         <StBiCheck style={{ marginLeft: 'auto', marginRight: 'auto' }} />
                         :
-                        <SendButton type="submit">senden</SendButton>
+                            <SendButton type="submit" >senden</SendButton>
                     }
                 </FormField>
             }
-
         </div >
     )
 }
@@ -261,8 +328,13 @@ const StInputField = styled(InputField)`
   /* right: 40px; */
 `
 
-const InputLabel = styled.label`
+const InputLabelH = styled.label`
   display: inline-flex;
+  margin: 0.25rem 0.25rem 0.25rem 0.25rem;
+`
+const InputLabelV = styled.label`
+  display: flex;
+  flex-wrap: wrap;
   margin: 0.25rem 0.25rem 0.25rem 0.25rem;
 `
 
@@ -271,7 +343,26 @@ const StLabelText = styled(LabelText)`
   font-weight: 500;
   height: 1.45rem;
   font-size: 1.15rem;
-  `
+`
+
+const RadioGroup = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+`
+
+const RadioLabelText = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 1.0rem;
+  padding: 0.25rem;
+  text-align: center;
+  padding-top: 0.75rem;
+`
+
 const StBiCheck = styled(BiCheck)`
 font-size: 3.0rem;
 color: green;

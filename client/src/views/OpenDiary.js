@@ -17,7 +17,7 @@ import { useDataContext } from "../providers/dataContext";
 
 const OpenDiary = () => {
 
-    const { user, userData, anyChange, checkToken } = useUserContext();
+    const { user, userData, checkToken } = useUserContext();
     const { diary, getDiaryFromBackend } = useDataContext();
 
     const location = useLocation();
@@ -28,14 +28,6 @@ const OpenDiary = () => {
     // console.log("DIARY?", diary)
 
     //----------------------------
-
-    useEffect(() => {
-        if (!user)
-            navigate('/login')
-        checkToken();
-    }, [location])
-
-
 
     useEffect(() => {
         if(userData)
