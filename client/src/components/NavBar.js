@@ -11,35 +11,37 @@ import { StGiBook, StGiWhiteBook, StGiCalendar } from './Icons';
 
 const NavBar = () => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleClickDashboard = () => {
-        navigate('/dashboard')
-    }
+  const handleClickDashboard = () => {
+    navigate('/dashboard')
+  }
 
-    const handleClickOpenDiary = () => {
-        navigate('/openDiary')
-    }
+  const handleClickOpenDiary = () => {
+    navigate('/openDiary')
+  }
 
-    const handleClickCreateDiary = () => {
-        navigate('/createDiary')
-    }
+  const handleClickCreateDiary = () => {
+    navigate('/createDiary')
+  }
 
-    const handleClickCalendar = () => {
-        navigate('/calendar')
-    }
+  const handleClickCalendar = () => {
+    navigate('/calendar')
+  }
 
-    return (
-        <NavGroup>
-            <HomeIcon onClick={handleClickDashboard} />
-            <NavButton onClick={handleClickOpenDiary} >zum Tagebuch<StGiBook/></NavButton>
-            <NavButton onClick={handleClickCreateDiary} >neues Tagebuch<StGiWhiteBook/></NavButton>
-            <NavButton onClick={handleClickCalendar} >zum Kalender<StGiCalendar/></NavButton>
-            <DateBox>
-                <Date />
-            </DateBox>
-        </NavGroup>
-    )
+  return (
+    <NavGroup>
+      <ButtonGroup>
+        <HomeIcon onClick={handleClickDashboard} />
+        <NavButton onClick={handleClickOpenDiary} >zum Tagebuch<StGiBook /></NavButton>
+        <NavButton onClick={handleClickCreateDiary} >neues Tagebuch<StGiWhiteBook /></NavButton>
+        <NavButton onClick={handleClickCalendar} >zum Kalender<StGiCalendar /></NavButton>
+        <DateBox>
+          <Date />
+        </DateBox>
+      </ButtonGroup>
+    </NavGroup>
+  )
 }
 
 
@@ -51,19 +53,27 @@ export default NavBar
 //---------------------------------------------------------
 
 const NavGroup = styled.div`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; */
   background-color: #fff;
   border-right: 2.5px solid ${(props) => props.theme.colors.col10};
   width: 20%;
   background-image: linear-gradient(to right, #fff, ${(props) => props.theme.colors.col10});
 `
 
+const ButtonGroup = styled.div`
+display: flex;
+  flex-direction: column;
+  align-items: center;
+position: sticky;
+top: 4.5rem;
+`
+
 const HomeIcon = styled(RxHome)`
   padding: 0.5rem;
   margin: 1.5rem;
-  margin-left: 3.0rem;
+  margin-left: 3.5rem;
   border: 2.0px solid ${(props) => props.theme.colors.white};
   border-radius: 0.25rem;
   font-size: 2.5rem;

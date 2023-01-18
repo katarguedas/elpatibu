@@ -91,4 +91,5 @@ const LoginGroup = styled.div`
   width: 370px; 
   margin-left: auto; 
   margin-right: auto;
+  margin-top: 6.0rem;
 `

@@ -31,12 +31,12 @@ const DiaryData = () => {
 
   //------------------
 
-  console.log("diary?", diary)
+  useEffect(() => {
+    checkToken();
+  }, [location])
 
 
   useEffect(() => {
-    console.log("USER?", user)
-    console.log("USERDATA?", userData)
     if (userData)
       if (!diary) {
         if (userData.diaryId) {

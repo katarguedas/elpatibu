@@ -29,20 +29,22 @@ const PlotVital = ({ itemVital }) => {
     const xVal = dataNMDSet.dateString;
     const yVal = dataNMDSet.values;
 
-    console.log("dataNMDSet",dataNMDSet)
+    console.log("dataNMDSet", dataNMDSet)
 
     return (
-        <div style={{ marginTop: '2.0rem' }} >
+        <div style={{ marginTop: '2.0rem', width: '95%' }} >
             {
                 itemVital.items.filter(e => e.selected === true).length > 0 &&
                 <div>
-  
-                    < TimeChartT
-                        xValues={xValues} yValues={yTValues}
-                    />
-          
-                    < TimeChartP2 xValues={xValues} y1Values={yP1Values} y2Values={yP2Values} />
+                    <div  >
+                        < TimeChartT
+                            xValues={xValues} yValues={yTValues} name={'Temperatur'}
+                        />
+                    </div>
+                    <div  >
+                        < TimeChartP2 xValues={xValues} y1Values={yP1Values} y2Values={yP2Values} />
 
+                    </div>
                 </div>
 
             }

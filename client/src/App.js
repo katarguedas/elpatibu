@@ -16,7 +16,7 @@ import { ThemeProvider } from 'styled-components';
 import { theme } from './themes/theme'
 
 //---------------------------------------------------------
-
+// console.log(process.env.REACT_APP_LOCAL_STORAGE_WEATHER)
 
 function App() {
 
@@ -37,7 +37,7 @@ function App() {
               <Route path='/editDiary' element={user ? <EditDiary /> : <Login/> } />
               <Route path='/openDiary' element={ user ? <OpenDiary /> : <Login/> } />
               <Route path='/diaryData' element={ user ? <DiaryData /> : <Login/> } />
-              <Route path='/calendar' element={<Calendar />} />
+              <Route path='/calendar' element={user ? <Calendar /> : <Login/> } />
               
             </Routes>
           </BrowserRouter>

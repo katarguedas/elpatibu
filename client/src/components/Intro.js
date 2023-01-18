@@ -26,6 +26,9 @@ export default Intro;
 const IntroGroup = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
+  top: 4.5rem;
+  margin-bottom: 4.5rem;
 `
 
 const IntroBanner = styled.div`

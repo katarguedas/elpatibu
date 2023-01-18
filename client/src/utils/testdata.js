@@ -113,3 +113,35 @@ export const createNMData = () => {
 
     return dataSet
 }
+
+export const createNMData2 = () => {
+
+
+    // const string = '2022-12-01 12:00:00'
+
+    let values = [];
+    let day;
+    let str;
+    let datestringArray = [];
+    for (let i = 1; i < 32; i++) {
+        if (i < 10)
+            day = '0' + i;
+        else
+            day = i;
+        str = day + ".12.2022";
+        datestringArray.push(str);
+
+        values = [0, 1, 0, 1, 3, 4, 2, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 2, 2, 1, 2, 1, 0, 1, 0, 1, 1, 0 ]
+    }
+    // console.log("dataStringArray: ", datestringArray)
+
+
+    // console.log(tsArray)
+
+    const dataSet = {
+        dateString: datestringArray,
+        values: values
+    }
+
+    return dataSet
+}

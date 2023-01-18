@@ -51,6 +51,7 @@ const groupSchema = new mongoose.Schema({
 const diarySchema = new mongoose.Schema({
     id: String,
     diaryName: String,
+    city: String,
     date: [],
     groups: [groupSchema]
 });

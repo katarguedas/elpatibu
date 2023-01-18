@@ -50,6 +50,7 @@ const SendButton = styled(Button)`
     transform: translateY(1.5px);
   }
   box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
+  margin-bottom: 1.0rem;
 `
 //................................
 const NavButton = styled.button`
@@ -101,5 +102,34 @@ const DiaryButton = styled.button`
     transform: translateY(2.0px);
   }
 `
+//.................................................................
+const WeatherButton = styled.button`
+  display: flex;
+  text-align: center;
+  width: 9.0rem;
+  height: 4.0rem;
+  font-size: 1.15rem;
+  border: 1px solid ${(props) => props.theme.colors.col12};
+  /* background-color: ${(props) => props.theme.colors.col20}; */
+  /* color: #fff; */
+  border-radius: 0.5rem;
+  /* margin-left: auto;
+  margin-left: auto; */
+  &:hover{
+    background-color: ${(props) => props.theme.colors.col23};
+    border: 2.5px solid ${(props) => props.theme.colors.col21};
+    color: #000;
+  }
+  :active{
+    background-color: ${(props) => props.theme.colors.col20};
+    border-color: ${(props) => props.theme.colors.col21};
+    color: #fff;
+    transform: translateY(1.5px);
+  }
+  padding: 0.5rem;
+  margin: 2.0rem;
+`
 
-export {Button, AuthButton, SendButton, NavButton, DiaryButton} ;
+
+
+export {Button, AuthButton, SendButton, NavButton, DiaryButton, WeatherButton} ;

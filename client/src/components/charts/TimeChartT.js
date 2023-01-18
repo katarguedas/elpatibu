@@ -8,7 +8,10 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 
 //----------------------------------------------------------------------
 
-const TimeChartT = ({ xValues, yValues }) => {
+const TimeChartT = ({ xValues, yValues, name }) => {
+
+    // console.log("x", xValues)
+    // console.log("y", yValues)
 
     ChartJS.register(
         CategoryScale,
@@ -146,7 +149,7 @@ const TimeChartT = ({ xValues, yValues }) => {
                     text: 'Datum',
                     font: { size: 18 },
                     color: textColor,
-                    padding: 20
+                    padding: 10
                 },
                 ticks: {
                     font: {size: 16},
@@ -162,7 +165,7 @@ const TimeChartT = ({ xValues, yValues }) => {
                     text: 'Temperatur [°C]',
                     font: { size: 18 },
                     color: textColor,
-                    padding: 20
+                    padding: 10
                 },
                 ticks: {
                     font: {size: 16},

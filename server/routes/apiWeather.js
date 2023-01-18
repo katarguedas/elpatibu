@@ -27,7 +27,6 @@ router.get('/api/WeatherData', async (req, res) => {
   const unitGroup = "metric";
   const aggregateHours = "24";
   const key = process.env.EXPRESS_WEATHER_VISUALCROSSING_KEY;
-  console.log(process.env.EXPRESS_WEATHER_VISUALCROSSING_KEY)
 
   let url = `${urlConst}&unitGroup=${unitGroup}&contentType=${contentType}&lang=${lang}&startDateTime=${req.query.start}&endDateTime=${req.query.end}&aggregateHours=${aggregateHours}&location=${req.query.city}&key=${key}`;
 

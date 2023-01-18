@@ -16,6 +16,10 @@ margin-right: auto;
 const MainGroup = styled.div`
   display: flex;
   flex-direction: row;
+  position: relative;
+  top: 4.5rem;
+  margin-bottom: 4.5rem;
+
 `
 
 const MainContent = styled.div`
@@ -32,11 +36,11 @@ const PageTitle = styled.h1`
 `
 
 const TitleH2 = styled.h2`
-  margin: 1.5rem;
+  margin: 1.0rem 1.5rem;
 `
 
 const StP = styled.p`
-  margin: 1.5rem;
+  margin: 1.0rem 1.5rem;
   font-size: 1.1rem;
 `
 
@@ -73,11 +77,8 @@ color: ${(props) => props.theme.colors.col11};
 border: 0.5px solid ${(props) => props.theme.colors.col14};
 border-radius: 0.5rem;
 background-image: linear-gradient(to left, #fff, ${(props) => props.theme.colors.col24});
-/* background-image: ${ props => props.visible === true ? 'linear-gradient(toLeft, #fff, ${(props) => props.theme.colors.col24})' : 'linear-gradient(toLeft, #fff, ${(props) => props.theme.colors.col32})' }; */
-
 background-color: ${ props => props.visible === true ? props.theme.colors.col21 : props.theme.colors.col11 };
 box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
-
 &:hover {
   background-color: ${(props) => props.theme.colors.col24};
   background-image: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col23});
@@ -87,7 +88,7 @@ box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
   color: black;
   background-image: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col14});
 }
-padding: 0.75rem 0.75rem 0.75rem 1.5rem;
+padding: 0.5rem 0.75rem 0.5rem 1.5rem;
 margin: 0.5rem 1.5rem;
 font-size: 1.25rem;
 font-weight: 500;

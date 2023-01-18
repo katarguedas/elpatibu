@@ -1,12 +1,17 @@
 
 import TBarChartNMD from './charts/TBarChartNMD';
 import BarChartNMD from './charts/BarChartNMD';
-import { createNMData } from '../utils/testdata';
-import { Button } from './Buttons';
+import TBarChartPrecip from './charts/BarCharPrecip';
+import TimeChartT from './charts/TimeChartT';
+import MultiAxLineChart from './charts/MultiAxLineChart';
+import MultiTypeChart from './charts/MultiTypeChart';
+import { createNMData, createNMData2 } from '../utils/testdata';
+import { WeatherButton } from './Buttons';
 
 import { useDataContext } from '../providers/dataContext';
 import { useEffect, useState } from 'react';
-import { GiConsoleController } from 'react-icons/gi';
+
+import styled from 'styled-components';
 
 //----------------------------------------------------------
 
@@ -16,69 +21,115 @@ const PlotMeteo = ({ itemMeteo }) => {
     const { getWeatherData, weatherData } = useDataContext()
 
     const dataNMDSet = createNMData();
+    const dataNMDSet2 = createNMData2();
 
     const [active, setActive] = useState(false);
     const xVal = dataNMDSet.dateString;
     const yVal = dataNMDSet.values;
-    let x, y;
+    const xVal2 = dataNMDSet2.dateString;
+    const yVal2 = dataNMDSet2.values;
 
-    console.log("weatherData",weatherData)
 
     useEffect(() => {
         console.log("active?  ", active)
+        console.log("weatherData", weatherData)
         if (active === true) {
+            console.log("active  ", active)
             const city = 'Oberhausen';
-            const startDate = '2022-12-05';
-            const endDate = '2022-12-1';
+            const startDate = '2022-12-01';
+            const endDate = '2022-12-31';
+            console.log("Wetterdaten holen")
             getWeatherData(city, startDate, endDate);
-            if (weatherData !== undefined) {
-                console.log("weatherData",weatherData)
-                // const x = weatherData.date.slice();
-                // const y = weatherData.sealevelpressure.slice();
-            }
         }
     }, [active])
 
     useEffect(() => {
         console.log("weatherData", weatherData)
+
     }, [weatherData])
 
     //.................................................
 
     return (
-        <div style={{ marginTop: '2.0rem' }} >
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2.0rem' }} >
+            <div styled={{ padding: '5.0rem' }} >
+                <WeatherButton onClick={() => setActive(!active)} >
+                    {
+                        active ?
+                            'Wetterdaten ausblenden'
+                            : ' Wetterdaten einblenden'
+                    }
+                </WeatherButton >
+            </div>
             {
                 itemMeteo.items.filter(e => e.selected === true).length > 0 &&
-                <div>
-                    {itemMeteo.items.map(e => (
+                <ChartsGroup >
+                    {active ?
+                        weatherData &&
+                        itemMeteo.items.map(e => (
 
-                        <div key={e.id}>
-                            {
-                                e.name === 'headache' &&
-                                <BarChartNMD xVal={xVal} yVal={yVal} name={e.label} />
-                            }
-                            {
-                                e.name === 'fatigue' &&
-                                <TBarChartNMD xVal={xVal} yVal={yVal} name={e.label} />
-                            }
+                            <div key={e.id}>
+                                {
+                                    e.name === 'headache' &&
+                                    <MultiTypeChart 
+                                    xValues={xVal} 
+                                    y1Values={weatherData[0].values}
+                                    y2Values={yVal} 
+                                    labels={e.dateStr} 
+                                    name={e.label} 
+                                    label2={weatherData[0].label} 
+                                    unit={weatherData[0].unit} 
+                                    />
+                                }
+                                {
+                                    e.name === 'fatigue' &&
+                                    <MultiTypeChart 
+                                    xValues={xVal2} 
+                                    y1Values={weatherData[0].values} 
+                                    y2Values={yVal2} 
+                                    name={e.label} 
+                                    label2={weatherData[0].label} 
+                                    unit={weatherData[0].unit} />
+                                }
 
-                        </div>
-                    ))
+                            </div>
+                        ))
+                        :
+                        itemMeteo.items.map(e => (
 
+                            <div key={e.id}>
+                                {
+                                    e.name === 'headache' &&
+                                    <BarChartNMD xVal={xVal} yVal={yVal} name={e.label} />
+                                }
+                                {
+                                    e.name === 'fatigue' &&
+                                    <BarChartNMD xVal={xVal} yVal={yVal} name={e.label} />
+                                }
+
+                            </div>
+                        ))
 
                     }
-                </div>
-
+                </ChartsGroup>
             }
-            <div>
-                <Button onClick={() => setActive(true)} style={{ border: 'solid' }}>
-                    Wetterdaten
-                </Button >
-                <TBarChartNMD xVal={x} yVal={y} name={"..."} />
-            </div>
 
         </div >
     )
 }
 
-export default PlotMeteo
+export default PlotMeteo;
+
+
+//-------------------------------------------------------------------------
+
+
+const ChartsGroup = styled.div`
+  width: 70%;
+  @media (max-width: 768px) {
+    width: 90%;
+  }
+  @media (max-width: 1200px) {
+    width: 80%;
+  }
+`

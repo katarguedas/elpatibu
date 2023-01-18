@@ -15,7 +15,6 @@ const Input = ({handleChange}) => {
                 <InputField
                     type="text"
                     name={'diaryName'}
-
                     // value='Mein Tagebuch'
                     // value={loginData.email || ''}
                     onChange={handleChange}

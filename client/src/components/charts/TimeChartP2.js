@@ -158,7 +158,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
                     text: 'Datum',
                     font: { size: 18 },
                     color: textColor,
-                    padding: 20
+                    padding: 10
                 },
                 ticks: {
                     font: {size: 16},
@@ -176,7 +176,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
                     text: 'Druck [mmHg]',
                     font: { size: 18 },
                     color: textColor,
-                    padding: 20
+                    padding: 10
                 },
                 ticks: {
                     font: {size: 16},

@@ -1,20 +1,21 @@
 import { useDataContext } from "../providers/dataContext"
 import { SendButton } from "./Buttons";
 import { todayDate } from '../components/Date';
-import smiley1 from '../pictures/smiley01.png';
-import smiley3 from '../pictures/smiley03.png';
-import smiley5 from '../pictures/smiley05.png';
+import smiley1 from '../pictures/smiley-01.png';
+import smiley2 from '../pictures/smiley-02.png';
+import smiley3 from '../pictures/smiley-03.png';
+import smiley4 from '../pictures/smiley-04.png';
+import smiley5 from '../pictures/smiley-05.png';
+import { useUserContext } from "../providers/userContext";
+import { InputField, FormField, LabelText } from "../styled/globalStyles";
 
 import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { BiCheck } from "react-icons/bi";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { InputField, FormField, LabelText } from "../styled/globalStyles";
-
 import styled from "styled-components";
 
-import { useUserContext } from "../providers/userContext";
 
 //---------------------------------------------------------
 
@@ -34,6 +35,7 @@ const GetData = ({ index }) => {
             value: ''
         }
     ])
+    const [rating, setRating] = useState();
 
     const inputRefs = useRef([]);
 
@@ -42,11 +44,12 @@ const GetData = ({ index }) => {
 
     const ts = todayDate();
 
-    // console.log("USER?", user)
-    // console.log("USERDATA?", userData)
-    console.log("DIARY?", diary)
+    //.................................................
 
-    //-----------------------------------------------------------------
+    useEffect(() => {
+        checkToken();
+    }, [location])
+
 
     useEffect(() => {
         if ((user) && (!userData))
@@ -55,14 +58,12 @@ const GetData = ({ index }) => {
             navigate('/login');
     }, [])
 
-
     //........................
-
 
     useEffect(() => {
 
-        console.log("USER?", user)
-        console.log("USERDATA?", userData)
+        // console.log("USER?", user)
+        // console.log("USERDATA?", userData)
 
         if (userData)
             if (!diary) {
@@ -79,29 +80,7 @@ const GetData = ({ index }) => {
                 // console.log("Diary:", diary)
             }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location])
-
-    //.............................
-
-    const checkTs = () => {
-
-        if (diary.date.length > 0) {
-            // checke, ob heutiges Datum bereits gespeichert
-            const res = diary.date.findIndex(e => e === ts);
-
-            if (res >= 0) {
-                console.log("Heutiges Datum bereits vorhanden")
-                setUpdate(true);
-            }
-            else {
-                console.log("Datum noch nicht vorhanden")
-                setUpdate(false);
-            }
-        } else {
-            console.log("Datumarray noch leer")
-            setUpdate(false);
-        }
-    }
+    }, [])
 
     //......................................
 
@@ -115,7 +94,7 @@ const GetData = ({ index }) => {
 
             let val = null;
 
-            // bereite Die eingegebenen Daten vor
+            // bereite die eingegebenen Daten vor
             diary.groups[index].items.map((el, i) => {
                 console.log("item: ", el.name)
                 val = null;
@@ -164,15 +143,10 @@ const GetData = ({ index }) => {
             setDone(true)
     }, [saved])
 
-    //------------------------------
-    console.log('update', update)
-    console.log('saved', saved)
-
-
     //-----------------------------------------
 
     useEffect(() => {
-        console.log("BIN im saveDataToBackend-useEffect, saved: ", saved)
+        // console.log("BIN im saveDataToBackend-useEffect, saved: ", saved)
         if (saved === true) {
             console.log("saved:", saved)
             saveDataToBackend(diary.id, diary.groups[index].id, diary.groups[index].items, ts, update);
@@ -180,6 +154,21 @@ const GetData = ({ index }) => {
         }
     }, [saved])
 
+    //.....................................
+
+    const checkTs = () => {
+
+        if (diary.date.length > 0) {
+            // checke, ob heutiges Datum bereits gespeichert
+            const res = diary.date.findIndex(e => e === ts);
+
+            if (res >= 0)
+                setUpdate(true);   // Heutiges Datum bereits vorhanden
+            else
+                setUpdate(false);   // Datum noch nicht vorhanden
+        } else
+            setUpdate(false);    // Datumarray noch leer
+    }
 
     //.......................................
 
@@ -195,6 +184,8 @@ const GetData = ({ index }) => {
         console.log(diary)
     }
 
+    //......................
+
     const timing = () => {
         setTimeout(() => {
             // setSaved(false);
@@ -208,6 +199,16 @@ const GetData = ({ index }) => {
         setData([...data,
         { name: e.target.name, value: e.target.value }])
     }
+
+    // const handleRadio = (e) => {
+    //     setRating(e.target.value);
+    //     console.log(e.target.value)
+    // }
+
+    useEffect(() => {
+        console.log(rating)
+    }, [rating])
+    //----------------------------
 
     return (
         <div style={{ display: 'flex', flexDirection: 'row' }} >
@@ -232,28 +233,33 @@ const GetData = ({ index }) => {
                                     {e.unit}
                                 </InputLabelH >
                                 :
-                                <InputLabelV key={e.id} 
-                                style={{ marginTop: '0.5rem', backgroundColor: '#fafcfb', borderRadius: '0.5rem', border: '1px solid #9e9a9a'}}
-                                 >
+                                <InputLabelV key={e.id}
+                                    style={{ marginTop: '0.5rem', backgroundColor: '#fafcfb', borderRadius: '0.5rem', border: '1px solid #9e9a9a' }}
+                                >
                                     <StLabelText style={{ width: '100%', margin: '0.75rem' }} >{e.label}</StLabelText>
                                     <RadioGroup>
                                         <RadioLabelText>
                                             <img src={smiley1} alt="very good" />
                                             <input
                                                 style={{ margin: '0.75rem' }}
-                                                name='scale'
+                                                name={i}
                                                 type="radio"
-                                                value="option1"
+                                                value={1}
+                                                onChange={
+                                                    (e) => setRating({ key1: e.target.value, key2: i })
+                                                }
                                             />
                                             Option 1
                                         </RadioLabelText>
                                         <RadioLabelText>
-                                            <img src={smiley3} alt="very good" />
+                                            <img src={smiley2} alt="good" />
                                             <input
                                                 style={{ margin: '0.75rem' }}
-                                                name='scale'
+                                                name={i}
                                                 type="radio"
-                                                value="option1"
+                                                value={2}
+                                                onChange={
+                                                    (e) => setRating({ key1: e.target.value, key2: i })}
                                             />
                                             Option 2
                                         </RadioLabelText>
@@ -261,40 +267,49 @@ const GetData = ({ index }) => {
                                             <img src={smiley3} alt="" />
                                             <input
                                                 style={{ margin: '0.75rem' }}
-                                                name='scale'
+                                                name={i}
                                                 type="radio"
-                                                value="option1"
+                                                value={3}
+                                                onChange={
+                                                    (e) => setRating({ key1: e.target.value, key2: i })
+                                                }
                                             />
                                             Option 3
                                         </RadioLabelText>
                                         <RadioLabelText>
-                                            <img src={smiley3} alt="very good" />
+                                            <img src={smiley4} alt=" " />
                                             <input
                                                 style={{ margin: '0.75rem' }}
-                                                name='scale'
+                                                name={i}
                                                 type="radio"
-                                                value="option1"
+                                                value={4}
+                                                onChange={
+                                                    (e) => setRating({ key1: e.target.value, key2: i })
+                                                }
                                             />
                                             Option 4
                                         </RadioLabelText>
                                         <RadioLabelText>
-                                            <img src={smiley5} alt="very good" />
+                                            <img src={smiley5} alt=" " />
                                             <input
                                                 style={{ margin: '0.75rem' }}
-                                                name='scale'
+                                                name={i}
                                                 type="radio"
-                                                value="option1"
+                                                value={5}
+                                                onChange={
+                                                    (e) => setRating({ key1: e.target.value, key2: i })
+                                                }
                                             // checked={true}
                                             />
                                             Option 5
                                         </RadioLabelText>
                                     </RadioGroup>
-                                    {/* <div style={{width: '100%', textAlign:'center'}} >____________________________________________________________</div> */}
+
                                 </InputLabelV>
 
                             : null
-                    
-                            )) 
+
+                    ))
                     }
 
                     {saved &&
@@ -304,7 +319,7 @@ const GetData = ({ index }) => {
                     {done === true ?
                         <StBiCheck style={{ marginLeft: 'auto', marginRight: 'auto' }} />
                         :
-                            <SendButton type="submit" >senden</SendButton>
+                        <SendButton type="submit" >senden</SendButton>
                     }
                 </FormField>
             }

@@ -12,7 +12,7 @@ import { theme } from '../../themes/theme'
 
 //----------------------------------------------------------------------
 
-const BarChartNMD = ({ xVal, yVal, name }) => {
+const BarChartPrecip = ({ xVal, yVal, name }) => {
 
     // console.log("x", xVal)
     // console.log("y", yVal)
@@ -33,7 +33,7 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 
 
     const color1 = theme.colors.col11;
-    const color2 = theme.colors.col13;
+    const color2 = theme.colors.col15;
     const textColor = theme.colors.col11;
 
     const bgreen = ['rgba(146, 250, 61, 0.3)']
@@ -101,7 +101,7 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
                     text: 'Datum',
                     font: { size: 18 },
                     color: textColor,
-                    padding: 0
+                    padding: 20
                 },
                 ticks: {
                     font: {size: 16},
@@ -112,14 +112,14 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
                 }
             },
             y: {
-                suggestedMin: 0, 
-                suggestedMax: 5,
+                // suggestedMin: 0, 
+                // suggestedMax: 5,
                 title: {
                     display: true,
-                    text: 'Intensität',
+                    text: name,
                     font: { size: 18 },
                     color: textColor,
-                    padding: 10
+                    padding: 20
                 },
                 ticks: {
                     font: {size: 16},
@@ -138,5 +138,5 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 
 
 
-export default BarChartNMD;
+export default BarChartPrecip;
 

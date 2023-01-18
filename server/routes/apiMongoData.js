@@ -28,6 +28,7 @@ router.post('/api/newDiary', async (req, res) => {
     const data = new Diary({
       id: req.body.id,
       diaryName: req.body.diaryName,
+      city: req.body.city,
       date: req.body.date,
       groups: req.body.groups
     })

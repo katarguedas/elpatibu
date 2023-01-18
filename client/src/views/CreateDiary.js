@@ -2,58 +2,51 @@ import Header from "../components/Header"
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
 import SwitchToggle from "../components/SwitchToggle"
-// import Input from "../components/forms/Input"
+import { FormField } from "../styled/globalStyles"
 import Panel from "../components/Panel"
 import { SendButton } from "../components/Buttons"
-import {StBiDownArrow, StBiRightArrow} from '../components/Icons'
+import { StBiDownArrow, StBiRightArrow } from '../components/Icons'
+import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2, StP, Accordion } from "../styled/globalStyles"
 
 import { useDataContext } from "../providers/dataContext"
+import { useUserContext } from "../providers/userContext"
 
 import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 
+
 import styled from "styled-components"
-import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2, StP, Accordion } from "../styled/globalStyles"
-import { useUserContext } from "../providers/userContext"
+
 
 //---------------------------------------------------------
 
 const CreateDiary = () => {
 
-    const { diaryInit, diaryTemplate, setDiaryTemplate, setDiary, createNewDiary, diarySaved } = useDataContext();
+    const { diaryTemplate, setDiaryTemplate, setDiary, createNewDiary, diarySaved, DiaryInit } = useDataContext();
     const { user, userData, checkToken, diaryIdSaved } = useUserContext();
 
     const [on, setOn] = useState();
-    // const [diaryName, setDiaryName] = useState();
     const [created, setCreated] = useState(false);
     const [done, setDone] = useState(false);
-
 
     let location = useLocation();
     const navigate = useNavigate();
 
 
-    // console.log("USER?", user)
-    // console.log("USERDATA?", userData)
-
-
     useEffect(() => {
-        if((user) && (!userData))
-          checkToken();
+        if ((user) && (!userData))
+            checkToken();
         if (!user)
             navigate('/login');
-        checkToken();
-        let temp = diaryInit;
-
-        setDiaryTemplate(temp);
+        setDiaryTemplate(DiaryInit)
     }, [])
+
 
     useEffect(() => {
         if (!user)
             navigate('/login');
         checkToken();
     }, [location])
-
 
 
     const handleClick = (id) => {
@@ -76,19 +69,17 @@ const CreateDiary = () => {
         setDiaryTemplate(
             { ...diaryTemplate }, diaryTemplate.groups[indexG].items[indexI].selected = !diaryTemplate.groups[indexG].items[indexI].selected
         )
-        // console.log("selected? ", diaryTemplate.groups[indexG].items[indexI].selected)
     }
 
     //......................................
 
     useEffect(() => {
-        // console.log("diaryIdSaved:", diaryIdSaved)
-        //     console.log("diarySaved:", diarySaved)
         if ((diaryIdSaved) && (diarySaved)) {
-            const tempDiary = diaryTemplate;
-                setDiary(tempDiary);
-                setDiaryTemplate('');
-                console.log("alle checks ok")
+            const tempDiary = diaryTemplate; 
+            console.log("\n \n", tempDiary, "\n")
+            setDiary(tempDiary); 
+            setDiaryTemplate('');
+            console.log("alle checks ok")
             setCreated(true);
             setDone(true);
             timing();
@@ -99,17 +90,7 @@ const CreateDiary = () => {
 
 
     const handleSendAndCreate = () => {
-        console.log("Erstelle diaryTemplate")
         createNewDiary(diaryTemplate.id);
-        // if (res === true) {
-        //     console.log("alle checks ok")
-        //     setCreated(true);
-        //     setDone(true);
-        //     timing();
-        //     // setDiaryTemplate();
-        // } else {
-        //     console.log("irgendwelche states sind noch nicht auf true. warum?")
-        // }
     }
 
     const timing = () => {
@@ -137,7 +118,11 @@ const CreateDiary = () => {
         }
     }, [on])
 
-    // console.log("diaryTemplate", diaryTemplate)
+    const handleSubmit = e => {
+        e.preventDefault();
+    }
+
+    console.log("diaryTemplate", diaryTemplate)
 
     return (
         <ContentGroup>
@@ -146,39 +131,50 @@ const CreateDiary = () => {
                 <NavBar />
                 <MainContent>
                     <PageTitle>Neues Tagebuch</PageTitle>
-                    <TitleH2>Erstelle Dein individuelles Patienten-Tagebuch
+                    <TitleH2>
+                        Erstelle Dein individuelles Patienten-Tagebuch
                     </TitleH2>
-                    {/* <StP>Möchtest Du Deinem Tagebuch einen Namen geben?</StP>
-                    <FormField onSubmit={handleSubmit}>
-                        <Input onChange={(e) => setdiaryTemplateName(e.target.value)} />
-                    </FormField> */}
                     {
                         diaryTemplate &&
-                    <StP>Wähle nun aus den nachfolgenden Optionen die Werte aus, die Du dokumentieren möchtest. </StP>
+                        <StP>Wähle nun aus den nachfolgenden Optionen die Werte aus, die Du dokumentieren möchtest. </StP>
                     }
                     {
                         diaryTemplate &&
-                        <SwithcGroup>
+                        <SwitchGroup>
                             <SwitchToggle isOn={on} handleToggle={() => setOn(!on)} />
                             <SwitchText>alle aufklappen</SwitchText>
-                        </SwithcGroup>
+                        </SwitchGroup>
                     }
                     {
                         diaryTemplate &&
                         diaryTemplate.groups.map(e => (
                             <ItemGroup key={e.id}>
-                                <Accordion  visible={e.visible} onClick={() =>
-                                    handleClick(e.id)} 
-                                > 
+                                <Accordion visible={e.visible} onClick={() =>
+                                    handleClick(e.id)}
+                                >
                                     {!e.visible && <StBiRightArrow></StBiRightArrow>}
                                     {e.visible && <StBiDownArrow></StBiDownArrow>}
 
-                                    {e.label} 
+                                    {e.label}
                                 </Accordion>
 
                                 <Panel itemGroup={e} handleSelect={handleSelect} ></Panel>
                             </ItemGroup>
                         ))
+                    }
+
+                    {
+                        (done === false) &&
+                        <div>
+                            <StP> Gebe Deinem Tagebuch bitte einen Namen: </StP>
+                            <FormField onSubmit={handleSubmit}>
+                                <input
+                                    style={{ marginLeft: '1.5rem', width: '200px', height: '1.75rem' }}
+                                    // value = 'mein erstes Tagebuch'
+                                    onChange={(e) => setDiaryTemplate({ ...diaryTemplate, diaryName: e.target.value })}       
+                                />
+                            </FormField>
+                        </div>
                     }
 
                     {
@@ -197,7 +193,7 @@ const CreateDiary = () => {
                 </MainContent>
             </MainGroup>
             <Footer />
-        </ContentGroup>
+        </ContentGroup >
     )
 }
 
@@ -223,7 +219,7 @@ padding: 0.5rem;
 margin-bottom: -0.45rem; 
 font-weight: 500;
 `
-const SwithcGroup = styled.div`
+const SwitchGroup = styled.div`
   display: inline-flex; 
   align-items: center;
 `
@@ -231,28 +227,4 @@ const SwithcGroup = styled.div`
 const ItemGroup = styled.div`
 
 `
-
-// const Accordion = styled.div`
-//   border: 1.5px solid ${(props) => props.theme.colors.col21};
-//   border-top-right-radius: 1.5rem;
-//   border-top-left-radius: 1.5rem;
-//   border-bottom-right-radius: 1.5rem;
-//   background-color: ${(props) => props.theme.colors.col20};
-//   &:hover{
-//     background-color: ${(props) => props.theme.colors.col22};
-//     border-color: ${(props) => props.theme.colors.col24};
-//     color: white;
-//   }
-//   :active{
-//     background-color: #fff;
-//     color: black;
-//   }
-//   padding: 0.5rem 0.5rem 0.5rem 1.5rem;
-//   margin: 0.5rem 1.5rem;
-//   font-size: 1.25rem;
-//   font-weight: 500;
-//   box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
-// `
-
-
 

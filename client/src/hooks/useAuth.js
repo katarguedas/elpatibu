@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 
 import { v4 as uuidv4 } from 'uuid';
+
 //---------------------------------------------------------
 
 
@@ -26,16 +27,16 @@ const useAuth = () => {
         })
     const [regMessage, setRegMessage] = useState('')
     const [flag, setFlag] = useState(999)
-    const [anyChange, setAnyChange] = useState(false)
-
     const [diaryIdSaved, setDiaryIdSaved] = useState(false);
 
-    const LOCAL_STORAGE_KEY = 'access token';
+    const LOCAL_STORAGE_KEY = process.env.REACT_APP_LOCAL_STORAGE_KEY;
+    const LOCAL_STORAGE_WEATHER = process.env.REACT_APP_LOCAL_STORAGE_WEATHER;
 
+    // console.log(process.env.REACT_APP_LOCAL_STORAGE_WEATHER)
 
     //---------------------------------------------------------
 
- 
+
     useEffect(() => {
         if (!user) {
             const ls = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
@@ -51,10 +52,9 @@ const useAuth = () => {
 
 
     useEffect(() => {
-        if((user) && (!userData))
-          checkToken();
+        if ((user) && (!userData))
+            checkToken();
     }, [])
-
 
     //---------------------------------------------------------
 
@@ -78,6 +78,13 @@ const useAuth = () => {
             .then(response => response.json())
             .then(response => {
                 console.log(response)
+
+                if ((response.status === 'error') && (response.message === 'Invalid password')) 
+                    alert("Falsches Passwort")
+                else if ((response.status === 'error') && (response.message === 'Invalid user'))
+                  alert("User mit diesem Namen exisitert nicht")
+
+
                 localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(response))
 
                 setToken(response.access)
@@ -91,7 +98,10 @@ const useAuth = () => {
                 console.log("UserData:", jwtDecoded)
                 console.log("user hat sich eingeloggt")
             })
-            .catch(error => console.log('error', error));
+            .catch(error => {
+                console.log('error', error)
+            }
+            );
         return (user);
     }
 
@@ -178,6 +188,7 @@ const useAuth = () => {
 
     const logout = () => {
         localStorage.removeItem(LOCAL_STORAGE_KEY)
+        localStorage.removeItem(LOCAL_STORAGE_WEATHER)
         removeCookie()
         setUser('')
     }
@@ -186,7 +197,6 @@ const useAuth = () => {
 
     const addUser = async () => {
 
-        console.log("registerdta", registerData)
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -261,7 +271,7 @@ const useAuth = () => {
 
     //-----------------------------------------------------------------
 
-    return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, anyChange, setAnyChange, checkToken, saveDiaryIdInBackend, diaryIdSaved];
+    return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved];
 
 }
 

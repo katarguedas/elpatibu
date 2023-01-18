@@ -1,60 +1,66 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 
 //------------------------------------------------------------------------
 
 
-const useWeatherData = () => {
+const useWeatherAPI = () => {
 
 
     const [weatherData, setWeatherData] = useState([]);
-    const [newObj, setNewObj] = useState();
-    let tempObj = [];
+    let temp = [];
 
-    const LOCAL_STORAGE_WEATHER = 'weather data';
+    const LOCAL_STORAGE_WEATHER = process.env.REACT_APP_LOCAL_STORAGE_WEATHER;
 
+    // ----------------------------------------------------------------------------
+
+
+    useEffect(() => {
+
+        if (JSON.parse(localStorage.getItem(LOCAL_STORAGE_WEATHER)) !== null)
+            getWeatherData();
+    }, [])
 
     // ----------------------------------------------------------------------------
 
     const getWeatherData = (city, startDate, endDate) => {
 
-        const data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_WEATHER))
-
+        let data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_WEATHER));
         if (data === null)
             getWeatherDataFromBackend(city, startDate, endDate)
-        else {
-            const dataNames = ['date', 'sealevelpressure', 'maxt', 'precip', 'humidity'];
+
+        data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_WEATHER));
+
+        if (data !== null) {
+            console.log(data.locations['Oberhausen'].values)
+            const dataNames = ['date', 'dateStr', 'sealevelpressure', 'maxt', 'precip', 'humidity'];
             const length = data.locations['Oberhausen'].values.length
             let date = [];
+            let dateStr = [];
             let humidity = [];
             let sealevelpressure = [];
             let maxt = [];
             let precip = [];
             for (let i = 0; i < length; i++) {
                 date.push(data.locations['Oberhausen'].values[i].datetime)
+                dateStr.push(data.locations['Oberhausen'].values[i].datetimeStr)
                 humidity.push(data.locations['Oberhausen'].values[i].humidity)
                 sealevelpressure.push(data.locations['Oberhausen'].values[i].sealevelpressure)
                 maxt.push(data.locations['Oberhausen'].values[i].maxt)
                 precip.push(data.locations['Oberhausen'].values[i].precip)
             }
-            
-            const allWeatherDataIneed = [date, sealevelpressure, maxt, precip, humidity];
-            for (let i = 1; i < dataNames.length; i++) {
-                const units = data.columns[dataNames[i]].unit;
-                const labels = data.columns[dataNames[i]].name;
-
-                tempObj[i - 1] =
+            const allWeatherDataIneed = [date, dateStr, sealevelpressure, maxt, precip, humidity];
+            for (let i = 2; i < dataNames.length; i++) {
+                console.log(data.columns[dataNames[i]].unit)
+                temp[i - 2] =
                 {
                     unit: data.columns[dataNames[i]].unit,
                     label: data.columns[dataNames[i]].name,
                     values: allWeatherDataIneed[i],
                     date: allWeatherDataIneed[0],
+                    dateStr: allWeatherDataIneed[1],
                 }
             }
-            setWeatherData(tempObj)
-
-            console.log("allWeatherDataIneed: ......", allWeatherDataIneed)
-            console.log("tempObj: ......", tempObj)
+            setWeatherData(temp)
         }
     }
 
@@ -68,9 +74,6 @@ const useWeatherData = () => {
         };
         console.log("city", city)
 
-        console.log('/api/WeatherData?city=' + city + '&start=' + startDate + '&end=' + endDate);
-
-        let data;
         await fetch('/api/WeatherData?city=' + city + '&start=' + startDate + '&end=' + endDate, requestOptions)
             .then(response => response.json())
             .then(response => {
@@ -81,9 +84,8 @@ const useWeatherData = () => {
             .catch(error => console.log("error: ", error))
     }
 
-
-    return [getWeatherDataFromBackend, weatherData, getWeatherData]
+    return [LOCAL_STORAGE_WEATHER, getWeatherDataFromBackend, weatherData, getWeatherData]
 }
 
 
-export default useWeatherData;
+export default useWeatherAPI;

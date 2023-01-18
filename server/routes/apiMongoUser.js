@@ -32,7 +32,7 @@ router.post('/api/login', async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
-    res.status(400).send({ status: "error", message: "Invalid user", error: error })
+    res.status(400).send({ status: "error", message: "Invalid user" })
   } else {
     const isPasswordValid = await bcrypt.compare(req.body.pwd, user.pwd)
 
@@ -66,7 +66,7 @@ router.post('/api/login', async (req, res) => {
       res.status(200).send({ status: "ok", message: "user verified", access: accessToken });
       return;
     }
-    res.status(400).send({ status: "error", message: "Invalid password or email" })
+    res.status(400).send({ status: "error", message: "Invalid password" })
   }
 })
 

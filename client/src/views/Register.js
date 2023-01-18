@@ -21,7 +21,6 @@ const Register = () => {
 
     const [type, setType] = useState("password");
 
-
     const navigate = useNavigate();
 
     const clearState = () => setRegisterData("")
@@ -35,8 +34,6 @@ const Register = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        // setRegisterData({...registerData, id: uuidv4() })
-        console.log(registerData)
         console.log(uuidv4())
         addUser();
 
@@ -106,6 +103,7 @@ const RegisterGroup = styled.div`
   width: 370px; 
   margin-left: auto; 
   margin-right: auto;
+  margin-top: 5.0rem;
 `
 const Message = styled.div`
   margin-bottom: 3.0rem;
