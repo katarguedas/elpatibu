@@ -7,7 +7,7 @@ import { useUserContext } from "../providers/userContext"
 import { useDataContext } from "../providers/dataContext"
 import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2 } from "../styled/globalStyles"
 
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom";
 
 import styled from "styled-components"
@@ -19,12 +19,14 @@ const Dashboard = () => {
     const { user, userData, checkToken } = useUserContext();
     const { getDiaryFromBackend, diary, getWeatherData, weatherData } = useDataContext();
 
+    const [rating, setRating] = useState();
+
     let location = useLocation();
     const navigate = useNavigate();
 
-    console.log("USER?", user)
-    console.log("USERDATA?", userData)
-    console.log("DIARY?", diary)
+    // console.log("USER?", user)
+    // console.log("USERDATA?", userData)
+    // console.log("DIARY?", diary)
 
     //........................
 
@@ -70,6 +72,13 @@ const Dashboard = () => {
         console.log(weatherData)
     }, [weatherData])
 
+
+    const hand = () => {
+        setRating([...rating,
+            { name: 'test', value: 33 }])
+    }
+
+
     //........................
 
     if (user)
@@ -100,6 +109,7 @@ const Dashboard = () => {
                                 </TitleH2>
                                 <div onClick={handleWeather}> Wetterdaten abrufen
                                 </div>
+                                <div onClick={hand} > test </div>
                             </div>
                         }
                     </MainContent>

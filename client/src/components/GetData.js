@@ -1,13 +1,10 @@
 import { useDataContext } from "../providers/dataContext"
 import { SendButton } from "./Buttons";
 import { todayDate } from '../components/Date';
-import smiley1 from '../pictures/smiley-01.png';
-import smiley2 from '../pictures/smiley-02.png';
-import smiley3 from '../pictures/smiley-03.png';
-import smiley4 from '../pictures/smiley-04.png';
-import smiley5 from '../pictures/smiley-05.png';
+import RadioInput from '../components/forms/RadioInput';
 import { useUserContext } from "../providers/userContext";
 import { InputField, FormField, LabelText } from "../styled/globalStyles";
+import { checkTs } from "../utils/helperfunctions";
 
 import React from "react";
 import { useEffect, useRef, useState } from "react";
@@ -35,7 +32,6 @@ const GetData = ({ index }) => {
             value: ''
         }
     ])
-    const [rating, setRating] = useState();
 
     const inputRefs = useRef([]);
 
@@ -86,37 +82,44 @@ const GetData = ({ index }) => {
 
     useEffect(() => {
 
+        console.log("update:", update)
         if (update !== undefined) {
 
             // heutiges Datum eintragen:
-            if ((update === false) && (saved !== true))
+            if ((update === false) && (saved !== true)) {
+                console.log("heitiges Datum wird eingetragen")
                 setDiary({ ...diary }, diary.date = [...diary.date, ts])
+            }
 
             let val = null;
 
             // bereite die eingegebenen Daten vor
             diary.groups[index].items.map((el, i) => {
-                console.log("item: ", el.name)
+                // console.log("item: ", el.name)
                 val = null;
                 data.map(element => {
                     if (element.name === el.name)
                         val = element.value;
                     return val;
                 })
+                // console.log("val", val)
 
                 if (update === true) {
                     console.log("Aktualisiere die Daten")
                     const tsIndex = diary.date.findIndex(e => e === todayDate());
                     // Wurde ein neuer Wert eingegeben so überschreibe den alten, wenn vorhanden, sonst schreibe ihn ans Ende. Wurde kein neuer Wert eingegeben, dann setze ihn auf 'Null', falls noch nich vorhanden.
                     if (val !== null) {
+                        console.log("val", val)
                         if (diary.groups[index].items[i].values.length === diary.date.length) {
                             setDiary({ ...diary }, diary.groups[index].items[i].values[tsIndex] = val)
                         }
                         else {
+                            console.log("val", val)
                             setDiary({ ...diary }, diary.groups[index].items[i].values =
                                 [...diary.groups[index].items[i].values, val])
                         }
                     } else if (val === null) {
+                        console.log("val", val)
                         if (diary.groups[index].items[i].values.length < diary.date.length)
                             setDiary({ ...diary }, diary.groups[index].items[i].values =
                                 [...diary.groups[index].items[i].values, val])
@@ -134,6 +137,7 @@ const GetData = ({ index }) => {
                 }
             })
         }
+        setUpdate()
     }, [update])
 
     //---------------------------
@@ -156,28 +160,15 @@ const GetData = ({ index }) => {
 
     //.....................................
 
-    const checkTs = () => {
-
-        if (diary.date.length > 0) {
-            // checke, ob heutiges Datum bereits gespeichert
-            const res = diary.date.findIndex(e => e === ts);
-
-            if (res >= 0)
-                setUpdate(true);   // Heutiges Datum bereits vorhanden
-            else
-                setUpdate(false);   // Datum noch nicht vorhanden
-        } else
-            setUpdate(false);    // Datumarray noch leer
-    }
-
-    //.......................................
-
     const handleSubmit = e => {
 
-        checkTs();
+        console.log(diary.date)
+
+        checkTs(diary.date, setUpdate);
         e.preventDefault();
 
         timing();
+        if(inputRefs)
         inputRefs.current.map(e => {
             e.value = '';
         })
@@ -197,17 +188,12 @@ const GetData = ({ index }) => {
     const handleChange = (e) => {
 
         setData([...data,
-        { name: e.target.name, value: e.target.value }])
+        { name: e.target.name, value: parseInt(e.target.value) }])
+        // console.log(e.target.name)
+        // console.log(parseInt(e.target.value))
+        // console.log(data)
     }
 
-    // const handleRadio = (e) => {
-    //     setRating(e.target.value);
-    //     console.log(e.target.value)
-    // }
-
-    useEffect(() => {
-        console.log(rating)
-    }, [rating])
     //----------------------------
 
     return (
@@ -237,84 +223,19 @@ const GetData = ({ index }) => {
                                     style={{ marginTop: '0.5rem', backgroundColor: '#fafcfb', borderRadius: '0.5rem', border: '1px solid #9e9a9a' }}
                                 >
                                     <StLabelText style={{ width: '100%', margin: '0.75rem' }} >{e.label}</StLabelText>
-                                    <RadioGroup>
-                                        <RadioLabelText>
-                                            <img src={smiley1} alt="very good" />
-                                            <input
-                                                style={{ margin: '0.75rem' }}
-                                                name={i}
-                                                type="radio"
-                                                value={1}
-                                                onChange={
-                                                    (e) => setRating({ key1: e.target.value, key2: i })
-                                                }
-                                            />
-                                            Option 1
-                                        </RadioLabelText>
-                                        <RadioLabelText>
-                                            <img src={smiley2} alt="good" />
-                                            <input
-                                                style={{ margin: '0.75rem' }}
-                                                name={i}
-                                                type="radio"
-                                                value={2}
-                                                onChange={
-                                                    (e) => setRating({ key1: e.target.value, key2: i })}
-                                            />
-                                            Option 2
-                                        </RadioLabelText>
-                                        <RadioLabelText>
-                                            <img src={smiley3} alt="" />
-                                            <input
-                                                style={{ margin: '0.75rem' }}
-                                                name={i}
-                                                type="radio"
-                                                value={3}
-                                                onChange={
-                                                    (e) => setRating({ key1: e.target.value, key2: i })
-                                                }
-                                            />
-                                            Option 3
-                                        </RadioLabelText>
-                                        <RadioLabelText>
-                                            <img src={smiley4} alt=" " />
-                                            <input
-                                                style={{ margin: '0.75rem' }}
-                                                name={i}
-                                                type="radio"
-                                                value={4}
-                                                onChange={
-                                                    (e) => setRating({ key1: e.target.value, key2: i })
-                                                }
-                                            />
-                                            Option 4
-                                        </RadioLabelText>
-                                        <RadioLabelText>
-                                            <img src={smiley5} alt=" " />
-                                            <input
-                                                style={{ margin: '0.75rem' }}
-                                                name={i}
-                                                type="radio"
-                                                value={5}
-                                                onChange={
-                                                    (e) => setRating({ key1: e.target.value, key2: i })
-                                                }
-                                            // checked={true}
-                                            />
-                                            Option 5
-                                        </RadioLabelText>
-                                    </RadioGroup>
+                                    <RadioInput
+                                        item={e}
+                                        itemIndex={i}
+                                        data={data}
+                                        setData={setData}
+                                    >
 
+                                    </RadioInput>
                                 </InputLabelV>
-
                             : null
-
-                    ))
-                    }
-
+                    ))}
                     {saved &&
                         <StTextPCenter>Werte wurden gespeichert.</StTextPCenter>
-
                     }
                     {done === true ?
                         <StBiCheck style={{ marginLeft: 'auto', marginRight: 'auto' }} />
@@ -360,23 +281,6 @@ const StLabelText = styled(LabelText)`
   font-size: 1.15rem;
 `
 
-const RadioGroup = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  margin: 0.5rem;
-  margin-left: auto;
-  margin-right: auto;
-`
-
-const RadioLabelText = styled.div`
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  font-size: 1.0rem;
-  padding: 0.25rem;
-  text-align: center;
-  padding-top: 0.75rem;
-`
 
 const StBiCheck = styled(BiCheck)`
 font-size: 3.0rem;
