@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
-import { BiSquare, BiCheckSquare } from "react-icons/bi";
+import { BiSquare, BiCheckSquare, BiInfoCircle } from "react-icons/bi";
 import { SendButton } from "./Buttons";
 import { theme } from '../themes/theme'
-
+import 'react-tooltip/dist/react-tooltip.css';
 import styled from "styled-components";
 import { useDataContext } from "../providers/dataContext";
 import { InputField, FormField } from "../styled/globalStyles";
@@ -16,6 +16,7 @@ const Panel = ({ itemGroup, handleSelect }) => {
 
   const inputRef = useRef();
   const [done, setDone] = useState();
+  const [showInfo, setShowInfo] = useState();
   const color = theme.colors.col34;
 
   //............................
@@ -48,6 +49,9 @@ const Panel = ({ itemGroup, handleSelect }) => {
         <FormField style={{ display: 'flex', flexDirection: 'row', marginBottom: '1.0rem' }} onSubmit={handleSubmit} >
           <CityInput>
             In welcher Stadt lebst Du?
+            <BiInfoCircle style={{ margin: '0.5rem', fontSize: '1.25rem' }} onClick={()=> setShowInfo(true)} >
+              <StP show={showInfo} >Für den Abgleich mit Wetterdaten benötige ich einen Ort</StP>
+            </BiInfoCircle>
             <InputField
               style={{ marginLeft: '1.0rem', width: '200px' }}
               type="text"
@@ -64,7 +68,7 @@ const Panel = ({ itemGroup, handleSelect }) => {
                 Ort speichern
               </SendButton>
               :
-              <StBiCheck/>
+              <StBiCheck />
           }
         </FormField>
       }
@@ -123,4 +127,9 @@ font-size: 3.0rem;
 color: green;
 margin-right: 0.5rem;
 margin-top: 1.0rem;
+`
+
+const StP = styled.p`
+  display: ${ props => props.show ? 'inlineFlex' : 'none'}
+
 `

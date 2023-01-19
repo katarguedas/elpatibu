@@ -1,6 +1,6 @@
 import Dashboard from './views/Dashboard';
 import LandingPage from './views/LandingPage';
-import Calendar from './views/Calendar';
+import MyCalendar from './views/MyCalendar';
 import CreateDiary from './views/CreateDiary';
 import EditDiary from './views/EditDiary';
 import DiaryData from './views/DiaryData';
@@ -37,7 +37,7 @@ function App() {
               <Route path='/editDiary' element={user ? <EditDiary /> : <Login/> } />
               <Route path='/openDiary' element={ user ? <OpenDiary /> : <Login/> } />
               <Route path='/diaryData' element={ user ? <DiaryData /> : <Login/> } />
-              <Route path='/calendar' element={user ? <Calendar /> : <Login/> } />
+              <Route path='/mycalendar' element={user ? <MyCalendar /> : <Login/> } />
               
             </Routes>
           </BrowserRouter>

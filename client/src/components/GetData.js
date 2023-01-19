@@ -81,14 +81,20 @@ const GetData = ({ index }) => {
     //......................................
 
     useEffect(() => {
+        console.log("update?", update)
+    }, [update])
+
+
+    useEffect(() => {
 
         console.log("update:", update)
         if (update !== undefined) {
 
             // heutiges Datum eintragen:
             if ((update === false) && (saved !== true)) {
-                console.log("heitiges Datum wird eingetragen")
-                setDiary({ ...diary }, diary.date = [...diary.date, ts])
+                console.log("heutiges Datum wird eingetragen")
+                setDiary({ ...diary }, diary.date.push(ts))
+                // setDiary({ ...diary }, diary.date = [...diary.date, ts])
             }
 
             let val = null;
@@ -137,23 +143,24 @@ const GetData = ({ index }) => {
                 }
             })
         }
-        setUpdate()
     }, [update])
 
     //---------------------------
 
-    useEffect(() => {
-        if (saved === true)
-            setDone(true)
-    }, [saved])
+    // useEffect(() => {
+    //     if (saved === true)
+    //         setDone(true)
+    // }, [saved])
 
     //-----------------------------------------
 
     useEffect(() => {
         // console.log("BIN im saveDataToBackend-useEffect, saved: ", saved)
         if (saved === true) {
-            console.log("saved:", saved)
+            console.log("saved im frontend:", saved)
             saveDataToBackend(diary.id, diary.groups[index].id, diary.groups[index].items, ts, update);
+            setDone(true)
+            setUpdate()
             setSaved()
         }
     }, [saved])
@@ -168,10 +175,10 @@ const GetData = ({ index }) => {
         e.preventDefault();
 
         timing();
-        if(inputRefs)
-        inputRefs.current.map(e => {
-            e.value = '';
-        })
+        if (inputRefs)
+            inputRefs.current.map(e => {
+                e.value = '';
+            })
         console.log(diary)
     }
 
@@ -189,9 +196,6 @@ const GetData = ({ index }) => {
 
         setData([...data,
         { name: e.target.name, value: parseInt(e.target.value) }])
-        // console.log(e.target.name)
-        // console.log(parseInt(e.target.value))
-        // console.log(data)
     }
 
     //----------------------------

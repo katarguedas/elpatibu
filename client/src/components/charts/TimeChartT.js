@@ -29,8 +29,8 @@ const TimeChartT = ({ xValues, yValues, name }) => {
 
     //................................................
 
-    
-    
+
+
     const myColor1 = ['#BF5C54']
     const textColor = ['#1B545C']
     const bggreen = ['rgba(146, 250, 61, 0.3)']
@@ -43,7 +43,7 @@ const TimeChartT = ({ xValues, yValues, name }) => {
     const myData = xValues.map((e, i) => {
         return ({ x: e, y: yValues[i] })
     })
-    console.log(typeof(myData))
+    // console.log(typeof(myData))
 
     const data = {
         // labels, //nur bei type: Line
@@ -81,19 +81,31 @@ const TimeChartT = ({ xValues, yValues, name }) => {
                 font: { size: 22 },
                 color: textColor
             },
-            arbitraryLine: {
-                lineColor: 'red',
-                yPosition: 37,
-            },
             annotation: {
                 annotations: {
-                    line1: {
+                    // line1: {
+                    //     type: 'line',
+                    //     xMin: myData[7].x,
+                    //     xMax: myData[7].x,
+                    //     borderColor: 'rgb(255, 99, 132)',
+                    //     borderWidth: 2,
+                    // },
+                    line2: {
                         type: 'line',
-                        xMin: myData[7].x,
-                        xMax: myData[7].x,
-                        borderColor: 'rgb(255, 99, 132)',
-                        borderWidth: 2,
-                      },
+                        yMin: 39,
+                        yMax: 39,
+                        borderColor: 'rgb(206, 23, 93)',
+                        borderWidth: 3,
+                        label: {
+                            display: true,
+                            content: 'hohes Fieber',
+                            position: 'end',
+                            yAdjust: -15,
+                            padding: 5,
+                            backgroundColor: 'rgb(206, 23, 93)',
+                            color: '#fff'
+                        }
+                    },
                     box1: {
                         type: 'box',
                         // xMin: 1669892400000,
@@ -152,7 +164,7 @@ const TimeChartT = ({ xValues, yValues, name }) => {
                     padding: 10
                 },
                 ticks: {
-                    font: {size: 16},
+                    font: { size: 16 },
                     maxRotation: 90,
                 },
                 grid: {
@@ -168,7 +180,7 @@ const TimeChartT = ({ xValues, yValues, name }) => {
                     padding: 10
                 },
                 ticks: {
-                    font: {size: 16},
+                    font: { size: 16 },
                 },
             },
         }
@@ -179,7 +191,7 @@ const TimeChartT = ({ xValues, yValues, name }) => {
 
     return (
         <div >
-            <Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem'}}  options={options} data={data} redraw={true} />
+            <Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem' }} options={options} data={data} redraw={true} />
         </div>
     )
 };

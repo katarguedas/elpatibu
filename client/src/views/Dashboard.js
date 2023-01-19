@@ -61,7 +61,7 @@ const Dashboard = () => {
     }
 
     const handleWeather = () => {
-        const city = 'Oberhausen';
+        const city = diary.city;
         const startDate = '2022-12-01';
         const endDate = '2022-12-31';
 
@@ -71,12 +71,6 @@ const Dashboard = () => {
     useEffect(() => {
         console.log(weatherData)
     }, [weatherData])
-
-
-    const hand = () => {
-        setRating([...rating,
-            { name: 'test', value: 33 }])
-    }
 
 
     //........................
@@ -109,7 +103,6 @@ const Dashboard = () => {
                                 </TitleH2>
                                 <div onClick={handleWeather}> Wetterdaten abrufen
                                 </div>
-                                <div onClick={hand} > test </div>
                             </div>
                         }
                     </MainContent>

@@ -61,7 +61,6 @@ const MultiAxLineChart = ( {xValues, y1Values, y2Values, name} ) => {
         return ({ x: e, y: y2Values[i] })
     })
 
-    // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
     const data = {
         // labels,

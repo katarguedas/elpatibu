@@ -1,8 +1,8 @@
-import smiley1 from '../../pictures/smiley-01.png';
-import smiley2 from '../../pictures/smiley-02.png';
-import smiley3 from '../../pictures/smiley-03.png';
-import smiley4 from '../../pictures/smiley-04.png';
-import smiley5 from '../../pictures/smiley-05.png';
+import smiley1 from '../../pictures/01.png';
+import smiley2 from '../../pictures/02.png';
+import smiley3 from '../../pictures/03.png';
+import smiley4 from '../../pictures/04.png';
+import smiley5 from '../../pictures/05.png';
 
 import styled from "styled-components";
 import { useDataContext } from '../../providers/dataContext';

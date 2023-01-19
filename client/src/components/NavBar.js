@@ -26,7 +26,7 @@ const NavBar = () => {
   }
 
   const handleClickCalendar = () => {
-    navigate('/calendar')
+    navigate('/mycalendar')
   }
 
   return (

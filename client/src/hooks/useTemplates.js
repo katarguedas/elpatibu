@@ -199,6 +199,15 @@ const useTemplates = () => {
                                 selected: false,
                                 measurable: false,
                                 values: []
+                            },
+                            {
+                                name: 'joint pain',
+                                id: uuidv4(),
+                                label: 'Gelenkschmerzen',
+                                unit: '-',
+                                selected: false,
+                                measurable: false,
+                                values: []
                             }
                         ]
                     },
@@ -350,7 +359,11 @@ const useTemplates = () => {
             },
             {
                 name: 'insomnia',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
+            },
+            {
+                name: 'joint pain',
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
             },
             {
                 name: 'pain',
@@ -370,11 +383,11 @@ const useTemplates = () => {
             },
             {
                 name: 'pyrosis',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
+                text: ['gar nicht', 'leicht', 'mittelmäßig', 'stark', 'sehr stark']
             },
             {
                 name: 'fatigue',
-                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
+                text: ['gar nicht', 'leicht', 'mittelmäßig', 'stark', 'sehr stark']
             },
             {
                 name: 'insomnia',
@@ -382,23 +395,19 @@ const useTemplates = () => {
             },
             {
                 name: 'vertigo',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
+                text: ['gar nicht', 'leicht', 'mittelmäßig', 'stark', 'sehr stark']
             },
             {
                 name: 'appetiteLoss',
-                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
-            },
-            {
-                name: 'fatigue',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
+                text: ['gar nicht', 'leicht', 'mittelmäßig', 'stark', 'sehr stark']
             },
             {
                 name: 'fingerTingling',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
+                text: ['gar nicht', 'leicht', 'mittelmäßig', 'stark', 'sehr stark']
             },
             {
                 name: 'memoryDisorder',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
             }
         ])
     }

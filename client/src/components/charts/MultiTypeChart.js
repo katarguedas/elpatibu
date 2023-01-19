@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, TimeSeriesScale } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import 'chartjs-adapter-luxon';
+import { useState } from 'react';
 
 import { theme } from '../../themes/theme'
 
@@ -11,6 +12,10 @@ import { theme } from '../../themes/theme'
 
 const MultiTypeChart = ( {xValues, y1Values, y2Values, labels, name, label2, unit} ) => {
 
+    console.log(y1Values, y2Values, label2)
+
+    const [sMin, setSMin] =  useState();
+    const [sMax, setSMax] =  useState();
 
     ChartJS.register(
         CategoryScale,
@@ -24,6 +29,19 @@ const MultiTypeChart = ( {xValues, y1Values, y2Values, labels, name, label2, uni
         Legend
     );
 
+    // useEffect(()=> {
+    //     if(name === 'Gelenschmerzen') {
+    //         setSMin(10)
+    //         setSMax(100)
+    //     } 
+    //     else if(label2 === 'Meeresspiegeldruck') {
+    //         console.log("Werte: ", 980, 1040)
+    //         setSMin(980)
+    //         setSMax(1040) 
+    //     }
+    // },[])
+
+    // console.log(name, sMax)
 
     const color1 = theme.colors.col11;
     const color2 = theme.colors.col13;
@@ -43,7 +61,7 @@ const MultiTypeChart = ( {xValues, y1Values, y2Values, labels, name, label2, uni
         plugins: {
             title: {
                 display: true,
-                text: 'Chart.js Line Chart - Multi Axis',
+                text: '...',
             },
         },
         scales: {
@@ -62,8 +80,8 @@ const MultiTypeChart = ( {xValues, y1Values, y2Values, labels, name, label2, uni
                 },
             },
             y1: {
-                min: 980, 
-                suggestedMax: 1040,
+                suggestedMax: (name === 'Gelenschmerzen') ? 0 : 980, 
+                suggestedMax: (name === 'Gelenschmerzen') ? 100 : 1040,
                 type: 'linear',
                 display: true,
                 position: 'right',
@@ -94,7 +112,7 @@ const MultiTypeChart = ( {xValues, y1Values, y2Values, labels, name, label2, uni
         datasets: [
             {
                 type: 'line',
-                label: 'Dataset 1',
+                label: label2,
                 borderColor: color11,
                 backgroundColor: color22,
                 borderWidth: 2,
@@ -104,7 +122,7 @@ const MultiTypeChart = ( {xValues, y1Values, y2Values, labels, name, label2, uni
             },
             {
                 type: 'bar',
-                label: 'Dataset 2',
+                label: name,
                 backgroundColor:  color1,
                 backgroundColor: color2,
                 data: values2,
@@ -122,6 +140,7 @@ const MultiTypeChart = ( {xValues, y1Values, y2Values, labels, name, label2, uni
     };
 
 
+    if(y1Values)
     return <Chart type='bar' data={data} options={options} />;
 }
 

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const useWeatherAPI = () => {
 
 
-    const [weatherData, setWeatherData] = useState([]);
+    const [weatherData, setWeatherData] = useState();
     let temp = [];
 
     const LOCAL_STORAGE_WEATHER = process.env.REACT_APP_LOCAL_STORAGE_WEATHER;
@@ -22,7 +22,9 @@ const useWeatherAPI = () => {
 
     // ----------------------------------------------------------------------------
 
-    const getWeatherData = (city, startDate, endDate) => {
+    const getWeatherData = ( city, startDate, endDate ) => {
+
+        console.log("city:", city, startDate)
 
         let data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_WEATHER));
         if (data === null)
@@ -30,10 +32,10 @@ const useWeatherAPI = () => {
 
         data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_WEATHER));
 
-        if (data !== null) {
-            console.log(data.locations['Oberhausen'].values)
+        if ((data !== null) && (city !== undefined)) {
+            console.log(data.locations[city].values)
             const dataNames = ['date', 'dateStr', 'sealevelpressure', 'maxt', 'precip', 'humidity'];
-            const length = data.locations['Oberhausen'].values.length
+            const length = data.locations[city].values.length
             let date = [];
             let dateStr = [];
             let humidity = [];
@@ -41,12 +43,12 @@ const useWeatherAPI = () => {
             let maxt = [];
             let precip = [];
             for (let i = 0; i < length; i++) {
-                date.push(data.locations['Oberhausen'].values[i].datetime)
-                dateStr.push(data.locations['Oberhausen'].values[i].datetimeStr)
-                humidity.push(data.locations['Oberhausen'].values[i].humidity)
-                sealevelpressure.push(data.locations['Oberhausen'].values[i].sealevelpressure)
-                maxt.push(data.locations['Oberhausen'].values[i].maxt)
-                precip.push(data.locations['Oberhausen'].values[i].precip)
+                date.push(data.locations[city].values[i].datetime)
+                dateStr.push(data.locations[city].values[i].datetimeStr)
+                humidity.push(data.locations[city].values[i].humidity)
+                sealevelpressure.push(data.locations[city].values[i].sealevelpressure)
+                maxt.push(data.locations[city].values[i].maxt)
+                precip.push(data.locations[city].values[i].precip)
             }
             const allWeatherDataIneed = [date, dateStr, sealevelpressure, maxt, precip, humidity];
             for (let i = 2; i < dataNames.length; i++) {

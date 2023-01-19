@@ -18,8 +18,5 @@ export const checkTs = ( diaryDate, setUpdate ) => {
             setUpdate(false);   // Datum noch nicht vorhanden
     } else
         setUpdate(false);    // Datumarray noch leer
-
-        console.log("---------------------------\n", ts)
-
     
 }

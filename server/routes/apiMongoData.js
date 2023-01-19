@@ -22,7 +22,7 @@ router.use((req, res, next) => {
 
 router.post('/api/newDiary', async (req, res) => {
 
-  console.log("body", req.body.id)
+  console.log("body", req.body.date)
 
   try {
     const data = new Diary({
@@ -72,8 +72,9 @@ router.put('/api/saveData', async (req, res) => {
     // console.log(response)
 
     if (response !== null) {
+      console.log("bin drin?")
       if (req.body.update === false) {
-        console.log("hier, bin drin2")
+        console.log("hier, bin drin, denn update steht auf false")
         response.date.push(req.body.ts)
       }
 

@@ -6,6 +6,7 @@ import { FormField } from "../styled/globalStyles"
 import Panel from "../components/Panel"
 import { SendButton } from "../components/Buttons"
 import { StBiDownArrow, StBiRightArrow } from '../components/Icons'
+import { BiSquare, BiCheckSquare } from "react-icons/bi";
 import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2, StP, Accordion } from "../styled/globalStyles"
 
 import { useDataContext } from "../providers/dataContext"
@@ -28,10 +29,12 @@ const CreateDiary = () => {
     const [on, setOn] = useState();
     const [created, setCreated] = useState(false);
     const [done, setDone] = useState(false);
+    const [selectAll, setSelectAll] = useState(false);
 
     let location = useLocation();
     const navigate = useNavigate();
 
+    //............................................
 
     useEffect(() => {
         if ((user) && (!userData))
@@ -39,8 +42,10 @@ const CreateDiary = () => {
         if (!user)
             navigate('/login');
         setDiaryTemplate(DiaryInit)
+        console.log("selectedAll?", selectAll)
     }, [])
 
+    //.....................
 
     useEffect(() => {
         if (!user)
@@ -49,14 +54,71 @@ const CreateDiary = () => {
     }, [location])
 
 
+    //.....................
+
+    useEffect(() => {
+        if ((diaryIdSaved) && (diarySaved)) {
+            const tempDiary = diaryTemplate;
+            console.log("\n \n", tempDiary, "\n")
+            setDiary(tempDiary);
+            setDiaryTemplate('');
+            console.log("alle checks ok")
+            setCreated(true);
+            setDone(true);
+            timing();
+        }
+    }, [diaryIdSaved, diarySaved])
+
+    //...............
+
+    useEffect(() => {
+        if (on === true) {
+            setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map((e) => {
+                e.visible = true;
+                return e;
+            }))
+        } else if (on === false) {
+            setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map((e) => {
+                e.visible = false;
+                return e;
+            }))
+        }
+    }, [on])
+
+    //...........
+
+    useEffect(() => {
+        if (diaryTemplate) {
+            if (selectAll === false) {
+                setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map(e => {
+                    e.items.map(el => {
+                        el.selected = true;
+                        return el;
+                    })
+                }))
+            } else if (selectAll === true) {
+                setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map(e => {
+                    e.items.map(el => {
+                        el.selected = false;
+                        return el;
+                    })
+                }))
+            }
+        }
+    }, [selectAll])
+
+//............................................
+
     const handleClick = (id) => {
-        console.log("handleClick, id:", id)
+        // einzelne Gruppen einblenden/ausblenden
         setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map(e => {
             if (e.id === id)
                 e.visible = !e.visible;
             return e;
         }))
     }
+
+    //..................
 
     const handleSelect = (groupId, itemId) => {
         const indexG = diaryTemplate.groups.findIndex((e) => e.id === groupId);
@@ -71,22 +133,7 @@ const CreateDiary = () => {
         )
     }
 
-    //......................................
-
-    useEffect(() => {
-        if ((diaryIdSaved) && (diarySaved)) {
-            const tempDiary = diaryTemplate; 
-            console.log("\n \n", tempDiary, "\n")
-            setDiary(tempDiary); 
-            setDiaryTemplate('');
-            console.log("alle checks ok")
-            setCreated(true);
-            setDone(true);
-            timing();
-        }
-    }, [diaryIdSaved, diarySaved])
-
-    //...........................................
+    //................
 
 
     const handleSendAndCreate = () => {
@@ -104,25 +151,11 @@ const CreateDiary = () => {
         navigate('/EditDiary')
     }
 
-    useEffect(() => {
-        if (on === true) {
-            setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map((e) => {
-                e.visible = true;
-                return e;
-            }))
-        } else if (on === false) {
-            setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map((e) => {
-                e.visible = false;
-                return e;
-            }))
-        }
-    }, [on])
-
     const handleSubmit = e => {
         e.preventDefault();
     }
 
-    console.log("diaryTemplate", diaryTemplate)
+//-------------------------------
 
     return (
         <ContentGroup>
@@ -146,6 +179,12 @@ const CreateDiary = () => {
                         </SwitchGroup>
                     }
                     {
+                        (selectAll === false) ?
+                            <StBiCheckSquare onClick={() => setSelectAll(!selectAll)}></StBiCheckSquare>
+                            :
+                            <StBiSquare onClick={() => setSelectAll(!selectAll)}></StBiSquare>
+                    }
+                    {
                         diaryTemplate &&
                         diaryTemplate.groups.map(e => (
                             <ItemGroup key={e.id}>
@@ -162,7 +201,6 @@ const CreateDiary = () => {
                             </ItemGroup>
                         ))
                     }
-
                     {
                         (done === false) &&
                         <div>
@@ -171,12 +209,11 @@ const CreateDiary = () => {
                                 <input
                                     style={{ marginLeft: '1.5rem', width: '200px', height: '1.75rem' }}
                                     // value = 'mein erstes Tagebuch'
-                                    onChange={(e) => setDiaryTemplate({ ...diaryTemplate, diaryName: e.target.value })}       
+                                    onChange={(e) => setDiaryTemplate({ ...diaryTemplate, diaryName: e.target.value })}
                                 />
                             </FormField>
                         </div>
                     }
-
                     {
                         (created === false) &&
                         (done === false) &&
@@ -228,3 +265,12 @@ const ItemGroup = styled.div`
 
 `
 
+const StBiSquare = styled(BiSquare)`
+  font-size: 1.5rem;
+  margin: 0.5rem 0.5rem 0.5rem 2.5rem;
+`
+
+const StBiCheckSquare = styled(BiCheckSquare)`
+  font-size: 1.5rem;
+  margin: 0.5rem 0.5rem 0.5rem 2.5rem;
+`

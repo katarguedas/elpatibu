@@ -71,7 +71,6 @@ const DiaryData = () => {
 
 
 
-
   return (
     <ContentGroup>
       <Header />

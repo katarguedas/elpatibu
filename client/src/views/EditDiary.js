@@ -86,7 +86,6 @@ const EditDiary = () => {
                   </StDiv>
                 }
               </Items>
-
             ))
           }
         </MainContent>
