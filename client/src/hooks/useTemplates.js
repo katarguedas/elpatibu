@@ -87,7 +87,7 @@ const useTemplates = () => {
                         visible: false,
                         items: [
                             {
-                                name: 'weight',
+                                name: 'wellBeing',
                                 id: uuidv4(),
                                 label: 'Allgemeines Wohlbefinden',
                                 unit: '-',
@@ -315,7 +315,7 @@ const useTemplates = () => {
 
 
     const RatingText = () => {
-        return (
+        return ([
             {
                 name: 'wellBeing',
                 text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
@@ -326,81 +326,81 @@ const useTemplates = () => {
             },
             {
                 name: 'moodSwings',
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
+            },
+            {
+                name: 'interruption',
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
+            },
+            {
+                name: 'restful',
                 text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
             },
             {
-                name: 'sleep-interruption',
+                name: 'headache',
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
+            },
+            {
+                name: 'fatigue',
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
+            },
+            {
+                name: 'circulationProblems',
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
+            },
+            {
+                name: 'insomnia',
                 text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
             },
             {
-                name: 'sleep-restful',
+                name: 'pain',
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
+            },
+            {
+                name: 'nausea',
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
+            },
+            {
+                name: 'vomiting',
+                text: ['gar nicht', 'leicht', 'mittelmäßig', 'stark', 'sehr stark']
+            },
+            {
+                name: 'diarrhea',
+                text: ['gar nicht', 'leicht', 'mittelmäßig', 'stark', 'sehr stark']
+            },
+            {
+                name: 'pyrosis',
                 text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
             },
             {
-                name: 'meteorosensitivity-headache',
+                name: 'fatigue',
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
+            },
+            {
+                name: 'insomnia',
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
+            },
+            {
+                name: 'vertigo',
                 text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
             },
             {
-                name: 'meteorosensitivity-fatigue',
+                name: 'appetiteLoss',
+                text: ['keine', 'leichte', 'mittelmäßige', 'starke', 'sehr starke']
+            },
+            {
+                name: 'fatigue',
                 text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
             },
             {
-                name: 'meteorosensitivity-circulationProblems',
+                name: 'fingerTingling',
                 text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
             },
             {
-                name: 'meteorosensitivity-insomnia',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
-            },
-            {
-                name: 'symptoms-pain',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
-            },
-            {
-                name: 'symptoms-nausea',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
-            },
-            {
-                name: 'symptoms-vomiting',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
-            },
-            {
-                name: 'symptoms-diarrhea',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
-            },
-            {
-                name: 'symptoms-pyrosis',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
-            },
-            {
-                name: 'symptoms-fatigue',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
-            },
-            {
-                name: 'symptoms-insomnia',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
-            },
-            {
-                name: 'symptoms-vertigo',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
-            },
-            {
-                name: 'symptoms-appetiteLoss',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
-            },
-            {
-                name: 'symptoms-fatigue',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
-            },
-            {
-                name: 'symptoms-fingerTingling',
-                text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
-            },
-            {
-                name: 'symptoms-memoryDisorder',
+                name: 'memoryDisorder',
                 text: ['sehr gut', 'gut', 'mittelmäßig', 'schlecht', 'sehr schlecht']
             }
-        )
+        ])
     }
 
     return [DiaryInit, RatingText]
