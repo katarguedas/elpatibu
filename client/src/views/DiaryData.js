@@ -6,6 +6,7 @@ import NavBar from '../components/NavBar'
 import { createPData } from '../utils/testdata'
 import PlotVital from "../components/PlotVital"
 import PlotMeteo from "../components/PlotMeteo"
+import { setDateRange } from "../utils/testdata"
 import { StBiDownArrow, StBiRightArrow } from '../components/Icons'
 import { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router"
@@ -101,7 +102,7 @@ const DiaryData = () => {
                   }
                   {e.visible &&
                     e.name === 'meteorosensitivity' &&
-                    <PlotMeteo itemMeteo={e} />
+                    <PlotMeteo itemMeteo={e} date={setDateRange()} />
                   }
                 </ResultGroup>
               </Items>

@@ -52,5 +52,22 @@ export const todayDate = () => {
 }
 
 
+//---------------------------------------------------------------------
+
+export const getDateStrFromTs = (date) => {
+
+    let datetmp = DateTime.fromSeconds(date / 1000);
+    let day = datetmp.day;
+    if (day < 10)
+        day = '0' + day;
+    let month = datetmp.month;
+    let year = datetmp.year;
+    const dateStr = year + '-' + month + '-' + day;
+
+    console.log(dateStr);
+    return dateStr;
+}
+
+
 export default Date;
 

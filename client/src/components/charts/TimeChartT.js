@@ -1,5 +1,6 @@
 import React from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, TimeSeriesScale } from 'chart.js';
+import { theme } from '../../themes/theme';
 import { Line } from 'react-chartjs-2';
 import 'chartjs-adapter-luxon';
 
@@ -29,14 +30,23 @@ const TimeChartT = ({ xValues, yValues, name }) => {
 
     //................................................
 
+    const lastDay = xValues[xValues.length - 1];
+    const firstDay = xValues[0];
+    console.log(firstDay, lastDay);
 
 
-    const myColor1 = ['#BF5C54']
-    const textColor = ['#1B545C']
-    const bggreen = ['rgba(146, 250, 61, 0.3)']
-    const bgyellow = ['rgba(238, 252, 48, 0.2)']
-    const bgorange = ['rgba(248, 194, 16, 0.3)']
-    const bgred = ['rgba(250, 97, 36, 0.3)']
+    const color1 = theme.colors.col11;
+    const color2 = theme.colors.col10;
+    const color3 = theme.colors.col23;
+    const color4 = theme.colors.col21;
+    const textColor = theme.colors.col11;
+
+    const bgcolor1 = "rgb(110, 253, 110, 0.3)";
+    const bgcolor2 = "rgb(190, 250, 94, 0.3)";
+    const bgcolor3 = "rgb(247, 250, 87, 0.3)";
+    const bgcolor4 = "rgb(243, 191, 78, 0.3)";
+    const bgcolor5 = 'rgb(247, 89, 89, 0.3)';
+
 
     //...................
 
@@ -51,8 +61,8 @@ const TimeChartT = ({ xValues, yValues, name }) => {
             {
                 // label: 'Körpertemperatur',
                 data: myData,
-                borderColor: myColor1,
-                backgroundColor: myColor1,
+                borderColor: color1,
+                backgroundColor: color2,
                 tension: 0,
                 borderWidth: 1,
                 spanGaps: true,
@@ -110,38 +120,38 @@ const TimeChartT = ({ xValues, yValues, name }) => {
                         type: 'box',
                         // xMin: 1669892400000,
                         // xMin: 1669849200000,
-                        xMin: myData[0].x,
-                        xMax: myData[30].x,
+                        xMin: firstDay,
+                        xMax: lastDay,
                         yMin: 36,
                         yMax: 37.5,
-                        backgroundColor: bggreen,
+                        backgroundColor: bgcolor1,
                         drawTime: 'beforeDatasetsDraw',
                     },
                     box2: {
                         type: 'box',
-                        xMin: myData[0].x,
-                        xMax: myData[30].x,
+                        xMin: firstDay,
+                        xMax: lastDay,
                         yMin: 37.5,
                         yMax: 38,
-                        backgroundColor: bgyellow,
+                        backgroundColor: bgcolor3,
                         drawTime: 'beforeDatasetsDraw',
                     },
                     box3: {
                         type: 'box',
-                        xMin: myData[0].x,
-                        xMax: myData[30].x,
+                        xMin: firstDay,
+                        xMax: lastDay,
                         yMin: 38,
                         yMax: 39.0,
-                        backgroundColor: bgorange,
+                        backgroundColor: bgcolor4,
                         drawTime: 'beforeDatasetsDraw',
                     },
                     box4: {
                         type: 'box',
-                        xMin: myData[0].x,
-                        xMax: myData[30].x,
+                        xMin: firstDay,
+                        xMax: lastDay,
                         yMin: 39.0,
                         yMax: 40,
-                        backgroundColor: bgred,
+                        backgroundColor: bgcolor5,
                         drawTime: 'beforeDatasetsDraw',
                     }
                 }

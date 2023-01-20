@@ -14,7 +14,7 @@ import { theme } from '../../themes/theme'
 
 const BarChartNMD = ({ xVal, yVal, name }) => {
 
-    // console.log("x", xVal)
+    console.log("x", xVal)
     // console.log("y", yVal)
 
     ChartJS.register(
@@ -31,6 +31,7 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
     //................................................
 
 
+    // const images = ["../../pictures/01.png", "../../pictures/02.png", "../../pictures/03.png", "../../pictures/04.png", "../../pictures/05.png"];
 
     const color1 = theme.colors.col11;
     const color2 = theme.colors.col13;
@@ -51,15 +52,47 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
     // console.log(myData)
 
 
+    let bgcolor;
+
+    let colors = []
+    for (let i = 0; i < yVal.length; i++) {
+
+        switch (yVal[i]) {
+            case 1:
+                bgcolor = "#6efd6e";
+                break;
+            case 2:
+                bgcolor = "#befa5e";
+                break;
+            case 3:
+                bgcolor = "#f7fa57";
+                break;
+            case 4:
+                bgcolor = "#f3bf4e";
+                break;
+            case 5:
+                bgcolor = '#f75b5b';
+                break;
+        }
+        colors[i] = bgcolor;
+    }
+
+
+    let picLabels = [];
+
+    // for ( let i = 0; i < 5; i++) {
+    //     picLabels.push(objectToUse[i].title)
+    // }
+
 
     const data = {
         labels: xVal,
         datasets: [
             {
-                // label: 'Systolischer Druck',
+                // label: '',
                 data: myData,
-                borderColor: color1,
-                backgroundColor: color2,
+                borderColor: 'grey',
+                backgroundColor: colors,
                 tension: 0,
                 borderWidth: 1,
                 spanGaps: true,
@@ -77,7 +110,7 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
         responsive: true,
         plugins: {
             legend: {
-                display: true,
+                display: false,
                 labels: {
                     font: { size: 14 }
                 }
@@ -92,6 +125,24 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
             annotation: {
                 annotations: {
                 }
+            },
+            // afterDraw: chart => {
+            //     let ctx = chart.chart.ctx;
+            //     let xAxis = chart.scales['x-axis-0'];
+            //     let yAxis = chart.scales['y-axis-0'];
+            //     yAxis.ticks.forEach((value, index) => {  
+            //         let y = yAxis.getPixelForTick(index);  
+            //         let image = new Image();
+            //         image.src = images[index];    
+            //         ctx.drawImage(image);
+            //       });
+            //       ctx.restore();  
+            // }
+        },
+        layout: {
+            padding: {
+                right: 60,
+                top: 50
             }
         },
         scales: {
@@ -104,33 +155,48 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
                     padding: 0
                 },
                 ticks: {
-                    font: {size: 16},
+                    font: { size: 16 },
                     maxRotation: 90,
                 },
                 grid: {
-                    tickColor: 'grey'
+                    tickColor: 'grey',
+                    display: false
                 }
             },
             y: {
-                suggestedMin: 0, 
+                suggestedMin: 0,
                 suggestedMax: 5,
                 title: {
                     display: true,
-                    text: 'Intensität',
+                    // text: 'keine |  ----- | starke',
                     font: { size: 18 },
                     color: textColor,
                     padding: 10
                 },
                 ticks: {
-                    font: {size: 16},
-                }
+                    font: { size: 14 },
+                    stepSize: 1,
+                    display: true,
+                    callback: function (value) {
+                        let x = ['', 'keine', 'leichte', 'mittelstarke', 'starke', 'sehr starke'];
+                        return [x[value | 0]]
+                    }
+                },
+                grid: {
+                    display: false
+                },
             }
         }
     };
 
     return (
         <div >
-            <Bar style={{ marginTop: '3.0rem', marginBottom: '2.0rem' }} type='bar' options={options} data={data} redraw={true} />
+            <Bar
+                style={{ marginTop: '3.0rem', marginBottom: '3.0rem' }}
+                type='bar'
+                options={options}
+                data={data}
+                redraw={true} />
         </div>
     )
 };

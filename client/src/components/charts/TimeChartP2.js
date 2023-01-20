@@ -27,16 +27,12 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
 
     //................................................
 
-    const testcolor = theme.colors.col10;
-    const l1 = theme.colors.col21;
-    const l2 = theme.colors.col10;
-    
-    const myColor1 = ['#BF5C54']
-    const textColor = ['#1B545C']
-    const bggreen = ['rgba(146, 250, 61, 0.3)']
-    const bgyellow = ['rgba(238, 252, 48, 0.2)']
-    const bgorange = ['rgba(248, 194, 16, 0.3)']
-    const bgred = ['rgba(250, 97, 36, 0.3)']
+
+    const color1 = theme.colors.col11;
+    const color2 = theme.colors.col13;
+    const color3 = theme.colors.col23;
+    const color4 = theme.colors.col21;
+    const textColor = theme.colors.col11;
 
     //...................
 
@@ -54,8 +50,8 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
             {
                 label: 'Systolischer Druck',
                 data: pressureH,
-                borderColor: myColor1,
-                backgroundColor: myColor1,
+                borderColor: theme.colors.col21,
+                backgroundColor: theme.colors.col20,
                 tension: 0,
                 borderWidth: 1,
                 spanGaps: true,
@@ -68,8 +64,8 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
             {
                 label: 'diastolischer Druck',
                 data: pressureL,
-                borderColor: testcolor,
-                backgroundColor: testcolor,
+                borderColor: theme.colors.col11,
+                backgroundColor: theme.colors.col13,
                 tension: 0,
                 borderWidth: 1,
                 spanGaps: true,
@@ -113,7 +109,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
                         type: 'line',
                         yMin: 120,
                         yMax: 120,
-                        borderColor: l1,
+                        borderColor: theme.colors.col22,
                         borderWidth: 2,
                         label: {
                             display: true,
@@ -129,7 +125,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
                         type: 'line',
                         yMin: 80,
                         yMax: 80,
-                        borderColor: l2,
+                        borderColor: theme.colors.col11,
                         borderWidth: 2,
                         label: {
                             display: true,

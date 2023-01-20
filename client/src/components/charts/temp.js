@@ -10,12 +10,12 @@ import { theme } from '../../themes/theme'
 
 //---------------------------------------------------------------------
 
-const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, unit }) => {
+const MultiTypeChart = ( {xValues, y1Values, y2Values, labels, name, label2, unit} ) => {
 
     console.log(y1Values, y2Values, label2)
 
-    const [sMin, setSMin] = useState();
-    const [sMax, setSMax] = useState();
+    const [sMin, setSMin] =  useState();
+    const [sMax, setSMax] =  useState();
 
     ChartJS.register(
         CategoryScale,
@@ -29,20 +29,26 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
         Legend
     );
 
-    useEffect(()=> {
-        if(name === 'Gelenschmerzen') {
-            setSMin(10)
-            setSMax(100)
-        } 
-        else if(label2 === 'Meeresspiegeldruck') {
-            setSMin(980)
-            setSMax(1040) 
-        }
-    },[])
+    // useEffect(()=> {
+    //     if(name === 'Gelenschmerzen') {
+    //         setSMin(10)
+    //         setSMax(100)
+    //     } 
+    //     else if(label2 === 'Meeresspiegeldruck') {
+    //         console.log("Werte: ", 980, 1040)
+    //         setSMin(980)
+    //         setSMax(1040) 
+    //     }
+    // },[])
 
-    console.log(name, sMax)
+    // console.log(name, sMax)
 
     const color1 = theme.colors.col11;
+    const color2 = theme.colors.col13;
+    const color11 = theme.colors.col21;
+    const color22 = theme.colors.col24;
+    const textColor = theme.colors.col11;
+
 
 
     const options = {
@@ -55,13 +61,12 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
         plugins: {
             title: {
                 display: true,
-                font: { size: 18 },
-                text: name + ' vs. ' + label2,
+                text: '...',
             },
         },
         scales: {
             y: {
-                suggestedMin: 0,
+                suggestedMin: 0, 
                 suggestedMax: 5,
                 type: 'linear',
                 display: true,
@@ -69,25 +74,19 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
                 grid: {
                     // display: false
                 },
-                ticks: {
-                    stepSize: 1,
-                    font: { size: 14 },
-                    callback: function (value) {
-                        let x = ['', 'keine', 'leichte', 'mittelstarke', 'starke', 'sehr starke'];
-                        return [x[value | 0]]
-                    }
-                },
                 title: {
                     display: true,
-                    text: name,
+                    text: name + ' [Intensität]',
                     font: { size: 18 },
                     color: color1,
                     padding: 10
                 },
             },
             y1: {
-                min: sMin,
-                max: sMax,
+                // suggestedMax: (name === 'Gelenschmerzen') ? 0 : 980, 
+                // suggestedMax: (name === 'Gelenschmerzen') ? 100 : 1040,
+                suggestedMax: 1040,
+                suggestedMin: 980,
                 type: 'linear',
                 display: true,
                 position: 'right',
@@ -104,11 +103,6 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
                 },
             },
         },
-        elements: {
-            bar: {
-                backgroundColor: '#444'
-            }
-        }
     };
 
     const values1 = xValues.map((e, i) => {
@@ -118,33 +112,6 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
         return ({ x: e, y: y2Values[i] })
     })
 
-    //...........
-
-    let bgcolor;
-
-    let colors = []
-    for (let i = 0; i < y2Values.length; i++) {
-
-        switch (y2Values[i]) {
-            case 1:
-                bgcolor = "#6efd6e";
-                break;
-            case 2:
-                bgcolor = "#befa5e";
-                break;
-            case 3:
-                bgcolor = "#f7fa57";
-                break;
-            case 4:
-                bgcolor = "#f3bf4e";
-                break;
-            case 5:
-                bgcolor = '#f75b5b';
-                break;
-        }
-        colors[i] = bgcolor;
-    }
-
 
     const data = {
         labels: labels,
@@ -152,34 +119,29 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
             {
                 type: 'line',
                 label: label2,
-                borderColor: theme.colors.col11,
-                backgroundColor: theme.colors.col13,
-                borderWidth: 1,
+                borderColor: color11,
+                backgroundColor: color22,
+                borderWidth: 2,
                 fill: false,
                 data: values1,
                 yAxisID: 'y1',
-                radius: 4
             },
             {
                 type: 'bar',
                 label: name,
-                // backgroundColor: color1,
-                backgroundColor: colors,
-                borderColor: 'grey',
+                backgroundColor:  color1,
+                backgroundColor: color2,
                 data: values2,
-                borderWidth: 1,
+                borderColor: 'white',
+                borderWidth: 2,
                 yAxisID: 'y',
             },
         ],
     };
 
 
-    if (y1Values)
-        return <Chart
-            type='bar'
-            data={data}
-            options={options}
-            style={{ marginTop: '2.0rem', marginBottom: '5.0rem' }} />;
+    if(y1Values)
+    return <Chart type='bar' data={data} options={options} />;
 }
 
 

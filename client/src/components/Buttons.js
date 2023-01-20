@@ -105,12 +105,12 @@ const DiaryButton = styled.button`
 //.................................................................
 const WeatherButton = styled.button`
   display: flex;
-  text-align: center;
-  width: 9.0rem;
-  height: 4.0rem;
+  justify-content: center;
+  width: 15.0rem;
+  height: 3.0rem;
   font-size: 1.15rem;
-  border: 1px solid ${(props) => props.theme.colors.col12};
-  /* background-color: ${(props) => props.theme.colors.col20}; */
+  border: 1px solid ${(props) => props.theme.colors.col32};
+  background-color: ${(props) => props.theme.colors.col33};
   /* color: #fff; */
   border-radius: 0.5rem;
   /* margin-left: auto;
@@ -123,10 +123,9 @@ const WeatherButton = styled.button`
   :active{
     background-color: ${(props) => props.theme.colors.col20};
     border-color: ${(props) => props.theme.colors.col21};
-    color: #fff;
     transform: translateY(1.5px);
   }
-  padding: 0.5rem;
+  padding: 0.75rem;
   margin: 2.0rem;
 `
 

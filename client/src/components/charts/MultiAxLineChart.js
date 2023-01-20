@@ -42,6 +42,13 @@ const MultiAxLineChart = ( {xValues, y1Values, y2Values, name} ) => {
                 type: 'linear',
                 display: true,
                 position: 'left',
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    // font: {size: 16},
+                    stepSize: 1
+                },
             },
             y1: {
                 type: 'linear',
@@ -49,6 +56,10 @@ const MultiAxLineChart = ( {xValues, y1Values, y2Values, name} ) => {
                 position: 'right',
                 grid: {
                     drawOnChartArea: false,
+                },
+                ticks: {
+                    font: {size: 16},
+                    stepSize: 1
                 },
             },
         },
