@@ -14,7 +14,7 @@ import { theme } from '../../themes/theme'
 
 const BarChartNMD = ({ xVal, yVal, name }) => {
 
-    console.log("x", xVal)
+    // console.log("x", xVal)
     // console.log("y", yVal)
 
     ChartJS.register(
@@ -183,7 +183,7 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
                     }
                 },
                 grid: {
-                    display: false
+                    display: true
                 },
             }
         }

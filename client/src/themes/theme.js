@@ -7,7 +7,7 @@ const theme = {
         col12: '#356D75',
         col13: '#82A8AD',
         col14: '#B9D1D4',
-        col15: '#dbf5f8',
+        col15: '#f4fbfc',
         col20: '#E8928B',
         col21: '#97322A',
         col22: '#BF5C54',

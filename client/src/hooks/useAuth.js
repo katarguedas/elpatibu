@@ -232,7 +232,6 @@ const useAuth = () => {
                     setRegMessage("Unbekannter Fehler")
                     setFlag(2)
                 }
-
             })
             .catch(error => {
                 console.log('error', error)

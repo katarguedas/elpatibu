@@ -67,7 +67,7 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
                 display: true,
                 position: 'left',
                 grid: {
-                    // display: false
+                    display: false
                 },
                 ticks: {
                     stepSize: 1,
@@ -172,6 +172,7 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
             },
         ],
     };
+
 
 
     if (y1Values)

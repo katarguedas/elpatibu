@@ -149,7 +149,7 @@ export const createNMData2 = () => {
             x = 1
         values.push(x)
     }
-    console.log("dataStringArray: ", datestringArray)
+    // console.log("dataStringArray: ", datestringArray)
 
     const dataSet = {
         dateString: datestringArray,

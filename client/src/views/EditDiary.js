@@ -33,7 +33,7 @@ const EditDiary = () => {
 
 
   useEffect(() => {
-    if (userData)
+    if (userData) {
       if (!diary) {
         if (userData.diaryId) {
           console.log("noch kein Diary da, schau nach, ob was im Backend ist")
@@ -43,8 +43,8 @@ const EditDiary = () => {
           console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
       }
       else {
-        // console.log("Diary:", diary)
-      }
+      } console.log("Diary:", diary)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
