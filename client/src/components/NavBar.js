@@ -57,9 +57,9 @@ const NavGroup = styled.div`
   flex-direction: column;
   align-items: center; */
   background-color: #fff;
-  border-right: 2.5px solid ${(props) => props.theme.colors.col10};
+  border-right: 2.5px solid ${(props) => props.theme.colors.col3};
   width: 20%;
-  background-image: linear-gradient(to right, #fff, ${(props) => props.theme.colors.col10});
+  background-image: linear-gradient(to right, #fff, ${(props) => props.theme.colors.col2});
 `
 
 const ButtonGroup = styled.div`
@@ -75,17 +75,17 @@ const HomeIcon = styled(RxHome)`
   margin: 1.5rem;
   margin-left: 3.5rem;
   border: 2.0px solid ${(props) => props.theme.colors.white};
-  border-radius: 0.25rem;
+  border-radius: 0.2rem;
   font-size: 2.5rem;
   color: #000;
   background-color: #fff;
   &:hover{
-    background-color: ${(props) => props.theme.colors.col23};
-    border: 2.5px solid ${(props) => props.theme.colors.col21};
+    background-color: ${(props) => props.theme.colors.col1};
+    border: 2.5px solid ${(props) => props.theme.colors.white};
   }
   
   :active{
-    background-color: ${(props) => props.theme.colors.col20};
+    background-color: ${(props) => props.theme.colors.col1};
     transform: translateY(1.5px);
     border-color: #FFF4DE;
   }

@@ -73,20 +73,69 @@ const LabelText = styled.div`
   `
 
 const Accordion = styled.div`
-color: ${(props) => props.theme.colors.col11};
-border: 0.5px solid ${(props) => props.theme.colors.col14};
-border-radius: 0.5rem;
-background-image: linear-gradient(to left, #fff, ${(props) => props.theme.colors.col24});
-background-color: ${ props => props.visible === true ? props.theme.colors.col21 : props.theme.colors.col11 };
+  ${(props) => {
+      if(props.visible === true) {
+        return `
+          background-color: black;
+          background: linear-gradient(to left, #fff, #C5E1CD);
+          color: #1B5A6C;
+          // border: 1px solid #1B5A6C;
+          border-radius: 0.15rem;
+          box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
+          padding: 0.5rem 0.75rem 0.5rem 1.5rem;
+          margin: 0.5rem 1.5rem;
+          font-size: 1.25rem;
+          font-weight: 500;
+          &:hover {
+            color: white;
+            background: linear-gradient(to left, #fff, #D9853B);
+          }
+          :active{
+             background-color: #fff;
+             color: black;
+          }
+        `;
+      } else {
+        return `
+          background-color: white;
+          background: linear-gradient(to left, #fff, #C5E1CD);
+          color: #1B5A6C;
+          border-radius: 0.15rem;
+          box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
+          padding: 0.5rem 0.75rem 0.5rem 1.5rem;
+          margin: 0.5rem 1.5rem;
+          font-size: 1.25rem;
+          font-weight: 500;
+          &:hover {
+            color: white;
+            background: linear-gradient(to left, #fff, #D9853B);
+          }
+          :active{
+             background-color: #fff;
+             color: black;
+          }
+        `;
+    }
+  }}
+`;
+
+const Accordion2 = styled.div`
+color: ${props => props.visible === true ? '#000' : '#fff'};
+/* border: 0.5px solid ${(props) => props.theme.colors.col3}; */
+border-radius: 0.15rem;
+background-image: linear-gradient(to left, #fff, ${(props) => props.theme.colors.col4});
+
+/* linear-gradient(to left, #fff, ${(props) => props.theme.colors.col4}); */
+
 box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
 &:hover {
-  background-color: ${(props) => props.theme.colors.col24};
-  background-image: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col23});
+  color: white;
+  background-image: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col5});
 }
 :active{
   background-color: #fff;
   color: black;
-  background-image: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col14});
+  background-image: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col1});
 }
 padding: 0.5rem 0.75rem 0.5rem 1.5rem;
 margin: 0.5rem 1.5rem;
@@ -99,4 +148,4 @@ font-weight: 500;
 
 export default globalStyles;
 
-export { ContentGroup, MainGroup, MainContent, PageTitle, InputField, LabelText, TitleH2, StP, FormField, Accordion}
+export { ContentGroup, MainGroup, MainContent, PageTitle, InputField, LabelText, TitleH2, StP, FormField, Accordion }

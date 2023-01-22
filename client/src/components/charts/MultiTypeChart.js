@@ -42,7 +42,7 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
 
     console.log(name, sMax)
 
-    const color1 = theme.colors.col11;
+    const color1 = theme.colors.col3;
 
 
     const options = {
@@ -152,8 +152,8 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
             {
                 type: 'line',
                 label: label2,
-                borderColor: theme.colors.col11,
-                backgroundColor: theme.colors.col13,
+                borderColor: theme.colors.col3,
+                backgroundColor: theme.colors.col2,
                 borderWidth: 1,
                 fill: false,
                 data: values1,

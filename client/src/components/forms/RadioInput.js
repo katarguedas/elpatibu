@@ -1,8 +1,13 @@
-import smiley1 from '../../pictures/01.png';
-import smiley2 from '../../pictures/02.png';
-import smiley3 from '../../pictures/03.png';
-import smiley4 from '../../pictures/04.png';
-import smiley5 from '../../pictures/05.png';
+// import smiley1 from '../../pictures/01.png';
+// import smiley2 from '../../pictures/02.png';
+// import smiley3 from '../../pictures/03.png';
+// import smiley4 from '../../pictures/04.png';
+// import smiley5 from '../../pictures/05.png';
+import smiley1 from '../../pictures/1.png';
+import smiley2 from '../../pictures/2.png';
+import smiley3 from '../../pictures/3.png';
+import smiley4 from '../../pictures/4.png';
+import smiley5 from '../../pictures/5.png';
 
 import styled from "styled-components";
 import { useDataContext } from '../../providers/dataContext';
@@ -121,8 +126,13 @@ const RadioLabelText = styled.div`
   font-size: 1.0rem;
   padding: 0.5rem;
   text-align: center;
-  padding: 1.0rem;
-  padding-top: 0.75rem;
+  padding: 0.75rem 1.25rem 1.0rem 1.25rem;
+  @media (max-width: 1200px) {
+    padding: 0.75rem 1.0rem 1.0rem 1.0rem;
+  }
+  @media (max-width: 900px) {
+    padding: 0.5rem 0.25rem 0.75rem .25rem;
+  }
 `
 
 const RInput=styled.input`

@@ -56,14 +56,14 @@ const PlotVital = ({ itemVital }) => {
 
 export default PlotVital
 
-
+//---------------------------------------------------------------------
 
 const ChartsGroup = styled.div`
   width: 80%;
-  @media (max-width: 768px) {
+  @media (max-width: 1200px) {
     width: 90%;
   }
-  @media (max-width: 1200px) {
-    width: 85%;
+  @media (max-width: 768px) {
+    width: 100%;
   }
 `

@@ -35,11 +35,7 @@ const TimeChartT = ({ xValues, yValues, name }) => {
     console.log(firstDay, lastDay);
 
 
-    const color1 = theme.colors.col11;
-    const color2 = theme.colors.col10;
-    const color3 = theme.colors.col23;
-    const color4 = theme.colors.col21;
-    const textColor = theme.colors.col11;
+    const textColor = theme.colors.col3;
 
     const bgcolor1 = "rgb(110, 253, 110, 0.3)";
     const bgcolor2 = "rgb(190, 250, 94, 0.3)";
@@ -61,8 +57,8 @@ const TimeChartT = ({ xValues, yValues, name }) => {
             {
                 // label: 'Körpertemperatur',
                 data: myData,
-                borderColor: color1,
-                backgroundColor: color2,
+                borderColor: theme.colors.col3,
+                backgroundColor: theme.colors.col2,
                 tension: 0,
                 borderWidth: 1,
                 spanGaps: true,
