@@ -179,7 +179,7 @@ const GetData = ({ index }) => {
             inputRefs.current.map(e => {
                 e.value = '';
             })
-        console.log(diary)
+        // console.log(diary)
     }
 
     //......................
@@ -224,7 +224,7 @@ const GetData = ({ index }) => {
                                 </InputLabelH >
                                 :
                                 <InputLabelV key={e.id}
-                                    style={{ marginTop: '0.5rem', backgroundColor: '#fafcfb', borderRadius: '0.5rem', border: '1px solid #9e9a9a' }}
+                                    style={{ marginTop: '0.5rem', backgroundColor: '#fff', borderRadius: '0.5rem', border: '1px solid #9e9a9a' }}
                                 >
                                     <StLabelText style={{ width: '100%', margin: '0.75rem' }} >{e.label}</StLabelText>
                                     <RadioInput
@@ -288,7 +288,7 @@ const StLabelText = styled(LabelText)`
 
 const StBiCheck = styled(BiCheck)`
 font-size: 3.0rem;
-color: green;
+color: #01ac01;
 margin-right: 0.5rem;
 `
 

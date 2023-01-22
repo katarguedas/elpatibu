@@ -119,8 +119,8 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
             title: {
                 display: true,
                 text: name,
-                font: { size: 22 },
-                color: textColor
+                font: { size: 20 },
+                color: textColor,
             },
             annotation: {
                 annotations: {

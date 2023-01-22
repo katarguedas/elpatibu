@@ -1,4 +1,30 @@
 
+
+/* Color Theme Swatches in Hex */
+.Patient-8-1-hex { color: #A8EBB4; }
+.Patient-8-2-hex { color: #578F8C; }
+.Patient-8-3-hex { color: #1B5A6C; }
+.Patient-8-4-hex { color: #C5E1CD; }
+.Patient-8-5-hex { color: #D9853B; }
+
+/* Color Theme Swatches in RGBA */
+.Patient-8-1-rgba { color: rgba(168, 235, 179, 1); }
+.Patient-8-2-rgba { color: rgba(86, 142, 140, 1); }
+.Patient-8-3-rgba { color: rgba(26, 89, 107, 1); }
+.Patient-8-4-rgba { color: rgba(196, 225, 205, 1); }
+.Patient-8-5-rgba { color: rgba(216, 133, 59, 1); }
+
+/* Color Theme Swatches in HSLA */
+.Patient-8-1-hsla { color: hsla(0, 62, 79, 1); }
+.Patient-8-2-hsla { color: hsla(0, 24, 45, 1); }
+.Patient-8-3-hsla { color: hsla(0, 60, 26, 1); }
+.Patient-8-4-hsla { color: hsla(0, 31, 82, 1); }
+.Patient-8-5-hsla { color: hsla(0, 67, 54, 1); }
+
+
+/* -------------------------------------------------------------------- */
+
+
 .color {color: #56878E; }
 .color {color: #1B545C; }
 .color {color: #356D75; }
@@ -91,11 +117,6 @@
 
 
 /*-----------------------------------------------------------------------------
-
-
-
-/*-----------------------------------------------------------------------------
-
 
 
 /* Color Theme Swatches in Hex */

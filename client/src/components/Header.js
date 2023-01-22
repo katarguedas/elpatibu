@@ -30,19 +30,22 @@ const Header = () => {
     const handleRegister = () => {
         navigate('/register')
     }
+
+
+
     return (
         <HeaderGroup>
             {
                 user ?
                     <StyledHeader>
-                        <Logo />
+                        <Logo  />
                         <ButtonGroup>
                             <AuthButton onClick={hanadleLogout} >Abmelden</AuthButton>
                         </ButtonGroup>
                     </StyledHeader>
                     :
                     <StyledHeader>
-                        <Logo />
+                        <Logo  />
                         <ButtonGroup>
                             <AuthButton onClick={handleLogin} >Anmelden</AuthButton>
                             <AuthButton onClick={handleRegister} >Registrieren</AuthButton>
@@ -65,7 +68,7 @@ const HeaderGroup = styled.div`
   position: fixed;
   top: 0;
   width: 90%;
-  border-bottom: 3px solid ${(props) => props.theme.colors.col10};
+  border-bottom: 3px solid ${(props) => props.theme.colors.col3};
   background-color: #fff;
   padding: 0.5rem;
   z-index: 2;

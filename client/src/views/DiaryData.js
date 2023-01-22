@@ -47,14 +47,6 @@ const DiaryData = () => {
     }
   }, [])
 
-  //   const handleClick = (id) => {
-  //     // einzelne Gruppen einblenden/ausblenden
-  //     setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map(e => {
-  //         if (e.id === id)
-  //             e.visible = !e.visible;
-  //         return e;
-  //     }))
-  // }
 
   useEffect(() => {
     if (userData) {
@@ -86,15 +78,7 @@ const DiaryData = () => {
     }))
   }
 
-
-  //   const handleClick = (id) => {
-  //     // einzelne Gruppen einblenden/ausblenden
-  //     setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map(e => {
-  //         if (e.id === id)
-  //             e.visible = !e.visible;
-  //         return e;
-  //     }))
-  // }
+//_----------------------------------------------
 
 
   return (
@@ -111,13 +95,13 @@ const DiaryData = () => {
               e.items.filter(e => e.selected === true).length > 0 &&
               <Items key={e.id} >
 
-                {<Accordion visible={e.visible} onClick={() => handleClick(diary.groups[i].id)}>
+                {<DAccordion visible={e.visible} onClick={() => handleClick(diary.groups[i].id)}>
 
                   {!e.visible && <StBiRightArrow></StBiRightArrow>}
                   {e.visible && <StBiDownArrow></StBiDownArrow>}
                   {e.label}
 
-                </Accordion>}
+                </DAccordion>}
 
                 <ResultGroup >
                   {e.visible === true &&
@@ -154,7 +138,14 @@ export default DiaryData;
 // Styled-Components
 //---------------------------------------------------------
 
-
+const DAccordion = styled(Accordion)`
+  background: linear-gradient(to left, #fff, #578F8C);
+  color: white;
+  &:hover {
+  color: white;
+  background: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col3});
+}
+`
 
 const StDiv = styled.div` 
   flex-direction: column;

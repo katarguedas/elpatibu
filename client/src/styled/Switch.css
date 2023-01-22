@@ -1,3 +1,4 @@
+
 .react-switch-checkbox {
     height: 0;
     width: 0;
@@ -26,9 +27,9 @@
     width: 1.1rem;
     height: 1.1rem;
     border-radius: 1.5rem;
-    border: 1px solid #1B545C;
+    border: 1px solid #1B5A6C;
     transition: 0.2s;
-    background: #56878E;
+    background: #1B5A6C;
     box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
   }
   

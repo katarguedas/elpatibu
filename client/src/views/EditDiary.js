@@ -49,6 +49,17 @@ const EditDiary = () => {
   }, [])
 
 
+  useEffect(() => {
+    if (diary) {
+      // setDiary({ ...diary }, diary.groups.map(e => {
+      //   e.visible = false;
+      //   console.log(e.visible)
+      //   return e;
+      // }))
+    }
+  }, [])
+
+
   const handleClick = () => {
     setEdit(!edit);
   }
@@ -70,7 +81,7 @@ const EditDiary = () => {
               e.items.filter(e => e.selected === true).length > 0 &&
               <Items key={e.id} >
 
-                <Accordion visible={edit} onClick={handleClick}>
+                <EAccordion visible={edit} onClick={handleClick}>
 
                   {edit ?
                     <StBiDownArrow></StBiDownArrow>
@@ -79,7 +90,7 @@ const EditDiary = () => {
                   }
                   {e.label}
 
-                </Accordion>
+                </EAccordion>
                 {edit &&
                   <StDiv>
                     <GetData id={e.id} index={i} ></GetData>
@@ -102,27 +113,15 @@ export default EditDiary;
 // Styled-Components
 //---------------------------------------------------------
 
-
-const EditDiaryGroup = styled.div`
-  display: flex;
-  flex-direction: column;
+const EAccordion = styled(Accordion)`
+  background: linear-gradient(to left, #fff, ${(props) => props.theme.colors.col5});
+  color: white;
+  &:hover {
+  color: white;
+  background: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col3});
+}
 `
 
-
-// const StAccordion = styled(Accordion)`
-//   border-radius: 1.5rem;
-//   border: 1.5px solid ${(props) => props.theme.colors.col21};
-//   background-color: ${(props) => props.theme.colors.col20};
-//   &:hover{
-//   background-color: ${(props) => props.theme.colors.col22};
-//   border-color: ${(props) => props.theme.colors.col24};
-//   color: white;
-// }
-// :active{
-//   background-color: #fff;
-//   color: black;
-// }
-// `
 
 const StBiRightArrow = styled(BiRightArrow)`
   font-size: 1.0rem;

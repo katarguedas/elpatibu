@@ -243,14 +243,6 @@ export default CreateDiary;
 //---------------------------------------------------------
 
 
-const CreateDiaryGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  margin-left: 0.75rem;
-  margin-bottom: 3.0rem;
-`
-
 const SwitchText = styled.span`
 padding: 0.5rem; 
 margin-bottom: -0.45rem; 

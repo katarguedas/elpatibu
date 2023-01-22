@@ -94,10 +94,9 @@ const StPanel = styled.div`
   /* z-index: -1; */
   padding: 2.0rem 0.5rem 0.25rem 1.5rem;
   margin: 1.5rem;
-  border-left: 1px solid ${(props) => props.theme.colors.col14};
-  border-bottom: 1px solid ${(props) => props.theme.colors.col14};
-  border-right: 1px solid ${(props) => props.theme.colors.col14};
-  border-right: 1px solid ${(props) => props.theme.colors.col14};
+  border-left: 1px solid ${(props) => props.theme.colors.col4};
+  border-bottom: 1px solid ${(props) => props.theme.colors.col4};
+  border-right: 1px solid ${(props) => props.theme.colors.white};
 `
 
 const StBiSquare = styled(BiSquare)`

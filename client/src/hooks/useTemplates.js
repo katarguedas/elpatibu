@@ -323,6 +323,160 @@ const useTemplates = () => {
     }
 
 
+    const EditedGroups = () => {
+
+        return(
+        {
+            groups: [
+                {
+                    name: 'vital',
+                    items: [
+                        {
+                            name: 'temperature',
+                            done: false,
+                        },
+                        {
+                            name: 'pressureHigh',
+                            done: false,
+                        },
+                        {
+                            name: 'pressureLow',
+                            done: false,
+                        },
+                        {
+                            name: 'pulse',
+                            done: false,
+                        }
+                    ]
+                },
+                {
+                    name: 'weight',
+                    items: [
+                        {
+                            name: 'weight',
+                            done: false,
+
+                        },
+                    ]
+                },
+                {
+                    name: 'wellBeing',
+                    items: [
+                        {
+                            name: 'wellBeing',
+                            done: false,
+                        }
+                    ]
+                },
+                {
+                    name: 'mood',
+                    items: [
+                        {
+                            name: 'mood',
+                            done: false,
+                        },
+                        {
+                            name: 'moodSwings',
+                            done: false
+                        }
+                    ]
+                },
+                {
+                    name: 'sleep',
+                    items: [
+                        {
+                            name: 'hours',
+                            done: false,
+                        },
+                        {
+                            name: 'interruption',
+                            done: false,
+                        },
+                        {
+                            name: 'restful',
+                            done: false,
+                        }
+                    ]
+                },
+                {
+                    name: 'meteorosensitivity',
+                    items: [
+                        {
+                            name: 'headache',
+                            done: false,
+                        },
+                        {
+                            name: 'fatigue',
+                            done: false,
+                        },
+                        {
+                            name: 'circulationProblems',
+                            done: false,
+                        },
+                        {
+                            name: 'insomnia',
+                            done: false,
+                        },
+                        {
+                            name: 'joint pain',
+                            done: false,
+                        }
+                    ]
+                },
+                {
+                    name: 'symptoms',
+                    items: [
+                        {
+                            name: 'pain',
+                            done: false,
+                        },
+                        {
+                            name: 'nausea',
+                            done: false,
+                        },
+                        {
+                            name: 'vomiting',
+                            done: false,
+                        },
+                        {
+                            name: 'diarrhea',
+                            done: false,
+                        },
+                        {
+                            name: 'pyrosis',
+                            done: false,
+                        },
+                        {
+                            name: 'fatigue',
+                            done: false,
+                        },
+                        {
+                            name: 'insomnia',
+                            done: false,
+                        },
+                        {
+                            name: 'vertigo',
+                            done: false,
+                        },
+                        {
+                            name: 'appetiteLoss,',
+                            done: false,
+                        },
+                        {
+                            name: 'fingerTingling',
+                            done: false,
+                        },
+                        {
+                            name: 'memoryDisorder',
+                            done: false,
+                        }
+                    ]
+                }
+            ]
+        })
+    }
+
+
     const RatingText = () => {
         return ([
             {

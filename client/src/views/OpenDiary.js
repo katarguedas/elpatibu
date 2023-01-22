@@ -23,29 +23,26 @@ const OpenDiary = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // console.log("USER?", user)
-    // console.log("USERDATA?", userData)
-    // console.log("DIARY?", diary)
-
     //----------------------------
 
     useEffect(() => {
-        if(userData)
-        if (!diary) {
-            if (userData.diaryId) {
-                console.log("noch kein Diary da, schau nach, ob was im Backend ist")
-                getDiaryFromBackend(userData.diaryId)
+        if (userData) {
+            if (!diary) {
+                if (userData.diaryId) {
+                    console.log("noch kein Diary da, schau nach, ob was im Backend ist")
+                    getDiaryFromBackend(userData.diaryId)
+                }
+                else
+                    console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
             }
-            else
-                console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
+            else {
+                console.log("Diary:", diary)
+            }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }
-        else {
-            console.log("Diary:", diary)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-//------------------------------------------------------
+    //------------------------------------------------------
 
     const handleEdit = () => {
         navigate('/EditDiary')
@@ -59,7 +56,7 @@ const OpenDiary = () => {
         // ...
     }
 
-    // console.log("DIARY: \n", diary)
+//-----------------------------
 
     return (
         <ContentGroup>
@@ -92,17 +89,10 @@ export default OpenDiary;
 //---------------------------------------------------------
 
 
-const OpenDiaryGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  margin-left: 0.75rem;
-  margin-bottom: 3.0rem;
-`
-
 const ButtonField = styled.div`
   /* margin-left: 3.5rem;
   margin-top: 5.0rem; */
+  width: 70%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;

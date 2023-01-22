@@ -28,11 +28,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
     //................................................
 
 
-    const color1 = theme.colors.col11;
-    const color2 = theme.colors.col13;
-    const color3 = theme.colors.col23;
-    const color4 = theme.colors.col21;
-    const textColor = theme.colors.col11;
+    const textColor = theme.colors.col3;
 
     //...................
 
@@ -50,8 +46,8 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
             {
                 label: 'Systolischer Druck',
                 data: pressureH,
-                borderColor: theme.colors.col21,
-                backgroundColor: theme.colors.col20,
+                borderColor: theme.colors.col5,
+                backgroundColor: theme.colors.col5,
                 tension: 0,
                 borderWidth: 1,
                 spanGaps: true,
@@ -64,8 +60,8 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
             {
                 label: 'diastolischer Druck',
                 data: pressureL,
-                borderColor: theme.colors.col11,
-                backgroundColor: theme.colors.col13,
+                borderColor: theme.colors.col2,
+                backgroundColor: theme.colors.col2,
                 tension: 0,
                 borderWidth: 1,
                 spanGaps: true,
