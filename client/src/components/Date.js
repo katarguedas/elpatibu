@@ -69,5 +69,20 @@ export const getDateStrFromTs = (date) => {
 }
 
 
+//---------------------------------------------------------------------
+
+export const getStrFromTs = (date) => {
+
+    let datetmp = DateTime.fromSeconds(date / 1000);
+    let day = datetmp.day;
+    if (day < 10)
+        day = '0' + day;
+    let month = datetmp.month;
+    let year = datetmp.year;
+    const dateStr = day + '.' + month + '.' + year;
+
+    return dateStr;
+}
+
 export default Date;
 

@@ -107,7 +107,7 @@ const CreateDiary = () => {
         }
     }, [selectAll])
 
-//............................................
+    //............................................
 
     const handleClick = (id) => {
         // einzelne Gruppen einblenden/ausblenden
@@ -155,7 +155,7 @@ const CreateDiary = () => {
         e.preventDefault();
     }
 
-//-------------------------------
+    //-------------------------------
 
     return (
         <ContentGroup>
@@ -179,10 +179,12 @@ const CreateDiary = () => {
                         </SwitchGroup>
                     }
                     {
-                        (selectAll === false) ?
-                            <StBiCheckSquare onClick={() => setSelectAll(!selectAll)}></StBiCheckSquare>
-                            :
-                            <StBiSquare onClick={() => setSelectAll(!selectAll)}></StBiSquare>
+                        (done === false) && (selectAll === false) &&
+                        <StBiCheckSquare onClick={() => setSelectAll(!selectAll)}></StBiCheckSquare>}
+                    {
+                        (done === false) && (selectAll === true) &&
+                        <StBiSquare onClick={() => setSelectAll(!selectAll)}></StBiSquare>
+
                     }
                     {
                         diaryTemplate &&

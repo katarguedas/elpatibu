@@ -6,9 +6,8 @@ import TimeChartT from './charts/TimeChartT';
 import MultiAxLineChart from './charts/MultiAxLineChart';
 import MultiTypeChart from './charts/MultiTypeChart';
 import { createNMData, createNMData2 } from '../utils/testdata';
-import { getDateStrFromTs } from './Date';
 import { WeatherButton } from './Buttons';
-
+import { getDateStrFromTs, getStrFromTs } from './Date';
 import { useDataContext } from '../providers/dataContext';
 import { useEffect, useState } from 'react';
 import { DateTime } from "luxon";
@@ -17,12 +16,39 @@ import styled from 'styled-components';
 //----------------------------------------------------------
 
 
-const PlotSymptoms = ({ item, date }) => {
+const PlotSymptoms = ({ itemSymptoms, date }) => {
 
     const { diary } = useDataContext()
 
-    const dataNMDSet = createNMData();
-    const dataNMDSet2 = createNMData();
+
+
+    let dataNMDSet = {
+        values: [],
+        dateString: []
+    };
+    if (itemSymptoms.items[0].values.length > 30) {
+        dataNMDSet.values = itemSymptoms.items[0].values;
+        for (let i = 0; i < diary.date.length - 1; i++) {
+            dataNMDSet.dateString.push(getStrFromTs(diary.date[i]))
+        }
+    }
+    else
+        dataNMDSet = createNMData();
+
+
+    let dataNMDSet2 = {
+        values: [],
+        dateString: []
+    };
+    if (itemSymptoms.items[1].values.length > 30) {
+        dataNMDSet2.values = itemSymptoms.items[1].values;
+        for (let i = 0; i < diary.date.length - 1; i++) {
+            dataNMDSet2.dateString.push(getStrFromTs(diary.date[i]))
+        }
+    }
+    else
+        dataNMDSet2 = createNMData();
+
     const dataNMDSet3 = createNMData2();
 
     const xVal = dataNMDSet.dateString;
@@ -40,10 +66,10 @@ const PlotSymptoms = ({ item, date }) => {
             <div styled={{ padding: '5.0rem' }} >
             </div>
             {
-                item.items.filter(e => e.selected === true).length > 0 &&
+                itemSymptoms.items.filter(e => e.selected === true).length > 0 &&
                 <ChartsGroup >
                     {
-                        item.items.map(e => (
+                        itemSymptoms.items.map(e => (
                             <div key={e.id}>
                                 {
                                     e.name === 'pain' &&

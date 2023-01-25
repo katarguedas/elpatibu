@@ -1,36 +1,44 @@
-import TimeChartT from '../components/charts/TimeChartT'
-import TimeChartP2 from '../components/charts/TimeChartP2'
-import TimeChartNMD from './charts/TBarChartNMD'
-import { createTData, createPData, createNMData } from '../utils/testdata'
+import TimeChartT from '../components/charts/TimeChartT';
+import TimeChartP2 from '../components/charts/TimeChartP2';
+import { createTData, createPData, createNMData } from '../utils/testdata';
+import { useDataContext } from '../providers/dataContext';
 import styled from 'styled-components';
+// import { get } from 'mongoose';
+// import { DatasetController } from 'chart.js';
 
 //----------------------------------------------------------
 
 
 const PlotVital = ({ itemVital }) => {
 
-    // console.log(itemVital.items)
+    const { diary } = useDataContext();
 
-    const dataTSet = createTData();
+    let dataTSet = {};
+    if (itemVital.items[0].values.length > 30) {
+        console.log("daten aus der Datembank")
+        dataTSet.temperature = itemVital.items[0].values;
+        dataTSet.tsArray = diary.date;
+    }
+    else
+        dataTSet = createTData();
 
     const xValues = dataTSet.tsArray;
     const yTValues = dataTSet.temperature;
 
 
-    const dataPSet = createPData();
+    let dataPSet = {};
+    if (itemVital.items[1].values.length > 30) {
+        dataPSet.pressureH = itemVital.items[1].values;
+        dataPSet.pressureL = itemVital.items[2].values;
+        dataTSet.tsArray = diary.date;
+    } else
+        dataPSet = createPData();
 
-    console.log(dataPSet)
+    // console.log(dataPSet)
 
     const yP1Values = dataPSet.pressureH;
     const yP2Values = dataPSet.pressureL;
 
-
-    const dataNMDSet = createNMData();
-
-    const xVal = dataNMDSet.dateString;
-    const yVal = dataNMDSet.values;
-
-    console.log("dataNMDSet", dataNMDSet)
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2.0rem' }} >
@@ -38,9 +46,16 @@ const PlotVital = ({ itemVital }) => {
                 itemVital.items.filter(e => e.selected === true).length > 0 &&
                 <ChartsGroup>
                     <div  >
-                        < TimeChartT
-                            xValues={xValues} yValues={yTValues} name={'Temperatur'}
-                        />
+                        {
+                            itemVital.items[0].selected &&
+                            < TimeChartT
+                                xValues={xValues}
+                                yValues={yTValues}
+                                titel={'Körpertemperatur'}
+                                name={itemVital.items[0].label}
+                                unit={itemVital.items[0].unit}
+                            />
+                        }
                     </div>
                     <div  >
                         < TimeChartP2 xValues={xValues} y1Values={yP1Values} y2Values={yP2Values} />

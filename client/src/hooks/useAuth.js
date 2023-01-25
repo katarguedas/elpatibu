@@ -32,7 +32,6 @@ const useAuth = () => {
     const LOCAL_STORAGE_KEY = process.env.REACT_APP_LOCAL_STORAGE_KEY;
     const LOCAL_STORAGE_WEATHER = process.env.REACT_APP_LOCAL_STORAGE_WEATHER;
 
-    // console.log(process.env.REACT_APP_LOCAL_STORAGE_WEATHER)
 
     //---------------------------------------------------------
 
@@ -95,7 +94,7 @@ const useAuth = () => {
                 setUser(jwtDecoded.email)
                 setUserData({ name: jwtDecoded.name, diaryId: jwtDecoded.diaries })
 
-                console.log("UserData:", jwtDecoded)
+                // console.log("UserData:", jwtDecoded)
                 console.log("user hat sich eingeloggt")
             })
             .catch(error => {
@@ -155,7 +154,7 @@ const useAuth = () => {
             console.log("user:", user)
             if (decodedJwt.exp * 1000 > Date.now()) {
                 // console.log(decodedJwt.email)
-                console.log("Zeit noch nicht abgelaufen. Refreshe den Zugangstoken.")
+                // console.log("Zeit noch nicht abgelaufen. Refreshe den Zugangstoken.")
                 refreshToken(decodedJwt.email);
             } else {
                 console.log("Token abgelaufen")

@@ -6,12 +6,11 @@ import TimeChartT from './charts/TimeChartT';
 import MultiAxLineChart from './charts/MultiAxLineChart';
 import MultiTypeChart from './charts/MultiTypeChart';
 import { createNMData, createNMData2 } from '../utils/testdata';
-import { getDateStrFromTs } from './Date';
+import { getDateStrFromTs, getStrFromTs } from './Date';
 import { WeatherButton } from './Buttons';
-
+import { DateTime } from "luxon";
 import { useDataContext } from '../providers/dataContext';
 import { useEffect, useState } from 'react';
-import { DateTime } from "luxon";
 import styled from 'styled-components';
 
 //----------------------------------------------------------
@@ -21,11 +20,56 @@ const PlotMeteo = ({ itemMeteo, date }) => {
 
     const { getWeatherData, weatherData, diary } = useDataContext()
 
-    const dataNMDSet = createNMData();
-    const dataNMDSet2 = createNMData();
-    const dataNMDSet3 = createNMData2();
-
     const [active, setActive] = useState(false);
+    const [done, setDone] = useState(false);
+
+
+
+
+    let dataNMDSet = {
+        values: [],
+        dateString: []
+    };
+    if (itemMeteo.items[0].values.length > 30) {
+        dataNMDSet.values = itemMeteo.items[0].values;
+        for (let i = 0; i < diary.date.length - 1; i++) {
+            dataNMDSet.dateString.push(getStrFromTs(diary.date[i]))
+        }
+    }
+    else
+        dataNMDSet = createNMData();
+
+    //............
+
+    let dataNMDSet2 = {
+        values: [],
+        dateString: []
+    };
+    if (itemMeteo.items[2].values.length > 30) {
+        // console.log(itemMeteo.items[2].values)
+        dataNMDSet2.values = itemMeteo.items[2].values;
+        for (let i = 0; i < diary.date.length - 1; i++) {
+            dataNMDSet2.dateString.push(getStrFromTs(diary.date[i]))
+        }
+    }
+    else
+        dataNMDSet = createNMData2();
+
+    //............
+
+    let dataNMDSet3 = {
+        values: [],
+        dateString: []
+    };
+    if (itemMeteo.items[4].values.length > 30) {
+        dataNMDSet3.values = itemMeteo.items[4].values;
+        for (let i = 0; i < diary.date.length - 1; i++) {
+            dataNMDSet3.dateString.push(getStrFromTs(diary.date[i]))
+        }
+    }
+    else
+        dataNMDSet3 = createNMData2();
+
 
     const xVal = dataNMDSet.dateString;
     const yVal = dataNMDSet.values;
@@ -35,31 +79,58 @@ const PlotMeteo = ({ itemMeteo, date }) => {
     const yVal3 = dataNMDSet3.values;
 
 
+    // useEffect(() => {
+    //     const city = diary.city;
+    //     const startDate = getDateStrFromTs(date[0]);
+    //     const endDate = getDateStrFromTs(date[date.length - 1]);
+    //     getWeatherData(city, startDate, endDate);
+    // }, [])
+
+
     const handleClick = () => {
-        const city = diary.city;
-        const startDate = getDateStrFromTs(date[0]);
-        const endDate = getDateStrFromTs(date[date.length - 1]);
-        console.log("Wetterdaten holen")
-        getWeatherData(city, startDate, endDate);
+        if (weatherData === undefined) {
+            console.log(weatherData)
+            const city = diary.city;
+            const startDate = getDateStrFromTs(date[0]);
+            const endDate = getDateStrFromTs(date[date.length - 1]);
+            console.log("Wetterdaten holen")
+            getWeatherData(city, startDate, endDate);
+        }
+        if (weatherData)
+            setDone(true)
+    }
+
+    const handleClickActive = () => {
         setActive(!active)
     }
 
     useEffect(() => {
-        console.log("active", active)
-    }, [active])
+        if (weatherData)
+            setDone(true)
+    }, [weatherData])
+
 
     //.................................................
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2.0rem' }} >
             <div styled={{ padding: '5.0rem' }} >
-                <WeatherButton onClick={handleClick} >
-                    {
-                        active ?
-                            'Wetterdaten ausblenden'
-                            : ' Wetterdaten einblenden'
-                    }
-                </WeatherButton >
+                {
+                    (done === false) &&
+                    <WeatherButton onClick={handleClick} >
+                        Wetterdaten abrufen
+                    </WeatherButton >
+                }
+                {
+                    done &&
+                    <WeatherButton onClick={handleClickActive} >
+                        {
+                            active ?
+                                'Wetterdaten ausblenden'
+                                : ' Wetterdaten einblenden'
+                        }
+                    </WeatherButton >
+                }
             </div>
             {
                 itemMeteo.items.filter(e => e.selected === true).length > 0 &&

@@ -118,7 +118,7 @@ const DiaryData = () => {
                   }
                   {e.visible &&
                     e.name === 'symptoms' &&
-                    <PlotSymptoms item={e} date={setDateRange()} />
+                    <PlotSymptoms itemSymptoms={e} date={setDateRange()} />
                   }
                 </ResultGroup>
               </Items>

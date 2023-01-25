@@ -11,6 +11,10 @@ import { theme } from '../../themes/theme'
 
 const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
 
+
+    // console.log("y", y1Values)
+    // console.log("y", y2Values)
+
     ChartJS.register(
         CategoryScale,
         LinearScale,
@@ -26,7 +30,6 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
     );
 
     //................................................
-
 
     const textColor = theme.colors.col3;
 
@@ -105,7 +108,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
                         type: 'line',
                         yMin: 120,
                         yMax: 120,
-                        borderColor: theme.colors.col22,
+                        borderColor: theme.colors.col5,
                         borderWidth: 2,
                         label: {
                             display: true,
@@ -113,15 +116,15 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
                             position: 'end',
                             yAdjust: 15,
                             padding: 5,
-                            backgroundColor: theme.colors.col34,
-                            color: theme.colors.col21
+                            backgroundColor: theme.colors.col4,
+                            color: theme.colors.col5
                         }
                       },
                       line2: {
                         type: 'line',
                         yMin: 80,
                         yMax: 80,
-                        borderColor: theme.colors.col11,
+                        borderColor: theme.colors.col3,
                         borderWidth: 2,
                         label: {
                             display: true,
@@ -129,8 +132,8 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
                             position: 'end',
                             yAdjust: 15,
                             padding: 5,
-                            backgroundColor: theme.colors.col34,
-                            color: theme.colors.col11
+                            backgroundColor: theme.colors.col4,
+                            color: theme.colors.col3
                         }
                       }
                 }
@@ -161,7 +164,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
                 }
             },
             y: {
-                suggestedMin: 70, 
+                suggestedMin: 60, 
                 // suggestedMax: 200,
                 title: {
                     display: true,

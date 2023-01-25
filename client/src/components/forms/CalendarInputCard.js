@@ -2,18 +2,24 @@ import { LabelText, InputField } from "../../styled/globalStyles";
 import { theme } from '../../themes/theme';
 import styled from "styled-components";
 import { useEffect } from "react";
+import { BiWindowClose } from "react-icons/bi";
 
 
+const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, startDate, handleEndDate, handleSubmit, handleSelection, handleClose, setAllday, allday, value }) => {
 
-const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, startDate, handleEndDate, handleSubmit,handleSelection, setAllday, allday, value }) => {
+    const color = theme.colors.col5;
 
-    const color = theme.colors.col20;
+    useEffect(() => { setAllday(false) }, [])
 
-    useEffect(() => {setAllday(false)},[])
 
 
     return (
         <CardForm onSubmit={handleSubmit} >
+            <div>
+                <BiWindowClose
+                    onClick={handleClose}
+                    style={{ position: 'absolute', top: '0.75rem', right: '1.0rem', fontSize: '1.5rem' }} />
+            </div>
             <div><LabelText style={{ display: 'flex', flexDirection: 'column', margin: '0.75rem', marginBottom: '1.75rem' }}  >
                 Titel
                 <InputField
@@ -41,10 +47,9 @@ const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, star
                             Beginn
                             <input
                                 style={{ padding: '0.1rem' }}
-                                type="date" 
-                                value={startDate}
+                                type="date"
                                 onChange={handleStartDate}
-                                />
+                            />
                         </LabelText>
 
                         <LabelText style={{ marginBottom: '0.75rem', marginLeft: '4.5rem' }} >
@@ -59,7 +64,6 @@ const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, star
                     <div
                         style={{
                             display: 'flex', flexDirection: 'row',
-                            // border: '1px solid #000', height: '3.75rem', borderRadius: '0.25rem', backgroundColor: '#fff' 
                         }}
                     >
                         <LabelText style={{ marginBottom: '0.75rem', marginLeft: '0.75rem' }}
@@ -67,15 +71,17 @@ const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, star
                             Beginn
                             <input
                                 style={{ padding: '0.1rem' }}
-                                type="datetime-local" />
+                                type="datetime-local"
+                                onChange={handleStartDate}
+                            />
                         </LabelText>
 
                         <LabelText style={{ marginBottom: '0.75em', marginLeft: '4.5rem' }} >
                             Ende
                             <input
                                 style={{ padding: '0.1rem' }}
-                                // style={{ width: '5.0rem' }}
                                 type="datetime-local"
+                                onChange={handleEndDate}
                             />
                         </LabelText>
                     </div>
@@ -97,7 +103,7 @@ const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, star
                 </StSelect>
             </Selection>
             <input
-                style={{ margin: '1.0rem', width: '5.0rem', backgroundColor: color, borderRadius: '0.25rem', padding: ' 0.25rem', fontWeight: '600' }}
+                style={{ margin: '1.0rem', width: '5.0rem', backgroundColor: color, color: 'white', borderRadius: '0.25rem', padding: ' 0.25rem', fontWeight: '600' }}
                 type="submit" value="Speichern" />
         </CardForm>
     )
@@ -121,10 +127,9 @@ const CardForm = styled.form`
   height: 18.0rem;
   padding: 0.5rem;
   margin: 0.5rem;
-  background-color: ${(props) => props.theme.colors.col34};
-  border: 1px solid #000;
-  border-radius: 0.5rem;
-  box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
+  background-color: ${(props) => props.theme.colors.col1};
+  border-radius: 0.25rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 4.0px 4.0px 5.2px;
 `
 
 const StSelect = styled.select`

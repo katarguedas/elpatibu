@@ -16,6 +16,7 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
 
     const [sMin, setSMin] = useState();
     const [sMax, setSMax] = useState();
+    const [TitleName, setTitleName] = useState();
 
     ChartJS.register(
         CategoryScale,
@@ -29,16 +30,18 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
         Legend
     );
 
-    useEffect(()=> {
-        if(name === 'Gelenschmerzen') {
-            setSMin(10)
+    useEffect(() => {
+        if (label2 === 'Relative Luftfeuchtigkeit') {
+            setSMin(20)
             setSMax(100)
-        } 
-        else if(label2 === 'Meeresspiegeldruck') {
-            setSMin(980)
-            setSMax(1040) 
+            setTitleName('Relative Luftfeuchtigkeit')
         }
-    },[])
+        else if (label2 === 'Meeresspiegeldruck') {
+            setSMin(980)
+            setSMax(1040)
+            setTitleName('Luftdruck')
+        } 
+    }, [])
 
     console.log(name, sMax)
 
@@ -56,7 +59,7 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
             title: {
                 display: true,
                 font: { size: 18 },
-                text: name + ' vs. ' + label2,
+                text: name + ' vs. ' + TitleName,
             },
         },
         scales: {

@@ -47,7 +47,7 @@ export const createTData = () => {
 
     let temperature = [];
     for (let i = 0; i < tsArray.length - 12; i++) {
-        temperature.push(36.9 + Math.random() * 1.4);
+        temperature.push(36.8 + Math.random() * 1.4);
     }
     for (let i = tsArray.length - 12; i < tsArray.length; i++) {
         temperature.push(36.5 + Math.random() * 1.1);

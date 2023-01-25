@@ -3,7 +3,7 @@ import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
 import CalendarInputCard from "../components/forms/CalendarInputCard";
 import { ContentGroup, MainGroup, MainContent, PageTitle } from "../styled/globalStyles";
-
+import { theme } from '../themes/theme';
 import React, { useState, useCallback, useMemo, useEffect, useInsertionEffect } from "react";
 import { Calendar, luxonLocalizer, Views } from 'react-big-calendar';
 import { DateTime } from "luxon";
@@ -16,7 +16,8 @@ import styled from "styled-components";
 
 const MyCalendar = () => {
 
-    const events = [
+
+    const myEvents = [
         {
             id: uuidv4(),
             title: 'Testing',
@@ -29,14 +30,14 @@ const MyCalendar = () => {
             id: uuidv4(),
             title: 'Abschluss',
             allDay: true,
-            start: new Date(2023, 0, 28, 14, 0, 0),
-            end: new Date(2023, 0, 28, 16, 30, 0),
+            start: new Date(2023, 1, 28, 14, 0, 0),
+            end: new Date(2023, 1, 28, 16, 30, 0),
             resourceId: 2,
             category: '2'
         }
     ]
 
-    const [myEvents, setEvents] = useState(events)
+    const [events, setEvents] = useState(myEvents)
     const [value, setValue] = useState();
     const [open, setOpen] = useState();
     const [allday, setAllday] = useState(false);
@@ -50,7 +51,7 @@ const MyCalendar = () => {
 
     const handleSelectSlot = useCallback(
         ({ start, end }) => {
-            setStartDate(start)
+            // setStartDate(start)
             setOpen(true)
 
         },
@@ -60,14 +61,13 @@ const MyCalendar = () => {
     useEffect(() => {
         if (open) {
             console.log(myEvents)
-            console.log(myEvents[myEvents.length - 1].start)
         }
     }, [open])
 
 
     useEffect(() => {
-        console.log(myEvents)
-    }, [myEvents])
+        console.log(events)
+    }, [events])
 
     const handleSelectEvent = useCallback(
         (event) => window.alert(event.title),
@@ -83,8 +83,9 @@ const MyCalendar = () => {
     )
 
     const eventStyleGetter = (event, start, end, isSelected) => {
-        console.log(event);
+        // console.log(event);
         var backgroundColor = '#' + event.hexColor;
+        var backgroundColor = theme.colors.col1;
         var style = {
             backgroundColor: backgroundColor,
             borderRadius: '0px',
@@ -107,19 +108,58 @@ const MyCalendar = () => {
         setAllday(!allday)
     }
 
-    const handleStartDate = e => {
-        console.log(e.target.value)
-        setStartDate(e.target.value)
+
+    const dateAllday = (e, flag) => {
+        const str = e;
+        const yyyy = str.slice(0, 4);
+        const mm = str.slice(5, 7) - 1;
+        const dd = str.slice(8, 10);
+        if (flag == 1)
+            return (new Date(yyyy, mm, dd, 0, 0, 0))
+        else if (flag == 2)
+            return (new Date(yyyy, mm, dd, 24, 0, 0))
     }
-    
+
+    const dateNoAllday = e => {
+        const str = e;
+        const yyyy = str.slice(0, 4);
+        const mm = str.slice(5, 7) - 1;
+        const dd = str.slice(8, 10);
+        const hh = str.slice(11, 13);
+        const min = str.slice(14, 17);
+        console.log(yyyy, mm, dd, hh, min, 0)
+        return (new Date(yyyy, mm, dd, hh, min, 0))
+    }
+
+
+    const handleStartDate = e => {
+        console.log("Startdatum", e.target.value)
+
+        if (allday === true)
+            setStartDate(dateAllday(e.target.value, 1))
+        else
+            setStartDate(dateNoAllday(e.target.value))
+    }
+
+
     const handleEndDate = e => {
-        console.log(e.target.value)
-        setEndDate(e.target.value)
+        console.log("Enddatum", e.target.value)
+
+        if (allday === true)
+            setEndDate(dateAllday(e.target.value, 2))
+        else {
+            setEndDate(dateNoAllday(e.target.value))
+        }
     }
 
     const handleSelection = e => {
-        console.log(e.target.value)
+        console.log("selection:", e.target.value)
+        console.log(e.target.name)
         setCat(e.target.value)
+    }
+
+    const handleClose = () => {
+        setOpen(false)
     }
 
     const handleSubmit = (e) => {
@@ -152,7 +192,7 @@ const MyCalendar = () => {
                             // defaultDate={defaultDate}
                             defaultDate={defaultDate}
                             eventPropGetter={eventStyleGetter}
-                            events={myEvents}
+                            events={events}
                             localizer={localizer}
                             startAccessor="start"
                             endAccessor="end"
@@ -174,6 +214,7 @@ const MyCalendar = () => {
                                     handleEndDate={handleEndDate}
                                     handleSubmit={handleSubmit}
                                     handleSelection={handleSelection}
+                                    handleClose={handleClose}
                                     allday={allday}
                                     setAllday={setAllday}
                                     value={value} />

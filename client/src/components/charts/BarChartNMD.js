@@ -1,5 +1,4 @@
 import React from 'react';
-import { Chart } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, PointElement, Title, Tooltip, Legend, BarController, BarElement } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
@@ -30,24 +29,12 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 
     //................................................
 
-
-    // const images = ["../../pictures/01.png", "../../pictures/02.png", "../../pictures/03.png", "../../pictures/04.png", "../../pictures/05.png"];
-
-    const color1 = theme.colors.col11;
-    const color2 = theme.colors.col13;
-    const textColor = theme.colors.col11;
-
-    const bgreen = ['rgba(146, 250, 61, 0.3)']
-    const bgyellow = ['rgba(238, 252, 48, 0.2)']
-    const bgorange = ['rgba(248, 194, 16, 0.3)']
-    const bgred = ['rgba(250, 97, 36, 0.3)']
-    const test = ['rgba(225, 248, 18, 0.425)']
+    const textColor = theme.colors.col3;
 
     //...................
 
-
-    const myData = xVal.map((e, i) => {
-        return ({ x: e, y: yVal[i] })
+    const myData = yVal.map((e, i) => {
+        return( {x: xVal[i], y: e})
     })
     // console.log(myData)
 
@@ -59,10 +46,10 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 
         switch (yVal[i]) {
             case 1:
-                bgcolor = "#6efd6e";
+                bgcolor = "#7dfd7d";
                 break;
             case 2:
-                bgcolor = "#befa5e";
+                bgcolor = "#bafc50";
                 break;
             case 3:
                 bgcolor = "#f7fa57";
@@ -78,12 +65,6 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
     }
 
 
-    let picLabels = [];
-
-    // for ( let i = 0; i < 5; i++) {
-    //     picLabels.push(objectToUse[i].title)
-    // }
-
 
     const data = {
         labels: xVal,
@@ -93,6 +74,7 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
                 data: myData,
                 borderColor: 'grey',
                 backgroundColor: colors,
+                borderRadius: 2,
                 tension: 0,
                 borderWidth: 1,
                 spanGaps: true,
@@ -100,7 +82,9 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
                 fill: false,
                 pointStyle: 'circle',
                 pointBorderColor: '#000',
-                radius: 6
+                radius: 6,
+                barPercentage: 0.6,
+                
             },
         ],
     };
@@ -126,18 +110,6 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
                 annotations: {
                 }
             },
-            // afterDraw: chart => {
-            //     let ctx = chart.chart.ctx;
-            //     let xAxis = chart.scales['x-axis-0'];
-            //     let yAxis = chart.scales['y-axis-0'];
-            //     yAxis.ticks.forEach((value, index) => {  
-            //         let y = yAxis.getPixelForTick(index);  
-            //         let image = new Image();
-            //         image.src = images[index];    
-            //         ctx.drawImage(image);
-            //       });
-            //       ctx.restore();  
-            // }
         },
         layout: {
             padding: {
@@ -178,8 +150,8 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
                     stepSize: 1,
                     display: true,
                     callback: function (value) {
-                        let x = ['', 'keine', 'leichte', 'mittelstarke', 'starke', 'sehr starke'];
-                        return [x[value | 0]]
+                        let y = ['', 'keine', 'leichte', 'mittelstarke', 'starke', 'sehr starke'];
+                        return [y[value | 0]]
                     }
                 },
                 grid: {

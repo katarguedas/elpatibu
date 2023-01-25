@@ -169,9 +169,23 @@ router.post('/api/saveDiaryId', async (req, res) => {
 
 //------------------------------------------------------
 
+router.get('/api/getEvents', async(req, res) => {
+  
+  try {
+    const result = await Diary.findOne({ email: req.body.email})
+    console.log(result)
+    //.....
+  } catch (error) {
+    console.log(error)
+    //....
+  }
+})
+
+
+//------------------------------------------------------
+
 module.exports = router;
 
 
 
-
-//-----------------------------------
+//-- END --|

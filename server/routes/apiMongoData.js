@@ -5,7 +5,7 @@ const express = require('express')
 const { Diary, Group, Item, Temperature } = require('../models/DataModel');
 
 const dotenv = require('dotenv');
-const { findOne } = require('../models/UserModel');
+const { findOne, find } = require('../models/UserModel');
 dotenv.config()
 
 const router = express.Router();
@@ -91,7 +91,6 @@ router.put('/api/saveData', async (req, res) => {
       })
     }
 
-
     response.save()
 
     res.status(201).send({ status: '0k', message: 'saved data' })
@@ -101,45 +100,12 @@ router.put('/api/saveData', async (req, res) => {
   }
 })
 
-
-
 //............................................................
 
-router.post('/api/saveTemperature', async (req, res) => {
-  console.log('req.body', req.body)
-  try {
-    const result = await Temperature.create({
-      id: req.body.id,
-      label: req.body.label,
-      unit: req.body.unit,
-      values: req.body.values,
-      date: req.body.date
-    })
-    console.log("result:", result)
-    res.status(200).send({ status: 'ok', message: 'Temperature Data saved', data: result })
-    return;
-  } catch (error) {
 
-    console.log("ERROR", error)
-    res.status(400).send({ status: 'error', error })
-    return;
-  }
-})
 
 
 //.........................................................
-
-router.get('/api/getTemp', async (req, res) => {
-  console.log("id:", req.query.id)
-  try {
-    const result = await Temperature.findOne({ id: req.query.id })
-    console.log("res", result)
-    return res.status(200).send({ status: 'ok', message: 'Data found', data: result });
-  } catch (error) {
-    res.status(400).send({ status: 'error', error })
-    return;
-  }
-})
 
 
 
