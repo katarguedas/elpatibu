@@ -11,33 +11,14 @@ import { v4 as uuidv4 } from 'uuid';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import styled from "styled-components";
+import { useUserContext } from "../providers/userContext";
 
 //---------------------------------------------------------
 
 const MyCalendar = () => {
 
+    const { events, setEvents, saveEventInBackend, getEventsFromBackend, userData } = useUserContext();
 
-    const myEvents = [
-        {
-            id: uuidv4(),
-            title: 'Testing',
-            start: new Date(2023, 0, 20, 1, 0, 0),
-            end: new Date(2023, 0, 20, 13, 0, 0),
-            resourceId: 1,
-            category: '1'
-        },
-        {
-            id: uuidv4(),
-            title: 'Abschluss',
-            allDay: true,
-            start: new Date(2023, 1, 28, 14, 0, 0),
-            end: new Date(2023, 1, 28, 16, 30, 0),
-            resourceId: 2,
-            category: '2'
-        }
-    ]
-
-    const [events, setEvents] = useState(myEvents)
     const [value, setValue] = useState();
     const [open, setOpen] = useState();
     const [allday, setAllday] = useState(false);
@@ -49,30 +30,38 @@ const MyCalendar = () => {
 
     //.................................
 
-    const handleSelectSlot = useCallback(
-        ({ start, end }) => {
-            // setStartDate(start)
-            setOpen(true)
-
-        },
-        [setEvents]
-    )
-
     useEffect(() => {
         if (open) {
-            console.log(myEvents)
+            // console.log(myEvents)
         }
     }, [open])
 
 
     useEffect(() => {
-        console.log(events)
-    }, [events])
 
-    const handleSelectEvent = useCallback(
-        (event) => window.alert(event.title),
-        []
+        if (!events)
+            getEventsFromBackend(userData.id);
+    }, [])
+
+    useEffect(() => {
+        if (events)
+            console.log(events)
+    }, [])
+
+
+    const handleSelectSlot = useCallback(
+        ({ start, end }) => {
+            // setStartDate(start)
+            setOpen(true)
+        },
+        [setEvents]
     )
+
+
+    // const handleSelectEvent = useCallback(
+    //     (event) => window.alert(event.title),
+    //     []
+    // )
 
     const { defaultDate, scrollToTime } = useMemo(
         () => ({
@@ -165,7 +154,7 @@ const MyCalendar = () => {
     const handleSubmit = (e) => {
         setOpen(false)
         e.preventDefault();
-        setEvents([...events, {
+        const newEvent = {
             id: uuidv4(),
             title: value,
             start: startDate,
@@ -173,7 +162,11 @@ const MyCalendar = () => {
             allDay: allday,
             resourceId: 1,
             category: cat
-        }])
+        }
+
+        setEvents([...events, newEvent])
+        saveEventInBackend(newEvent);
+        console.log(events)
     }
 
     //.................................
@@ -196,13 +189,10 @@ const MyCalendar = () => {
                             localizer={localizer}
                             startAccessor="start"
                             endAccessor="end"
-                            onSelectEvent={handleSelectEvent}
-                            // onSelect
+                            // onSelectEvent={handleSelectEvent}
                             onSelectSlot={handleSelectSlot}
                             scrollToTime={scrollToTime}
                             selectable
-                        // step={60}
-                        // views={views}
                         />
                         <div>
                             {open &&

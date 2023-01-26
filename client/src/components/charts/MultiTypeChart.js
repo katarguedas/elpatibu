@@ -12,7 +12,7 @@ import { theme } from '../../themes/theme'
 
 const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, unit }) => {
 
-    console.log(y1Values, y2Values, label2)
+    // console.log(y1Values, y2Values, label2)
 
     const [sMin, setSMin] = useState();
     const [sMax, setSMax] = useState();

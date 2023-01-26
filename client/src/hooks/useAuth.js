@@ -28,6 +28,7 @@ const useAuth = () => {
     const [regMessage, setRegMessage] = useState('')
     const [flag, setFlag] = useState(999)
     const [diaryIdSaved, setDiaryIdSaved] = useState(false);
+    const [events, setEvents] = useState('');
 
     const LOCAL_STORAGE_KEY = process.env.REACT_APP_LOCAL_STORAGE_KEY;
     const LOCAL_STORAGE_WEATHER = process.env.REACT_APP_LOCAL_STORAGE_WEATHER;
@@ -43,7 +44,7 @@ const useAuth = () => {
             if (ls !== null) {
                 const decodedJwt = jwt_decode(ls.access)
                 setUser(decodedJwt.email);
-                setUserData({ name: decodedJwt.name, diaryId: decodedJwt.diaries })
+                setUserData({ name: decodedJwt.name, id: decodedJwt.id, diaryId: decodedJwt.diaries })
                 setToken(ls.access)
             }
         }
@@ -53,6 +54,12 @@ const useAuth = () => {
     useEffect(() => {
         if ((user) && (!userData))
             checkToken();
+    }, [])
+
+
+    useEffect(() => {
+        if (user)
+            getEventsFromBackend(userData.id);
     }, [])
 
     //---------------------------------------------------------
@@ -78,10 +85,10 @@ const useAuth = () => {
             .then(response => {
                 console.log(response)
 
-                if ((response.status === 'error') && (response.message === 'Invalid password')) 
+                if ((response.status === 'error') && (response.message === 'Invalid password'))
                     alert("Falsches Passwort")
                 else if ((response.status === 'error') && (response.message === 'Invalid user'))
-                  alert("User mit diesem Namen exisitert nicht")
+                    alert("User mit diesem Namen exisitert nicht")
 
 
                 localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(response))
@@ -89,10 +96,14 @@ const useAuth = () => {
                 setToken(response.access)
 
                 const jwtDecoded = jwt_decode(response.access);
-                console.log("\n", jwtDecoded, "\n", jwtDecoded.name, "\n", jwtDecoded.diaries)
+                // console.log("\n", jwtDecoded, "\n", jwtDecoded.name, "\n", jwtDecoded.diaries)
 
                 setUser(jwtDecoded.email)
-                setUserData({ name: jwtDecoded.name, diaryId: jwtDecoded.diaries })
+                setUserData({
+                    name: jwtDecoded.name,
+                    id: jwtDecoded.id,
+                    diaryId: jwtDecoded.diaries
+                })
 
                 // console.log("UserData:", jwtDecoded)
                 console.log("user hat sich eingeloggt")
@@ -130,7 +141,11 @@ const useAuth = () => {
                     setToken(response.access)
                     const jwtDecoded = jwt_decode(response.access);
                     setUser(jwtDecoded.email)
-                    setUserData({ name: jwtDecoded.name, diaryId: jwtDecoded.diaries })
+                    setUserData({
+                        name: jwtDecoded.name,
+                        id: jwtDecoded.id,
+                        diaryId: jwtDecoded.diaries
+                    })
                 })
                 .catch(error => {
                     console.log("error", error)
@@ -246,7 +261,7 @@ const useAuth = () => {
             email: user,
             diaryId: id
         })
-        console.log("raw", raw)
+        // console.log("raw", raw)
 
         let requestOptions = {
             method: 'POST',
@@ -265,11 +280,93 @@ const useAuth = () => {
             .catch(error => console.log("error: ", error))
     }
 
+    //----------------------------------------------------
+
+    const getEventsFromBackend = async (id) => {
+
+        let requestOptions = {
+            method: 'GET',
+        };
+
+        await fetch('/api/getEvents?id=' + id, requestOptions)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response.events)
+                setEvents(response.events)
+            })
+            .catch(error => console.log("error: ", error))
+    }
+
+    //----------------------------------------------------
+
+    const saveEventInBackend = async (event) => {
+
+        console.log(event)
+        console.log(userData.id)
+
+        const raw = JSON.stringify({
+            id: userData.id,
+            event: event
+        })
+
+        // let raw = JSON.stringify({
+        //     userId: userData.id,
+        //     eventId: event.id,
+        //     title: event.title,
+        // })
+
+        console.log(raw)
+
+        let requestOptions = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: raw,
+            redirect: 'follow'
+        };
+
+        console.log(requestOptions)
+
+        await fetch('api/saveEvent', requestOptions)
+            .then(response => response.json()
+                .then(response => console.log(response)))
+
+            .catch(error => console.log("error:", error))
+    }
+
+
+    // const saveEventInBackend = async(event) => {
+
+    //     console.log(event)
+    //     console.log(userData.id)
+
+    //     let raw = JSON.stringify({
+    //         id: userData.id,
+    //         event: event,
+    //         email: user
+    //     })
+
+    //     console.log("raw", raw.id)
+    //     console.log("raw", raw.event)
+    //     console.log("raw", raw.email)
+
+    //     let requestOptions = {
+    //         method: 'POST',
+    //         headers: { "Content-Type": "application/json" },
+    //         body: raw,
+    //         redirect: 'follow'
+    //     };
+
+    //     await fetch('api/saveEvent', requestOptions)
+    //         .then(response => response.json()
+    //             .then(response => console.log(response)))
+
+    //         .catch(error => console.log("error:", error))
+    // }
 
 
     //-----------------------------------------------------------------
 
-    return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved];
+    return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, events, setEvents];
 
 }
 

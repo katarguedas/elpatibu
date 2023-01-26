@@ -10,14 +10,15 @@ import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2 } from "../sty
 import React, { useEffect, useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom";
 
-import styled from "styled-components"
+import styled from "styled-components";
+import { DateTime } from "luxon";
 
 //---------------------------------------------------------
 
 const Dashboard = () => {
 
-    const { user, userData, checkToken } = useUserContext();
-    const { getDiaryFromBackend, diary, getWeatherData, weatherData } = useDataContext();
+    const { user, userData, checkToken, getEventsFromBackend, events } = useUserContext();
+    const { getDiaryFromBackend, diary, getWeatherData } = useDataContext();
 
     const [rating, setRating] = useState();
 
@@ -54,6 +55,29 @@ const Dashboard = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+
+
+    useEffect(() => {
+
+        if (!events)
+            getEventsFromBackend(userData.id);
+
+    }, [])
+
+    useEffect(() => {
+
+        if (events) {
+            const today = DateTime.local(fullDate());
+            console.log(today.ts)
+            const next = events.map(e => {
+                if (DateTime.fromISO(e.start).ts > today.ts) {
+                    console.log("datum",e.start)
+                    return (e.start)
+                }
+            })
+            console.log(next)
+        }
+    }, [events])
     //........................
 
     const handleStart = () => {
@@ -65,12 +89,12 @@ const Dashboard = () => {
         const startDate = '2022-12-01';
         const endDate = '2022-12-31';
 
-        getWeatherData(city, startDate, endDate); 
+        getWeatherData(city, startDate, endDate);
     }
 
     useEffect(() => {
-        console.log(weatherData)
-    }, [weatherData])
+        // const tsToday = 
+    }, [])
 
 
     //........................
@@ -101,8 +125,7 @@ const Dashboard = () => {
                                 <TitleH2>
                                     und Erinnerungen:
                                 </TitleH2>
-                                <div onClick={handleWeather}> Wetterdaten abrufen
-                                </div>
+
                             </div>
                         }
                     </MainContent>

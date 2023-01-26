@@ -49,7 +49,10 @@ const Panel = ({ itemGroup, handleSelect }) => {
         <FormField style={{ display: 'flex', flexDirection: 'row', marginBottom: '1.0rem' }} onSubmit={handleSubmit} >
           <CityInput>
             In welcher Stadt lebst Du?
-            <BiInfoCircle style={{ margin: '0.5rem', fontSize: '1.25rem' }} onClick={()=> setShowInfo(true)} >
+            <BiInfoCircle
+              style={{ margin: '0.5rem', fontSize: '1.25rem' }}
+              onClick={() => setShowInfo(true)}
+            >
               <StP show={showInfo} >Für den Abgleich mit Wetterdaten benötige ich einen Ort</StP>
             </BiInfoCircle>
             <InputField
@@ -129,6 +132,6 @@ margin-top: 1.0rem;
 `
 
 const StP = styled.p`
-  display: ${ props => props.show ? 'inlineFlex' : 'none'}
+  display: ${props => props.show ? 'inlineFlex' : 'none'}
 
 `

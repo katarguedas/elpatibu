@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   name: String,
   pwd: String,
   diaries: String,
-  events: []
+  events: [eventsSchema]
 })
 
 const User = mongoose.model('User', userSchema)

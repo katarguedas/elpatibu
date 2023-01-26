@@ -23,7 +23,6 @@ const EditDiary = () => {
   const [edit, setEdit] = useState(false);
 
   let location = useLocation();
-  const navigate = useNavigate();
 
   //........................
 
@@ -121,7 +120,6 @@ const EAccordion = styled(Accordion)`
   background: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col3});
 }
 `
-
 
 const StBiRightArrow = styled(BiRightArrow)`
   font-size: 1.0rem;

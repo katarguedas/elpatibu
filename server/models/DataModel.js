@@ -2,31 +2,6 @@ const mongoose = require('mongoose');
 
 //------------------------------------------------
 
-const temperatureSchema = new mongoose.Schema({
-    id: String,
-    label: String,
-    unit: String,
-    values: [Number],
-    date: [Date],
-    // date: { type: Schema.Types.ObjectId, ref: 'DateData' }
-})
-
-//---children ------------------------------------------
-
-// const dateSchema = new mongoose.Schema({
-//     id: String,
-//     values: [Date]
-// });
-
-// const valuesSchema = new mongoose.Schema({
-//     name: String,
-//     id: String,
-//     label: String,
-//     unit: String,
-//     selected: Boolean,
-//     values: []
-// });
-
 
 const itemSchema = new mongoose.Schema({
     name: String,
@@ -60,10 +35,8 @@ const Item = mongoose.model('Item', itemSchema)
 const Group = mongoose.model('Group', groupSchema)
 const Diary = mongoose.model('Diary', diarySchema)
 
-// const DataSet = mongoose.model('DataSet', dataSetSchema);
-const Temperature = mongoose.model('Temperature', temperatureSchema)
 
-module.exports = { Diary, Group, Item, Temperature };
+module.exports = { Diary, Group, Item };
 
 
 

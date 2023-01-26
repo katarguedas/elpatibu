@@ -45,7 +45,7 @@ router.post('/api/login', async (req, res) => {
           diaries: user.diaries
         }, process.env.EXPRESS_ACCESS_JWT_KEY,
         {
-          expiresIn: '15m'
+          expiresIn: '20m'
         }
       );
       const refreshToken = jwt.sign(
@@ -80,7 +80,7 @@ router.post('/api/refreshToken', async (req, res) => {
 
 
   if (!user) {
-    res.status(400).send({ status: "error", message: "Invalid user"})
+    res.status(400).send({ status: "error", message: "Invalid user" })
   } else {
     if (req.cookies?.jwt) {
       const refreshToken = req.cookies.jwt;
@@ -89,7 +89,7 @@ router.post('/api/refreshToken', async (req, res) => {
       jwt.verify(refreshToken, process.env.EXPRESS_REFRESH_TOKEN_KEY, err => {
         if (err) {
           console.log("Error refreshing accessToken")
-          return res.status(406).json({status: 'error', message: 'Unauthorized' })
+          return res.status(406).json({ status: 'error', message: 'Unauthorized' })
         }
         else {
           // console.log("token refreshed")
@@ -101,7 +101,7 @@ router.post('/api/refreshToken', async (req, res) => {
           },
             process.env.EXPRESS_ACCESS_JWT_KEY,
             {
-              expiresIn: '10m',
+              expiresIn: '20m',
             });
           return res.status(200).send({ status: 'ok', message: 'authorized', access: accessToken });
         }
@@ -157,27 +157,45 @@ router.post('/api/saveDiaryId', async (req, res) => {
 
   console.log("body", req.body)
   try {
-    const result = await User.findOneAndUpdate({ email: req.body.email},  {diaries: req.body.diaryId} , {new: true} )
+    const result = await User.findOneAndUpdate({ email: req.body.email }, { diaries: req.body.diaryId }, { new: true })
     // console.log("\n result:", result)
-    res.status(200).send({status: 'OK', message: 'saved diaryId', result})
+    res.status(200).send({ status: 'OK', message: 'saved diaryId', result })
   } catch (error) {
     res.status(400).send({ status: "error", error })
     console.log("error", error)
-      return;
+    return;
   }
 })
 
 //------------------------------------------------------
 
-router.get('/api/getEvents', async(req, res) => {
-  
+router.get('/api/getEvents', async (req, res) => {
+
+  console.log("id:", req.query.id)
   try {
-    const result = await Diary.findOne({ email: req.body.email})
+    const result = await User.findOne({ id: req.query.id })
     console.log(result)
+    console.log("\n")
+    console.log( "result.events",result.events)
     //.....
+    const events = result.events;
+    res.status(200).send({ status: 'ok', message: 'found events', events })
   } catch (error) {
     console.log(error)
+    res.status(400).send({ status: 'error', error })
     //....
+  }
+})
+//------------------------------------------------------
+
+router.post('/api/saveEvent', async (req, res) => {
+  console.log("body", req.body.event )
+  try {
+    const response = await User.findOneAndUpdate({ id: req.body.id }, { $push: { events: req.body.event } }, { new: true })
+    console.log("response", response)
+    res.status(200).send({ status: 'ok', message: 'event added', response })
+  } catch (error) {
+    res.status(400).send({ message: 'Error updating events', error })
   }
 })
 

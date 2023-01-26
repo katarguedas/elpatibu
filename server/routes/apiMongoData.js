@@ -2,7 +2,7 @@ const express = require('express')
 
 // const mongoose = require('mongoose')
 
-const { Diary, Group, Item, Temperature } = require('../models/DataModel');
+const { Diary } = require('../models/DataModel');
 
 const dotenv = require('dotenv');
 const { findOne, find } = require('../models/UserModel');

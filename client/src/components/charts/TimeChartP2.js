@@ -58,7 +58,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
                 fill: false,
                 pointStyle: 'circle',
                 pointBorderColor: '#000',
-                radius: 6
+                radius: 5
             },
             {
                 label: 'diastolischer Druck',
@@ -72,7 +72,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
                 fill: false,
                 pointStyle: 'circle',
                 pointBorderColor: '#000',
-                radius: 6
+                radius: 5
             }
         ],
     };

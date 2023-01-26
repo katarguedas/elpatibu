@@ -1,10 +1,13 @@
-import React from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Filler, Tooltip, Legend, TimeScale, TimeSeriesScale } from 'chart.js';
+import { useUserContext } from '../../providers/userContext';
 import { theme } from '../../themes/theme';
+
+import React, { useEffect, useState } from 'react';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Filler, Tooltip, Legend, TimeScale, TimeSeriesScale } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import 'chartjs-adapter-luxon';
 
 import annotationPlugin from 'chartjs-plugin-annotation';
+import 'chartjs-adapter-luxon';
+import { DateTime } from "luxon";
 // import { ReturnDocument } from 'mongodb';
 
 
@@ -12,8 +15,13 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 
 const TimeChartT = ({ xValues, yValues, titel, name, unit }) => {
 
+    const { events, userData, getEventsFromBackend } = useUserContext();
+
+    const [allAnnotations, setAllAnnotations] = useState({});
+
     // console.log("x-", test)
     // console.log("y", yValues)
+
 
     ChartJS.register(
         CategoryScale,
@@ -45,62 +53,115 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit }) => {
     const bgcolor4 = "rgb(243, 191, 78, 0.3)";
     const bgcolor5 = 'rgb(247, 89, 89, 0.3)';
 
+    let myAnnotations = [];
 
-    //...................
+    useEffect(() => {
 
-    const myData = xValues.map((e, i) => {
-        return ({ x: e, y: yValues[i] })
-    })
-    // console.log(myData)
+        if (!events)
+            getEventsFromBackend(userData.id)
 
-    let data;
+        if (events) {
+            console.log("test2")
 
-    if(name === 'Temperatur') {
-        data = {
-            // labels, //nur bei type: Line
-            datasets: [
-                {
-                    // label: 'Körpertemperatur',
-                    data: myData,
-                    fill: false,
-                    borderColor: theme.colors.col3,
-                    backgroundColor: theme.colors.col2,
-                    tension: 0,
-                    borderWidth: 1,
-                    spanGaps: true,
-                    connect: false,
-                    pointStyle: 'circle',
-                    pointBorderColor: '#000',
-                    radius: 6,
-                    stepped: false,
+            myAnnotations = events.map((e, i) => {
+                console.log(e.category)
+                if (e.category === 'Therapie') {
+                     const ts = DateTime.fromISO(e.end).ts
+                    console.log(e.category, ts)
+                    return {
+                        type: 'line',
+                        id: 'vline_' + i,
+                        xMin: ts,
+                        xMax: ts,
+                        borderColor: theme.colors.col3,
+                        borderWidth: 3,
+                        label: {
+                            display: true,
+                            content: e.category,
+                            position: 'end',
+                            yAdjust: -5,
+                            xAdjust: -5,
+                            padding: 5,
+                            backgroundColor: theme.colors.col3,
+                            color: '#fff'
+                        }
+                    }
                 }
-            ],
+            })
+
+            myAnnotations = myAnnotations.filter(e => { if (e !== undefined) return e })
+            setAllAnnotations(myAnnotations[0])
+        }
+
+        console.log(myAnnotations)
+    }, [])
+
+
+
+    const annotationBox1 = {
+        id: 'box1',
+        type: 'box',
+        xMin: firstDay,
+        xMax: lastDay,
+        yMin: 36,
+        yMax: 37.5,
+        backgroundColor: bgcolor1,
+        drawTime: 'beforeDatasetsDraw',
+    }
+    const annotationBox2 = {
+        id: 'box2',
+        type: 'box',
+        xMin: firstDay,
+        xMax: lastDay,
+        yMin: 37.5,
+        yMax: 38,
+        backgroundColor: bgcolor3,
+        drawTime: 'beforeDatasetsDraw',
+    }
+    const annotationBox3 = {
+        id: 'box3',
+        type: 'box',
+        xMin: firstDay,
+        xMax: lastDay,
+        yMin: 38,
+        yMax: 39.0,
+        backgroundColor: bgcolor4,
+        drawTime: 'beforeDatasetsDraw',
+    }
+    const annotationBox4 = {
+        id: 'box4',
+        type: 'box',
+        xMin: firstDay,
+        xMax: lastDay,
+        yMin: 39.0,
+        yMax: 40,
+        backgroundColor: bgcolor5,
+        drawTime: 'beforeDatasetsDraw',
+    }
+
+    const annotationLineY = {
+        type: 'line',
+        yMin: 39,
+        yMax: 39,
+        borderColor: 'rgb(206, 23, 93)',
+        borderWidth: 3,
+        label: {
+            display: true,
+            content: 'hohes Fieber',
+            position: 'end',
+            yAdjust: -15,
+            padding: 5,
+            backgroundColor: 'rgb(206, 23, 93)',
+            color: '#fff'
         }
     }
-    else {
-        data = {
-            // labels, //nur bei type: Line
-            datasets: [
-                {
-                    // label: 'Körpertemperatur',
-                    data: myData,
-                    fill: true,
-                    borderColor: theme.colors.col2,
-                    backgroundColor: theme.colors.col4,
-                    tension: 0,
-                    borderWidth: 1,
-                    spanGaps: true,
-                    connect: false,
-                    pointStyle: 'circle',
-                    pointBorderColor: '#000',
-                    radius: 0,
-                    stepped: true,
-                }
-            ],
-        }
-    }
 
 
+    useEffect(() => {
+        console.log(allAnnotations)
+    }, [allAnnotations])
+
+    console.log(allAnnotations)
     //...................
 
     let options;
@@ -118,62 +179,22 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit }) => {
                     font: { size: 22 },
                     color: textColor
                 },
-                annotation: {
+                annotation:
+                {
+                    // annotations: {allAnnotations}
+                    // drawTime: 'afterDatasetsDraw',
+                    // annotations: { myAnnotations },
+                    // }
                     annotations: {
-                        line2: {
-                            type: 'line',
-                            yMin: 39,
-                            yMax: 39,
-                            borderColor: 'rgb(206, 23, 93)',
-                            borderWidth: 3,
-                            label: {
-                                display: true,
-                                content: 'hohes Fieber',
-                                position: 'end',
-                                yAdjust: -15,
-                                padding: 5,
-                                backgroundColor: 'rgb(206, 23, 93)',
-                                color: '#fff'
-                            }
-                        },
-                        box1: {
-                            type: 'box',
-                            xMin: firstDay,
-                            xMax: lastDay,
-                            yMin: 36,
-                            yMax: 37.5,
-                            backgroundColor: bgcolor1,
-                            drawTime: 'beforeDatasetsDraw',
-                        },
-                        box2: {
-                            type: 'box',
-                            xMin: firstDay,
-                            xMax: lastDay,
-                            yMin: 37.5,
-                            yMax: 38,
-                            backgroundColor: bgcolor3,
-                            drawTime: 'beforeDatasetsDraw',
-                        },
-                        box3: {
-                            type: 'box',
-                            xMin: firstDay,
-                            xMax: lastDay,
-                            yMin: 38,
-                            yMax: 39.0,
-                            backgroundColor: bgcolor4,
-                            drawTime: 'beforeDatasetsDraw',
-                        },
-                        box4: {
-                            type: 'box',
-                            xMin: firstDay,
-                            xMax: lastDay,
-                            yMin: 39.0,
-                            yMax: 40,
-                            backgroundColor: bgcolor5,
-                            drawTime: 'beforeDatasetsDraw',
-                        }
-                    }
-                }
+                        myAnnotations,
+                        annotationLineY,
+                        allAnnotations,
+                        annotationBox1,
+                        annotationBox2,
+                        annotationBox3,
+                        annotationBox4,
+                    },
+                },
             },
             scales: {
                 x: {
@@ -212,6 +233,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit }) => {
                     },
                 },
             }
+            // }
         };
     } else {
         options = {
@@ -270,6 +292,63 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit }) => {
         };
     }
 
+    //...................
+
+    const myData = xValues.map((e, i) => {
+        return ({ x: e, y: yValues[i] })
+    })
+    // console.log(myData)
+
+    useEffect(() => {
+console.log(allAnnotations)    }, [myData])
+
+
+    let data;
+
+    if (name === 'Temperatur') {
+        data = {
+            // labels, //nur bei type: Line
+            datasets: [
+                {
+                    // label: 'Körpertemperatur',
+                    data: myData,
+                    fill: false,
+                    borderColor: theme.colors.col3,
+                    backgroundColor: theme.colors.col2,
+                    tension: 0,
+                    borderWidth: 1,
+                    spanGaps: true,
+                    connect: false,
+                    pointStyle: 'circle',
+                    pointBorderColor: '#000',
+                    radius: 5,
+                    stepped: false,
+                }
+            ],
+        }
+    }
+    else {
+        data = {
+            // labels, //nur bei type: Line
+            datasets: [
+                {
+                    // label: 'Körpertemperatur',
+                    data: myData,
+                    fill: true,
+                    borderColor: theme.colors.col2,
+                    backgroundColor: theme.colors.col4,
+                    tension: 0,
+                    borderWidth: 1,
+                    spanGaps: true,
+                    connect: false,
+                    pointStyle: 'circle',
+                    pointBorderColor: '#000',
+                    radius: 0,
+                    stepped: true,
+                }
+            ],
+        }
+    }
 
 
     return (
