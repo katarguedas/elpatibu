@@ -7,42 +7,42 @@ import { InputField, LabelText, FormField } from "../../styled/globalStyles";
 
 //---------------------------------------------------------
 
-const LoginForm = ({handleSubmit, handleChange, handleMouseEnter, handleMouseLeave, type}) => {
+const LoginForm = ({ handleSubmit, handleChange, handleMouseEnter, handleMouseLeave, type }) => {
 
-    const {loginData} = useUserContext();
+	const { loginData } = useUserContext();
 
-    return (
-        <FormField onSubmit={handleSubmit}>
-            <InputLabel >
-            <LabelText>E-Mail:</LabelText>
-                <InputField
-                    type="text"
-                    name={'email'}
-                    required
-                    value={loginData.email || ''}
-                    onChange={handleChange}
-                />
-            </InputLabel>
-            <InputLabel  >
-            <LabelText>Passwort:</LabelText>
-                <InputField
-                    type={type}
-                    name={'pwd'}
-                    required
-                    value={loginData.pwd || ''}
-                    onChange={handleChange}
-                />
-                <EyeGroup
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                >
-                    <RxEyeOpen style={{fontSize: '20px'}} />
-                </EyeGroup>
-            </InputLabel>
-            <SendButton type="submit">senden</SendButton>
-        </FormField>
+	return (
+		<FormField onSubmit={handleSubmit}>
+			<InputLabel >
+				<LabelText>E-Mail:</LabelText>
+				<InputField
+					type="text"
+					name={'email'}
+					required
+					value={loginData.email || ''}
+					onChange={handleChange}
+				/>
+			</InputLabel>
+			<InputLabel  >
+				<LabelText>Passwort:</LabelText>
+				<InputField
+					type={type}
+					name={'pwd'}
+					required
+					value={loginData.pwd || ''}
+					onChange={handleChange}
+				/>
+				<EyeGroup
+					onMouseEnter={handleMouseEnter}
+					onMouseLeave={handleMouseLeave}
+				>
+					<RxEyeOpen style={{ fontSize: '20px' }} />
+				</EyeGroup>
+			</InputLabel>
+			<SendButton type="submit">senden</SendButton>
+		</FormField>
 
-    )
+	)
 }
 
 export default LoginForm;

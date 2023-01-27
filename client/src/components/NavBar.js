@@ -1,5 +1,5 @@
 import { NavButton } from '../styled/Buttons';
-import Date from './Date';
+import Date from '../utils/Date';
 
 import { useNavigate } from 'react-router-dom';
 import { RxHome } from "react-icons/rx";
@@ -76,7 +76,7 @@ const HomeIcon = styled(RxHome)`
   margin-left: 3.5rem;
   border: 2.0px solid ${(props) => props.theme.colors.white};
   border-radius: 0.2rem;
-  font-size: 2.5rem;
+  font-size: 3.0rem;
   color: #000;
   background-color: #fff;
   &:hover{

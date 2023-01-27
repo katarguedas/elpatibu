@@ -23,216 +23,227 @@ import styled from "styled-components"
 
 const CreateDiary = () => {
 
-    const { diaryTemplate, setDiaryTemplate, setDiary, createNewDiary, diarySaved, DiaryInit } = useDataContext();
-    const { user, userData, checkToken, diaryIdSaved } = useUserContext();
+  const { diaryTemplate, setDiaryTemplate, setDiary, createNewDiary, diarySaved, DiaryInit } = useDataContext();
+  const { user, userData, checkToken, diaryIdSaved } = useUserContext();
 
-    const [on, setOn] = useState();
-    const [created, setCreated] = useState(false);
-    const [done, setDone] = useState(false);
-    const [selectAll, setSelectAll] = useState(false);
+  const [on, setOn] = useState();
+  const [created, setCreated] = useState(false);
+  const [done, setDone] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
 
-    let location = useLocation();
-    const navigate = useNavigate();
+  let location = useLocation();
+  const navigate = useNavigate();
 
-    //............................................
+  //............................................
 
-    useEffect(() => {
-        if ((user) && (!userData))
-            checkToken();
-        if (!user)
-            navigate('/login');
-        setDiaryTemplate(DiaryInit)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+  useEffect(() => {
+    if ((user) && (!userData))
+      checkToken();
+    if (!user)
+      navigate('/login');
+    setDiaryTemplate(DiaryInit)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-    //.....................
+  //.....................
 
-    useEffect(() => {
-        if (!user)
-            navigate('/login');
-        checkToken();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location])
+  useEffect(() => {
+    if (!user)
+      navigate('/login');
+    checkToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location])
 
 
-    //.....................
+  //.....................
 
-    useEffect(() => {
-        if ((diaryIdSaved) && (diarySaved)) {
-            const tempDiary = diaryTemplate;
-            setDiary(tempDiary);
-            setDiaryTemplate('');
-            setCreated(true);
-            setDone(true);
-            timing();
-        }
-    }, [diaryIdSaved, diarySaved])
+  useEffect(() => {
+    if ((diaryIdSaved) && (diarySaved)) {
+      const tempDiary = diaryTemplate;
+      setDiary(tempDiary);
+      setDiaryTemplate('');
+      setCreated(true);
+      setDone(true);
+      timing();
+    }
+  }, [diaryIdSaved, diarySaved])
 
-    //...............
+  //...............
 
-    useEffect(() => {
-        if (on === true) {
-            setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map((e) => {
-                e.visible = true;
-                return e;
-            }))
-        } else if (on === false) {
-            setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map((e) => {
-                e.visible = false;
-                return e;
-            }))
-        }
-    }, [on])
+  useEffect(() => {
+    if (on === true) {
+      setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map((e) => {
+        e.visible = true;
+        return e;
+      }))
+    } else if (on === false) {
+      setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map((e) => {
+        e.visible = false;
+        return e;
+      }))
+    }
+  }, [on])
 
-    //...........
+  //...........
 
-    useEffect(() => {
-        if (diaryTemplate) {
-            if (selectAll === false) {
-                setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map(e => {
-                    e.items.map(el => {
-                        el.selected = true;
-                        return el;
-                    })
-                }))
-            } else if (selectAll === true) {
-                setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map(e => {
-                    e.items.map(el => {
-                        el.selected = false;
-                        return el;
-                    })
-                }))
-            }
-        }
-    }, [selectAll])
-
-    //............................................
-
-    const handleClick = (id) => {
-        // einzelne Gruppen einblenden/ausblenden
+  useEffect(() => {
+    if (diaryTemplate) {
+      if (selectAll === false) {
         setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map(e => {
-            if (e.id === id)
-                e.visible = !e.visible;
-            return e;
+          e.items.map(el => {
+            el.selected = true;
+            return el;
+          })
         }))
+      } else if (selectAll === true) {
+        setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map(e => {
+          e.items.map(el => {
+            el.selected = false;
+            return el;
+          })
+        }))
+      }
     }
+  }, [selectAll])
 
-    //..................
+  //............................................
 
-    const handleSelect = (groupId, itemId) => {
-        const indexG = diaryTemplate.groups.findIndex((e) => e.id === groupId);
-        const indexI = diaryTemplate.groups[indexG].items.findIndex((e) =>
-            e.id ===
-            itemId);
-        console.log(itemId)
-        console.log("indizes:", indexG, indexI)
+  const handleClick = (id) => {
+    // einzelne Gruppen einblenden/ausblenden
+    setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map(e => {
+      if (e.id === id)
+        e.visible = !e.visible;
+      return e;
+    }))
+  }
 
-        setDiaryTemplate(
-            { ...diaryTemplate }, diaryTemplate.groups[indexG].items[indexI].selected = !diaryTemplate.groups[indexG].items[indexI].selected
-        )
-    }
+  //..................
 
-    //................
+  const handleSelect = (groupId, itemId) => {
+    const indexG = diaryTemplate.groups.findIndex((e) => e.id === groupId);
+    const indexI = diaryTemplate.groups[indexG].items.findIndex((e) =>
+      e.id ===
+      itemId);
+    console.log(itemId)
+    console.log("indizes:", indexG, indexI)
 
-
-    const handleSendAndCreate = () => {
-        createNewDiary(diaryTemplate.id);
-    }
-
-    const timing = () => {
-        setTimeout(() => {
-            setCreated(false)
-        }, 2000)
-    }
-
-
-    const navToDiary = () => {
-        navigate('/EditDiary')
-    }
-
-    const handleSubmit = e => {
-        e.preventDefault();
-    }
-
-    //-------------------------------
-
-    return (
-        <ContentGroup>
-            <Header />
-            <MainGroup>
-                <NavBar />
-                <MainContent>
-                    <PageTitle>Neues Tagebuch</PageTitle>
-                    <TitleH2>
-                        Erstelle Dein individuelles Patienten-Tagebuch
-                    </TitleH2>
-                    {
-                        diaryTemplate &&
-                        <StP>Wähle nun aus den nachfolgenden Optionen die Werte aus, die Du dokumentieren möchtest. </StP>
-                    }
-                    {
-                        diaryTemplate &&
-                        <SwitchGroup>
-                            <SwitchToggle isOn={on} handleToggle={() => setOn(!on)} />
-                            <SwitchText>alle aufklappen</SwitchText>
-                        </SwitchGroup>
-                    }
-                    {
-                        (done === false) && (selectAll === false) &&
-                        <StBiCheckSquare onClick={() => setSelectAll(!selectAll)}> alle auswählen</StBiCheckSquare>}
-                    {
-                        (done === false) && (selectAll === true) &&
-                        <StBiSquare onClick={() => setSelectAll(!selectAll)}>alle auswählen</StBiSquare>
-
-                    }
-                    {
-                        diaryTemplate &&
-                        diaryTemplate.groups.map(e => (
-                            <ItemGroup key={e.id}>
-                                <Accordion visible={e.visible} onClick={() =>
-                                    handleClick(e.id)}
-                                >
-                                    {!e.visible && <StBiRightArrow></StBiRightArrow>}
-                                    {e.visible && <StBiDownArrow></StBiDownArrow>}
-
-                                    {e.label}
-                                </Accordion>
-
-                                <Panel itemGroup={e} handleSelect={handleSelect} ></Panel>
-                            </ItemGroup>
-                        ))
-                    }
-                    {
-                        (done === false) &&
-                        <div>
-                            <StP> Gebe Deinem Tagebuch bitte einen Namen: </StP>
-                            <FormField onSubmit={handleSubmit}>
-                                <input
-                                    style={{ marginLeft: '1.5rem', width: '200px', height: '1.75rem' }}
-                                    // value = 'mein erstes Tagebuch'
-                                    onChange={(e) => setDiaryTemplate({ ...diaryTemplate, diaryName: e.target.value })}
-                                />
-                            </FormField>
-                        </div>
-                    }
-                    {
-                        (created === false) &&
-                        (done === false) &&
-                        <SendButton onClick={handleSendAndCreate} >erstellen</SendButton>
-                    }
-                    {created &&
-                        <p style={{ fontWeight: '500' }} >Tagebuch erfolgreich erstellt!</p>
-                    }
-                    {(created === false) &&
-                        done &&
-                        <SendButton onClick={navToDiary} >zum Tagebuch</SendButton>
-                    }
-
-                </MainContent>
-            </MainGroup>
-            <Footer />
-        </ContentGroup >
+    setDiaryTemplate(
+      { ...diaryTemplate }, diaryTemplate.groups[indexG].items[indexI].selected = !diaryTemplate.groups[indexG].items[indexI].selected
     )
+  }
+
+  //................
+
+
+  const handleSendAndCreate = () => {
+    createNewDiary(diaryTemplate.id);
+  }
+
+  const timing = () => {
+    setTimeout(() => {
+      setCreated(false)
+    }, 2000)
+  }
+
+
+  const navToDiary = () => {
+    navigate('/EditDiary')
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault();
+  }
+
+  //-------------------------------
+
+  return (
+    <ContentGroup>
+      <Header />
+      <MainGroup>
+        <NavBar />
+        <MainContent>
+          <PageTitle>Neues Tagebuch</PageTitle>
+          <TitleH2>
+            Erstelle Dein individuelles Patienten-Tagebuch
+          </TitleH2>
+          {
+            diaryTemplate &&
+            <StP>Wähle nun aus den nachfolgenden Optionen die Werte aus, die Du dokumentieren möchtest. </StP>
+          }
+          {
+            diaryTemplate &&
+            <SwitchGroup>
+              <SwitchToggle isOn={on} handleToggle={() => setOn(!on)} />
+              <SwitchText>alle aufklappen</SwitchText>
+            </SwitchGroup>
+          }
+          {
+            (!done) &&
+             
+            (selectAll === false) &&
+            <div style={{ display: 'inline-flex' }}  >
+              <StBiCheckSquare onClick={() => setSelectAll(!selectAll)}>  </StBiCheckSquare>
+              <p>alle auswählen</p>
+            </div>
+          }
+          {
+            (!done) &&
+            (selectAll === true) &&
+            <div style={{ display: 'inline-flex' }} >
+              <StBiSquare onClick={() => setSelectAll(!selectAll)}></StBiSquare>
+              <p>alle auswählen</p>
+            </div>
+          }
+
+          
+          {
+            diaryTemplate &&
+            diaryTemplate.groups.map(e => (
+              <ItemGroup key={e.id}>
+                <Accordion visible={e.visible} onClick={() =>
+                  handleClick(e.id)}
+                >
+                  {!e.visible && <StBiRightArrow></StBiRightArrow>}
+                  {e.visible && <StBiDownArrow></StBiDownArrow>}
+
+                  {e.label}
+                </Accordion>
+
+                <Panel itemGroup={e} handleSelect={handleSelect} ></Panel>
+              </ItemGroup>
+            ))
+          }
+          {
+            (done === false) &&
+            <div>
+              <StP> Gebe Deinem Tagebuch bitte einen Namen: </StP>
+              <FormField onSubmit={handleSubmit}>
+                <input
+                  style={{ marginLeft: '1.5rem', width: '200px', height: '1.75rem' }}
+                  // value = 'mein erstes Tagebuch'
+                  onChange={(e) => setDiaryTemplate({ ...diaryTemplate, diaryName: e.target.value })}
+                />
+              </FormField>
+            </div>
+          }
+          {
+            (created === false) &&
+            (done === false) &&
+            <SendButton onClick={handleSendAndCreate} >erstellen</SendButton>
+          }
+          {created &&
+            <p style={{ fontWeight: '500' }} >Tagebuch erfolgreich erstellt!</p>
+          }
+          {(created === false) &&
+            done &&
+            <SendButton onClick={navToDiary} >zum Tagebuch</SendButton>
+          }
+
+        </MainContent>
+      </MainGroup>
+      <Footer />
+    </ContentGroup >
+  )
 }
 
 

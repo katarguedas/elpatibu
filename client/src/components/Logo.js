@@ -6,22 +6,22 @@ import { useNavigate } from 'react-router';
 
 const Logo = () => {
 
-    const navigate = useNavigate();
-    const { user } = useUserContext();
+	const navigate = useNavigate();
+	const { user } = useUserContext();
 
-    const handleClickLogo = () => {
-        if(user)
-            navigate('/dashboard')
-        else
-            navigate('/welcome')
-    }
+	const handleClickLogo = () => {
+		if (user)
+			navigate('/dashboard')
+		else
+			navigate('/welcome')
+	}
 
 
-    return(
-        <PatibuLogo onClick={handleClickLogo}  >
-            L O G O
-        </PatibuLogo>
-    )
+	return (
+		<PatibuLogo onClick={handleClickLogo}  >
+			L O G O
+		</PatibuLogo>
+	)
 };
 
 export default Logo;

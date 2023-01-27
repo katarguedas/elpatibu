@@ -7,16 +7,16 @@ const UserContext = createContext();
 
 const useUserContext = () => useContext(UserContext);  // Das ist der CustomHook
 
-const UserContextProvider =({children}) => {
+const UserContextProvider = ({ children }) => {
 
-const [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, events, setEvents ] = useAuth();
+	const [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, events, setEvents] = useAuth();
 
-    return(
-        <UserContext.Provider value={{ LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, events, setEvents }} >
-            {children}
-        </UserContext.Provider>
-    )
+	return (
+		<UserContext.Provider value={{ LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, events, setEvents }} >
+			{children}
+		</UserContext.Provider>
+	)
 }
 
 
-export {UserContextProvider, useUserContext};
+export { UserContextProvider, useUserContext };

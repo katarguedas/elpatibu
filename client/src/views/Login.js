@@ -8,74 +8,87 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { ContentGroup, PageTitle } from "../styled/globalStyles"
 import { useNavigate } from "react-router"
+import { AuthButton } from "../styled/Buttons"
 
 //---------------------------------------------------------
 
 const Login = () => {
 
-    const { loginData, setLoginData, verifyUser, user } = useUserContext();
+	const { loginData, setLoginData, verifyUser, user } = useUserContext();
 
-    const [type, setType] = useState("password");
+	const [type, setType] = useState("password");
 
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 
-//............................................
+	//............................................
 
-    const clearState = () => setLoginData("")
+	const clearState = () => setLoginData("")
 
-//............................................
+	//............................................
 
-    const handleChange = e => {
-        setLoginData({
-            ...loginData,
-            [e.target.name]: e.target.value,
-        })
-    }
+	const handleChange = e => {
+		setLoginData({
+			...loginData,
+			[e.target.name]: e.target.value,
+		})
+	}
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        verifyUser()
-        console.log("user?", user)
-        clearState()
-    }
+	const handleSubmit = e => {
+		e.preventDefault();
+		verifyUser()
+		console.log("user?", user)
+		clearState()
+	}
 
 
-    const handleMouseEnter = (e) => {
-        e.preventDefault()
-        setType("text")
-    }
+	const handleMouseEnter = (e) => {
+		e.preventDefault()
+		setType("text")
+	}
 
-    const handleMouseLeave = (e) => {
-        e.preventDefault()
-        setType("password")
-    }
-//............................................
-    useEffect(() => {
-        if(user) 
-          {
-            console.log("user",user)
-            navigate('/dashboard')
-        }
-    }, [user])
+	const handleMouseLeave = (e) => {
+		e.preventDefault()
+		setType("password")
+	}
 
-//............................................
+	const handleClick = () => {
+		navigate('/register')
+	}
+	//............................................
+	useEffect(() => {
+		if (user) {
+			console.log("user", user)
+			navigate('/dashboard')
+		}
+	}, [user])
 
-    return (
-        <ContentGroup>
-            <Header />
-            <PageTitle>Anmelden</PageTitle>
-            <LoginGroup >
-                <LoginForm
-                    handleSubmit={handleSubmit}
-                    handleChange={handleChange}
-                    handleMouseEnter={handleMouseEnter}
-                    handleMouseLeave={handleMouseLeave}
-                    type={type}
-                />
-            </LoginGroup>
-            <Footer />
-        </ContentGroup>
-    )
+	//............................................
+
+	return (
+		<ContentGroup>
+			<Header />
+			<PageTitle>Anmelden</PageTitle>
+			<LoginGroup >
+				<LoginForm
+					handleSubmit={handleSubmit}
+					handleChange={handleChange}
+					handleMouseEnter={handleMouseEnter}
+					handleMouseLeave={handleMouseLeave}
+					type={type}
+				/>
+				<div style={{ marginBottom: '3.0rem' }} >
+					Du hast noch kein Konto?
+					<br></br>
+					Hier geht es zur Registrierung
+					<br></br>
+					<AuthButton onClick={handleClick} >
+						Registrieren
+					</AuthButton>
+				</div>
+			</LoginGroup>
+			<Footer />
+		</ContentGroup>
+	)
 }
 
 export default Login;

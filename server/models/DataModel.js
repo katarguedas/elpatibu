@@ -4,31 +4,31 @@ const mongoose = require('mongoose');
 
 
 const itemSchema = new mongoose.Schema({
-    name: String,
-    id: String,
-    label: String,
-    unit: String,
-    selected: Boolean,
-    measurable: Boolean,
-    values: []
+	name: String,
+	id: String,
+	label: String,
+	unit: String,
+	selected: Boolean,
+	measurable: Boolean,
+	values: []
 })
 
 const groupSchema = new mongoose.Schema({
-    id: String,
-    name: String,
-    label: String,
-    visible: Boolean,
-    items: [itemSchema]
+	id: String,
+	name: String,
+	label: String,
+	visible: Boolean,
+	items: [itemSchema]
 })
 
 // --------parent: ----------------------------------------------
 
 const diarySchema = new mongoose.Schema({
-    id: String,
-    diaryName: String,
-    city: String,
-    date: [],
-    groups: [groupSchema]
+	id: String,
+	diaryName: String,
+	city: String,
+	date: [],
+	groups: [groupSchema]
 });
 
 const Item = mongoose.model('Item', itemSchema)

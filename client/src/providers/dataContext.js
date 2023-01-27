@@ -9,21 +9,21 @@ const DataContext = createContext();
 
 const useDataContext = () => useContext(DataContext);  // Das ist der CustomHook
 
-const DataContextProvider =({children}) => {
+const DataContextProvider = ({ children }) => {
 
-const [diary, setDiary, diaryTemplate, setDiaryTemplate, createNewDiary, getDiaryFromBackend, saveDataToBackend, tempData, setTempData, diarySaved] = useData();
+	const [diary, setDiary, diaryTemplate, setDiaryTemplate, createNewDiary, getDiaryFromBackend, saveDataToBackend, tempData, setTempData, diarySaved] = useData();
 
-const  [LOCAL_STORAGE_WEATHER, getWeatherDataFromBackend, weatherData, getWeatherData]  = useWeatherAPI();
+	const [LOCAL_STORAGE_WEATHER, getWeatherDataFromBackend, weatherData, getWeatherData] = useWeatherAPI();
 
-const [ DiaryInit, RatingText ] = useTemplates();
+	const [DiaryInit, RatingText] = useTemplates();
 
 
-    return(
-        <DataContext.Provider value={{diary, setDiary, diaryTemplate, setDiaryTemplate, createNewDiary, getDiaryFromBackend, saveDataToBackend, tempData, setTempData, diarySaved, LOCAL_STORAGE_WEATHER, getWeatherDataFromBackend, weatherData, getWeatherData, DiaryInit, RatingText }} >
-            {children}
-        </DataContext.Provider>
-    )
+	return (
+		<DataContext.Provider value={{ diary, setDiary, diaryTemplate, setDiaryTemplate, createNewDiary, getDiaryFromBackend, saveDataToBackend, tempData, setTempData, diarySaved, LOCAL_STORAGE_WEATHER, getWeatherDataFromBackend, weatherData, getWeatherData, DiaryInit, RatingText }} >
+			{children}
+		</DataContext.Provider>
+	)
 }
 
 
-export {DataContextProvider, useDataContext};
+export { DataContextProvider, useDataContext };
