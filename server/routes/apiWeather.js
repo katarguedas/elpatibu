@@ -30,7 +30,6 @@ router.get('/api/WeatherData', async (req, res) => {
 
   let url = `${urlConst}&unitGroup=${unitGroup}&contentType=${contentType}&lang=${lang}&startDateTime=${req.query.start}&endDateTime=${req.query.end}&aggregateHours=${aggregateHours}&location=${req.query.city}&key=${key}`;
 
-  console.log(url);
   console.log("Stadt:", req.query.city, " start:", req.query.start, " Ende:", req.query.end);
 
 

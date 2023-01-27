@@ -1,20 +1,76 @@
-
 import styled from 'styled-components';
+import { AuthButton } from '../styled/Buttons';
+import editData_01 from '../pictures/editData_01.png';
+import editData_02 from '../pictures/editData_02.png';
+import Blutdruck from '../pictures/Blutdruck.png';
+import create from '../pictures/create.png';
+import { useNavigate } from 'react-router';
+
 
 //---------------------------------------------------------
 
 const Intro = () => {
 
-    return (
-        <IntroGroup>
-            <IntroBanner>Patienten-Tagebuch</IntroBanner>
-            <IntroGuide>
-                <Step>Schritt 1</Step>
-                <Step>Schritt 2</Step>
-                <Step>Schritt 3</Step>
-            </IntroGuide>
-        </IntroGroup>
-    )
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/login')
+  }
+
+  const handleClickRegister = () => {
+    navigate('/register')
+  }
+
+  return (
+    <IntroGroup>
+      <IntroBanner>Patienten-Tagebuch</IntroBanner>
+      <div style={{ height: ' 8rem' }} >
+        Du hast schon ein Konto? <br></br>Hier geht es zu Deinem geschützten Bereich
+        <br></br>
+        <AuthButton onClick={handleClick} >Anmelden</AuthButton>
+      </div>
+      <IntroGuide>
+        <Step>
+          <span style={{ fontWeight: '700' }} >Schritt 1</span>
+          <div style={{ marginBottom: '1.0rem', marginTop: '2.0rem' }} >
+            Registriere Dich noch heute und erstelle Dein individuelles Patienten-Tagebuch
+          </div>
+          {/* <img style={{ border: '1px solid #000', borderRadius: '0.5rem' }}
+            src={create} alt="" /> */}
+          <AuthButton onClick={{ handleClickRegister }}
+            style={{
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              height: '3.5rem',
+              marginBottom: '3.0rem'
+            }} >
+            Jetzt registrieren
+          </AuthButton>
+
+        </Step>
+        <Step>
+          <span style={{ fontWeight: '700' }} >Schritt 2</span>
+          <div style={{ marginTop: '2.0rem', marginBottom: '2.0rem' }} >
+            Dokumentiere täglich Deinen Gesundheitszustand
+          </div>
+
+          <img style={{ border: '1px solid #000', borderRadius: '0.5rem', marginBottom: '0.5rem' }}
+            src={editData_01} alt="" />
+          <img style={{ border: '1px solid #000', borderRadius: '0.5rem' }}
+            src={editData_02} alt="" />
+
+        </Step>
+        <Step>
+          <span style={{ fontWeight: '700' }} >Schritt 3</span>
+          <div style={{ marginTop: '2.0rem' }}  >
+            Betrachte Deinen Genesungsprozess in Diagrammen
+          </div>
+          <img style={{ marginTop: '2.0rem', border: '1px solid #000', borderRadius: '0.5rem' }}
+            src={Blutdruck} alt="" />
+        </Step>
+      </IntroGuide>
+    </IntroGroup>
+  )
 }
 
 export default Intro;
@@ -32,7 +88,7 @@ const IntroGroup = styled.div`
 `
 
 const IntroBanner = styled.div`
-  height: 300px;
+  height: 5.0rem;
   font-size: 3.0rem;
   margin: 2.0rem;
 `
@@ -45,7 +101,11 @@ const IntroGuide = styled.div`
   `
 
 const Step = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  flex-grow: 1;
   margin: 1.0rem;
-  font-size: 2.0rem;
+  font-size: 1.5rem;
   margin-bottom: 2.0rem;
 `

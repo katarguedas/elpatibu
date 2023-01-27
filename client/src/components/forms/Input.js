@@ -5,24 +5,24 @@ import { InputField, LabelText } from "../../styled/globalStyles";
 
 //---------------------------------------------------------
 
-const Input = ({handleChange}) => {
+const Input = ({ handleChange }) => {
 
 
-    return (
+	return (
 
-        <div>
+		<div>
 
-                <InputField
-                    type="text"
-                    name={'diaryName'}
-                    // value='Mein Tagebuch'
-                    // value={loginData.email || ''}
-                    onChange={handleChange}
-                />
+			<InputField
+				type="text"
+				name={'diaryName'}
+				// value='Mein Tagebuch'
+				// value={loginData.email || ''}
+				onChange={handleChange}
+			/>
 
-        </div>
+		</div>
 
-    )
+	)
 }
 
 export default Input;

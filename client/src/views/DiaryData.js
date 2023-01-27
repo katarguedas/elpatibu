@@ -20,12 +20,15 @@ import { useDataContext } from "../providers/dataContext"
 
 const DiaryData = () => {
 
+  // Es sind noch nicht alle Gruppen hinterlegt, hier in 'DiaryData' werden noch weitere Plotaufrufe eingefügt
+
   const { userData, checkToken } = useUserContext();
   const { diary, setDiary, getDiaryFromBackend } = useDataContext();
 
   const [edit, setEdit] = useState(false);
 
   const location = useLocation();
+
 
   //------------------
 
@@ -75,7 +78,7 @@ const DiaryData = () => {
     }))
   }
 
-//----------------------------------------------
+  //----------------------------------------------
 
 
   return (

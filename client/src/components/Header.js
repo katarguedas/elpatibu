@@ -12,48 +12,48 @@ import styled from 'styled-components';
 
 const Header = () => {
 
-    const { user, setUser, logout } = useUserContext();
+	const { user, setUser, logout } = useUserContext();
 
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 
-    const hanadleLogout = () => {
-        console.log("logout")
-        logout();
-        setUser(!user)
-        navigate('/welcome');
-    }
+	const hanadleLogout = () => {
+		console.log("logout")
+		logout();
+		setUser(!user)
+		navigate('/welcome');
+	}
 
-    const handleLogin = () => {
-        navigate('/login');
-    }
+	const handleLogin = () => {
+		navigate('/login');
+	}
 
-    const handleRegister = () => {
-        navigate('/register')
-    }
+	const handleRegister = () => {
+		navigate('/register')
+	}
 
 
 
-    return (
-        <HeaderGroup>
-            {
-                user ?
-                    <StyledHeader>
-                        <Logo  />
-                        <ButtonGroup>
-                            <AuthButton onClick={hanadleLogout} >Abmelden</AuthButton>
-                        </ButtonGroup>
-                    </StyledHeader>
-                    :
-                    <StyledHeader>
-                        <Logo  />
-                        <ButtonGroup>
-                            <AuthButton onClick={handleLogin} >Anmelden</AuthButton>
-                            <AuthButton onClick={handleRegister} >Registrieren</AuthButton>
-                        </ButtonGroup>
-                    </StyledHeader>
-            }
-        </HeaderGroup >
-    )
+	return (
+		<HeaderGroup>
+			{
+				user ?
+					<StyledHeader>
+						<Logo />
+						<ButtonGroup>
+							<AuthButton onClick={hanadleLogout} >Abmelden</AuthButton>
+						</ButtonGroup>
+					</StyledHeader>
+					:
+					<StyledHeader>
+						<Logo />
+						<ButtonGroup>
+							<AuthButton onClick={handleLogin} >Anmelden</AuthButton>
+							<AuthButton onClick={handleRegister} >Registrieren</AuthButton>
+						</ButtonGroup>
+					</StyledHeader>
+			}
+		</HeaderGroup >
+	)
 }
 
 

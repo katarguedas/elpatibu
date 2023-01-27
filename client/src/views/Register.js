@@ -17,78 +17,78 @@ import { useNavigate } from "react-router"
 
 const Register = () => {
 
-    const { registerData, setRegisterData, addUser, regMessage, flag, setFlag } = useUserContext();
+	const { registerData, setRegisterData, addUser, regMessage, flag, setFlag } = useUserContext();
 
-    const [type, setType] = useState("password");
+	const [type, setType] = useState("password");
 
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 
-    const clearState = () => setRegisterData("")
+	const clearState = () => setRegisterData("")
 
-    const handleChange = e => {
-        setRegisterData({
-            ...registerData,
-            [e.target.name]: e.target.value,
-        })
-    }
+	const handleChange = e => {
+		setRegisterData({
+			...registerData,
+			[e.target.name]: e.target.value,
+		})
+	}
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        console.log(uuidv4())
-        addUser();
+	const handleSubmit = e => {
+		e.preventDefault();
+		console.log(uuidv4())
+		addUser();
 
-        clearState()
-        console.log(regMessage)
-    }
+		clearState()
+		console.log(regMessage)
+	}
 
-    const handleMouseEnter = (e) => {
-        e.preventDefault()
-        setType("text")
-    }
+	const handleMouseEnter = (e) => {
+		e.preventDefault()
+		setType("text")
+	}
 
-    const handleMouseLeave = (e) => {
-        e.preventDefault()
-        setType("password")
-    }
+	const handleMouseLeave = (e) => {
+		e.preventDefault()
+		setType("password")
+	}
 
-    useEffect(() => {
-        if (flag === 0) {
-            console.log("flag", flag)
-            const timer = setTimeout(() => {
-                navigate('/login');
-            }, 3000);
-            return () => {
-                clearTimeout(timer)
-                setFlag(999)
-            };
+	useEffect(() => {
+		if (flag === 0) {
+			console.log("flag", flag)
+			const timer = setTimeout(() => {
+				navigate('/login');
+			}, 3000);
+			return () => {
+				clearTimeout(timer)
+				setFlag(999)
+			};
 
-        }
-    }, [flag])
+		}
+	}, [flag])
 
-    return (
-        <ContentGroup>
-            <Header />
-            <PageTitle>Registrieren</PageTitle>
-            <RegisterGroup>
-                <RegisterForm
-                    handleSubmit={handleSubmit}
-                    handleChange={handleChange}
-                    handleMouseEnter={handleMouseEnter}
-                    handleMouseLeave={handleMouseLeave}
-                    type={type}
-                >
-                </RegisterForm>
+	return (
+		<ContentGroup>
+			<Header />
+			<PageTitle>Registrieren</PageTitle>
+			<RegisterGroup>
+				<RegisterForm
+					handleSubmit={handleSubmit}
+					handleChange={handleChange}
+					handleMouseEnter={handleMouseEnter}
+					handleMouseLeave={handleMouseLeave}
+					type={type}
+				>
+				</RegisterForm>
 
-                {
-                    ((flag === 0) || (flag === 1)) ?
-                        <Message>{regMessage}</Message>
-                        : null
-                }
-            </RegisterGroup>
+				{
+					((flag === 0) || (flag === 1)) ?
+						<Message>{regMessage}</Message>
+						: null
+				}
+			</RegisterGroup>
 
-            <Footer />
-        </ContentGroup>
-    )
+			<Footer />
+		</ContentGroup>
+	)
 }
 
 

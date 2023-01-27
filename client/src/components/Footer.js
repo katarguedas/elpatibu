@@ -3,11 +3,11 @@ import styled from 'styled-components';
 //---------------------------------------------------------
 
 const Footer = () => {
-    return(
-        <FooterGroup>
-            Footer
-        </FooterGroup>
-    )
+	return (
+		<FooterGroup>
+			Footer
+		</FooterGroup>
+	)
 }
 
 

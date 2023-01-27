@@ -11,13 +11,13 @@ import { ContentGroup } from "../styled/globalStyles"
 
 const LandingPage = () => {
 
-    return (
-        <ContentGroup>
-            <Header />
-            <Intro />
-            <Footer />
-        </ContentGroup>
-    )
+	return (
+		<ContentGroup>
+			<Header />
+			<Intro />
+			<Footer />
+		</ContentGroup>
+	)
 }
 
 export default LandingPage

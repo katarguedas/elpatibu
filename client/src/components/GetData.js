@@ -1,6 +1,6 @@
 import { useDataContext } from "../providers/dataContext"
 import { SendButton } from "./../styled/Buttons";
-import { todayDate } from '../components/Date';
+import { todayDate } from '../utils/Date';
 import RadioInput from '../components/forms/RadioInput';
 import { useUserContext } from "../providers/userContext";
 import { InputField, FormField, LabelText } from "../styled/globalStyles";
@@ -19,236 +19,242 @@ import styled from "styled-components";
 
 const GetData = ({ index }) => {
 
-    const { diary, setDiary, saveDataToBackend, getDiaryFromBackend } = useDataContext();
-    const { user, userData, checkToken } = useUserContext();
+	const { diary, setDiary, saveDataToBackend, getDiaryFromBackend } = useDataContext();
+	const { user, userData, checkToken } = useUserContext();
 
-    const [saved, setSaved] = useState();
-    const [done, setDone] = useState(false);
-    const [update, setUpdate] = useState();
+	const [saved, setSaved] = useState();
+	const [done, setDone] = useState(false);
+	const [update, setUpdate] = useState();
 
-    const [data, setData] = useState([
-        {
-            name: '',
-            value: ''
-        }
-    ])
+	const [data, setData] = useState([
+		{
+			name: '',
+			value: ''
+		}
+	])
 
-    const inputRefs = useRef([]);
+	const inputRefs = useRef([]);
 
-    let location = useLocation();
-    const navigate = useNavigate();
+	let location = useLocation();
+	const navigate = useNavigate();
 
-    const ts = todayDate();
+	const ts = todayDate();
 
-    //.................................................
+	//.................................................
 
-    useEffect(() => {
-        checkToken();
-    }, [location])
-
-
-    useEffect(() => {
-        if ((user) && (!userData))
-            checkToken();
-        if (!user)
-            navigate('/login');
-    }, [])
-
-    //........................
-
-    useEffect(() => {
-
-        // console.log("USER?", user)
-        // console.log("USERDATA?", userData)
-
-        if (userData)
-            if (!diary) {
-                if (userData.diaryId) {
-                    console.log("USER?", user)
-                    console.log("USERDATA?", userData)
-                    console.log("noch kein Diary da, schau nach, ob was im Backend ist")
-                    getDiaryFromBackend(userData.diaryId)
-                }
-                else
-                    console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
-            }
-            else {
-                // console.log("Diary:", diary)
-            }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    //......................................
-
-    useEffect(() => {
-        console.log("update?", update)
-    }, [update])
+	useEffect(() => {
+		checkToken();
+	}, [location])
 
 
-    useEffect(() => {
+	useEffect(() => {
+		if ((user) && (!userData))
+			checkToken();
+		if (!user)
+			navigate('/login');
+	}, [])
 
-        console.log("update:", update)
-        if (update !== undefined) {
+	//........................
 
-            // heutiges Datum eintragen:
-            if ((update === false) && (saved !== true)) {
-                console.log("heutiges Datum wird eingetragen")
-                setDiary({ ...diary }, diary.date.push(ts))
-            }
+	useEffect(() => {
 
-            let val = null;
+		// console.log("USER?", user)
+		// console.log("USERDATA?", userData)
 
-            // bereite die eingegebenen Daten vor
-            diary.groups[index].items.map((el, i) => {
-                // console.log("item: ", el.name)
-                val = null;
-                data.map(element => {
-                    if (element.name === el.name)
-                        val = element.value;
-                    return val;
-                })
-                // console.log("val", val)
+		if (userData)
+			if (!diary) {
+				if (userData.diaryId) {
+					console.log("USER?", user)
+					console.log("USERDATA?", userData)
+					console.log("noch kein Diary da, schau nach, ob was im Backend ist")
+					getDiaryFromBackend(userData.diaryId)
+				}
+				else
+					console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
+			}
+			else {
+				// console.log("Diary:", diary)
+			}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
-                if (update === true) {
-                    console.log("Aktualisiere die Daten")
-                    const tsIndex = diary.date.findIndex(e => e === todayDate());
-                    // Wurde ein neuer Wert eingegeben so überschreibe den alten, wenn vorhanden, sonst schreibe ihn ans Ende. Wurde kein neuer Wert eingegeben, dann setze ihn auf 'Null', falls noch nich vorhanden.
-                    if (val !== null) {
-                        console.log("val", val)
-                        if (diary.groups[index].items[i].values.length === diary.date.length) {
-                            setDiary({ ...diary }, diary.groups[index].items[i].values[tsIndex] = val)
-                        }
-                        else {
-                            console.log("val", val)
-                            setDiary({ ...diary }, diary.groups[index].items[i].values =
-                                [...diary.groups[index].items[i].values, val])
-                        }
-                    } else if (val === null) {
-                        console.log("val", val)
-                        if (diary.groups[index].items[i].values.length < diary.date.length)
-                            setDiary({ ...diary }, diary.groups[index].items[i].values =
-                                [...diary.groups[index].items[i].values, val])
-                    }
-                    setSaved(true);
-                } else if (update === false) {
-                    console.log("Schreibe neue Daten")
+	//......................................
 
-                    // neuen Wert eintragen:
-                    console.log("neuer Wert für:", diary.groups[index].items[i].name)
-                    setDiary({ ...diary },
-                        diary.groups[index].items[i].values =
-                        [...diary.groups[index].items[i].values, val])
-                    setSaved(true);
-                }
-            })
-        }
-    }, [update])
+	useEffect(() => {
+		console.log("update?", update)
+	}, [update])
 
-    //---------------------------
 
-    // useEffect(() => {
-    //     if (saved === true)
-    //         setDone(true)
-    // }, [saved])
+	useEffect(() => {
 
-    //-----------------------------------------
+		console.log("update:", update)
+		if (update !== undefined) {
 
-    useEffect(() => {
-        // console.log("BIN im saveDataToBackend-useEffect, saved: ", saved)
-        if (saved === true) {
-            console.log("saved im frontend:", saved)
-            saveDataToBackend(diary.id, diary.groups[index].id, diary.groups[index].items, ts, update);
-            setDone(true)
-            setUpdate()
-            setSaved()
-        }
-    }, [saved])
+			// heutiges Datum eintragen:
+			if ((update === false) && (saved !== true)) {
+				console.log("heutiges Datum wird eingetragen")
+				setDiary({ ...diary }, diary.date.push(ts))
+			}
 
-    //.....................................
+			let val = null;
 
-    const handleSubmit = e => {
+			// bereite die eingegebenen Daten vor
+			diary.groups[index].items.map((el, i) => {
+				// console.log("item: ", el.name)
+				val = null;
+				data.map(element => {
+					if (element.name === el.name)
+						val = element.value;
+					return val;
+				})
+				// console.log("val", val)
 
-        console.log(diary.date)
+				if (update === true) {
+					console.log("Aktualisiere die Daten")
+					const tsIndex = diary.date.findIndex(e => e === todayDate());
+					// Wurde ein neuer Wert eingegeben so überschreibe den alten, wenn vorhanden, sonst schreibe ihn ans Ende. Wurde kein neuer Wert eingegeben, dann setze ihn auf 'Null', falls noch nich vorhanden.
+					if (val !== null) {
+						console.log("val", val)
+						if (diary.groups[index].items[i].values.length === diary.date.length) {
+							setDiary({ ...diary }, diary.groups[index].items[i].values[tsIndex] = val)
+						}
+						else {
+							console.log("val", val)
+							setDiary({ ...diary }, diary.groups[index].items[i].values =
+								[...diary.groups[index].items[i].values, val])
+						}
+					} else if (val === null) {
+						console.log("val", val)
+						if (diary.groups[index].items[i].values.length < diary.date.length)
+							setDiary({ ...diary }, diary.groups[index].items[i].values =
+								[...diary.groups[index].items[i].values, val])
+					}
+					setSaved(true);
+				} else if (update === false) {
+					console.log("Schreibe neue Daten")
 
-        checkTs(diary.date, setUpdate);
-        e.preventDefault();
+					// neuen Wert eintragen:
+					console.log("neuer Wert für:", diary.groups[index].items[i].name)
+					setDiary({ ...diary },
+						diary.groups[index].items[i].values =
+						[...diary.groups[index].items[i].values, val])
+					setSaved(true);
+				}
+			})
+		}
+	}, [update])
 
-        timing();
-        if (inputRefs)
-            inputRefs.current.map(e => {
-                e.value = '';
-            })
-        // console.log(diary)
-    }
+	//---------------------------
 
-    //......................
+	// useEffect(() => {
+	//     if (saved === true)
+	//         setDone(true)
+	// }, [saved])
 
-    const timing = () => {
-        setTimeout(() => {
-            // setSaved(false);
-        }, 3000)
-    }
+	//-----------------------------------------
 
-    //......................................
+	useEffect(() => {
+		// console.log("BIN im saveDataToBackend-useEffect, saved: ", saved)
+		if (saved === true) {
+			console.log("saved im frontend:", saved)
+			saveDataToBackend(diary.id, diary.groups[index].id, diary.groups[index].items, ts, update);
+			setDone(true)
+			setUpdate()
+			setSaved()
+		}
+	}, [saved])
 
-    const handleChange = (e) => {
+	//.....................................
 
-        setData([...data,
-        { name: e.target.name, value: parseInt(e.target.value) }])
-    }
+	const handleSubmit = e => {
 
-    //----------------------------
+		console.log(diary.date)
 
-    return (
-        <div style={{ display: 'flex', flexDirection: 'row' }} >
-            <div style={{ flexGrow: '1' }}  >
-            </div>
-            {
-                <FormField onSubmit={handleSubmit} style={{ flexGrow: '2' }} >
-                    {diary.groups[index].items.map((e, i) => (
-                        e.selected ?
-                            e.measurable ?
-                                <InputLabelH key={e.id} >
-                                    <StLabelText>{e.label}</StLabelText>
+		checkTs(diary.date, setUpdate);
+		e.preventDefault();
 
-                                    <StInputField
-                                        id={e.id}
-                                        ref={el => inputRefs.current[i] = el}
-                                        type='text'
-                                        name={e.name}
-                                        onChange={(e) => handleChange(e, index, i)}
-                                    >
-                                    </StInputField>
-                                    {e.unit}
-                                </InputLabelH >
-                                :
-                                <InputLabelV key={e.id}
-                                    style={{ marginTop: '0.5rem', backgroundColor: '#fff', borderRadius: '0.5rem', border: '1px solid #9e9a9a' }}
-                                >
-                                    <StLabelText style={{ width: '100%', margin: '0.75rem' }} >{e.label}</StLabelText>
-                                    <RadioInput
-                                        item={e}
-                                        itemIndex={i}
-                                        data={data}
-                                        setData={setData}
-                                    >
+		timing();
+		if (inputRefs)
+			inputRefs.current.map(e => {
+				e.value = '';
+			})
+		// console.log(diary)
+	}
 
-                                    </RadioInput>
-                                </InputLabelV>
-                            : null
-                    ))}
-                    {saved &&
-                        <StTextPCenter>Werte wurden gespeichert.</StTextPCenter>
-                    }
-                    {done === true ?
-                        <StBiCheck style={{ marginLeft: 'auto', marginRight: 'auto' }} />
-                        :
-                        <SendButton type="submit" >senden</SendButton>
-                    }
-                </FormField>
-            }
-        </div >
-    )
+	//......................
+
+	const timing = () => {
+		setTimeout(() => {
+			// setSaved(false);
+		}, 3000)
+	}
+
+	//......................................
+
+	const handleChange = (e) => {
+
+		setData([...data,
+		{ name: e.target.name, value: parseInt(e.target.value) }])
+	}
+
+	//----------------------------
+
+	return (
+		<div style={{ display: 'flex', flexDirection: 'row' }} >
+			<div style={{ flexGrow: '1' }}  >
+			</div>
+			{
+				<FormField onSubmit={handleSubmit} style={{ flexGrow: '2' }} >
+					{diary.groups[index].items.map((e, i) => (
+						e.selected ?
+							e.measurable ?
+								<InputLabelH key={e.id} >
+									<StLabelText>{e.label}</StLabelText>
+
+									<StInputField
+										id={e.id}
+										ref={el => inputRefs.current[i] = el}
+										type='text'
+										name={e.name}
+										onChange={(e) => handleChange(e, index, i)}
+									>
+									</StInputField>
+									{e.unit}
+								</InputLabelH >
+								:
+								<InputLabelV key={e.id}
+									style={{
+										marginTop: '0.5rem',
+										backgroundColor: '#fff',
+										borderRadius: '0.5rem',
+										border: '1px solid #9e9a9a'
+									}}
+								>
+									<StLabelText style={{ width: '100%', margin: '0.75rem' }} >
+										{e.label}
+									</StLabelText>
+									<RadioInput
+										item={e}
+										itemIndex={i}
+										data={data}
+										setData={setData}
+									>
+									</RadioInput>
+								</InputLabelV>
+							: null
+					))}
+					{saved &&
+						<StTextPCenter>Werte wurden gespeichert.</StTextPCenter>
+					}
+					{done === true ?
+						<StBiCheck style={{ marginLeft: 'auto', marginRight: 'auto' }} />
+						:
+						<SendButton type="submit" >senden</SendButton>
+					}
+				</FormField>
+			}
+		</div >
+	)
 }
 
 
