@@ -54,12 +54,14 @@ const Register = () => {
     useEffect(() => {
         if (flag === 0) {
             console.log("flag", flag)
-        const timer = setTimeout(() => {
-            navigate('/login');
-        }, 3000);
-        return() => {clearTimeout(timer)
-        setFlag(999)};
-          
+            const timer = setTimeout(() => {
+                navigate('/login');
+            }, 3000);
+            return () => {
+                clearTimeout(timer)
+                setFlag(999)
+            };
+
         }
     }, [flag])
 

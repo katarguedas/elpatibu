@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import { DateTime } from "luxon";
 import jwt_decode from "jwt-decode";
 
 import { v4 as uuidv4 } from 'uuid';
@@ -282,8 +282,11 @@ const useAuth = () => {
 
     //----------------------------------------------------
 
+
+
     const getEventsFromBackend = async (id) => {
 
+        console.log("hole Events aus dem Backend")
         let requestOptions = {
             method: 'GET',
         };
@@ -309,11 +312,6 @@ const useAuth = () => {
             event: event
         })
 
-        // let raw = JSON.stringify({
-        //     userId: userData.id,
-        //     eventId: event.id,
-        //     title: event.title,
-        // })
 
         console.log(raw)
 
@@ -333,35 +331,6 @@ const useAuth = () => {
             .catch(error => console.log("error:", error))
     }
 
-
-    // const saveEventInBackend = async(event) => {
-
-    //     console.log(event)
-    //     console.log(userData.id)
-
-    //     let raw = JSON.stringify({
-    //         id: userData.id,
-    //         event: event,
-    //         email: user
-    //     })
-
-    //     console.log("raw", raw.id)
-    //     console.log("raw", raw.event)
-    //     console.log("raw", raw.email)
-
-    //     let requestOptions = {
-    //         method: 'POST',
-    //         headers: { "Content-Type": "application/json" },
-    //         body: raw,
-    //         redirect: 'follow'
-    //     };
-
-    //     await fetch('api/saveEvent', requestOptions)
-    //         .then(response => response.json()
-    //             .then(response => console.log(response)))
-
-    //         .catch(error => console.log("error:", error))
-    // }
 
 
     //-----------------------------------------------------------------

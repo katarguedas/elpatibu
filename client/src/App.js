@@ -8,12 +8,9 @@ import OpenDiary from './views/OpenDiary';
 import Login from './views/Login';
 import Register from './views/Register';
 import { useUserContext } from './providers/userContext';
-import { DataContextProvider } from './providers/dataContext';
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import { ThemeProvider } from 'styled-components';
-import { theme } from './themes/theme'
+
 
 //---------------------------------------------------------
 // console.log(process.env.REACT_APP_LOCAL_STORAGE_WEATHER)
@@ -24,8 +21,6 @@ function App() {
 
   return (
     <div className="App">
-      <ThemeProvider theme={theme} >
-        <DataContextProvider>
           <BrowserRouter>
             <Routes>
               <Route path='/' element={user ? <Dashboard /> : <Login />} />
@@ -38,11 +33,8 @@ function App() {
               <Route path='/openDiary' element={ user ? <OpenDiary /> : <Login/> } />
               <Route path='/diaryData' element={ user ? <DiaryData /> : <Login/> } />
               <Route path='/mycalendar' element={user ? <MyCalendar /> : <Login/> } />
-              
             </Routes>
           </BrowserRouter>
-        </DataContextProvider>
-      </ThemeProvider>
     </div>
   );
 }

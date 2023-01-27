@@ -1,4 +1,4 @@
-import { AuthButton } from "./Buttons";
+import { AuthButton } from "../styled/Buttons";
 import Logo from '../components/Logo'
 
 import { useUserContext } from "../providers/userContext";

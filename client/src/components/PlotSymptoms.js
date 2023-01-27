@@ -1,16 +1,8 @@
 
-import TBarChartNMD from './charts/TBarChartNMD';
 import BarChartNMD from './charts/BarChartNMD';
-import TBarChartPrecip from './charts/BarCharPrecip';
-import TimeChartT from './charts/TimeChartT';
-import MultiAxLineChart from './charts/MultiAxLineChart';
-import MultiTypeChart from './charts/MultiTypeChart';
 import { createNMData, createNMData2 } from '../utils/testdata';
-import { WeatherButton } from './Buttons';
-import { getDateStrFromTs, getStrFromTs } from './Date';
+import { getStrFromTs } from './Date';
 import { useDataContext } from '../providers/dataContext';
-import { useEffect, useState } from 'react';
-import { DateTime } from "luxon";
 import styled from 'styled-components';
 
 //----------------------------------------------------------

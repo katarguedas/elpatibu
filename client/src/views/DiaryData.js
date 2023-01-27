@@ -1,17 +1,16 @@
 import Header from "../components/Header"
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
-// import TimeChartT from '../components/charts/TimeChartT'
-// import TimeChartP2 from '../components/charts/TimeChartP2'
-import { createPData } from '../utils/testdata'
 import PlotVital from "../components/PlotVital"
 import PlotMeteo from "../components/PlotMeteo"
 import PlotSymptoms from "../components/PlotSymptoms"
 import { setDateRange } from "../utils/testdata"
-import { StBiDownArrow, StBiRightArrow } from '../components/Icons'
-import { useState, useEffect } from "react"
-import { useNavigate, useLocation } from "react-router"
+import { StBiDownArrow, StBiRightArrow } from '../styled/Icons'
 import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle } from "../styled/globalStyles"
+
+import { useState, useEffect } from "react"
+import { useLocation } from "react-router"
+
 import { useUserContext } from "../providers/userContext"
 
 import styled from "styled-components"
@@ -21,14 +20,12 @@ import { useDataContext } from "../providers/dataContext"
 
 const DiaryData = () => {
 
-  const { user, userData, checkToken } = useUserContext();
+  const { userData, checkToken } = useUserContext();
   const { diary, setDiary, getDiaryFromBackend } = useDataContext();
 
   const [edit, setEdit] = useState(false);
-  // const [open, setOpen] = useState(false);
 
   const location = useLocation();
-  const navigate = useNavigate();
 
   //------------------
 
@@ -78,7 +75,7 @@ const DiaryData = () => {
     }))
   }
 
-//_----------------------------------------------
+//----------------------------------------------
 
 
   return (
@@ -108,10 +105,6 @@ const DiaryData = () => {
                     e.name === 'vital' &&
                     <PlotVital itemVital={e} />
                   }
-                  {/* {e.visible === true &&
-                    e.name === 'weight' &&
-                    <PlotWeight itemVital={e} />
-                  } */}
                   {e.visible &&
                     e.name === 'meteorosensitivity' &&
                     <PlotMeteo itemMeteo={e} date={setDateRange()} />
@@ -145,13 +138,6 @@ const DAccordion = styled(Accordion)`
   color: white;
   background: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col3});
 }
-`
-
-const StDiv = styled.div` 
-  flex-direction: column;
-  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
-  margin: 1.25rem;
-  font-size: 1.15rem;
 `
 
 const Items = styled.div`

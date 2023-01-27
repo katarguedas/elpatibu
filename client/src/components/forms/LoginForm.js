@@ -1,5 +1,5 @@
 import { useUserContext } from "../../providers/userContext";
-import { SendButton } from "../Buttons";
+import { SendButton } from "../../styled/Buttons";
 
 import { RxEyeOpen } from "react-icons/rx";
 import styled from 'styled-components';

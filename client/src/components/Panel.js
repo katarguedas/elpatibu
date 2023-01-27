@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { BiSquare, BiCheckSquare, BiInfoCircle } from "react-icons/bi";
-import { SendButton } from "./Buttons";
+import { SendButton } from "../styled/Buttons";
 import { theme } from '../themes/theme'
 import 'react-tooltip/dist/react-tooltip.css';
 import styled from "styled-components";

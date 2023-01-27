@@ -57,45 +57,102 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit }) => {
 
     useEffect(() => {
 
+        const tsArray =[];
+
         if (!events)
-            getEventsFromBackend(userData.id)
+        getEventsFromBackend(userData.id)
 
         if (events) {
-            console.log("test2")
-
             myAnnotations = events.map((e, i) => {
                 console.log(e.category)
                 if (e.category === 'Therapie') {
                      const ts = DateTime.fromISO(e.end).ts
-                    console.log(e.category, ts)
+                     tsArray.push(DateTime.fromISO(e.end).ts) 
+                    console.log(e.category, ts, tsArray)
                     return {
-                        type: 'line',
-                        id: 'vline_' + i,
-                        xMin: ts,
-                        xMax: ts,
-                        borderColor: theme.colors.col3,
-                        borderWidth: 3,
-                        label: {
-                            display: true,
-                            content: e.category,
-                            position: 'end',
-                            yAdjust: -5,
-                            xAdjust: -5,
-                            padding: 5,
-                            backgroundColor: theme.colors.col3,
-                            color: '#fff'
-                        }
+                        // type: 'line',
+                        // id: 'vline_' + i,
+                        // xMin: ts,
+                        // xMax: ts,
+                        // borderColor: theme.colors.col3,
+                        // borderWidth: 3,
+                        // label: {
+                        //     display: true,
+                        //     content: e.category,
+                        //     position: 'end',
+                        //     yAdjust: -5,
+                        //     xAdjust: -5,
+                        //     padding: 5,
+                        //     backgroundColor: theme.colors.col3,
+                        //     color: '#fff'
+                        // }
                     }
                 }
             })
 
             myAnnotations = myAnnotations.filter(e => { if (e !== undefined) return e })
-            setAllAnnotations(myAnnotations[0])
         }
 
-        console.log(myAnnotations)
-    }, [])
+        console.log(tsArray)
 
+        setAllAnnotations(
+            {
+                type: 'line',
+                id: 'vline_1',
+                xMin: tsArray[0],
+                xMax: tsArray[0],
+                borderColor: theme.colors.col3,
+                borderWidth: 2,
+                label: {
+                    display: true,
+                    content: 'Therapie',
+                    position: 'end',
+                    yAdjust: -5,
+                    xAdjust: -5,
+                    padding: 5,
+                    backgroundColor: theme.colors.col3,
+                    color: '#fff'
+                }
+            },
+            {
+                type: 'line',
+                id: 'vline_2',
+                xMin: tsArray[1],
+                xMax: tsArray[1],
+                borderColor: theme.colors.col3,
+                borderWidth: 2,
+                label: {
+                    display: true,
+                    content: 'Therapie',
+                    position: 'end',
+                    yAdjust: -5,
+                    xAdjust: -5,
+                    padding: 5,
+                    backgroundColor: theme.colors.col3,
+                    color: '#fff'
+                }
+            },
+            {
+                type: 'line',
+                id: 'vline_3',
+                xMin: tsArray[2],
+                xMax: tsArray[2],
+                borderColor: theme.colors.col3,
+                borderWidth: 2,
+                label: {
+                    display: true,
+                    content: 'Therapie',
+                    position: 'end',
+                    yAdjust: -5,
+                    xAdjust: -5,
+                    padding: 5,
+                    backgroundColor: theme.colors.col3,
+                    color: '#fff'
+                }
+            }
+        )
+
+    }, [])
 
 
     const annotationBox1 = {
@@ -161,7 +218,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit }) => {
         console.log(allAnnotations)
     }, [allAnnotations])
 
-    console.log(allAnnotations)
+    // console.log(allAnnotations)
     //...................
 
     let options;
@@ -186,7 +243,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit }) => {
                     // annotations: { myAnnotations },
                     // }
                     annotations: {
-                        myAnnotations,
+                        // myAnnotations,
                         annotationLineY,
                         allAnnotations,
                         annotationBox1,

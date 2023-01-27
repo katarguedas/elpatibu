@@ -1,5 +1,5 @@
 import { useDataContext } from "../providers/dataContext"
-import { SendButton } from "./Buttons";
+import { SendButton } from "./../styled/Buttons";
 import { todayDate } from '../components/Date';
 import RadioInput from '../components/forms/RadioInput';
 import { useUserContext } from "../providers/userContext";
@@ -94,7 +94,6 @@ const GetData = ({ index }) => {
             if ((update === false) && (saved !== true)) {
                 console.log("heutiges Datum wird eingetragen")
                 setDiary({ ...diary }, diary.date.push(ts))
-                // setDiary({ ...diary }, diary.date = [...diary.date, ts])
             }
 
             let val = null;

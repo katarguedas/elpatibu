@@ -1,9 +1,10 @@
 import { useUserContext } from "../../providers/userContext";
-import { SendButton } from "../Buttons";
+import { SendButton } from "../../styled/Buttons";
+import { InputField, LabelText, FormField } from "../../styled/globalStyles";
 
 import { RxEyeOpen } from "react-icons/rx";
 import styled from 'styled-components';
-import { InputField, LabelText, FormField } from "../../styled/globalStyles";
+
 
 //---------------------------------------------------------
 

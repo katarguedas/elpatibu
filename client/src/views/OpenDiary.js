@@ -1,26 +1,24 @@
 import Header from "../components/Header"
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
-import { DiaryButton } from '../components/Buttons'
+import { DiaryButton } from '../styled/Buttons';
+import { StGiChart, StBiListPlus, StGiFountainPen } from '../styled/Icons'
 import { useUserContext } from "../providers/userContext";
-import { StGiChart, StBiListPlus } from '../components/Icons'
-import { StGiFountainPen } from '../components/Icons'
+import { useDataContext } from "../providers/dataContext";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import React, { useEffect } from "react"
 
 import styled from "styled-components"
 import { ContentGroup, MainGroup, MainContent, PageTitle } from "../styled/globalStyles"
-import { useDataContext } from "../providers/dataContext";
 
 //---------------------------------------------------------
 
 const OpenDiary = () => {
 
-    const { user, userData, checkToken } = useUserContext();
+    const { userData } = useUserContext();
     const { diary, getDiaryFromBackend } = useDataContext();
 
-    const location = useLocation();
     const navigate = useNavigate();
 
     //----------------------------
@@ -84,14 +82,14 @@ const OpenDiary = () => {
 export default OpenDiary;
 
 
-//---------------------------------------------------------
-// Styled-Components
-//---------------------------------------------------------
+
+/**********************************************
+ * Styled-Components
+ */
+
 
 
 const ButtonField = styled.div`
-  /* margin-left: 3.5rem;
-  margin-top: 5.0rem; */
   width: 70%;
   display: flex;
   flex-wrap: wrap;

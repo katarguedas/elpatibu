@@ -4,8 +4,8 @@ import NavBar from '../components/NavBar';
 import CalendarInputCard from "../components/forms/CalendarInputCard";
 import { ContentGroup, MainGroup, MainContent, PageTitle } from "../styled/globalStyles";
 import { theme } from '../themes/theme';
-import React, { useState, useCallback, useMemo, useEffect, useInsertionEffect } from "react";
-import { Calendar, luxonLocalizer, Views } from 'react-big-calendar';
+import React, { useState, useCallback, useEffect } from "react";
+import { Calendar, luxonLocalizer } from 'react-big-calendar';
 import { DateTime } from "luxon";
 import { v4 as uuidv4 } from 'uuid';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -30,57 +30,36 @@ const MyCalendar = () => {
 
     //.................................
 
-    useEffect(() => {
-        if (open) {
-            // console.log(myEvents)
-        }
-    }, [open])
-
 
     useEffect(() => {
-
         if (!events)
             getEventsFromBackend(userData.id);
     }, [])
 
     useEffect(() => {
         if (events)
-            console.log(events)
+            console.log("events:", events)
     }, [])
 
 
     const handleSelectSlot = useCallback(
         ({ start, end }) => {
-            // setStartDate(start)
+            setStartDate(start)
+            setStartDate(end)
             setOpen(true)
         },
-        [setEvents]
+        // [setEvents]
     )
 
-
-    // const handleSelectEvent = useCallback(
-    //     (event) => window.alert(event.title),
-    //     []
-    // )
-
-    const { defaultDate, scrollToTime } = useMemo(
-        () => ({
-            defaultDate: new Date(2023, 1, 12),
-            scrollToTime: new Date(1970, 1, 1, 6),
-        }),
-        []
-    )
 
     const eventStyleGetter = (event, start, end, isSelected) => {
-        // console.log(event);
-        var backgroundColor = '#' + event.hexColor;
         var backgroundColor = theme.colors.col1;
         var style = {
             backgroundColor: backgroundColor,
-            borderRadius: '0px',
+            borderRadius: '3px',
             opacity: 0.8,
             color: 'black',
-            border: '0px',
+            border: '1px',
             display: 'block'
         };
         return {
@@ -103,11 +82,12 @@ const MyCalendar = () => {
         const yyyy = str.slice(0, 4);
         const mm = str.slice(5, 7) - 1;
         const dd = str.slice(8, 10);
-        if (flag == 1)
-            return (new Date(yyyy, mm, dd, 0, 0, 0))
-        else if (flag == 2)
-            return (new Date(yyyy, mm, dd, 24, 0, 0))
+        if (flag === 1) //startDatum
+            return (new Date(yyyy, mm, dd, 1, 0, 0))
+        else if (flag === 2)   //EndDatum
+            return (new Date(yyyy, mm, dd, 23, 59, 0))
     }
+
 
     const dateNoAllday = e => {
         const str = e;
@@ -117,8 +97,38 @@ const MyCalendar = () => {
         const hh = str.slice(11, 13);
         const min = str.slice(14, 17);
         console.log(yyyy, mm, dd, hh, min, 0)
+        console.log(new Date(yyyy, mm, dd, hh, min, 0))
         return (new Date(yyyy, mm, dd, hh, min, 0))
     }
+
+    const dateNoAllday2 = e => {
+        console.log(e)
+        const str = e;
+        const yyyy = str.slice(0, 4);
+        const mm = str.slice(5, 7) - 1;
+        const dd = str.slice(8, 10);
+        const hh = str.slice(11, 13);
+        const min = str.slice(14, 16);
+        console.log(yyyy, mm, dd, hh, min, 0)
+        console.log(new Date(yyyy, mm, dd, hh, min, 0))
+        return (new Date(yyyy, mm, dd, hh, min, 0))
+    }
+
+
+    useEffect(() => {
+        if (events) {
+            setEvents([...events], events.map((e, i) => {
+                console.log(typeof (e.start))
+                if (typeof (e.start) === 'string') {
+                    console.log("convert", e.start)
+                    e.start = dateNoAllday2(e.start)
+                    e.end = dateNoAllday2(e.end)
+                    return e;
+                }
+            }))
+        }
+    }, [])
+
 
 
     const handleStartDate = e => {
@@ -182,16 +192,12 @@ const MyCalendar = () => {
                     <Calendargroup>
 
                         <Calendar
-                            // defaultDate={defaultDate}
-                            defaultDate={defaultDate}
                             eventPropGetter={eventStyleGetter}
                             events={events}
                             localizer={localizer}
                             startAccessor="start"
                             endAccessor="end"
-                            // onSelectEvent={handleSelectEvent}
                             onSelectSlot={handleSelectSlot}
-                            scrollToTime={scrollToTime}
                             selectable
                         />
                         <div>

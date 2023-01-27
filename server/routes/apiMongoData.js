@@ -64,15 +64,10 @@ router.get('/api/getDiary', async (req, res) => {
 
 router.put('/api/saveData', async (req, res) => {
 
-  console.log("hier", req.body.ts)
-  console.log("hier", req.body.update)
-
   try {
     const response = await Diary.findOne({ id: req.body.id })
-    // console.log(response)
 
-    if (response !== null) {
-      console.log("bin drin?")
+    if (response) {
       if (req.body.update === false) {
         console.log("hier, bin drin, denn update steht auf false")
         response.date.push(req.body.ts)

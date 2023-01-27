@@ -24,13 +24,13 @@ const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, star
                 Titel
                 <InputField
                     type="text"
-                    value={value}
+                    // value={value}
                     onChange={handleChange} />
             </LabelText>
             </div>
             <div>
                 <LabelText style={{ display: 'inline-flex', margin: '0.75rem', marginRight: '1.25rem' }} >
-                    gänztägig
+                    ganztägig
                     <InputField
                         style={{ marginLeft: '0.5rem' }}
                         type="checkbox"
@@ -121,15 +121,15 @@ const CardForm = styled.form`
   flex-direction: column;
   position: relative;
   z-index: 5;
-  bottom: 8.0rem;
-  left: 2.0rem;
+  bottom: 24.0rem;
+  left: 5.0rem;
   width: 25.0rem;
   height: 18.0rem;
   padding: 0.5rem;
   margin: 0.5rem;
   background-color: ${(props) => props.theme.colors.col1};
   border-radius: 0.25rem;
-  box-shadow: rgba(0, 0, 0, 0.25) 4.0px 4.0px 5.2px;
+  box-shadow: rgba(0, 0, 0, 0.35) 5.0px 5.0px 6.2px;
 `
 
 const StSelect = styled.select`

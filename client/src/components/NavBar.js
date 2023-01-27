@@ -1,11 +1,11 @@
-import { NavButton } from './Buttons';
+import { NavButton } from '../styled/Buttons';
 import Date from './Date';
 
 import { useNavigate } from 'react-router-dom';
 import { RxHome } from "react-icons/rx";
 
 import styled from 'styled-components';
-import { StGiBook, StGiWhiteBook, StGiCalendar } from './Icons';
+import { StGiBook, StGiWhiteBook, StGiCalendar } from '../styled/Icons';
 
 //---------------------------------------------------------
 

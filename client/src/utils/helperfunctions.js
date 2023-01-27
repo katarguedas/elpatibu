@@ -1,12 +1,11 @@
 import { todayDate } from "../components/Date";
 
+//--------------------------------------------------------
 
 
 export const checkTs = ( diaryDate, setUpdate ) => {
 
     const ts = todayDate();
-
-    console.log("---------------------------\n", ts)
 
     if (diaryDate.length > 0) {
         // checke, ob heutiges Datum bereits gespeichert

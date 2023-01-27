@@ -4,8 +4,8 @@ import NavBar from '../components/NavBar'
 import SwitchToggle from "../components/SwitchToggle"
 import { FormField } from "../styled/globalStyles"
 import Panel from "../components/Panel"
-import { SendButton } from "../components/Buttons"
-import { StBiDownArrow, StBiRightArrow } from '../components/Icons'
+import { SendButton } from "../styled/Buttons"
+import { StBiDownArrow, StBiRightArrow } from '../styled/Icons'
 import { BiSquare, BiCheckSquare } from "react-icons/bi";
 import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2, StP, Accordion } from "../styled/globalStyles"
 
@@ -42,7 +42,7 @@ const CreateDiary = () => {
         if (!user)
             navigate('/login');
         setDiaryTemplate(DiaryInit)
-        console.log("selectedAll?", selectAll)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     //.....................
@@ -51,6 +51,7 @@ const CreateDiary = () => {
         if (!user)
             navigate('/login');
         checkToken();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location])
 
 
@@ -59,10 +60,8 @@ const CreateDiary = () => {
     useEffect(() => {
         if ((diaryIdSaved) && (diarySaved)) {
             const tempDiary = diaryTemplate;
-            console.log("\n \n", tempDiary, "\n")
             setDiary(tempDiary);
             setDiaryTemplate('');
-            console.log("alle checks ok")
             setCreated(true);
             setDone(true);
             timing();
@@ -180,10 +179,10 @@ const CreateDiary = () => {
                     }
                     {
                         (done === false) && (selectAll === false) &&
-                        <StBiCheckSquare onClick={() => setSelectAll(!selectAll)}></StBiCheckSquare>}
+                        <StBiCheckSquare onClick={() => setSelectAll(!selectAll)}> alle auswählen</StBiCheckSquare>}
                     {
                         (done === false) && (selectAll === true) &&
-                        <StBiSquare onClick={() => setSelectAll(!selectAll)}></StBiSquare>
+                        <StBiSquare onClick={() => setSelectAll(!selectAll)}>alle auswählen</StBiSquare>
 
                     }
                     {

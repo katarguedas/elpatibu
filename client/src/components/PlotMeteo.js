@@ -1,14 +1,9 @@
 
-import TBarChartNMD from './charts/TBarChartNMD';
 import BarChartNMD from './charts/BarChartNMD';
-import TBarChartPrecip from './charts/BarCharPrecip';
-import TimeChartT from './charts/TimeChartT';
-import MultiAxLineChart from './charts/MultiAxLineChart';
 import MultiTypeChart from './charts/MultiTypeChart';
 import { createNMData, createNMData2 } from '../utils/testdata';
 import { getDateStrFromTs, getStrFromTs } from './Date';
-import { WeatherButton } from './Buttons';
-import { DateTime } from "luxon";
+import { WeatherButton } from './../styled/Buttons';
 import { useDataContext } from '../providers/dataContext';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -78,13 +73,6 @@ const PlotMeteo = ({ itemMeteo, date }) => {
     const xVal3 = dataNMDSet3.dateString;
     const yVal3 = dataNMDSet3.values;
 
-
-    // useEffect(() => {
-    //     const city = diary.city;
-    //     const startDate = getDateStrFromTs(date[0]);
-    //     const endDate = getDateStrFromTs(date[date.length - 1]);
-    //     getWeatherData(city, startDate, endDate);
-    // }, [])
 
 
     const handleClick = () => {
