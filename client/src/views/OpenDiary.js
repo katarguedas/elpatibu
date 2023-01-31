@@ -16,7 +16,7 @@ import { ContentGroup, MainGroup, MainContent, PageTitle } from "../styled/globa
 
 const OpenDiary = () => {
 
-	const { userData } = useUserContext();
+	const { userData, timeCatArrays, events } = useUserContext();
 	const { diary, getDiaryFromBackend } = useDataContext();
 
 	const navigate = useNavigate();
@@ -34,10 +34,11 @@ const OpenDiary = () => {
 					console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
 			}
 			else {
-				console.log("Diary:", diary)
+				// console.log("Diary:", diary)
 			}
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}
+		console.log("events:", events, "\n arrays:", timeCatArrays)
 	}, [])
 
 	//------------------------------------------------------

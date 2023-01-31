@@ -4,8 +4,8 @@ import { createTData, createPData } from '../utils/testdata';
 import { useDataContext } from '../providers/dataContext';
 import { useUserContext } from '../providers/userContext';
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { DateTime } from "luxon";
+import { BiSquare, BiCheckSquare } from "react-icons/bi";
+import { useState } from 'react';
 
 
 // import { get } from 'mongoose';
@@ -17,10 +17,11 @@ import { DateTime } from "luxon";
 const PlotVital = ({ itemVital }) => {
 
 	const { diary } = useDataContext();
-	const { events, userData, getEventsFromBackend } = useUserContext();
+	const { events, userData, getEventsFromBackend, timeCatArrays } = useUserContext();
 
-	const [tsArray, setTsArray] = useState([]);
+	const [showTherapie, setShowTherapie] = useState(false);
 
+	console.log("timeCatArrays", timeCatArrays)
 
 	// bei fehlenden Daten in der Datenbank werden zu Test- und Vorführtzwecken welche generiert (createTData(), createPData();)
 
@@ -51,27 +52,12 @@ const PlotVital = ({ itemVital }) => {
 
 	//..........................
 
-	useEffect(() => {
-		if (!events)
-			getEventsFromBackend(userData.id)
-	}, [])
+	// console.log("events:", events)
 
 
-	useEffect(() => {
-		if (events) {
-			let array = [];
-			events.map((e, i) => {
-				// console.log(e.category)
-				if (e.category === 'Therapie') {
-					array.push(DateTime.fromISO(e.end).ts)
-					// console.log("-------", e.category, ts, array)
-					return (e)
-				}
-			})
-			setTsArray(array)
-		}
-	}, [], [events])
-
+	const handleClick = () => {
+		setShowTherapie(!showTherapie)
+	}
 
 	//............................
 
@@ -85,6 +71,19 @@ const PlotVital = ({ itemVital }) => {
 			{
 				itemVital.items.filter(e => e.selected === true).length > 0 &&
 				<ChartsGroup>
+					<div>
+						{showTherapie ?
+							<div>
+								<BiCheckSquare onClick={handleClick} />
+								<span> Therapietermine ausblenden</span>
+							</div>
+							:
+							<div>
+								<BiSquare onClick={handleClick} />
+								<span> Therapietermine einblenden</span>
+							</div>
+						}
+					</div>
 					<div  >
 						{
 							itemVital.items[0].selected &&
@@ -94,7 +93,7 @@ const PlotVital = ({ itemVital }) => {
 								titel={'Körpertemperatur'}
 								name={itemVital.items[0].label}
 								unit={itemVital.items[0].unit}
-								tsArray={tsArray}
+								showTherapie={showTherapie}
 							/>
 						}
 					</div>

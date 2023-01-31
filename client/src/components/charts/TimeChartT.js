@@ -5,13 +5,14 @@ import { Line } from 'react-chartjs-2';
 
 import annotationPlugin from 'chartjs-plugin-annotation';
 import 'chartjs-adapter-luxon';
-
-// import { ReturnDocument } from 'mongodb';
-
+import { useEffect, useState } from 'react';
+import { useUserContext } from '../../providers/userContext';
 
 //----------------------------------------------------------------------
 
-const TimeChartT = ({ xValues, yValues, titel, name, unit, tsArray }) => {
+const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
+
+	const { timeCatArrays } = useUserContext();
 
 	// Hier müssen die Annotations für die Termine noch angepasst und automatisiert werden, da bisher keine lauffähige Lösung gefunden vorhanden
 
@@ -40,121 +41,132 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, tsArray }) => {
 	const textColor = theme.colors.col3;
 
 	const bgcolor1 = "rgb(110, 253, 110, 0.3)";
-	const bgcolor2 = "rgb(190, 250, 94, 0.3)";
-	const bgcolor3 = "rgb(247, 250, 87, 0.3)";
-	const bgcolor4 = "rgb(243, 191, 78, 0.3)";
-	const bgcolor5 = 'rgb(247, 89, 89, 0.3)';
+	const bgcolor2 = "rgb(247, 250, 87, 0.3)";
+	const bgcolor3 = "rgb(243, 191, 78, 0.3)";
+	const bgcolor4 = 'rgb(247, 89, 89, 0.3)';
 
 	//---------------------------------------------------}}
 
 	const lastDay = xValues[xValues.length - 1];
 	const firstDay = xValues[0];
-	let dateEvent1 = tsArray[0];
-	let dateEvent2 = tsArray[1];
-	let annotationEvent1;
-	let annotationEvent2;
 
+	const colorArray = [bgcolor1, bgcolor2, bgcolor3, bgcolor4];
+	const yMinArray = [36, 37.5, 38, 39];
+	const yMaxArray = [37.5, 38, 39, 40];
 
+	const [myAnnotations, setMyAnnotations] = useState([]);
+	const initState = [];
 
-	annotationEvent1 = {
-		type: 'line',
-		id: 'vline_1',
-		xMin: dateEvent1,
-		xMax: dateEvent1,
-		borderColor: theme.colors.col3,
-		borderWidth: 2,
-		label: {
-			display: true,
-			content: 'Therapie',
-			position: 'end',
-			yAdjust: -5,
-			xAdjust: -5,
-			padding: 5,
-			backgroundColor: theme.colors.col3,
-			color: '#fff'
+	console.log("show Therapie:", showTherapie)
+
+	useEffect(() => {
+		console.log("arrayLength:", timeCatArrays.therapie.length)
+
+		if (showTherapie === true) {
+			if (timeCatArrays.therapie.length > 0) {
+				console.log("es gibt therapietermine zum Plotten")
+				timeCatArrays.therapie.map((e, i) => {
+					console.log("myAnnotations mit Lines")
+					setMyAnnotations([...myAnnotations, myAnnotations.push({
+						id: 'line_' + timeCatArrays.therapie[i],
+						type: 'line',
+						label: {
+							display: true,
+							content: 'Therapie',
+							position: 'end',
+							yAdjust: -5,
+							xAdjust: -5,
+							padding: 5,
+							backgroundColor: theme.colors.col3,
+							color: '#fff'
+						},
+						xMin: timeCatArrays.therapie[i],
+						xMax: timeCatArrays.therapie[i],
+						backgroundColor: 'red',
+						borderWidth: 2
+					})
+					])
+				})
+			}
+
+				colorArray.map((e, i) => {
+					setMyAnnotations([
+						...myAnnotations, myAnnotations.push({
+							type: 'box',
+							xMin: firstDay,
+							xMax: lastDay,
+							yMin: yMinArray[i],
+							yMax: yMaxArray[i],
+							backgroundColor: e,
+							drawTime: 'beforeDatasetsDraw',
+						})
+					])
+				})
+
+				setMyAnnotations([
+					...myAnnotations, myAnnotations.push({
+						type: 'line',
+						yMin: 39,
+						yMax: 39,
+						borderColor: 'rgb(206, 23, 93)',
+						borderWidth: 3,
+						label: {
+							display: true,
+							content: 'hohes Fieber',
+							position: 'end',
+							yAdjust: -15,
+							padding: 5,
+							backgroundColor: 'rgb(206, 23, 93)',
+							color: '#fff'
+						}
+					})
+				])
+		} else {
+			console.log("-------------keine lineAnnotations")
+			colorArray.map((e, i) => {
+				setMyAnnotations([
+					...myAnnotations, myAnnotations.push({
+						type: 'box',
+						xMin: firstDay,
+						xMax: lastDay,
+						yMin: yMinArray[i],
+						yMax: yMaxArray[i],
+						backgroundColor: e,
+						drawTime: 'beforeDatasetsDraw',
+					})
+				])
+			})
+
+			setMyAnnotations([
+				...myAnnotations, myAnnotations.push({
+					type: 'line',
+					yMin: 39,
+					yMax: 39,
+					borderColor: 'rgb(206, 23, 93)',
+					borderWidth: 3,
+					label: {
+						display: true,
+						content: 'hohes Fieber',
+						position: 'end',
+						yAdjust: -15,
+						padding: 5,
+						backgroundColor: 'rgb(206, 23, 93)',
+						color: '#fff'
+					}
+				})
+			])
 		}
-	};
-
-	annotationEvent2 = {
-		type: 'line',
-		id: 'vline_2',
-		xMin: dateEvent2,
-		xMax: dateEvent2,
-		borderColor: theme.colors.col3,
-		borderWidth: 2,
-		label: {
-			display: true,
-			content: 'Therapie',
-			position: 'end',
-			yAdjust: -5,
-			xAdjust: -5,
-			padding: 5,
-			backgroundColor: theme.colors.col3,
-			color: '#fff'
-		}
-	};
+	}, [showTherapie])
 
 
-	const annotationBox1 = {
-		id: 'box1',
-		type: 'box',
-		xMin: firstDay,
-		xMax: lastDay,
-		yMin: 36,
-		yMax: 37.5,
-		backgroundColor: bgcolor1,
-		drawTime: 'beforeDatasetsDraw',
-	}
-	const annotationBox2 = {
-		id: 'box2',
-		type: 'box',
-		xMin: firstDay,
-		xMax: lastDay,
-		yMin: 37.5,
-		yMax: 38,
-		backgroundColor: bgcolor3,
-		drawTime: 'beforeDatasetsDraw',
-	}
-	const annotationBox3 = {
-		id: 'box3',
-		type: 'box',
-		xMin: firstDay,
-		xMax: lastDay,
-		yMin: 38,
-		yMax: 39.0,
-		backgroundColor: bgcolor4,
-		drawTime: 'beforeDatasetsDraw',
-	}
-	const annotationBox4 = {
-		id: 'box4',
-		type: 'box',
-		xMin: firstDay,
-		xMax: lastDay,
-		yMin: 39.0,
-		yMax: 40,
-		backgroundColor: bgcolor5,
-		drawTime: 'beforeDatasetsDraw',
-	}
+	useEffect(() => {
 
-	const annotationLineY = {
-		type: 'line',
-		yMin: 39,
-		yMax: 39,
-		borderColor: 'rgb(206, 23, 93)',
-		borderWidth: 3,
-		label: {
-			display: true,
-			content: 'hohes Fieber',
-			position: 'end',
-			yAdjust: -15,
-			padding: 5,
-			backgroundColor: 'rgb(206, 23, 93)',
-			color: '#fff'
-		}
-	}
-
+		  setMyAnnotations( initState)
+		console.log("myAnnotations", myAnnotations)
+	}, [showTherapie])
 
 	//...................
+
 
 	let options;
 	if (name === 'Temperatur') {
@@ -173,17 +185,9 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, tsArray }) => {
 				},
 				annotation:
 				{
-					annotations: {
-						// myAnnotations,
-						annotationLineY,
-						// allAnnotations,
-						annotationEvent1,
-						annotationEvent2,
-						annotationBox1,
-						annotationBox2,
-						annotationBox3,
-						annotationBox4,
-					},
+					annotations:
+						// eventLines,
+						myAnnotations,
 				},
 			},
 			scales: {
@@ -282,6 +286,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, tsArray }) => {
 		};
 	}
 
+
 	//...................
 
 	const myData = xValues.map((e, i) => {
@@ -338,13 +343,23 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, tsArray }) => {
 		}
 	}
 
+useEffect(()=> {
+
+},[])
+
 
 	return (
 		<div >
-			<Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem' }} options={options} data={data} redraw={true} />
+			{showTherapie ?
+				<Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem' }} options={options} data={data} redraw={true} done='true' />
+				:
+				<Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem' }} options={options} data={data} redraw={true} dataidkey='id'/>
+			}
+
 		</div>
 	)
 };
+
 
 
 
