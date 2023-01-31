@@ -1,3 +1,5 @@
+import { setTimeArrays } from './../utils/helperfunctions'
+import { useUserContext } from '../providers/userContext';
 import { useState, useEffect } from "react";
 import { DateTime } from "luxon";
 import jwt_decode from "jwt-decode";
@@ -29,6 +31,12 @@ const useAuth = () => {
 	const [flag, setFlag] = useState(999)
 	const [diaryIdSaved, setDiaryIdSaved] = useState(false);
 	const [events, setEvents] = useState('');
+	const [timeCatArrays, setTimeCatArrays] = useState({
+		arzttermin: [],
+		therapie: [],
+		untersuchung: [],
+		sonstiges: []
+	});
 
 	const LOCAL_STORAGE_KEY = process.env.REACT_APP_LOCAL_STORAGE_KEY;
 	const LOCAL_STORAGE_WEATHER = process.env.REACT_APP_LOCAL_STORAGE_WEATHER;
@@ -58,7 +66,7 @@ const useAuth = () => {
 
 
 	useEffect(() => {
-		if (user)
+		if (userData)
 			getEventsFromBackend(userData.id);
 	}, [])
 
@@ -83,7 +91,7 @@ const useAuth = () => {
 		await fetch("/api/login", requestOptions)
 			.then(response => response.json())
 			.then(response => {
-				console.log(response)
+				// console.log(response)
 
 				if ((response.status === 'error') && (response.message === 'Invalid password'))
 					alert("Falsches Passwort")
@@ -282,10 +290,36 @@ const useAuth = () => {
 
 	//----------------------------------------------------
 
+	const setTimeArrays = (events) => {
+		if (events) {
+			events.map((e, i) => {
+				if (e.category === 'Therapie') {
+					setTimeCatArrays({ ...timeCatArrays }, timeCatArrays.therapie.push(DateTime.fromISO(e.end).ts))
+					console.log("-------", e.category, DateTime.fromISO(e.end).ts)
+					return (e)
+				} else if (e.category === 'Arzttermin') {
+					setTimeCatArrays({ ...timeCatArrays }, timeCatArrays.arzttermin.push(DateTime.fromISO(e.end).ts))
+					console.log("-------", e.category, DateTime.fromISO(e.end).ts)
+					return (e)
+				}
+			})
+		}
+	}
 
+	const clearTimeCatArrays = () => {
+		setTimeCatArrays({...timeCatArrays}, timeCatArrays.arzttermin = [], timeCatArrays.therapie = [], timeCatArrays.untersuchung = [], timeCatArrays.sonstiges = [])
+	}
+
+
+	useEffect(() => {
+		console.log("...", timeCatArrays)
+	},[timeCatArrays])
+	//-----------------------
 
 	const getEventsFromBackend = async (id) => {
 
+		clearTimeCatArrays();
+		console.log(".        .",timeCatArrays)
 		console.log("hole Events aus dem Backend")
 		let requestOptions = {
 			method: 'GET',
@@ -294,8 +328,9 @@ const useAuth = () => {
 		await fetch('/api/getEvents?id=' + id, requestOptions)
 			.then(response => response.json())
 			.then(response => {
-				console.log(response.events)
+				console.log("events aus dem Backend geholt",response.events)
 				setEvents(response.events)
+				setTimeArrays(response.events)
 			})
 			.catch(error => console.log("error: ", error))
 	}
@@ -335,7 +370,7 @@ const useAuth = () => {
 
 	//-----------------------------------------------------------------
 
-	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, events, setEvents];
+	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, events, setEvents, timeCatArrays];
 
 }
 

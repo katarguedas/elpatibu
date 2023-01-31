@@ -7,14 +7,14 @@ import PlotSymptoms from "../components/PlotSymptoms"
 import { setDateRange } from "../utils/testdata"
 import { StBiDownArrow, StBiRightArrow } from '../styled/Icons'
 import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle } from "../styled/globalStyles"
+import { useUserContext } from "../providers/userContext"
+import { useDataContext } from "../providers/dataContext"
 
 import { useState, useEffect } from "react"
 import { useLocation } from "react-router"
 
-import { useUserContext } from "../providers/userContext"
-
 import styled from "styled-components"
-import { useDataContext } from "../providers/dataContext"
+
 
 //---------------------------------------------------------
 
@@ -22,7 +22,7 @@ const DiaryData = () => {
 
   // Es sind noch nicht alle Gruppen hinterlegt, hier in 'DiaryData' werden noch weitere Plotaufrufe eingefügt
 
-  const { userData, checkToken } = useUserContext();
+  const { userData, checkToken, events, getEventsFromBackend } = useUserContext();
   const { diary, setDiary, getDiaryFromBackend } = useDataContext();
 
   const [edit, setEdit] = useState(false);
@@ -59,10 +59,15 @@ const DiaryData = () => {
           console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
       }
       else {
-        console.log("Diary:", diary)
+        // console.log("Diary:", diary)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    console.log("useEffect: gibt es events?", events)
+    if (!events)
+      getEventsFromBackend(userData.id)
+
   }, [])
 
 
@@ -106,7 +111,7 @@ const DiaryData = () => {
                 <ResultGroup >
                   {e.visible === true &&
                     e.name === 'vital' &&
-                    <PlotVital itemVital={e} />
+                    <PlotVital itemVital={e}/>
                   }
                   {e.visible &&
                     e.name === 'meteorosensitivity' &&
