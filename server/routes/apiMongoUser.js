@@ -174,9 +174,9 @@ router.get('/api/getEvents', async (req, res) => {
   console.log("id:", req.query.id)
   try {
     const result = await User.findOne({ id: req.query.id })
-    console.log(result)
-    console.log("\n")
-    console.log( "result.events",result.events)
+    // console.log(result)
+    // console.log("\n")
+    // console.log( "result.events",result.events)
     //.....
     const events = result.events;
     res.status(200).send({ status: 'ok', message: 'found events', events })
@@ -186,13 +186,14 @@ router.get('/api/getEvents', async (req, res) => {
     //....
   }
 })
+
 //------------------------------------------------------
 
 router.post('/api/saveEvent', async (req, res) => {
   console.log("body", req.body.event )
   try {
     const response = await User.findOneAndUpdate({ id: req.body.id }, { $push: { events: req.body.event } }, { new: true })
-    console.log("response", response)
+    // console.log("response", response)
     res.status(200).send({ status: 'ok', message: 'event added', response })
   } catch (error) {
     res.status(400).send({ message: 'Error updating events', error })

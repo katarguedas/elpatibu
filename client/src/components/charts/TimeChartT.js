@@ -365,4 +365,3 @@ useEffect(()=> {
 
 
 export default TimeChartT;
-

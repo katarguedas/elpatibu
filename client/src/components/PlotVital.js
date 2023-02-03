@@ -1,11 +1,12 @@
 import TimeChartT from '../components/charts/TimeChartT';
 import TimeChartP2 from '../components/charts/TimeChartP2';
 import { createTData, createPData } from '../utils/testdata';
+import { StSpan } from '../styled/globalStyles';
 import { useDataContext } from '../providers/dataContext';
 import { useUserContext } from '../providers/userContext';
 import styled from 'styled-components';
 import { BiSquare, BiCheckSquare } from "react-icons/bi";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 // import { get } from 'mongoose';
@@ -21,13 +22,13 @@ const PlotVital = ({ itemVital }) => {
 
 	const [showTherapie, setShowTherapie] = useState(false);
 
-	console.log("timeCatArrays", timeCatArrays)
+	// console.log("timeCatArrays", timeCatArrays)
 
 	// bei fehlenden Daten in der Datenbank werden zu Test- und Vorführtzwecken welche generiert (createTData(), createPData();)
 
 	let dataTSet = {};
 	if (itemVital.items[0].values.length > 30) {
-		console.log("daten aus der Datembank")
+		// console.log("daten aus der Datembank")
 		dataTSet.temperature = itemVital.items[0].values;
 		dataTSet.tsArray = diary.date;
 	}
@@ -50,6 +51,9 @@ const PlotVital = ({ itemVital }) => {
 	const yP1Values = dataPSet.pressureH;
 	const yP2Values = dataPSet.pressureL;
 
+
+	//..................................
+
 	//..........................
 
 	// console.log("events:", events)
@@ -71,19 +75,19 @@ const PlotVital = ({ itemVital }) => {
 			{
 				itemVital.items.filter(e => e.selected === true).length > 0 &&
 				<ChartsGroup>
-					<div>
+
 						{showTherapie ?
-							<div>
+							<div  >
 								<BiCheckSquare onClick={handleClick} />
-								<span> Therapietermine ausblenden</span>
+								<StSpan> Therapietermine einblenden</StSpan>
 							</div>
 							:
 							<div>
 								<BiSquare onClick={handleClick} />
-								<span> Therapietermine einblenden</span>
+								<StSpan> Therapietermine einblenden</StSpan>
 							</div>
 						}
-					</div>
+
 					<div  >
 						{
 							itemVital.items[0].selected &&
@@ -94,6 +98,7 @@ const PlotVital = ({ itemVital }) => {
 								name={itemVital.items[0].label}
 								unit={itemVital.items[0].unit}
 								showTherapie={showTherapie}
+
 							/>
 						}
 					</div>
@@ -109,7 +114,7 @@ const PlotVital = ({ itemVital }) => {
 	)
 }
 
-export default PlotVital
+export default PlotVital;
 
 //---------------------------------------------------------------------
 

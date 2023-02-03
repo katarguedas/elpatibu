@@ -31,6 +31,7 @@ const useAuth = () => {
 	const [flag, setFlag] = useState(999)
 	const [diaryIdSaved, setDiaryIdSaved] = useState(false);
 	const [events, setEvents] = useState('');
+	const [nextEvents, setNextEvents] = useState([]);
 	const [timeCatArrays, setTimeCatArrays] = useState({
 		arzttermin: [],
 		therapie: [],
@@ -367,10 +368,14 @@ const useAuth = () => {
 	}
 
 
+	useEffect(() => {
+		console.log("nächste Termine wurden verändert----------", nextEvents)
+	}, [nextEvents])
+
 
 	//-----------------------------------------------------------------
 
-	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, events, setEvents, timeCatArrays];
+	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, events, setEvents, timeCatArrays, nextEvents, setNextEvents];
 
 }
 
