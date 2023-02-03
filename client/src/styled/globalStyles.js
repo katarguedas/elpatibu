@@ -44,6 +44,12 @@ const StP = styled.p`
   font-size: 1.1rem;
 `
 
+const StSpan = styled.span`
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 0.25rem 0.5rem;
+`
+
 const InputField = styled.input`
   border: 2px solid ${(props) => props.theme.colors.col10};
   &:focus{
@@ -148,4 +154,4 @@ font-weight: 500;
 
 export default globalStyles;
 
-export { ContentGroup, MainGroup, MainContent, PageTitle, InputField, LabelText, TitleH2, StP, FormField, Accordion }
+export { ContentGroup, MainGroup, MainContent, PageTitle, InputField, LabelText, TitleH2, StP, StSpan, FormField, Accordion }

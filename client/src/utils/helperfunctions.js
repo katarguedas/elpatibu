@@ -24,10 +24,27 @@ export const checkTs = (diaryDate, setUpdate) => {
 //----------------------------------------------------------
 
 export const sortminmax = arr => {
+	console.log("events zum Sortieren", arr)
 	let resSort = arr.slice();
 	return (resSort.sort(function (a, b) { return a - b })).reverse();
+}
+
+
+
+export const sortTs = (tsArr, events) => {
+	let maxnum = null;
+	console.log(maxnum);
+
+	for (let i of tsArr) {
+		if (maxnum < i) {
+			maxnum = i;
+			console.log(maxnum);
+		}
+	}
 }
 
 //----------------------------------------------------------
 
 
+
+//-----------------------------------------------------------------

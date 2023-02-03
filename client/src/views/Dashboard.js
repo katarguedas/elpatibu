@@ -2,13 +2,13 @@ import Header from "../components/Header";
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
 import { SendButton } from "../styled/Buttons";
-import { fullDate, todayDate } from "../utils/Date"
-import { sortminmax } from "../utils/helperfunctions";
-import { useUserContext } from "../providers/userContext"
-import { useDataContext } from "../providers/dataContext"
-import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2 } from "../styled/globalStyles"
+import { fullDate, todayDate } from "../utils/Date";
+import { useUserContext } from "../providers/userContext";
+import { useDataContext } from "../providers/dataContext";
+import { sort } from "../utils/helperfunctions";
+import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2 } from "../styled/globalStyles";
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import styled from "styled-components";
@@ -19,10 +19,12 @@ import { theme } from "../themes/theme";
 
 const Dashboard = () => {
 
-	const { user, userData, checkToken, getEventsFromBackend, events } = useUserContext();
+	const { user, userData, checkToken, getEventsFromBackend, events, nextEvents, setNextEvents } = useUserContext();
 	const { getDiaryFromBackend, diary } = useDataContext();
 
-	const [nextEvents, setNextEvents] = useState([]);
+	// const [nextEvents, setNextEvents] = useState([]);
+
+	let sortedArray = [];
 
 	let location = useLocation();
 	const navigate = useNavigate();
@@ -56,7 +58,6 @@ const Dashboard = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 
-		// if (!events)
 		getEventsFromBackend(userData.id);
 
 	}, [])
@@ -68,14 +69,35 @@ const Dashboard = () => {
 		if (events) {
 			const today = DateTime.local(fullDate());
 
-			setNextEvents(sortminmax(events.filter(e => {
+			setNextEvents(events.filter(e => {
 				if (DateTime.fromISO(e.start).ts > today.ts) {
 					return e
 				}
-			})))
+			}))
 		}
 
+		const array = [...nextEvents];
+		for (let i = 0; i < array.length; i++)
+			array[i].time = DateTime.fromISO(array[i].start).ts
+
+		console.log("array:", array)
+
+		sortedArray = array.sort((a, b) => {
+			console.log(a.time)
+			return a.time - b.time;
+		});
+
+		console.log(sortedArray)
+		if (sortedArray.length > 0)
+			setNextEvents(sortedArray)
+
 	}, [events])
+
+
+
+	useEffect(() => {
+		console.log("nächste Termine wurden verändert----------", nextEvents)
+	}, [nextEvents])
 
 
 	//........................
@@ -112,7 +134,7 @@ const Dashboard = () => {
 								<TitleH2 style={{ color: theme.colors.col3 }} >
 									Deine nächsten Termine
 									{
-										nextEvents.map(e => (
+										nextEvents?.map(e => (
 											<EventItem key={e.id} >
 												<span>{e.title}:{space}</span>
 												<span>{DateTime.fromISO(e.start).toLocaleString(DateTime.DATE_HUGE)}</span>
