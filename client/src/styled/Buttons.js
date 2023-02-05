@@ -129,10 +129,7 @@ const WeatherButton = styled.button`
   border: 2px solid ${(props) => props.theme.colors.col1};
   background-color: ${(props) => props.theme.colors.col1};
   box-shadow: rgba(0, 0, 0, 0.25) 3.4px 3.4px 4.2px;
-  /* color: #fff; */
   border-radius: 0.5rem;
-  /* margin-left: auto;
-  margin-left: auto; */
   &:hover{
     background-color: ${(props) => props.theme.colors.col5};
     border: 2px solid ${(props) => props.theme.colors.col5};
@@ -145,6 +142,21 @@ const WeatherButton = styled.button`
   margin: 2.0rem;
 `
 
+//.................................................................
+
+const NewEventButton = styled(WeatherButton)`
+  margin-top: 0rem; 
+  background-color: ${(props) => props.theme.colors.col4};
+  border: 2px solid ${(props) => props.theme.colors.col3};
+  &:hover{
+    background-color: ${(props) => props.theme.colors.col3};
+    border: 2px solid ${(props) => props.theme.colors.col4};
+    color: #fff;
+  }
+  :active{
+    transform: translateY(1.5px);
+  }
+`
 
 
-export {Button, AuthButton, SendButton, NavButton, DiaryButton, WeatherButton} ;
+export {Button, AuthButton, SendButton, NavButton, DiaryButton, WeatherButton, NewEventButton} ;

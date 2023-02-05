@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 const PlotVital = ({ itemVital }) => {
 
 	const { diary } = useDataContext();
-	const { events, userData, getEventsFromBackend, timeCatArrays } = useUserContext();
+	const { userData, getEventsFromBackend, timeCatArrays } = useUserContext();
 
 	const [showTherapie, setShowTherapie] = useState(false);
 
@@ -103,7 +103,11 @@ const PlotVital = ({ itemVital }) => {
 						}
 					</div>
 					<div  >
-						< TimeChartP2 xValues={xValues} y1Values={yP1Values} y2Values={yP2Values} />
+						< TimeChartP2 
+						xValues={xValues} 
+						y1Values={yP1Values} 
+						y2Values={yP2Values} 
+						/>
 
 					</div>
 				</ChartsGroup>

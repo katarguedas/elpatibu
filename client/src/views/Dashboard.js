@@ -5,7 +5,6 @@ import { SendButton } from "../styled/Buttons";
 import { fullDate, todayDate } from "../utils/Date";
 import { useUserContext } from "../providers/userContext";
 import { useDataContext } from "../providers/dataContext";
-import { sort } from "../utils/helperfunctions";
 import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2 } from "../styled/globalStyles";
 
 import React, { useEffect, useState } from "react";
@@ -19,10 +18,11 @@ import { theme } from "../themes/theme";
 
 const Dashboard = () => {
 
-	const { user, userData, checkToken, getEventsFromBackend, events, nextEvents, setNextEvents } = useUserContext();
+	const { user, userData, checkToken, getEventsFromBackend, nextEvents, LOCAL_STORAGE_EVENTS } = useUserContext();
 	const { getDiaryFromBackend, diary } = useDataContext();
 
-	// const [nextEvents, setNextEvents] = useState([]);
+	const [events, setEvents] = useState();
+	const [done, setDone] = useState();
 
 	let sortedArray = [];
 
@@ -56,49 +56,37 @@ const Dashboard = () => {
 				// console.log("Diary:", diary)
 			}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
-		getEventsFromBackend(userData.id);
-
+	useEffect(() => {
+		let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
+		if (!eventsArray) {
+			getEventsFromBackend(userData.id);
+			eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
+		}
+		setEvents(eventsArray)
 	}, [])
 
 	//............
 
 	useEffect(() => {
-
-		if (events) {
-			const today = DateTime.local(fullDate());
-
-			setNextEvents(events.filter(e => {
-				if (DateTime.fromISO(e.start).ts > today.ts) {
-					return e
-				}
-			}))
-		}
-
-		const array = [...nextEvents];
-		for (let i = 0; i < array.length; i++)
-			array[i].time = DateTime.fromISO(array[i].start).ts
-
-		console.log("array:", array)
-
-		sortedArray = array.sort((a, b) => {
-			console.log(a.time)
-			return a.time - b.time;
-		});
-
-		console.log(sortedArray)
-		if (sortedArray.length > 0)
-			setNextEvents(sortedArray)
-
 	}, [events])
 
-
+	//...............
 
 	useEffect(() => {
-		console.log("nächste Termine wurden verändert----------", nextEvents)
-	}, [nextEvents])
 
+		if (nextEvents) {
+			setDone(true);
+		}
+	}, [])
+
+//-------------------------
+
+	useEffect(() => {
+		if (done)
+			console.log(nextEvents)
+	}, [done])
 
 	//........................
 
@@ -134,6 +122,7 @@ const Dashboard = () => {
 								<TitleH2 style={{ color: theme.colors.col3 }} >
 									Deine nächsten Termine
 									{
+										done &&
 										nextEvents?.map(e => (
 											<EventItem key={e.id} >
 												<span>{e.title}:{space}</span>

@@ -12,10 +12,7 @@ import { useUserContext } from '../../providers/userContext';
 
 const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 
-	const { timeCatArrays } = useUserContext();
-
-	// Hier müssen die Annotations für die Termine noch angepasst und automatisiert werden, da bisher keine lauffähige Lösung gefunden vorhanden
-
+	const { timeCatArrays, LOCAL_STORAGE_EVENTS, setTimeArrays } = useUserContext();
 
 	// console.log("x-", xValues)
 	// console.log("y", yValues)
@@ -58,6 +55,15 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 	const initState = [];
 
 	console.log("show Therapie:", showTherapie)
+
+	useEffect(() => {
+		let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
+
+		if(!timeCatArrays) {
+			console.log("test")
+			setTimeArrays(eventsArray)
+		}
+	},[])
 
 	useEffect(() => {
 		console.log("arrayLength:", timeCatArrays.therapie.length)

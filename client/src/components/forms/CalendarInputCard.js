@@ -12,7 +12,6 @@ const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, star
 	useEffect(() => { setAllday(false) }, [])
 
 
-
 	return (
 		<CardForm onSubmit={handleSubmit} >
 			<div>
@@ -81,6 +80,7 @@ const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, star
 							<input
 								style={{ padding: '0.1rem' }}
 								type="datetime-local"
+								step="300"
 								onChange={handleEndDate}
 							/>
 						</LabelText>

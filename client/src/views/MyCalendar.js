@@ -2,6 +2,8 @@ import Header from "../components/Header";
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
 import CalendarInputCard from "../components/forms/CalendarInputCard";
+import EventCard from "../components/EventCard";
+import { NewEventButton } from "../styled/Buttons";
 import { ContentGroup, MainGroup, MainContent, PageTitle } from "../styled/globalStyles";
 import { theme } from '../themes/theme';
 import React, { useState, useCallback, useEffect } from "react";
@@ -13,18 +15,25 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styled from "styled-components";
 import { useUserContext } from "../providers/userContext";
 
+require('globalize/lib/cultures/globalize.culture.de')
+
+
 //---------------------------------------------------------
 
 const MyCalendar = () => {
 
-  const { events, setEvents, saveEventInBackend, getEventsFromBackend, userData } = useUserContext();
+  const { saveEventInBackend, getEventsFromBackend, userData, LOCAL_STORAGE_EVENTS } = useUserContext();
 
+  const [events, setEvents] = useState();
   const [value, setValue] = useState();
   const [open, setOpen] = useState();
+  const [view, setView] = useState();
   const [allday, setAllday] = useState(false);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [cat, setCat] = useState();
+  const [currentEvent, setCurrentEvent] = useState();
+  const [loaded, setLoaded] = useState();
 
   const localizer = luxonLocalizer(DateTime, { firstDayOfWeek: 1 })
 
@@ -32,15 +41,87 @@ const MyCalendar = () => {
 
 
   useEffect(() => {
-    if (!events)
+    let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
+    if (!eventsArray) {
       getEventsFromBackend(userData.id);
+      eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
+    }
+    setEvents(eventsArray);
+    setLoaded(true);
+
   }, [])
 
 
-  const handleSelectSlot = useCallback(
+  const dateAllday = (str, flag) => {
+    if (flag === 1) //startDatum
+      // return (new Date(yyyy, mm, dd, 1, 0, 0)):
+      return (
+        new Date(
+          str.slice(0, 4),
+          str.slice(5, 7) - 1,
+          str.slice(8, 10),
+          1, 0, 0))
+    else if (flag === 2)   //EndDatum
+      // return (new Date(yyyy, mm, dd, 23, 59, 0)):
+      return (
+        new Date(
+          str.slice(0, 4),
+          str.slice(5, 7) - 1,
+          str.slice(8, 10),
+          23, 59, 0))
+  }
+
+
+  const dateNoAllday = str => {
+    // return (new Date(yyyy, mm, dd, hh, min, 0)):
+    return (
+      new Date(
+        str.slice(0, 4),
+        str.slice(5, 7) - 1,
+        str.slice(8, 10),
+        str.slice(11, 13),
+        str.slice(14, 17), 0
+      ))
+  }
+
+  const dateNoAllday2 = str => {
+    // console.log(yyyy, mm, dd, hh, min, 0):
+    return (
+      new Date(
+        str.slice(0, 4),
+        str.slice(5, 7) - 1,
+        str.slice(8, 10),
+        str.slice(11, 13),
+        str.slice(14, 16), 0
+      ))
+  }
+
+
+  useEffect(() => {
+    if ((loaded) && (events)) {
+      setEvents([...events], events.map((e, i) => {
+        if (typeof (e.start) === 'string') {
+          e.start = dateNoAllday2(e.start)
+          e.end = dateNoAllday2(e.end)
+          console.log(e.start)
+          return e;
+        }
+      }))
+    }
+  }, [loaded])
+
+
+  const handleSelectSlot = () => {
+    setView(false)
+    setOpen(false)
+  }
+
+
+  const handleNewEvent = useCallback(
     ({ start, end }) => {
       setStartDate(start)
       setStartDate(end)
+      setView(false)
       setOpen(true)
     },
     // [setEvents]
@@ -55,70 +136,34 @@ const MyCalendar = () => {
       opacity: 0.8,
       color: 'black',
       border: '1px',
-      display: 'block'
+      display: 'block',
     };
     return {
       style: style
     };
   }
 
-  const dateAllday = (str, flag) => {
-    if (flag === 1) //startDatum
-      // return (new Date(yyyy, mm, dd, 1, 0, 0))
-      return (
-        new Date(
-          str.slice(0, 4),
-          str.slice(5, 7) - 1,
-          str.slice(8, 10),
-          1, 0, 0))
-    else if (flag === 2)   //EndDatum
-      // return (new Date(yyyy, mm, dd, 23, 59, 0))
-      return (
-        new Date(
-          str.slice(0, 4),
-          str.slice(5, 7) - 1,
-          str.slice(8, 10),
-          23, 59, 0))
+
+  const openAnotherEvent = (event) => {
+    setCurrentEvent(event)
+    setView(true)
   }
 
 
-  const dateNoAllday = str => {
-    // return (new Date(yyyy, mm, dd, hh, min, 0))
-    return (
-      new Date(
-        str.slice(0, 4),
-        str.slice(5, 7) - 1,
-        str.slice(8, 10),
-        str.slice(11, 13),
-        str.slice(14, 17), 0
-      ))
-  }
-
-  const dateNoAllday2 = str => {
-    // console.log(yyyy, mm, dd, hh, min, 0)
-    return (
-      new Date(
-        str.slice(0, 4),
-        str.slice(5, 7) - 1,
-        str.slice(8, 10),
-        str.slice(11, 13),
-        str.slice(14, 16), 0
-      ))
-  }
-
-  useEffect(() => {
-    if (events) {
-      setEvents([...events], events.map((e, i) => {
-        if (typeof (e.start) === 'string') {
-          e.start = dateNoAllday2(e.start)
-          e.end = dateNoAllday2(e.end)
-          console.log(e.start)
-          return e;
-        }
-      }))
-    }
-  }, [])
-
+  const handleSelectEvent = useCallback(
+    //  (event) => window.alert(event.title),
+    (event) => {
+      if (!view) {
+        setView(true)
+        setCurrentEvent(event)
+      }
+      if (view) {
+        setView(false)
+        openAnotherEvent(event)
+      }
+    },
+    []
+  )
 
 
   const handleChange = e => {
@@ -128,7 +173,6 @@ const MyCalendar = () => {
   const handleCheckbox = e => {
     setAllday(!allday)
   }
-
 
 
   const handleStartDate = e => {
@@ -179,6 +223,11 @@ const MyCalendar = () => {
     console.log(events)
   }
 
+  // const handleCloseEvent = () => {
+  //   setView(false)
+  //   setOpen(false)
+  // }
+
   //.................................
 
   return (
@@ -190,13 +239,17 @@ const MyCalendar = () => {
           <PageTitle>Kalender</PageTitle>
 
           <Calendargroup>
-
+            <NewEventButton onClick={handleNewEvent} >
+              neuen Termin hinzufügen
+            </NewEventButton>
             <Calendar
               eventPropGetter={eventStyleGetter}
               events={events}
               localizer={localizer}
               startAccessor="start"
               endAccessor="end"
+              onSelectEvent={handleSelectEvent}
+              // onClick={handleCloseEvent}
               onSelectSlot={handleSelectSlot}
               selectable
             />
@@ -213,7 +266,16 @@ const MyCalendar = () => {
                   handleClose={handleClose}
                   allday={allday}
                   setAllday={setAllday}
-                  value={value} />
+                  value={value}
+                />
+              }
+              {view &&
+                <EventCard
+                  view={view}
+                  setView={setView}
+                  event={currentEvent}
+                  setOpen={setOpen}>
+                </EventCard>
               }
             </div>
           </Calendargroup>
