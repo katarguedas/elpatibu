@@ -7,6 +7,7 @@ const eventsSchema = new mongoose.Schema({
   title: String,
   start: {},
   end: {},
+  allDay: Boolean,
   resourceId: String,
   category: String
 })

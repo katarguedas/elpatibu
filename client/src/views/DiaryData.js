@@ -22,9 +22,10 @@ const DiaryData = () => {
 
   // Es sind noch nicht alle Gruppen hinterlegt, hier in 'DiaryData' werden noch weitere Plotaufrufe eingefügt
 
-  const { userData, checkToken, events, getEventsFromBackend } = useUserContext();
+  const { userData, checkToken, getEventsFromBackend, LOCAL_STORAGE_EVENTS } = useUserContext();
   const { diary, setDiary, getDiaryFromBackend } = useDataContext();
 
+  const [events, setEvents] = useState();
   const [edit, setEdit] = useState(false);
 
   const location = useLocation();
@@ -63,12 +64,17 @@ const DiaryData = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-
-    console.log("useEffect: gibt es events?", events)
-    if (!events)
-      getEventsFromBackend(userData.id)
-
   }, [])
+
+  useEffect(() => {
+		let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
+		if (!eventsArray) {
+			getEventsFromBackend(userData.id);
+			eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
+		}
+		setEvents(eventsArray)
+		console.log(events)
+	}, [])
 
 
 

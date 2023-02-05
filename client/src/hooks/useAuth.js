@@ -1,9 +1,8 @@
+import { fullDate } from '../utils/Date';
 import { setTimeArrays } from './../utils/helperfunctions'
-import { useUserContext } from '../providers/userContext';
 import { useState, useEffect } from "react";
 import { DateTime } from "luxon";
 import jwt_decode from "jwt-decode";
-
 import { v4 as uuidv4 } from 'uuid';
 
 //---------------------------------------------------------
@@ -41,6 +40,7 @@ const useAuth = () => {
 
 	const LOCAL_STORAGE_KEY = process.env.REACT_APP_LOCAL_STORAGE_KEY;
 	const LOCAL_STORAGE_WEATHER = process.env.REACT_APP_LOCAL_STORAGE_WEATHER;
+	const LOCAL_STORAGE_EVENTS = process.env.REACT_APP_LOCAL_STORAGE_EVENTS;
 
 
 	//---------------------------------------------------------
@@ -186,8 +186,8 @@ const useAuth = () => {
 			}
 		}
 		else {
-			console.log("Logout")
-			logout()
+			console.log("Logout");
+			logout();
 		}
 	}
 
@@ -212,6 +212,7 @@ const useAuth = () => {
 	const logout = () => {
 		localStorage.removeItem(LOCAL_STORAGE_KEY)
 		localStorage.removeItem(LOCAL_STORAGE_WEATHER)
+		localStorage.removeItem(LOCAL_STORAGE_EVENTS)
 		removeCookie()
 		setUser('')
 	}
@@ -292,6 +293,7 @@ const useAuth = () => {
 	//----------------------------------------------------
 
 	const setTimeArrays = (events) => {
+		console.log("Hole Events nach Kategorien für die DIagramme", events)
 		if (events) {
 			events.map((e, i) => {
 				if (e.category === 'Therapie') {
@@ -307,20 +309,60 @@ const useAuth = () => {
 		}
 	}
 
+	//-------------------
+
 	const clearTimeCatArrays = () => {
-		setTimeCatArrays({...timeCatArrays}, timeCatArrays.arzttermin = [], timeCatArrays.therapie = [], timeCatArrays.untersuchung = [], timeCatArrays.sonstiges = [])
+		setTimeCatArrays({ ...timeCatArrays }, timeCatArrays.arzttermin = [], timeCatArrays.therapie = [], timeCatArrays.untersuchung = [], timeCatArrays.sonstiges = [])
+	}
+
+	//-------------------
+
+	const getNextEvents = (events) => {
+		let array = [];
+		if (events) {
+			const today = DateTime.local(fullDate());
+
+			
+			array = events.filter(e => {
+				if (DateTime.fromISO(e.start).ts > today.ts) {
+					return e
+				}
+			})
+
+			// setNextEvents(events.filter(e => {
+			// 	if (DateTime.fromISO(e.start).ts > today.ts) {
+			// 		return e
+			// 	}
+			// }))
+
+		}
+
+		// const array = [...nextEvents];
+
+		for (let i = 0; i < array.length; i++)
+			array[i].time = DateTime.fromISO(array[i].start).ts
+
+		const sortedArray = array.sort((a, b) => {
+			console.log(a.time)
+			return a.time - b.time;
+		});
+
+		console.log(sortedArray)
+		if (sortedArray.length > 0)
+			setNextEvents(sortedArray)
 	}
 
 
-	useEffect(() => {
-		console.log("...", timeCatArrays)
-	},[timeCatArrays])
+	//-----------------------
+	// useEffect(() => {
+	// }, [timeCatArrays])
+
 	//-----------------------
 
 	const getEventsFromBackend = async (id) => {
 
 		clearTimeCatArrays();
-		console.log(".        .",timeCatArrays)
+		console.log(".        .", timeCatArrays)
 		console.log("hole Events aus dem Backend")
 		let requestOptions = {
 			method: 'GET',
@@ -329,9 +371,11 @@ const useAuth = () => {
 		await fetch('/api/getEvents?id=' + id, requestOptions)
 			.then(response => response.json())
 			.then(response => {
-				console.log("events aus dem Backend geholt",response.events)
-				setEvents(response.events)
+				console.log("events aus dem Backend geholt", response.events)
+				localStorage.setItem(LOCAL_STORAGE_EVENTS, JSON.stringify(response.events))
+				// setEvents(response.events)
 				setTimeArrays(response.events)
+				getNextEvents(response.events)
 			})
 			.catch(error => console.log("error: ", error))
 	}
@@ -368,14 +412,10 @@ const useAuth = () => {
 	}
 
 
-	useEffect(() => {
-		console.log("nächste Termine wurden verändert----------", nextEvents)
-	}, [nextEvents])
-
 
 	//-----------------------------------------------------------------
 
-	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, events, setEvents, timeCatArrays, nextEvents, setNextEvents];
+	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, timeCatArrays, setTimeArrays, nextEvents, setNextEvents, LOCAL_STORAGE_EVENTS];
 
 }
 

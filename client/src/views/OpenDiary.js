@@ -16,7 +16,7 @@ import { ContentGroup, MainGroup, MainContent, PageTitle } from "../styled/globa
 
 const OpenDiary = () => {
 
-	const { userData, timeCatArrays, events } = useUserContext();
+	const { userData, timeCatArrays } = useUserContext();
 	const { diary, getDiaryFromBackend } = useDataContext();
 
 	const navigate = useNavigate();
@@ -38,7 +38,6 @@ const OpenDiary = () => {
 			}
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}
-		console.log("events:", events, "\n arrays:", timeCatArrays)
 	}, [])
 
 	//------------------------------------------------------
