@@ -190,7 +190,7 @@ router.get('/api/getEvents', async (req, res) => {
 //------------------------------------------------------
 
 router.post('/api/saveEvent', async (req, res) => {
-  console.log("body", req.body.event )
+  console.log("body", req.body.event)
   try {
     const response = await User.findOneAndUpdate({ id: req.body.id }, { $push: { events: req.body.event } }, { new: true })
     // console.log("response", response)
@@ -200,6 +200,34 @@ router.post('/api/saveEvent', async (req, res) => {
   }
 })
 
+//------------------------------------------------------
+
+router.put('/api/deleteEvent', async (req, res) => {
+  console.log("body:", req.body)
+
+  try {
+    const response = await User.findOne({ id: req.body.userId })
+
+    let index;
+    response.events.map((e, i) => {
+      // console.log("eventId",req.body.eventId)
+      if (e.id === req.body.eventId) {
+        // console.log("e.id:", e.id)
+        // console.log("gefunden!!!", e, i)
+        index = i;
+        return e;
+      }
+    })
+    // console.log("Index:", index)
+    response.events.splice(index, 1)
+
+    response.save()
+
+    res.status(200).send({ status: 'ok', message: 'Event deleted', response })
+  } catch (error) {
+    res.status(400).send({ message: "Error deleting the event", error })
+  }
+})
 
 //------------------------------------------------------
 

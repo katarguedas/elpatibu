@@ -9,21 +9,17 @@ import { BiWindowClose } from "react-icons/bi";
 
 const EventCard = ({ view, setView, event, setOpen }) => {
 
-  const { LOCAL_STORAGE_EVENTS, getEventsFromBackend, userData } = useUserContext();
+  const { LOCAL_STORAGE_EVENTS, getEventsFromBackend, userData, deleteEventInBackend } = useUserContext();
 
   const [events, setEvents] = useState();
   const [date, setDate] = useState();
 
-  const color = theme.colors.col5;
-
+  
   // console.log("view", view)
   // console.log("event", event)
   // console.log("events", events)
 
 
-  // useEffect(() => {
-  //   getEventsFromBackend(userData.id);
-  // }, [])
 
   const prepareDate = (string) => {
     if (string) {
@@ -60,8 +56,8 @@ const EventCard = ({ view, setView, event, setOpen }) => {
     if (events) {
       console.log("events", events)
       events.map(e => {
-        console.log("e.id", e.id)
-        console.log("event.id", event.id)
+        // console.log("e.id", e.id)
+        // console.log("event.id", event.id)
         if (e.id === event.id) {
           console.log("gefunden!", e.start)
           setDate(e.start)
@@ -74,7 +70,10 @@ const EventCard = ({ view, setView, event, setOpen }) => {
 
 
   const handleClick = () => {
-    setView(false)
+    deleteEventInBackend(userData.id, event.id);
+    localStorage.removeItem(LOCAL_STORAGE_EVENTS);
+    getEventsFromBackend(userData.id);
+    setView(false);
   }
 
   const handleClose = () => {

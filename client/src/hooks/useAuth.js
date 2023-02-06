@@ -298,11 +298,11 @@ const useAuth = () => {
 			events.map((e, i) => {
 				if (e.category === 'Therapie') {
 					setTimeCatArrays({ ...timeCatArrays }, timeCatArrays.therapie.push(DateTime.fromISO(e.end).ts))
-					console.log("-------", e.category, DateTime.fromISO(e.end).ts)
+					// console.log("-------", e.category, DateTime.fromISO(e.end).ts)
 					return (e)
 				} else if (e.category === 'Arzttermin') {
 					setTimeCatArrays({ ...timeCatArrays }, timeCatArrays.arzttermin.push(DateTime.fromISO(e.end).ts))
-					console.log("-------", e.category, DateTime.fromISO(e.end).ts)
+					// console.log("-------", e.category, DateTime.fromISO(e.end).ts)
 					return (e)
 				}
 			})
@@ -322,7 +322,7 @@ const useAuth = () => {
 		if (events) {
 			const today = DateTime.local(fullDate());
 
-			
+
 			array = events.filter(e => {
 				if (DateTime.fromISO(e.start).ts > today.ts) {
 					return e
@@ -343,11 +343,11 @@ const useAuth = () => {
 			array[i].time = DateTime.fromISO(array[i].start).ts
 
 		const sortedArray = array.sort((a, b) => {
-			console.log(a.time)
+			// console.log(a.time)
 			return a.time - b.time;
 		});
 
-		console.log(sortedArray)
+		// console.log(sortedArray)
 		if (sortedArray.length > 0)
 			setNextEvents(sortedArray)
 	}
@@ -362,7 +362,7 @@ const useAuth = () => {
 	const getEventsFromBackend = async (id) => {
 
 		clearTimeCatArrays();
-		console.log(".        .", timeCatArrays)
+		// console.log(".        .", timeCatArrays)
 		console.log("hole Events aus dem Backend")
 		let requestOptions = {
 			method: 'GET',
@@ -392,9 +392,6 @@ const useAuth = () => {
 			event: event
 		})
 
-
-		console.log(raw)
-
 		let requestOptions = {
 			method: 'POST',
 			headers: { "Content-Type": "application/json" },
@@ -402,20 +399,42 @@ const useAuth = () => {
 			redirect: 'follow'
 		};
 
-		console.log(requestOptions)
-
-		await fetch('api/saveEvent', requestOptions)
+		await fetch('/api/saveEvent', requestOptions)
 			.then(response => response.json()
-				.then(response => console.log(response)))
+			.then(response => console.log(response)))
+
+			.catch(error => console.log("error:", error))
+	}
+
+	//........................................
+	const deleteEventInBackend = async (userId, eventId) => {
+
+		let raw = JSON.stringify(
+			{
+				userId: userId,
+				eventId: eventId
+			}
+		)
+		console.log("raw", raw)
+
+		let requestOptions = {
+			method: 'PUT',
+			headers: { "Content-Type": "application/json" },
+			body: raw,
+			redirect: 'follow'
+		};
+
+		await fetch('/api/deleteEvent', requestOptions)
+			.then(response => response.json())
+			.then(response => console.log(response))
 
 			.catch(error => console.log("error:", error))
 	}
 
 
-
 	//-----------------------------------------------------------------
 
-	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, timeCatArrays, setTimeArrays, nextEvents, setNextEvents, LOCAL_STORAGE_EVENTS];
+	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, timeCatArrays, setTimeArrays, nextEvents, setNextEvents, LOCAL_STORAGE_EVENTS, deleteEventInBackend];
 
 }
 

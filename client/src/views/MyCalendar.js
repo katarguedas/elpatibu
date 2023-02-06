@@ -42,14 +42,19 @@ const MyCalendar = () => {
 
   useEffect(() => {
     let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
+    console.log(eventsArray)
     if (!eventsArray) {
       getEventsFromBackend(userData.id);
       eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
     }
     setEvents(eventsArray);
     setLoaded(true);
-
   }, [])
+
+  useEffect(() => {
+    console.log("loaded:", loaded)
+    console.log("events:", events)
+  }, [loaded])
 
 
   const dateAllday = (str, flag) => {
@@ -218,9 +223,13 @@ const MyCalendar = () => {
       category: cat
     }
 
-    setEvents([...events, newEvent])
+    setEvents([...events, newEvent]);
     saveEventInBackend(newEvent);
-    console.log(events)
+    setLoaded(false);
+    localStorage.removeItem(LOCAL_STORAGE_EVENTS);
+    getEventsFromBackend(userData.id);
+    if (events)
+      setLoaded(true);
   }
 
   // const handleCloseEvent = () => {
