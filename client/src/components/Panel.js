@@ -27,6 +27,7 @@ const Panel = ({ itemGroup, handleSelect }) => {
     setDone(true);
   }
 
+  // console.log("itemGroup:", itemGroup)
   //........................
 
   return (
@@ -46,7 +47,12 @@ const Panel = ({ itemGroup, handleSelect }) => {
       {
         itemGroup.name === 'meteorosensitivity' &&
 
-        <FormField style={{ display: 'flex', flexDirection: 'row', marginBottom: '1.0rem' }} onSubmit={handleSubmit} >
+        <FormField style={{
+          display: 'flex',
+          flexDirection: 'row',
+          marginBottom: '1.0rem'
+        }}
+          onSubmit={handleSubmit} >
           <CityInput>
             In welcher Stadt lebst Du?
             <BiInfoCircle
@@ -55,13 +61,19 @@ const Panel = ({ itemGroup, handleSelect }) => {
             >
               <StP show={showInfo} >Für den Abgleich mit Wetterdaten benötige ich einen Ort</StP>
             </BiInfoCircle>
-            <InputField
-              style={{ marginLeft: '1.0rem', width: '200px' }}
-              type="text"
-              name={diaryTemplate.city}
-              ref={el => inputRef.current = el}
-              onChange={(e) => setDiaryTemplate({ ...diaryTemplate, city: e.target.value })}
-            />
+            {
+              (!done) &&
+              <InputField
+                style={{
+                  marginLeft: '1.0rem',
+                  width: '200px'
+                }}
+                type="text"
+                name={diaryTemplate.city}
+                ref={el => inputRef.current = el}
+                onChange={(e) => setDiaryTemplate({ ...diaryTemplate, city: e.target.value })}
+              />
+            }
           </CityInput>
           {
             !done ?

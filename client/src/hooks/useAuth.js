@@ -52,9 +52,11 @@ const useAuth = () => {
 
 			if (ls !== null) {
 				const decodedJwt = jwt_decode(ls.access)
+				
 				setUser(decodedJwt.email);
 				setUserData({ name: decodedJwt.name, id: decodedJwt.id, diaryId: decodedJwt.diaries })
 				setToken(ls.access)
+				
 			}
 		}
 	}, [])
@@ -297,12 +299,12 @@ const useAuth = () => {
 		if (events) {
 			events.map((e, i) => {
 				if (e.category === 'Therapie') {
-					setTimeCatArrays({ ...timeCatArrays }, timeCatArrays.therapie.push(DateTime.fromISO(e.end).ts))
-					// console.log("-------", e.category, DateTime.fromISO(e.end).ts)
+					setTimeCatArrays({ ...timeCatArrays }, 
+						timeCatArrays.therapie.push(DateTime.fromISO(e.end).ts))
 					return (e)
 				} else if (e.category === 'Arzttermin') {
-					setTimeCatArrays({ ...timeCatArrays }, timeCatArrays.arzttermin.push(DateTime.fromISO(e.end).ts))
-					// console.log("-------", e.category, DateTime.fromISO(e.end).ts)
+					setTimeCatArrays({ ...timeCatArrays }, 
+						timeCatArrays.arzttermin.push(DateTime.fromISO(e.end).ts))
 					return (e)
 				}
 			})
@@ -322,19 +324,11 @@ const useAuth = () => {
 		if (events) {
 			const today = DateTime.local(fullDate());
 
-
 			array = events.filter(e => {
 				if (DateTime.fromISO(e.start).ts > today.ts) {
 					return e
 				}
 			})
-
-			// setNextEvents(events.filter(e => {
-			// 	if (DateTime.fromISO(e.start).ts > today.ts) {
-			// 		return e
-			// 	}
-			// }))
-
 		}
 
 		// const array = [...nextEvents];
@@ -362,8 +356,6 @@ const useAuth = () => {
 	const getEventsFromBackend = async (id) => {
 
 		clearTimeCatArrays();
-		// console.log(".        .", timeCatArrays)
-		console.log("hole Events aus dem Backend")
 		let requestOptions = {
 			method: 'GET',
 		};

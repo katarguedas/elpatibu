@@ -1,35 +1,40 @@
-import Header from "../components/Header"
-import Footer from '../components/Footer'
-import NavBar from '../components/NavBar'
-import SwitchToggle from "../components/SwitchToggle"
-import { FormField } from "../styled/globalStyles"
-import Panel from "../components/Panel"
-import { SendButton } from "../styled/Buttons"
-import { StBiDownArrow, StBiRightArrow } from '../styled/Icons'
-import { BiSquare, BiCheckSquare } from "react-icons/bi";
-import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2, StP, Accordion } from "../styled/globalStyles"
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import NavBar from '../components/NavBar';
+import SwitchToggle from '../components/SwitchToggle';
+import Panel from '../components/Panel';
+import { FormField } from '../styled/globalStyles';
+import { SendButton } from '../styled/Buttons';
+import { StBiDownArrow, StBiRightArrow } from '../styled/Icons';
+import { BiSquare, BiCheckSquare } from 'react-icons/bi';
+import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2, StP, Accordion } from '../styled/globalStyles';
 
-import { useDataContext } from "../providers/dataContext"
-import { useUserContext } from "../providers/userContext"
+import { useDataContext } from '../providers/dataContext';
+import { useUserContext } from '../providers/userContext';
 
-import React, { useEffect, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import styled from 'styled-components';
+import { theme } from '../themes/theme';
 
 
-import styled from "styled-components"
-
-
-//---------------------------------------------------------
+/********************************************************************************
+ * Component for creating the individual diary
+ * 
+ * Uses diaryTemplate from the hook 'useTemplates'
+ */
 
 const CreateDiary = () => {
 
-  const { diaryTemplate, setDiaryTemplate, setDiary, createNewDiary, diarySaved, DiaryInit } = useDataContext();
+  const { diaryTemplate, setDiaryTemplate, setDiary, createNewDiary, diarySaved, diaryInit } = useDataContext();
   const { user, userData, checkToken, diaryIdSaved } = useUserContext();
 
   const [on, setOn] = useState();
   const [created, setCreated] = useState(false);
   const [done, setDone] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
+  const [missingCity, setMissingCity] = useState(false);
 
   let location = useLocation();
   const navigate = useNavigate();
@@ -41,7 +46,7 @@ const CreateDiary = () => {
       checkToken();
     if (!user)
       navigate('/login');
-    setDiaryTemplate(DiaryInit)
+    setDiaryTemplate(diaryInit)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -66,9 +71,21 @@ const CreateDiary = () => {
       setDone(true);
       timing();
     }
-  }, [diaryIdSaved, diarySaved])
+  }, [diaryIdSaved, diarySaved, setDiaryTemplate, setDiary]) //, diaryTemplate
 
-  //...............
+  //.....................
+
+  const timing = () => {
+    setTimeout(() => { setCreated(false) }, 2000)
+  }
+
+  //.....................
+
+  const navToDiary = () => { navigate('/EditDiary') }
+
+  /*****************************
+   * if toggle is on, all groups will be open and all selectable values are visible and selectable.
+   */
 
   useEffect(() => {
     if (on === true) {
@@ -84,7 +101,10 @@ const CreateDiary = () => {
     }
   }, [on])
 
-  //...........
+  /*****************************
+   * if the state 'selectAll' ist true, all values will be selected.
+   * Otherwise all values will be deselected.
+   */
 
   useEffect(() => {
     if (diaryTemplate) {
@@ -94,6 +114,7 @@ const CreateDiary = () => {
             el.selected = true;
             return el;
           })
+          return e;
         }))
       } else if (selectAll === true) {
         setDiaryTemplate({ ...diaryTemplate }, diaryTemplate.groups.map(e => {
@@ -101,10 +122,11 @@ const CreateDiary = () => {
             el.selected = false;
             return el;
           })
+          return e;
         }))
       }
     }
-  }, [selectAll])
+  }, [selectAll, setDiaryTemplate])
 
   //............................................
 
@@ -117,38 +139,59 @@ const CreateDiary = () => {
     }))
   }
 
-  //..................
+  /*****************************
+   * Selection of individual values
+   */
 
   const handleSelect = (groupId, itemId) => {
     const indexG = diaryTemplate.groups.findIndex((e) => e.id === groupId);
     const indexI = diaryTemplate.groups[indexG].items.findIndex((e) =>
-      e.id ===
-      itemId);
-    console.log(itemId)
-    console.log("indizes:", indexG, indexI)
+      e.id === itemId);
 
     setDiaryTemplate(
       { ...diaryTemplate }, diaryTemplate.groups[indexG].items[indexI].selected = !diaryTemplate.groups[indexG].items[indexI].selected
     )
   }
 
-  //................
+  const checkMeteo = () => {
+    console.log("diaryTemplate", diaryTemplate)
+    let check = false;
+    const index = diaryTemplate.groups.findIndex(e => e.name === 'meteorosensitivity')
+    if (index) {
+      diaryTemplate.groups[index].items.map(e => {
+        if (e.selected)
+          check = true;
+          return e;
+      })
+    }
 
+    console.log("check,", check)
+    console.log("Length of city:", diaryTemplate.city.length)
+
+    if ((check === true) && (diaryTemplate.city.length > 0))
+      return true
+    else if ((check === true) && (diaryTemplate.city.length === 0))
+      return false
+    else
+      return true
+  }
+
+  /*****************************
+   * 
+   * Calls 'createNewDiary' from useData-Hook to save the diary in backend
+   */
 
   const handleSendAndCreate = () => {
-    createNewDiary(diaryTemplate.id);
+    if (checkMeteo() === true) {
+      setMissingCity(false)
+      createNewDiary(diaryTemplate.id);
+    }
+    else {
+      setMissingCity(true)
+    }
   }
 
-  const timing = () => {
-    setTimeout(() => {
-      setCreated(false)
-    }, 2000)
-  }
-
-
-  const navToDiary = () => {
-    navigate('/EditDiary')
-  }
+  //.............................
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -173,16 +216,20 @@ const CreateDiary = () => {
           {
             diaryTemplate &&
             <SwitchGroup>
-              <SwitchToggle isOn={on} handleToggle={() => setOn(!on)} />
-              <SwitchText>alle aufklappen</SwitchText>
+              <SwitchToggle
+                isOn={on}
+                handleToggle={() => setOn(!on)}
+              />
+              <SwitchText>
+                alle aufklappen
+              </SwitchText>
             </SwitchGroup>
           }
           {
             (!done) &&
-             
             (selectAll === false) &&
             <div style={{ display: 'inline-flex' }}  >
-              <StBiCheckSquare onClick={() => setSelectAll(!selectAll)}>  </StBiCheckSquare>
+              <StBiCheckSquare onClick={() => setSelectAll(!selectAll)} />
               <p>alle auswählen</p>
             </div>
           }
@@ -190,18 +237,17 @@ const CreateDiary = () => {
             (!done) &&
             (selectAll === true) &&
             <div style={{ display: 'inline-flex' }} >
-              <StBiSquare onClick={() => setSelectAll(!selectAll)}></StBiSquare>
+              <StBiSquare onClick={() => setSelectAll(!selectAll)} />
               <p>alle auswählen</p>
             </div>
           }
-
-          
           {
             diaryTemplate &&
             diaryTemplate.groups.map(e => (
-              <ItemGroup key={e.id}>
-                <Accordion visible={e.visible} onClick={() =>
-                  handleClick(e.id)}
+              <ItemGroup key={e.id} >
+                <Accordion
+                  visible={e.visible}
+                  onClick={() => handleClick(e.id)}
                 >
                   {!e.visible && <StBiRightArrow></StBiRightArrow>}
                   {e.visible && <StBiDownArrow></StBiDownArrow>}
@@ -209,22 +255,31 @@ const CreateDiary = () => {
                   {e.label}
                 </Accordion>
 
-                <Panel itemGroup={e} handleSelect={handleSelect} ></Panel>
-              </ItemGroup>
+                <Panel itemGroup={e} handleSelect={handleSelect} />
+              </ItemGroup >
             ))
           }
           {
             (done === false) &&
             <div>
               <StP> Gebe Deinem Tagebuch bitte einen Namen: </StP>
-              <FormField onSubmit={handleSubmit}>
+              <FormField onSubmit={handleSubmit} >
                 <input
-                  style={{ marginLeft: '1.5rem', width: '200px', height: '1.75rem' }}
-                  // value = 'mein erstes Tagebuch'
-                  onChange={(e) => setDiaryTemplate({ ...diaryTemplate, diaryName: e.target.value })}
+                  style={{
+                    marginLeft: '1.5rem',
+                    width: '200px',
+                    height: '1.75rem'
+                  }}
+                  onChange={(e) =>
+                    setDiaryTemplate({ ...diaryTemplate, diaryName: e.target.value })}
                 />
               </FormField>
             </div>
+          }
+          {
+            (missingCity === true) &&
+            <p style={{ fontWeight: '500' }} >Du hast Werte für Wetterfühligkeit ausgewählt.
+              Dafür benötige ich Deinen Wohnort. </p>
           }
           {
             (created === false) &&

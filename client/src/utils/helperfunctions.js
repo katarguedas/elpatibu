@@ -1,6 +1,4 @@
 import { todayDate } from "./Date";
-import { DateTime } from "luxon";
-import { useUserContext } from "../providers/userContext";
 
 //--------------------------------------------------------
 
@@ -29,7 +27,7 @@ export const sortminmax = arr => {
 	return (resSort.sort(function (a, b) { return a - b })).reverse();
 }
 
-
+//--------------------------------------------------------
 
 export const sortTs = (tsArr, events) => {
 	let maxnum = null;
@@ -44,6 +42,39 @@ export const sortTs = (tsArr, events) => {
 }
 
 //----------------------------------------------------------
+
+
+export const checkAllValuesOfToday = (editedGroups, diary) => {
+
+	const today = todayDate();
+	console.dir(today);
+
+	let savedAll = true;
+
+	const saveState = (saved) => {
+		if(saved === false)
+		  savedAll = false;
+	}
+
+	if (diary) {
+		const lastTs = diary.date[diary.date.length - 1];
+		console.log("lastTs", lastTs)
+		if (lastTs < today) {
+			console.log("noch gar keine Werte heute erfasst")
+		}
+		else if (lastTs === today) {
+			diary.groups.map((e, i) => {
+					e.items.forEach((el, index) => {
+						// editedGroups.groups[i].items[index].selected  = el.selected;
+					})
+					saveState(e.items.every(el => el.selected.true));
+				})
+			}
+		}
+		console.log( "savedAll",savedAll)
+		return savedAll;
+	}
+
 
 
 

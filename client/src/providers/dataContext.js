@@ -15,11 +15,11 @@ const DataContextProvider = ({ children }) => {
 
 	const [LOCAL_STORAGE_WEATHER, getWeatherDataFromBackend, weatherData, getWeatherData] = useWeatherAPI();
 
-	const [DiaryInit, RatingText] = useTemplates();
+	const [diaryInit, editedGroups, ratingText] = useTemplates();
 
 
 	return (
-		<DataContext.Provider value={{ diary, setDiary, diaryTemplate, setDiaryTemplate, createNewDiary, getDiaryFromBackend, saveDataToBackend, tempData, setTempData, diarySaved, LOCAL_STORAGE_WEATHER, getWeatherDataFromBackend, weatherData, getWeatherData, DiaryInit, RatingText }} >
+		<DataContext.Provider value={{ diary, setDiary, diaryTemplate, setDiaryTemplate, createNewDiary, getDiaryFromBackend, saveDataToBackend, tempData, setTempData, diarySaved, LOCAL_STORAGE_WEATHER, getWeatherDataFromBackend, weatherData, getWeatherData, diaryInit, editedGroups, ratingText }} >
 			{children}
 		</DataContext.Provider>
 	)

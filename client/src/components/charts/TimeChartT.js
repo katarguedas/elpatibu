@@ -55,15 +55,16 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 	const initState = [];
 
 	console.log("show Therapie:", showTherapie)
+	console.log("first and last day", firstDay, lastDay, timeCatArrays)
 
 	useEffect(() => {
 		let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
 
-		if(!timeCatArrays) {
+		if (!timeCatArrays) {
 			console.log("test")
 			setTimeArrays(eventsArray)
 		}
-	},[])
+	}, [])
 
 	useEffect(() => {
 		console.log("arrayLength:", timeCatArrays.therapie.length)
@@ -72,61 +73,65 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 			if (timeCatArrays.therapie.length > 0) {
 				console.log("es gibt therapietermine zum Plotten")
 				timeCatArrays.therapie.map((e, i) => {
-					console.log("myAnnotations mit Lines")
-					setMyAnnotations([...myAnnotations, myAnnotations.push({
-						id: 'line_' + timeCatArrays.therapie[i],
-						type: 'line',
-						label: {
-							display: true,
-							content: 'Therapie',
-							position: 'end',
-							yAdjust: -5,
-							xAdjust: -5,
-							padding: 5,
-							backgroundColor: theme.colors.col3,
-							color: '#fff'
-						},
-						xMin: timeCatArrays.therapie[i],
-						xMax: timeCatArrays.therapie[i],
-						backgroundColor: 'red',
-						borderWidth: 2
-					})
-					])
+					console.log(timeCatArrays.therapie[i])
+					if ((firstDay < timeCatArrays.therapie[i]) && (timeCatArrays.therapie[i] < lastDay)) {
+						console.log("....", firstDay - timeCatArrays.therapie[i] , timeCatArrays.therapie[i]-lastDay)
+						console.log("myAnnotations mit Lines")
+						setMyAnnotations([...myAnnotations, myAnnotations.push({
+							id: 'line_' + timeCatArrays.therapie[i],
+							type: 'line',
+							label: {
+								display: true,
+								content: 'Therapie',
+								position: 'end',
+								yAdjust: -5,
+								xAdjust: -5,
+								padding: 5,
+								backgroundColor: theme.colors.col3,
+								color: '#fff'
+							},
+							xMin: timeCatArrays.therapie[i],
+							xMax: timeCatArrays.therapie[i],
+							backgroundColor: 'red',
+							borderWidth: 2
+						})
+						])
+					}
 				})
 			}
 
-				colorArray.map((e, i) => {
-					setMyAnnotations([
-						...myAnnotations, myAnnotations.push({
-							type: 'box',
-							xMin: firstDay,
-							xMax: lastDay,
-							yMin: yMinArray[i],
-							yMax: yMaxArray[i],
-							backgroundColor: e,
-							drawTime: 'beforeDatasetsDraw',
-						})
-					])
-				})
-
+			colorArray.map((e, i) => {
 				setMyAnnotations([
 					...myAnnotations, myAnnotations.push({
-						type: 'line',
-						yMin: 39,
-						yMax: 39,
-						borderColor: 'rgb(206, 23, 93)',
-						borderWidth: 3,
-						label: {
-							display: true,
-							content: 'hohes Fieber',
-							position: 'end',
-							yAdjust: -15,
-							padding: 5,
-							backgroundColor: 'rgb(206, 23, 93)',
-							color: '#fff'
-						}
+						type: 'box',
+						xMin: firstDay,
+						xMax: lastDay,
+						yMin: yMinArray[i],
+						yMax: yMaxArray[i],
+						backgroundColor: e,
+						drawTime: 'beforeDatasetsDraw',
 					})
 				])
+			})
+
+			setMyAnnotations([
+				...myAnnotations, myAnnotations.push({
+					type: 'line',
+					yMin: 39,
+					yMax: 39,
+					borderColor: 'rgb(206, 23, 93)',
+					borderWidth: 3,
+					label: {
+						display: true,
+						content: 'hohes Fieber',
+						position: 'end',
+						yAdjust: -15,
+						padding: 5,
+						backgroundColor: 'rgb(206, 23, 93)',
+						color: '#fff'
+					}
+				})
+			])
 		} else {
 			console.log("-------------keine lineAnnotations")
 			colorArray.map((e, i) => {
@@ -167,7 +172,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 
 	useEffect(() => {
 
-		  setMyAnnotations( initState)
+		setMyAnnotations(initState)
 		console.log("myAnnotations", myAnnotations)
 	}, [showTherapie])
 
@@ -349,9 +354,9 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 		}
 	}
 
-useEffect(()=> {
+	useEffect(() => {
 
-},[])
+	}, [])
 
 
 	return (
@@ -359,7 +364,7 @@ useEffect(()=> {
 			{showTherapie ?
 				<Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem' }} options={options} data={data} redraw={true} done='true' />
 				:
-				<Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem' }} options={options} data={data} redraw={true} dataidkey='id'/>
+				<Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem' }} options={options} data={data} redraw={true} dataidkey='id' />
 			}
 
 		</div>

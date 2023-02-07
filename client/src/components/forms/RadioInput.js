@@ -1,9 +1,9 @@
 
-import smiley1 from '../../pictures/1.png';
-import smiley2 from '../../pictures/2.png';
-import smiley3 from '../../pictures/3.png';
-import smiley4 from '../../pictures/4.png';
-import smiley5 from '../../pictures/5.png';
+import smiley1 from '../../pictures/1a.png';
+import smiley2 from '../../pictures/2a.png';
+import smiley3 from '../../pictures/3a.png';
+import smiley4 from '../../pictures/4a.png';
+import smiley5 from '../../pictures/5a.png';
 
 import styled from "styled-components";
 import { useDataContext } from '../../providers/dataContext';
@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 const RadioInput = ({ item, itemIndex, data, setData }) => {
 
 
-	const { RatingText } = useDataContext();
+	const { ratingText } = useDataContext();
 
 	const [text, setText] = useState([]);
 
@@ -25,8 +25,7 @@ const RadioInput = ({ item, itemIndex, data, setData }) => {
 	}
 
 	useEffect(() => {
-		// const textOptions = RatingText();
-		RatingText().map(e => {
+		ratingText().map(e => {
 			if (item.name === e.name) {
 				setText(e.text)
 			}

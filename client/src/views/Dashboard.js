@@ -1,63 +1,65 @@
-import Header from "../components/Header";
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
-import { SendButton } from "../styled/Buttons";
-import { fullDate, todayDate } from "../utils/Date";
-import { useUserContext } from "../providers/userContext";
-import { useDataContext } from "../providers/dataContext";
-import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2 } from "../styled/globalStyles";
+import { SendButton } from '../styled/Buttons';
+import { fullDate, todayDate } from '../utils/Date';
+import { checkAllValuesOfToday } from '../utils/helperfunctions';
+import { useUserContext } from '../providers/userContext';
+import { useDataContext } from '../providers/dataContext';
+import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2 } from '../styled/globalStyles';
 
-import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import styled from "styled-components";
-import { DateTime } from "luxon";
-import { theme } from "../themes/theme";
+import styled from 'styled-components';
+import { DateTime } from 'luxon';
+import { theme } from '../themes/theme';
 
-//---------------------------------------------------------
+
+/*******************************************************
+ * Dashboard-Component
+ * 
+ * Shows next events from calendar and 
+ * informs whether values have already been saved today.
+ */
 
 const Dashboard = () => {
 
 	const { user, userData, checkToken, getEventsFromBackend, nextEvents, LOCAL_STORAGE_EVENTS } = useUserContext();
-	const { getDiaryFromBackend, diary } = useDataContext();
+	const { getDiaryFromBackend, diary, editedGroups } = useDataContext();
 
 	const [events, setEvents] = useState();
 	const [done, setDone] = useState();
 
-	let sortedArray = [];
-
 	let location = useLocation();
 	const navigate = useNavigate();
 
-	// console.log("USER?", user)
-	// console.log("USERDATA?", userData)
-	// console.log("DIARY?", diary)
-
 	//........................
+
+	console.log(nextEvents)
 
 	useEffect(() => {
 		checkToken();
 	}, [location])
 
-	//........................
-
+	/*******************************************************
+	 * Checks of userData is available. 
+	 * If yes, it fetches the diary from Backend.
+	 */
 	useEffect(() => {
 
 		if (userData) {
 			if (!diary) {
-				if (userData.diaryId) {
-					console.log("noch kein Diary da, schau nach, ob was im Backend ist")
+				if (userData.diaryId)
 					getDiaryFromBackend(userData.diaryId)
-				}
-				else
-					console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
-			}
-			else {
-				// console.log("Diary:", diary)
 			}
 		}
 	}, [])
 
+	/*******************************************************
+ * Checks of events data are available in local storage. 
+ * If no, it fetches the events from Backend.
+ */
 	useEffect(() => {
 		let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
 		if (!eventsArray) {
@@ -65,27 +67,29 @@ const Dashboard = () => {
 			eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
 		}
 		setEvents(eventsArray)
+		console.log("nextEvents:", nextEvents)
 	}, [])
 
-	//............
+	//..........................
 
 	useEffect(() => {
 	}, [events])
 
-	//...............
+	//.........................
 
 	useEffect(() => {
+		console.log("nextEvents:", nextEvents)
 
 		if (nextEvents) {
 			setDone(true);
 		}
 	}, [])
 
-//-------------------------
+	//-------------------------
 
 	useEffect(() => {
 		if (done)
-			console.log(nextEvents)
+			console.log('')
 	}, [done])
 
 	//........................
@@ -96,7 +100,15 @@ const Dashboard = () => {
 
 	//........................
 
+	console.dir("nächste Termine", nextEvents)
+	console.dir(done)
+
+	checkAllValuesOfToday(editedGroups, diary)
+
 	const space = '	';
+
+	console.log("nextEvents:", nextEvents)
+
 
 	if (user)
 		return (
@@ -114,10 +126,13 @@ const Dashboard = () => {
 							</PageTitle>
 						}
 						{!userData?.diaryId ?
-							<div>Du hast noch kein Tagebuch angelegt. <br></br>Hier kannst du eins anlegen<br></br>
+							<div>
+								Du hast noch kein Tagebuch angelegt.
+								<br></br>
+								Hier kannst du eins anlegen
+								<br></br>
 								<SendButton onClick={handleStart} >Start</SendButton>
 							</div>
-
 							: <div>
 								<TitleH2 style={{ color: theme.colors.col3 }} >
 									Deine nächsten Termine
@@ -131,24 +146,24 @@ const Dashboard = () => {
 										))}
 								</TitleH2>
 								<Item />
-								<TitleH2
-									style={{ color: theme.colors.col3, marginTop: '1.5rem' }}  >
-									und Erinnerungen
-								</TitleH2>
 								<TitleH2 style={{ marginTop: '4.5rem', color: theme.colors.col3 }} >
-
 									{
 										diary?.date &&
 											diary?.date[diary.date.length - 1] === todayDate() ?
-											<p style={{ color: theme.colors.col2 }} >
-												Du hast heute bereits Daten eingetragen.
-											</p>
+											// <p style={{ color: theme.colors.col2 }} >
+											// 	Du hast heute bereits Daten eingetragen,
+											// </p>
+											
+												!checkAllValuesOfToday(editedGroups, diary) ?
+												<p style={{ color: theme.colors.col2 }} >
+												Du hast heute bereits Daten eingetragen, allerdings nicht alle.</p>
+												: 
+												<p>Du hast heute bereits alle Daten eingetragen</p>
 											:
 											<p style={{ color: theme.colors.col5 }} >
 												Du hast heute noch keine Daten eingetragen.
 											</p>
 									}
-
 								</TitleH2>
 							</div>
 						}

@@ -9,13 +9,13 @@ const useTemplates = () => {
 
 	// const [diaryInit, setdiaryInit] = useState();
 
-	const DiaryInit = () => {
+	const diaryInit = () => {
 
 		return (
 			{
 				id: uuidv4(),
 				diaryName: 'Tagebuch1',
-				city: 'Welt',
+				city: '',
 				date: [],
 				groups: [
 					{
@@ -322,7 +322,7 @@ const useTemplates = () => {
 	}
 
 
-	const EditedGroups = () => {
+	const editedGroups = () => {
 
 		return (
 			{
@@ -476,7 +476,7 @@ const useTemplates = () => {
 	}
 
 
-	const RatingText = () => {
+	const ratingText = () => {
 		return ([
 			{
 				name: 'wellBeing',
@@ -565,7 +565,7 @@ const useTemplates = () => {
 		])
 	}
 
-	return [DiaryInit, RatingText]
+	return [diaryInit, editedGroups, ratingText]
 
 }
 

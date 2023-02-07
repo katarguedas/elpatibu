@@ -1,22 +1,22 @@
-import Header from "../components/Header";
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
 import GetData from '../components/GetData'
-import { useDataContext } from "../providers/dataContext";
-import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle } from "../styled/globalStyles"
-import { useUserContext } from "../providers/userContext";
+import { useDataContext } from '../providers/dataContext';
+import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle } from '../styled/globalStyles'
+import { useUserContext } from '../providers/userContext';
 
-import { useLocation, useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import { BiRightArrow, BiDownArrow } from "react-icons/bi";
+import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BiRightArrow, BiDownArrow } from 'react-icons/bi';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 //---------------------------------------------------------
 
 const EditDiary = () => {
 
-  const { user, userData, checkToken } = useUserContext();
+  const { userData, checkToken } = useUserContext();
   const { getDiaryFromBackend } = useDataContext();
   const { diary } = useDataContext();
 
@@ -35,14 +35,10 @@ const EditDiary = () => {
     if (userData) {
       if (!diary) {
         if (userData.diaryId) {
-          console.log("noch kein Diary da, schau nach, ob was im Backend ist")
+          console.log('noch kein Diary da, schau nach, ob was im Backend ist')
           getDiaryFromBackend(userData.diaryId);
         }
-        else
-          console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
       }
-      else {
-      } console.log("Diary:", diary)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -83,9 +79,9 @@ const EditDiary = () => {
                 <EAccordion visible={edit} onClick={handleClick}>
 
                   {edit ?
-                    <StBiDownArrow></StBiDownArrow>
+                    <StBiDownArrow />
                     :
-                    <StBiRightArrow></StBiRightArrow>
+                    <StBiRightArrow />
                   }
                   {e.label}
 

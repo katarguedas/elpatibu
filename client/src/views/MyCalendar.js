@@ -1,21 +1,20 @@
-import Header from "../components/Header";
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
-import CalendarInputCard from "../components/forms/CalendarInputCard";
-import EventCard from "../components/EventCard";
-import { NewEventButton } from "../styled/Buttons";
-import { ContentGroup, MainGroup, MainContent, PageTitle } from "../styled/globalStyles";
+import CalendarInputCard from '../components/forms/CalendarInputCard';
+import EventCard from '../components/EventCard';
+import { NewEventButton } from '../styled/Buttons';
+import { ContentGroup, MainGroup, MainContent, PageTitle } from '../styled/globalStyles';
 import { theme } from '../themes/theme';
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from 'react';
 import { Calendar, luxonLocalizer } from 'react-big-calendar';
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 import { v4 as uuidv4 } from 'uuid';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import styled from 'styled-components';
+import { useUserContext } from '../providers/userContext';
 
-import styled from "styled-components";
-import { useUserContext } from "../providers/userContext";
-
-require('globalize/lib/cultures/globalize.culture.de')
+require('globalize/lib/cultures/globalize.culture.de');
 
 
 //---------------------------------------------------------
@@ -52,8 +51,8 @@ const MyCalendar = () => {
   }, [])
 
   useEffect(() => {
-    console.log("loaded:", loaded)
-    console.log("events:", events)
+    console.log('loaded:', loaded)
+    console.log('events:', events)
   }, [loaded])
 
 
@@ -181,7 +180,7 @@ const MyCalendar = () => {
 
 
   const handleStartDate = e => {
-    console.log("Startdatum", e.target.value)
+    console.log('Startdatum', e.target.value)
 
     if (allday === true)
       setStartDate(dateAllday(e.target.value, 1))
@@ -191,7 +190,7 @@ const MyCalendar = () => {
 
 
   const handleEndDate = e => {
-    console.log("Enddatum", e.target.value)
+    console.log('Enddatum', e.target.value)
 
     if (allday === true)
       setEndDate(dateAllday(e.target.value, 2))
@@ -201,7 +200,7 @@ const MyCalendar = () => {
   }
 
   const handleSelection = e => {
-    console.log("selection:", e.target.value)
+    console.log('selection:', e.target.value)
     console.log(e.target.name)
     setCat(e.target.value)
   }
@@ -232,10 +231,6 @@ const MyCalendar = () => {
       setLoaded(true);
   }
 
-  // const handleCloseEvent = () => {
-  //   setView(false)
-  //   setOpen(false)
-  // }
 
   //.................................
 

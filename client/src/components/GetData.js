@@ -64,9 +64,6 @@ const GetData = ({ index }) => {
 		if (userData)
 			if (!diary) {
 				if (userData.diaryId) {
-					console.log("USER?", user)
-					console.log("USERDATA?", userData)
-					console.log("noch kein Diary da, schau nach, ob was im Backend ist")
 					getDiaryFromBackend(userData.diaryId)
 				}
 				else
@@ -144,19 +141,11 @@ const GetData = ({ index }) => {
 		}
 	}, [update])
 
-	//---------------------------
-
-	// useEffect(() => {
-	//     if (saved === true)
-	//         setDone(true)
-	// }, [saved])
-
 	//-----------------------------------------
 
 	useEffect(() => {
 		// console.log("BIN im saveDataToBackend-useEffect, saved: ", saved)
 		if (saved === true) {
-			console.log("saved im frontend:", saved)
 			saveDataToBackend(diary.id, diary.groups[index].id, diary.groups[index].items, ts, update);
 			setDone(true)
 			setUpdate()
