@@ -2,6 +2,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
 import GetData from '../components/GetData'
+import { checkGroupToday } from '../utils/helperfunctions';
 import { useDataContext } from '../providers/dataContext';
 import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle } from '../styled/globalStyles'
 import { useUserContext } from '../providers/userContext';
@@ -17,10 +18,11 @@ import styled from 'styled-components';
 const EditDiary = () => {
 
   const { userData, checkToken } = useUserContext();
-  const { getDiaryFromBackend } = useDataContext();
+  const { getDiaryFromBackend, editedGroups } = useDataContext();
   const { diary } = useDataContext();
 
   const [edit, setEdit] = useState(false);
+  const [savedValues, setsavedValues] = useState();
 
   let location = useLocation();
 
@@ -44,6 +46,13 @@ const EditDiary = () => {
   }, [])
 
 
+  //........................
+
+  useEffect(() => {
+    setsavedValues(checkGroupToday(editedGroups(), diary));
+  }, [])
+
+
   useEffect(() => {
     if (diary) {
       // setDiary({ ...diary }, diary.groups.map(e => {
@@ -59,6 +68,11 @@ const EditDiary = () => {
     setEdit(!edit);
   }
 
+  if((diary) && (savedValues)) {
+  console.log("test", savedValues)
+  console.log("test", savedValues.groups[0].items)
+}
+  
   //..........................
 
   return (
@@ -88,7 +102,12 @@ const EditDiary = () => {
                 </EAccordion>
                 {edit &&
                   <StDiv>
-                    <GetData id={e.id} index={i} ></GetData>
+                    <GetData
+                      id={e.id}
+                      index={i}
+                      savedGroupItems={savedValues.groups[i].items}
+                    >
+                    </GetData>
                   </StDiv>
                 }
               </Items>

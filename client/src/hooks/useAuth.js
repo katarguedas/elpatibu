@@ -247,7 +247,7 @@ const useAuth = () => {
 				console.log("response", response)
 
 				if (response.status === "ok") {
-					setRegMessage("Sie haben sich erfolgreich registriert und können sich jetzt anmelden.")
+					setRegMessage("Du hast Dich erfolgreich registriert und kannst Dich jetzt anmelden.")
 					setFlag(0)
 				}
 				else if (response.status === "1") {

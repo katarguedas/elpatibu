@@ -1,12 +1,14 @@
-import { useRef, useState } from "react";
-import { BiSquare, BiCheckSquare, BiInfoCircle } from "react-icons/bi";
-import { SendButton } from "../styled/Buttons";
+import { BiSquare, BiCheckSquare, BiInfoCircle } from 'react-icons/bi';
+import { SendButton } from '../styled/Buttons';
 import { theme } from '../themes/theme'
+import { useDataContext } from '../providers/dataContext';
+import { InputField, FormField } from '../styled/globalStyles';
+
+import { useRef, useState } from 'react';
 import 'react-tooltip/dist/react-tooltip.css';
-import styled from "styled-components";
-import { useDataContext } from "../providers/dataContext";
-import { InputField, FormField } from "../styled/globalStyles";
-import { BiCheck } from "react-icons/bi";
+
+import styled from 'styled-components';
+import { BiCheck } from 'react-icons/bi';
 
 //---------------------------------------------------------
 
@@ -27,19 +29,19 @@ const Panel = ({ itemGroup, handleSelect }) => {
     setDone(true);
   }
 
-  // console.log("itemGroup:", itemGroup)
   //........................
 
   return (
     <StPanel visible={itemGroup.visible}>
       {itemGroup.items.map(el => (
-        <Item key={el.
-          id}>
+        <Item key={el.id}>
           {
             el.selected ?
-              <StBiCheckSquare onClick={() => handleSelect(itemGroup.id, el.id)}></StBiCheckSquare>
+              <StBiCheckSquare
+                onClick={() => handleSelect(itemGroup.id, el.id)} />
               :
-              <StBiSquare onClick={() => handleSelect(itemGroup.id, el.id)}></StBiSquare>
+              <StBiSquare
+                onClick={() => handleSelect(itemGroup.id, el.id)} />
           }
           {el.label}
         </Item>
@@ -59,7 +61,9 @@ const Panel = ({ itemGroup, handleSelect }) => {
               style={{ margin: '0.5rem', fontSize: '1.25rem' }}
               onClick={() => setShowInfo(true)}
             >
-              <StP show={showInfo} >Für den Abgleich mit Wetterdaten benötige ich einen Ort</StP>
+              <StP show={showInfo} >
+                Für den Abgleich mit Wetterdaten benötige ich einen Ort
+              </StP>
             </BiInfoCircle>
             {
               (!done) &&
@@ -71,7 +75,8 @@ const Panel = ({ itemGroup, handleSelect }) => {
                 type="text"
                 name={diaryTemplate.city}
                 ref={el => inputRef.current = el}
-                onChange={(e) => setDiaryTemplate({ ...diaryTemplate, city: e.target.value })}
+                onChange={(e) =>
+                  setDiaryTemplate({ ...diaryTemplate, city: e.target.value })}
               />
             }
           </CityInput>

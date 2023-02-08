@@ -3,7 +3,7 @@ import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
 import { SendButton } from '../styled/Buttons';
 import { fullDate, todayDate } from '../utils/Date';
-import { checkAllValuesOfToday } from '../utils/helperfunctions';
+import { checkAllValuesToday } from '../utils/helperfunctions';
 import { useUserContext } from '../providers/userContext';
 import { useDataContext } from '../providers/dataContext';
 import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2 } from '../styled/globalStyles';
@@ -26,7 +26,7 @@ import { theme } from '../themes/theme';
 const Dashboard = () => {
 
 	const { user, userData, checkToken, getEventsFromBackend, nextEvents, LOCAL_STORAGE_EVENTS } = useUserContext();
-	const { getDiaryFromBackend, diary, editedGroups } = useDataContext();
+	const { getDiaryFromBackend, diary } = useDataContext();
 
 	const [events, setEvents] = useState();
 	const [done, setDone] = useState();
@@ -103,7 +103,7 @@ const Dashboard = () => {
 	console.dir("nächste Termine", nextEvents)
 	console.dir(done)
 
-	checkAllValuesOfToday(editedGroups, diary)
+	checkAllValuesToday(diary)
 
 	const space = '	';
 
@@ -154,7 +154,7 @@ const Dashboard = () => {
 											// 	Du hast heute bereits Daten eingetragen,
 											// </p>
 											
-												!checkAllValuesOfToday(editedGroups, diary) ?
+												!checkAllValuesToday(diary) ?
 												<p style={{ color: theme.colors.col2 }} >
 												Du hast heute bereits Daten eingetragen, allerdings nicht alle.</p>
 												: 

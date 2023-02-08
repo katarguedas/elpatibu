@@ -13,7 +13,6 @@ import './App.css';
 
 
 //---------------------------------------------------------
-// console.log(process.env.REACT_APP_LOCAL_STORAGE_WEATHER)
 
 function App() {
 

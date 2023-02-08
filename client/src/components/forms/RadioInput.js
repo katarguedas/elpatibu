@@ -5,12 +5,12 @@ import smiley3 from '../../pictures/3a.png';
 import smiley4 from '../../pictures/4a.png';
 import smiley5 from '../../pictures/5a.png';
 
-import styled from "styled-components";
 import { useDataContext } from '../../providers/dataContext';
+
+import styled from "styled-components";
 import { useEffect, useState } from 'react';
 
 //------------------------------------------------------------
-
 
 const RadioInput = ({ item, itemIndex, data, setData }) => {
 
@@ -19,10 +19,13 @@ const RadioInput = ({ item, itemIndex, data, setData }) => {
 
 	const [text, setText] = useState([]);
 
+	//..........................
 	const handleChange = (e) => {
 		setData([...data,
 		{ name: item.name, value: parseInt(e.target.value) }])
 	}
+
+	//..........................
 
 	useEffect(() => {
 		ratingText().map(e => {
@@ -32,9 +35,7 @@ const RadioInput = ({ item, itemIndex, data, setData }) => {
 		})
 	}, [])
 
-	console.log(text)
-
-	//.....................
+	//.........................
 
 	return (
 

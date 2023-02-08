@@ -1,17 +1,14 @@
-import Header from "../components/Header"
+import Header from '../components/Header'
 import Footer from '../components/Footer'
-import RegisterForm from "../components/forms/RegisterForm"
+import RegisterForm from '../components/forms/RegisterForm'
+import { ContentGroup, PageTitle } from '../styled/globalStyles'
+import { useUserContext } from '../providers/userContext'
 
-import { useUserContext } from "../providers/userContext"
-
-import { useEffect, useState } from "react"
-
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 import { v4 as uuidv4 } from 'uuid';
 
 import styled from 'styled-components';
-import { ContentGroup, PageTitle } from "../styled/globalStyles"
-import { useNavigate } from "react-router"
-
 
 //---------------------------------------------------------
 
@@ -19,11 +16,11 @@ const Register = () => {
 
 	const { registerData, setRegisterData, addUser, regMessage, flag, setFlag } = useUserContext();
 
-	const [type, setType] = useState("password");
+	const [type, setType] = useState('password');
 
 	const navigate = useNavigate();
 
-	const clearState = () => setRegisterData("")
+	const clearState = () => setRegisterData('')
 
 	const handleChange = e => {
 		setRegisterData({
@@ -43,28 +40,27 @@ const Register = () => {
 
 	const handleMouseEnter = (e) => {
 		e.preventDefault()
-		setType("text")
+		setType('text')
 	}
 
 	const handleMouseLeave = (e) => {
 		e.preventDefault()
-		setType("password")
+		setType('password')
 	}
 
 	useEffect(() => {
 		if (flag === 0) {
-			console.log("flag", flag)
-			const timer = setTimeout(() => {
-				navigate('/login');
-			}, 3000);
+			console.log('flag', flag)
+			const timer = setTimeout(() => {navigate('/login')}, 3000);
 			return () => {
 				clearTimeout(timer)
 				setFlag(999)
 			};
-
 		}
 	}, [flag])
 
+	//-----------------------------------------------------
+	
 	return (
 		<ContentGroup>
 			<Header />

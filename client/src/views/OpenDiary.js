@@ -1,16 +1,16 @@
-import Header from "../components/Header"
+import Header from '../components/Header'
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
 import { DiaryButton } from '../styled/Buttons';
 import { StGiChart, StBiListPlus, StGiFountainPen } from '../styled/Icons'
-import { useUserContext } from "../providers/userContext";
-import { useDataContext } from "../providers/dataContext";
+import { useUserContext } from '../providers/userContext';
+import { useDataContext } from '../providers/dataContext';
 
-import { useNavigate } from "react-router-dom";
-import React, { useEffect } from "react"
+import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react'
 
-import styled from "styled-components"
-import { ContentGroup, MainGroup, MainContent, PageTitle } from "../styled/globalStyles"
+import styled from 'styled-components'
+import { ContentGroup, MainGroup, MainContent, PageTitle } from '../styled/globalStyles'
 
 //---------------------------------------------------------
 
@@ -27,14 +27,9 @@ const OpenDiary = () => {
 		if (userData) {
 			if (!diary) {
 				if (userData.diaryId) {
-					console.log("noch kein Diary da, schau nach, ob was im Backend ist")
+					console.log('noch kein Diary da, schau nach, ob was im Backend ist')
 					getDiaryFromBackend(userData.diaryId)
 				}
-				else
-					console.log("Kein Tagebuch vorhanden. LEGE EIN NEUES TAGEBUCH AN")
-			}
-			else {
-				// console.log("Diary:", diary)
 			}
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}
