@@ -70,10 +70,10 @@ const Dashboard = () => {
 		console.log("nextEvents:", nextEvents)
 	}, [])
 
-	//..........................
+	// //..........................
 
-	useEffect(() => {
-	}, [events])
+	// useEffect(() => {
+	// }, [events])
 
 	//.........................
 

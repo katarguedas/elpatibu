@@ -330,9 +330,6 @@ const useAuth = () => {
 				}
 			})
 		}
-
-		// const array = [...nextEvents];
-
 		for (let i = 0; i < array.length; i++)
 			array[i].time = DateTime.fromISO(array[i].start).ts
 
@@ -340,16 +337,10 @@ const useAuth = () => {
 			// console.log(a.time)
 			return a.time - b.time;
 		});
-
 		// console.log(sortedArray)
 		if (sortedArray.length > 0)
 			setNextEvents(sortedArray)
 	}
-
-
-	//-----------------------
-	// useEffect(() => {
-	// }, [timeCatArrays])
 
 	//-----------------------
 
@@ -398,6 +389,19 @@ const useAuth = () => {
 			.catch(error => console.log("error:", error))
 	}
 
+	//---------------------------------------
+
+	const deleteEvent = (userId, eventId) => {
+		const eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS));
+		localStorage.removeItem(LOCAL_STORAGE_EVENTS);
+		const newArray = eventsArray.filter(e => (e.id !== eventId));
+		console.log(newArray);
+		localStorage.setItem(LOCAL_STORAGE_EVENTS, JSON.stringify(newArray));
+
+		deleteEventInBackend(userId, eventId);
+		return(true)
+	}
+
 	//........................................
 	const deleteEventInBackend = async (userId, eventId) => {
 
@@ -426,7 +430,7 @@ const useAuth = () => {
 
 	//-----------------------------------------------------------------
 
-	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, timeCatArrays, setTimeArrays, nextEvents, setNextEvents, LOCAL_STORAGE_EVENTS, deleteEventInBackend];
+	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, timeCatArrays, setTimeArrays, nextEvents, setNextEvents, LOCAL_STORAGE_EVENTS, deleteEvent, deleteEventInBackend];
 
 }
 
