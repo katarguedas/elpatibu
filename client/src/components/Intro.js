@@ -37,7 +37,7 @@ const Intro = () => {
           </div>
           {/* <img style={{ border: '1px solid #000', borderRadius: '0.5rem' }}
             src={create} alt="" /> */}
-          <AuthButton onClick={{ handleClickRegister }}
+          <AuthButton onClick={ handleClickRegister }
             style={{
               marginLeft: 'auto',
               marginRight: 'auto',

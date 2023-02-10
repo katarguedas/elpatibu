@@ -7,38 +7,30 @@ import { BiWindowClose } from "react-icons/bi";
 
 //----------------------------------------------------
 
-const EventCard = ({ view, setView, event, setOpen }) => {
+const EventCard = ({ setView, event, setDeleted }) => {
 
-  const { LOCAL_STORAGE_EVENTS, getEventsFromBackend, userData, deleteEventInBackend } = useUserContext();
+  const { LOCAL_STORAGE_EVENTS, getEventsFromBackend, userData, deleteEvent } = useUserContext();
 
   const [events, setEvents] = useState();
   const [date, setDate] = useState();
 
-  
+
   // console.log("view", view)
   // console.log("event", event)
   // console.log("events", events)
-
 
 
   const prepareDate = (string) => {
     if (string) {
       let hh, min;
       const yyyy = string.slice(0, 4)
-      console.log("yyyy", yyyy)
       const mm = string.slice(5, 7)
-      console.log("mm", mm)
       const dd = string.slice(8, 10)
-      console.log("dd", dd)
-      console.log("event", event)
       setDate(dd + '.' + mm + '.' + yyyy)
       if (event.allDay === false) {
         hh = string.slice(11, 13)
-        console.log("hh", hh)
         min = string.slice(14, 16)
-        console.log("min", min)
         const text = dd + '.' + mm + '.' + yyyy + ', um ' + hh + ':' + min;
-        // setDate(...date, 'um ' + hh + ':' + min)
         setDate(text)
       }
     }
@@ -56,8 +48,6 @@ const EventCard = ({ view, setView, event, setOpen }) => {
     if (events) {
       console.log("events", events)
       events.map(e => {
-        // console.log("e.id", e.id)
-        // console.log("event.id", event.id)
         if (e.id === event.id) {
           console.log("gefunden!", e.start)
           setDate(e.start)
@@ -65,15 +55,14 @@ const EventCard = ({ view, setView, event, setOpen }) => {
         }
       })
     }
-    console.log(typeof (date))
   }, [events, event])
 
 
   const handleClick = () => {
-    deleteEventInBackend(userData.id, event.id);
-    localStorage.removeItem(LOCAL_STORAGE_EVENTS);
-    getEventsFromBackend(userData.id);
-    setView(false);
+    if (deleteEvent(userData.id, event.id)) {
+      setDeleted(true);
+      setView(false);
+    }
   }
 
   const handleClose = () => {

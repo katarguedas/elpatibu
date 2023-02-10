@@ -33,6 +33,8 @@ const MyCalendar = () => {
   const [cat, setCat] = useState();
   const [currentEvent, setCurrentEvent] = useState();
   const [loaded, setLoaded] = useState();
+  const [deleted, setDeleted] = useState();
+  const [rerender, setRerender] = useState(false);
 
   const localizer = luxonLocalizer(DateTime, { firstDayOfWeek: 1 })
 
@@ -49,11 +51,6 @@ const MyCalendar = () => {
     setEvents(eventsArray);
     setLoaded(true);
   }, [])
-
-  useEffect(() => {
-    console.log('loaded:', loaded)
-    console.log('events:', events)
-  }, [loaded])
 
 
   const dateAllday = (str, flag) => {
@@ -111,15 +108,22 @@ const MyCalendar = () => {
           return e;
         }
       }))
+      setView(false)
     }
   }, [loaded])
+
+
+  useEffect(() => {
+    if (deleted) {
+      setEvents(events.filter(e => (e.id !== currentEvent.id)))
+    }
+  }, [deleted])
 
 
   const handleSelectSlot = () => {
     setView(false)
     setOpen(false)
   }
-
 
   const handleNewEvent = useCallback(
     ({ start, end }) => {
@@ -128,7 +132,6 @@ const MyCalendar = () => {
       setView(false)
       setOpen(true)
     },
-    // [setEvents]
   )
 
 
@@ -275,10 +278,10 @@ const MyCalendar = () => {
               }
               {view &&
                 <EventCard
-                  view={view}
                   setView={setView}
                   event={currentEvent}
-                  setOpen={setOpen}>
+                  setDeleted={setDeleted}
+                >
                 </EventCard>
               }
             </div>
