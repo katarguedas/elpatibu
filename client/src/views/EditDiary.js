@@ -22,7 +22,6 @@ const EditDiary = () => {
   const { diary } = useDataContext();
 
   const [edit, setEdit] = useState(false);
-  const [savedValues, setsavedValues] = useState();
 
   let location = useLocation();
 
@@ -45,34 +44,10 @@ const EditDiary = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
-  //........................
-
-  useEffect(() => {
-    setsavedValues(checkGroupToday(editedGroups(), diary));
-  }, [])
-
-
-  useEffect(() => {
-    if (diary) {
-      // setDiary({ ...diary }, diary.groups.map(e => {
-      //   e.visible = false;
-      //   console.log(e.visible)
-      //   return e;
-      // }))
-    }
-  }, [])
-
-
   const handleClick = () => {
     setEdit(!edit);
   }
 
-  if((diary) && (savedValues)) {
-  console.log("test", savedValues)
-  console.log("test", savedValues.groups[0].items)
-}
-  
   //..........................
 
   return (
@@ -81,31 +56,24 @@ const EditDiary = () => {
       <MainGroup>
         <NavBar />
         <MainContent>
-
           <PageTitle>Hier kannst Du neue Daten eingeben</PageTitle>
-
           {
             diary &&
             diary.groups.map((e, i) => (
               e.items.filter(e => e.selected === true).length > 0 &&
               <Items key={e.id} >
-
                 <EAccordion visible={edit} onClick={handleClick}>
-
-                  {edit ?
-                    <StBiDownArrow />
-                    :
-                    <StBiRightArrow />
+                  {
+                    edit ? <StBiDownArrow /> : <StBiRightArrow />
                   }
                   {e.label}
-
                 </EAccordion>
                 {edit &&
                   <StDiv>
                     <GetData
                       id={e.id}
                       index={i}
-                      savedGroupItems={savedValues.groups[i].items}
+                    // savedGroupItems={savedValues.groups[i].items}
                     >
                     </GetData>
                   </StDiv>

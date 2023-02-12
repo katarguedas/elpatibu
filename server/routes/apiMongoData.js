@@ -63,7 +63,7 @@ router.get('/api/getDiary', async (req, res) => {
 //..............................................................
 
 router.put('/api/saveData', async (req, res) => {
-
+console.log("body:", req.body)
   try {
     const response = await Diary.findOne({ id: req.body.id })
 
@@ -78,6 +78,7 @@ router.put('/api/saveData', async (req, res) => {
           e.items.map(el => {
             req.body.items.map(element => {
               if (element.id === el.id) {
+                console.log("GEFUNDEN!", el.id, el.values, element.values.slice())
                 el.values = element.values.slice()
               }
             })
@@ -87,6 +88,7 @@ router.put('/api/saveData', async (req, res) => {
     }
 
     response.save()
+    console.log("\n response: \n", response.groups[1].items[0].values)
 
     res.status(201).send({ status: '0k', message: 'saved data' })
   } catch (error) {

@@ -430,7 +430,7 @@ const useAuth = () => {
 
 	//-----------------------------------------------------------------
 
-	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, timeCatArrays, setTimeArrays, nextEvents, setNextEvents, LOCAL_STORAGE_EVENTS, deleteEvent, deleteEventInBackend];
+	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, timeCatArrays, setTimeArrays, nextEvents, setNextEvents, LOCAL_STORAGE_EVENTS, deleteEvent, deleteEventInBackend, getNextEvents];
 
 }
 

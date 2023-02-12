@@ -58,13 +58,15 @@ const OpenDiary = () => {
 				<NavBar />
 				<MainContent>
 					<PageTitle>Dein persönliches Patienten-Tagebuch</PageTitle>
-
 					<ButtonField>
 						<DiaryButton onClick={handleEdit}>
 							<StGiFountainPen />Daten eintragen</DiaryButton>
 						<DiaryButton onClick={handleShowResults}>
 							<StGiChart />Ergebnisse sehen</DiaryButton>
-						<DiaryButton onClick={handleAddValues}>
+						<DiaryButton
+							onClick={handleAddValues}
+							style={{ backgroundColor: '#e9e3e3', color: '#686767' }}
+						>
 							<StBiListPlus />Werte hinzufügen</DiaryButton>
 					</ButtonField>
 				</MainContent>

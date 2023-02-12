@@ -19,7 +19,7 @@ const Panel = ({ itemGroup, handleSelect }) => {
   const inputRef = useRef();
   const [done, setDone] = useState();
   const [showInfo, setShowInfo] = useState();
-  const color = theme.colors.col34;
+  const color = theme.colors.col3;
 
   //............................
 

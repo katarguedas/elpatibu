@@ -25,8 +25,8 @@ import { theme } from '../themes/theme';
 
 const Dashboard = () => {
 
-	const { user, userData, checkToken, getEventsFromBackend, nextEvents, LOCAL_STORAGE_EVENTS } = useUserContext();
-	const { getDiaryFromBackend, diary } = useDataContext();
+	const { user, userData, checkToken, getEventsFromBackend, nextEvents, LOCAL_STORAGE_EVENTS, getNextEvents } = useUserContext();
+	const { getDiaryFromBackend, diary, editedGroups } = useDataContext();
 
 	const [events, setEvents] = useState();
 	const [done, setDone] = useState();
@@ -36,14 +36,12 @@ const Dashboard = () => {
 
 	//........................
 
-	console.log(nextEvents)
-
 	useEffect(() => {
 		checkToken();
 	}, [location])
 
 	/*******************************************************
-	 * Checks of userData is available. 
+	 * Checks if userData is available. 
 	 * If yes, it fetches the diary from Backend.
 	 */
 	useEffect(() => {
@@ -70,27 +68,23 @@ const Dashboard = () => {
 		console.log("nextEvents:", nextEvents)
 	}, [])
 
-	// //..........................
 
-	// useEffect(() => {
-	// }, [events])
-
-	//.........................
-
+/***********************************
+ * If events have changed, reprocess the nextEvents for Dashboard.
+ */
 	useEffect(() => {
-		console.log("nextEvents:", nextEvents)
+		getNextEvents(events)
+	}, [events])
 
+/***********************************
+ * If nextEvents exists,set done to true, 
+ * this shows the nextEvents in Dashboard
+ */
+	useEffect(() => {
 		if (nextEvents) {
 			setDone(true);
 		}
 	}, [])
-
-	//-------------------------
-
-	useEffect(() => {
-		if (done)
-			console.log('')
-	}, [done])
 
 	//........................
 
@@ -98,17 +92,21 @@ const Dashboard = () => {
 		navigate('/CreateDiary')
 	}
 
-	//........................
+	let str = ['37,1', '37.1', '37,8', '4', '4.2', '4,2' ];
 
-	console.dir("nächste Termine", nextEvents)
-	console.dir(done)
+	for(let i = 0; i<6; i++)
+	{
+		console.log(i)
+		console.log("i = ", parseFloat(str[i].replace(',','.')));
+	}
 
-	checkAllValuesToday(diary)
+// console.log("Zahlen: ...........", parseFloat(37,1), parseFloat(37.1), parseFloat(5))
+// parseFloat(str.replace(' ', '').replace('.', '').replace(',', '.'));
+
+	// checkAllValuesToday(diary)
 
 	const space = '	';
-
-	console.log("nextEvents:", nextEvents)
-
+//------------------------------------------
 
 	if (user)
 		return (
@@ -134,7 +132,26 @@ const Dashboard = () => {
 								<SendButton onClick={handleStart} >Start</SendButton>
 							</div>
 							: <div>
-								<TitleH2 style={{ color: theme.colors.col3 }} >
+								<TitleH2 style={{ marginTop: '2.5rem', color: theme.colors.col3 }} >
+									{
+										diary?.date &&
+											diary?.date[diary.date.length - 1] === todayDate() ?
+											// <p style={{ color: theme.colors.col2 }} >
+											// 	Du hast heute bereits Daten eingetragen,
+											// </p>
+											
+												!checkAllValuesToday(editedGroups(), diary) ?
+												<p style={{ color: theme.colors.col2 }} >
+												Du hast heute bereits Daten eingetragen, allerdings nicht alle.</p>
+												: 
+												<p>Du hast heute bereits alle Daten eingetragen.</p>
+											:
+											<p style={{ color: theme.colors.col5 }} >
+												Du hast heute noch keine Daten eingetragen.
+											</p>
+									}
+								</TitleH2>
+								<TitleH2 style={{ color: theme.colors.col3, marginTop: '3.0rem' }} >
 									Deine nächsten Termine
 									{
 										done &&
@@ -146,25 +163,7 @@ const Dashboard = () => {
 										))}
 								</TitleH2>
 								<Item />
-								<TitleH2 style={{ marginTop: '4.5rem', color: theme.colors.col3 }} >
-									{
-										diary?.date &&
-											diary?.date[diary.date.length - 1] === todayDate() ?
-											// <p style={{ color: theme.colors.col2 }} >
-											// 	Du hast heute bereits Daten eingetragen,
-											// </p>
-											
-												!checkAllValuesToday(diary) ?
-												<p style={{ color: theme.colors.col2 }} >
-												Du hast heute bereits Daten eingetragen, allerdings nicht alle.</p>
-												: 
-												<p>Du hast heute bereits alle Daten eingetragen</p>
-											:
-											<p style={{ color: theme.colors.col5 }} >
-												Du hast heute noch keine Daten eingetragen.
-											</p>
-									}
-								</TitleH2>
+								
 							</div>
 						}
 					</MainContent>

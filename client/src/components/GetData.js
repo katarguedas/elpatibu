@@ -5,6 +5,8 @@ import RadioInput from '../components/forms/RadioInput';
 import { useUserContext } from '../providers/userContext';
 import { InputField, FormField, LabelText } from '../styled/globalStyles';
 import { checkTs } from '../utils/helperfunctions';
+import { checkGroupsToday } from '../utils/helperfunctions';
+import { checkGroupXtoday } from '../utils/helperfunctions';
 
 import React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -17,14 +19,15 @@ import styled from 'styled-components';
 //---------------------------------------------------------
 
 
-const GetData = ({ id, index, savedGroupItems }) => {
+const GetData = ({ id, index }) => {
 
-	const { diary, setDiary, saveDataToBackend, getDiaryFromBackend } = useDataContext();
+	const { diary, setDiary, saveDataToBackend, getDiaryFromBackend, editedGroups } = useDataContext();
 	const { user, userData, checkToken } = useUserContext();
 
 	const [saved, setSaved] = useState();
 	const [done, setDone] = useState(false);
 	const [update, setUpdate] = useState();
+	const [savedValues, setsavedValues] = useState();
 
 	const [data, setData] = useState([
 		{
@@ -40,8 +43,6 @@ const GetData = ({ id, index, savedGroupItems }) => {
 
 	const ts = todayDate();
 
-
-	console.log(",,,,,,,,,,,", savedGroupItems)
 	//.................................................
 
 	useEffect(() => {
@@ -68,18 +69,24 @@ const GetData = ({ id, index, savedGroupItems }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
+
+	useEffect(() => {
+		if (!savedValues)
+			setsavedValues(checkGroupsToday(editedGroups(), diary));
+		else
+			setsavedValues(checkGroupXtoday(savedValues, diary, index))
+	}, [], [update])
+
 	//......................................
 
 	useEffect(() => {
 		// console.log('update?', update)
 	}, [update])
 
+	//---------------------------------------------
 
 	useEffect(() => {
-
-		console.log('update:', update)
 		if (update !== undefined) {
-
 			// heutiges Datum eintragen:
 			if ((update === false) && (saved !== true)) {
 				console.log('heutiges Datum wird eingetragen')
@@ -87,10 +94,8 @@ const GetData = ({ id, index, savedGroupItems }) => {
 			}
 
 			let val = null;
-
 			// bereite die eingegebenen Daten vor
 			diary.groups[index].items.map((el, i) => {
-				// console.log('item: ', el.name)
 				val = null;
 				data.map(element => {
 					if (element.name === el.name)
@@ -121,7 +126,6 @@ const GetData = ({ id, index, savedGroupItems }) => {
 					}
 					setSaved(true);
 				} else if (update === false) {
-					// console.log('Schreibe neue Daten')
 
 					// neuen Wert eintragen:
 					// console.log('neuer Wert für:', diary.groups[index].items[i].name)
@@ -160,7 +164,6 @@ const GetData = ({ id, index, savedGroupItems }) => {
 			inputRefs.current.map(e => {
 				e.value = '';
 			})
-		// console.log(diary)
 	}
 
 	//......................
@@ -176,11 +179,10 @@ const GetData = ({ id, index, savedGroupItems }) => {
 	const handleChange = (e) => {
 
 		setData([...data,
-		{ name: e.target.name, value: parseInt(e.target.value) }])
+		{ name: e.target.name, value: parseFloat(e.target.value.replace(',','.')) }])
+		console.log("data", data)
 	}
 
-
-	console.log("savedGroupItems[]", savedGroupItems[0].done)
 	//----------------------------
 
 	return (
@@ -204,9 +206,9 @@ const GetData = ({ id, index, savedGroupItems }) => {
 									</StInputField>
 									{e.unit}
 									{
-										(savedGroupItems[i].done === true) ?
-										<StBiCheckS />
-										: null
+										(savedValues?.groups[index].items[i].done === true) ?
+											<StBiCheckS />
+											: null
 									}
 								</InputLabelH >
 								:
@@ -222,9 +224,9 @@ const GetData = ({ id, index, savedGroupItems }) => {
 									>
 									</RadioInput>
 									{
-										(savedGroupItems[i].done === true) ?
-										<StBiCheckS />
-										: null
+										(savedValues?.groups[index].items[i].done === true) ?
+											<StBiCheckS />
+											: null
 									}
 								</InputLabelV>
 							: null

@@ -104,8 +104,7 @@ const useData = () => {
 				update: update,
 			}
 		)
-
-		// console.log("raw", raw)
+		console.log("raw", raw)
 
 		let requestOptions = {
 			method: 'PUT',
