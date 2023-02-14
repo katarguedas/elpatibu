@@ -1,3 +1,4 @@
+import { ChartStyle } from '../../styled/globalStyles';
 import React from 'react';
 import { Chart as ChartJS, CategoryScale, PointElement, Title, Tooltip, Legend, BarController, BarElement } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
@@ -113,8 +114,8 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 		},
 		layout: {
 			padding: {
-				right: 60,
-				top: 50
+				right: 10,
+				top: 10
 			}
 		},
 		scales: {
@@ -162,14 +163,13 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 	};
 
 	return (
-		<div >
+		<ChartStyle >
 			<Bar
-				style={{ marginTop: '3.0rem', marginBottom: '3.0rem' }}
 				type='bar'
 				options={options}
 				data={data}
 				redraw={true} />
-		</div>
+		</ChartStyle>
 	)
 };
 
@@ -177,4 +177,5 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 
 
 export default BarChartNMD;
+
 

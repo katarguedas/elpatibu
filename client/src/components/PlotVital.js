@@ -22,7 +22,7 @@ const PlotVital = ({ itemVital }) => {
 
 	const [showTherapie, setShowTherapie] = useState(false);
 
-	// console.log("timeCatArrays", timeCatArrays)
+	console.log("timeCatArrays", timeCatArrays)
 
 	// bei fehlenden Daten in der Datenbank werden zu Test- und Vorführtzwecken welche generiert (createTData(), createPData();)
 
@@ -54,10 +54,6 @@ const PlotVital = ({ itemVital }) => {
 
 	//..................................
 
-	//..........................
-
-	// console.log("events:", events)
-
 
 	const handleClick = () => {
 		setShowTherapie(!showTherapie)
@@ -77,7 +73,7 @@ const PlotVital = ({ itemVital }) => {
 				<ChartsGroup>
 
 						{showTherapie ?
-							<div  >
+							<div >
 								<BiCheckSquare onClick={handleClick} />
 								<StSpan> Therapietermine einblenden</StSpan>
 							</div>
@@ -98,7 +94,6 @@ const PlotVital = ({ itemVital }) => {
 								name={itemVital.items[0].label}
 								unit={itemVital.items[0].unit}
 								showTherapie={showTherapie}
-
 							/>
 						}
 					</div>
@@ -124,7 +119,7 @@ export default PlotVital;
 
 
 const ChartsGroup = styled.div`
-  width: 80%;
+  width: 85%;
   @media (max-width: 1200px) {
     width: 90%;
   }

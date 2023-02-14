@@ -92,18 +92,6 @@ const Dashboard = () => {
 		navigate('/CreateDiary')
 	}
 
-	let str = ['37,1', '37.1', '37,8', '4', '4.2', '4,2' ];
-
-	for(let i = 0; i<6; i++)
-	{
-		console.log(i)
-		console.log("i = ", parseFloat(str[i].replace(',','.')));
-	}
-
-// console.log("Zahlen: ...........", parseFloat(37,1), parseFloat(37.1), parseFloat(5))
-// parseFloat(str.replace(' ', '').replace('.', '').replace(',', '.'));
-
-	// checkAllValuesToday(diary)
 
 	const space = '	';
 //------------------------------------------

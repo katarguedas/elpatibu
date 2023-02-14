@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChartStyle } from '../../styled/globalStyles';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, TimeSeriesScale } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import 'chartjs-adapter-luxon';
@@ -10,7 +11,6 @@ import { theme } from '../../themes/theme'
 //----------------------------------------------------------------------
 
 const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
-
 
 	// console.log("y", y1Values)
 	// console.log("y", y2Values)
@@ -88,7 +88,6 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
 				labels: {
 					font: { size: 14 }
 				}
-				// position: 'top',
 			},
 			title: {
 				display: true,
@@ -98,12 +97,6 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
 			},
 			annotation: {
 				annotations: {
-					// point1: {
-					//     type: 'point',
-					//     xValue: 1,
-					//     yValue: 60,
-					//     backgroundColor: 'rgba(255, 99, 132, 0.25)'
-					//   },
 					line1: {
 						type: 'line',
 						yMin: 120,
@@ -146,7 +139,6 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
 				time: {
 					unit: 'day',
 					tooltipFormat: 'DD',
-					// displayFormat: {day: "mm:dd"}
 				},
 				title: {
 					display: true,
@@ -180,13 +172,12 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
 		}
 	};
 
-
-
+//....................................................................
 
 	return (
-		<div >
-			<Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem' }} options={options} data={data} redraw={true} />
-		</div>
+		<ChartStyle >
+			<Line options={options} data={data} redraw={true} />
+		</ChartStyle>
 	)
 };
 
@@ -194,4 +185,3 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
 
 
 export default TimeChartP2;
-

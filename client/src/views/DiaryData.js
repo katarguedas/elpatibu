@@ -1,19 +1,19 @@
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import NavBar from '../components/NavBar'
-import PlotVital from '../components/PlotVital'
-import PlotMeteo from '../components/PlotMeteo'
-import PlotSymptoms from '../components/PlotSymptoms'
-import { setDateRange } from '../utils/testdata'
-import { StBiDownArrow, StBiRightArrow } from '../styled/Icons'
-import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle } from '../styled/globalStyles'
-import { useUserContext } from '../providers/userContext'
-import { useDataContext } from '../providers/dataContext'
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import NavBar from '../components/NavBar';
+import PlotVital from '../components/PlotVital';
+import PlotMeteo from '../components/PlotMeteo';
+import PlotWeight from '../components/PlotWeight';
+import PlotSymptoms from '../components/PlotSymptoms';
+import { setDateRange } from '../utils/testdata';
+import { StBiDownArrow, StBiRightArrow } from '../styled/Icons';
+import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle } from '../styled/globalStyles';
+import { useUserContext } from '../providers/userContext';
+import { useDataContext } from '../providers/dataContext';
 
-import { useState, useEffect } from 'react'
-import { useLocation } from 'react-router'
-
-import styled from 'styled-components'
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router';
+import styled from 'styled-components';
 
 
 //---------------------------------------------------------
@@ -70,7 +70,10 @@ const DiaryData = () => {
   }, [])
 
 
-
+/**
+ * Changes between visible and invisible to show or hidden the results or the current group
+ * @param {} id id of the current group
+ */
   const handleClick = (id) => {
     setEdit(!edit);
     console.log('ID', id)
@@ -116,6 +119,11 @@ const DiaryData = () => {
                     e.visible === true &&
                     e.name === 'vital' &&
                     <PlotVital itemVital={e} />
+                  }
+                  {
+                    e.visible &&
+                    e.name === 'weight' &&
+                    <PlotWeight itemWeight={e} date={setDateRange()} />
                   }
                   {
                     e.visible &&

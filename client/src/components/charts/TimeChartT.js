@@ -1,12 +1,12 @@
 import { theme } from '../../themes/theme';
-
+import { useUserContext } from '../../providers/userContext';
+import { ChartStyle } from '../../styled/globalStyles';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Filler, Tooltip, Legend, TimeScale, TimeSeriesScale } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
 import annotationPlugin from 'chartjs-plugin-annotation';
 import 'chartjs-adapter-luxon';
 import { useEffect, useState } from 'react';
-import { useUserContext } from '../../providers/userContext';
 
 //----------------------------------------------------------------------
 
@@ -16,7 +16,6 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 
 	// console.log("x-", xValues)
 	// console.log("y", yValues)
-
 
 	ChartJS.register(
 		CategoryScale,
@@ -42,8 +41,6 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 	const bgcolor3 = "rgb(243, 191, 78, 0.3)";
 	const bgcolor4 = 'rgb(247, 89, 89, 0.3)';
 
-	//---------------------------------------------------}}
-
 	const lastDay = xValues[xValues.length - 1];
 	const firstDay = xValues[0];
 
@@ -51,32 +48,73 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 	const yMinArray = [36, 37.5, 38, 39];
 	const yMaxArray = [37.5, 38, 39, 40];
 
+	
 	const [myAnnotations, setMyAnnotations] = useState([]);
 	const initState = [];
+	const [done, setDone] = useState();
 
-	console.log("show Therapie:", showTherapie)
-	console.log("first and last day", firstDay, lastDay, timeCatArrays)
+	// console.log("show Therapie:", showTherapie)
+	// console.log("first and last day", firstDay, lastDay, timeCatArrays)
+
+
+	const setYline = (yValue) => {
+		setMyAnnotations([
+			...myAnnotations, myAnnotations.push({
+				type: 'line',
+				yMin: yValue,
+				yMax: yValue,
+				borderColor: 'rgb(206, 23, 93)',
+				borderWidth: 3,
+				label: {
+					display: true,
+					content: 'hohes Fieber',
+					position: 'end',
+					yAdjust: -15,
+					padding: 5,
+					backgroundColor: 'rgb(206, 23, 93)',
+					color: '#fff'
+				}
+			})
+		])
+	}
+
+	const setColorBoxes = (colorArray, xMin, xMax, yMinArray, yMaxArray) => {
+
+		colorArray.map((e, i) => {
+			setMyAnnotations([
+				...myAnnotations, myAnnotations.push({
+					type: 'box',
+					xMin: xMin,
+					xMax: xMax,
+					yMin: yMinArray[i],
+					yMax: yMaxArray[i],
+					backgroundColor: e,
+					drawTime: 'beforeDatasetsDraw',
+				})
+			])
+		})
+	}
 
 	useEffect(() => {
 		let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
-
 		if (!timeCatArrays) {
-			console.log("test")
 			setTimeArrays(eventsArray)
 		}
+		setDone(true)
 	}, [])
 
+
+
 	useEffect(() => {
-		console.log("arrayLength:", timeCatArrays.therapie.length)
+		setColorBoxes(colorArray, firstDay, lastDay, yMinArray, yMaxArray);
+		setYline(39);
 
 		if (showTherapie === true) {
 			if (timeCatArrays.therapie.length > 0) {
 				console.log("es gibt therapietermine zum Plotten")
 				timeCatArrays.therapie.map((e, i) => {
-					console.log(timeCatArrays.therapie[i])
 					if ((firstDay < timeCatArrays.therapie[i]) && (timeCatArrays.therapie[i] < lastDay)) {
-						console.log("....", firstDay - timeCatArrays.therapie[i] , timeCatArrays.therapie[i]-lastDay)
-						console.log("myAnnotations mit Lines")
+						console.log("myAnnotations mit TherapieLines")
 						setMyAnnotations([...myAnnotations, myAnnotations.push({
 							id: 'line_' + timeCatArrays.therapie[i],
 							type: 'line',
@@ -99,203 +137,88 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 					}
 				})
 			}
-
-			colorArray.map((e, i) => {
-				setMyAnnotations([
-					...myAnnotations, myAnnotations.push({
-						type: 'box',
-						xMin: firstDay,
-						xMax: lastDay,
-						yMin: yMinArray[i],
-						yMax: yMaxArray[i],
-						backgroundColor: e,
-						drawTime: 'beforeDatasetsDraw',
-					})
-				])
-			})
-
-			setMyAnnotations([
-				...myAnnotations, myAnnotations.push({
-					type: 'line',
-					yMin: 39,
-					yMax: 39,
-					borderColor: 'rgb(206, 23, 93)',
-					borderWidth: 3,
-					label: {
-						display: true,
-						content: 'hohes Fieber',
-						position: 'end',
-						yAdjust: -15,
-						padding: 5,
-						backgroundColor: 'rgb(206, 23, 93)',
-						color: '#fff'
-					}
-				})
-			])
-		} else {
-			console.log("-------------keine lineAnnotations")
-			colorArray.map((e, i) => {
-				setMyAnnotations([
-					...myAnnotations, myAnnotations.push({
-						type: 'box',
-						xMin: firstDay,
-						xMax: lastDay,
-						yMin: yMinArray[i],
-						yMax: yMaxArray[i],
-						backgroundColor: e,
-						drawTime: 'beforeDatasetsDraw',
-					})
-				])
-			})
-
-			setMyAnnotations([
-				...myAnnotations, myAnnotations.push({
-					type: 'line',
-					yMin: 39,
-					yMax: 39,
-					borderColor: 'rgb(206, 23, 93)',
-					borderWidth: 3,
-					label: {
-						display: true,
-						content: 'hohes Fieber',
-						position: 'end',
-						yAdjust: -15,
-						padding: 5,
-						backgroundColor: 'rgb(206, 23, 93)',
-						color: '#fff'
-					}
-				})
-			])
 		}
-	}, [showTherapie])
+		checkAnnotations();
+	}, [showTherapie, done])
+
+
+	const checkAnnotations = () => {
+		if (myAnnotations.length > 0)
+			setMyAnnotations(myAnnotations.filter(e => (typeof (e) === 'object')))
+	}
 
 
 	useEffect(() => {
-
 		setMyAnnotations(initState)
-		console.log("myAnnotations", myAnnotations)
+		// console.log("myAnnotations", myAnnotations)
 	}, [showTherapie])
 
 	//...................
 
-
 	let options;
-	if (name === 'Temperatur') {
-		options = {
-			responsive: true,
-			plugins: {
-				legend: {
-					display: false
-					// position: 'top',
-				},
-				title: {
-					display: true,
-					text: titel,
-					font: { size: 22 },
-					color: textColor
-				},
-				annotation:
-				{
-					annotations:
-						// eventLines,
-						myAnnotations,
-				},
+	options = {
+		responsive: true,
+		plugins: {
+			legend: {
+				display: false
 			},
-			scales: {
-				x: {
-					// type: 'timeseries',
-					type: 'time',
-					time: {
-						unit: 'day',
-						tooltipFormat: 'DD',
-						// displayFormat: {day: "mm:dd"}
-					},
-					title: {
-						display: true,
-						text: 'Datum',
-						font: { size: 18 },
-						color: textColor,
-						padding: 10
-					},
-					ticks: {
-						font: { size: 16 },
-						maxRotation: 90,
-					},
-					grid: {
-						tickColor: 'grey'
-					}
-				},
-				y: {
-					title: {
-						display: true,
-						text: name + ' [' + unit + ']',
-						font: { size: 18 },
-						color: textColor,
-						padding: 10
-					},
-					ticks: {
-						font: { size: 16 },
-					},
-				},
-			}
-			// }
-		};
-	} else {
-		options = {
-			responsive: true,
-			plugins: {
-				legend: {
-					display: false
+			title: {
+				display: true,
+				text: titel,
+				font: { size: 22 },
+				color: textColor,
+
+			},
+			annotation:
+			{
+				annotations:
+					myAnnotations,
+			},
+		},
+		scales: {
+			x: {
+				type: 'time',
+				time: {
+					unit: 'day',
+					tooltipFormat: 'DD',
+					// displayFormat: {day: "mm:dd"}
 				},
 				title: {
 					display: true,
-					text: titel,
-					font: { size: 22 },
+					text: 'Datum',
+					font: { size: 18 },
 					color: textColor,
+					padding: {
+						top: 10,
+						bottom: 10
+				}
+				},
+				ticks: {
+					font: { size: 16 },
+					maxRotation: 90,
+				},
+				grid: {
+					tickColor: 'grey'
+				}
+			},
+			y: {
+				title: {
+					display: true,
+					text: name + ' [' + unit + ']',
+					font: { size: 18 },
+					color: textColor,
+					padding: 10
+				},
+				ticks: {
+					font: { size: 16 },
 				},
 			},
-			scales: {
-				x: {
-					type: 'time',
-					time: {
-						unit: 'day',
-						tooltipFormat: 'DD',
-					},
-					title: {
-						display: true,
-						text: 'Datum',
-						font: { size: 18 },
-						color: textColor,
-						padding: 10
-					},
-					ticks: {
-						font: { size: 16 },
-						maxRotation: 90,
-					},
-					grid: {
-						tickColor: 'grey'
-					}
-				},
-				y: {
-					title: {
-						display: true,
-						text: name + ' [' + unit + ']',
-						font: { size: 18 },
-						color: textColor,
-						padding: 10
-					},
-					ticks: {
-						stepSize: 1,
-						font: { size: 14 },
-						callback: function (value) {
-							let x = ['', 'keine', 'leichte', 'mittelstarke', 'starke', 'sehr starke'];
-							return [x[value | 0]]
-						}
-					},
-				},
-			}
-		};
+		},
+		layout: {
+			padding: 10
 	}
+		// }
+	};
 
 
 	//...................
@@ -306,10 +229,8 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 	// console.log(myData)
 
 
-
 	let data;
 
-	if (name === 'Temperatur') {
 		data = {
 			// labels, //nur bei type: Line
 			datasets: [
@@ -330,47 +251,18 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 				}
 			],
 		}
-	}
-	else {
-		data = {
-			// labels, //nur bei type: Line
-			datasets: [
-				{
-					// label: 'Körpertemperatur',
-					data: myData,
-					fill: true,
-					borderColor: theme.colors.col2,
-					backgroundColor: theme.colors.col4,
-					tension: 0,
-					borderWidth: 1,
-					spanGaps: true,
-					connect: false,
-					pointStyle: 'circle',
-					pointBorderColor: '#000',
-					radius: 0,
-					stepped: true,
-				}
-			],
-		}
-	}
-
-	useEffect(() => {
-
-	}, [])
 
 
+//-------------------------------------------------------------
 	return (
-		<div >
-			{showTherapie ?
-				<Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem' }} options={options} data={data} redraw={true} done='true' />
-				:
-				<Line style={{ marginTop: '3.0rem', marginBottom: '2.0rem' }} options={options} data={data} redraw={true} dataidkey='id' />
-			}
-
-		</div>
+		<ChartStyle >
+				<Line 
+					options={options} 
+					data={data} 
+					redraw={true} />
+		</ChartStyle>
 	)
 };
-
 
 
 

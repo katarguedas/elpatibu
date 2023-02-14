@@ -1,3 +1,4 @@
+import { ChartStyle } from '../../styled/globalStyles';
 import React from 'react';
 import { Chart } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, PointElement, Title, Tooltip, Legend, BarController, BarElement } from 'chart.js';
@@ -129,9 +130,13 @@ const BarChartPrecip = ({ xVal, yVal, name }) => {
   };
 
   return (
-    <div >
-      <Bar style={{ marginTop: '3.0rem', marginBottom: '2.0rem' }} type='bar' options={options} data={data} redraw={true} />
-    </div>
+    <ChartStyle >
+      <Bar 
+        type='bar'
+        options={options}
+        data={data}
+        redraw={true} />
+    </ChartStyle>
   )
 };
 

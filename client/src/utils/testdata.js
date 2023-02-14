@@ -19,10 +19,7 @@ export const setDateRange = () => {
 	const dayE = '20';
 
 	const datumStrE = yearE + '-' + monthE + '-' + dayE + 'T12:00:00';
-	// console.log('datumStr', datumStrE)
 	const datumE = DateTime.fromISO(datumStrE)
-	// console.log('Enddatum', datumE)
-	// console.log('Enddatum, ts', datumE.ts)
 
 	const oneday = 24 * 60 * 60 * 1000;
 	// console.log("24h in timestamp: ", oneday)
@@ -34,8 +31,6 @@ export const setDateRange = () => {
 		currentDay = currentDay + oneday;
 		tsArray.push(currentDay)
 	}
-	// console.log("tsArray:", tsArray)
-
 	return tsArray;
 }
 
@@ -61,7 +56,7 @@ export const createTData = () => {
 		tsArray: tsArray,
 		temperature: temperature
 	}
-	console.log('dataSet', dataSet)
+	// console.log('dataSet', dataSet)
 
 	return dataSet;
 }
@@ -87,11 +82,35 @@ export const createPData = () => {
 		pressureL: pressureL
 	}
 
-	console.log('dataSet', dataSet)
+	// console.log('dataSet', dataSet)
+
+	return dataSet;
+}
+//-------------------------------------------------
+
+export const createWData = () => {
+
+	const tsArray = setDateRange()
+
+	let weight = [];
+	for (let i = 0; i < tsArray.length - 12; i++) {
+		weight.push(parseFloat((53.8 + Math.random() * 0.4).toFixed(1)));
+	}
+	for (let i = tsArray.length - 12; i < tsArray.length; i++) {
+		weight.push(parseFloat((53.55 + Math.random() * 0.3).toFixed(1)));
+	}
+
+
+	const dataSet = {
+		tsArray: tsArray,
+		weight: weight
+	}
+	// console.log('dataSet', dataSet)
 
 	return dataSet;
 }
 
+//-------------------------------------------------
 export const createNMData = () => {
 
 	let datestringArray = [];

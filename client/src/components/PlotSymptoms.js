@@ -54,9 +54,12 @@ const PlotSymptoms = ({ itemSymptoms, date }) => {
 	//.................................................
 
 	return (
-		<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2.0rem' }} >
-			<div styled={{ padding: '5.0rem' }} >
-			</div>
+		<div style={{
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center',
+			marginTop: '2.0rem'
+		}} >
 			{
 				itemSymptoms.items.filter(e => e.selected === true).length > 0 &&
 				<ChartsGroup >
@@ -94,7 +97,7 @@ export default PlotSymptoms;
 
 
 const ChartsGroup = styled.div`
-  width: 80%;
+  width: 85%;
   @media (max-width: 1200px) {
     width: 90%;
   }

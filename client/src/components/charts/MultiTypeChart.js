@@ -1,3 +1,4 @@
+import { ChartStyle } from '../../styled/globalStyles';
 import React, { useEffect } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, TimeSeriesScale } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
@@ -12,7 +13,8 @@ import { theme } from '../../themes/theme'
 
 const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, unit }) => {
 
-	// console.log(y1Values, y2Values, label2)
+	console.log(y1Values, y2Values)
+	console.log(label2)
 
 	const [sMin, setSMin] = useState();
 	const [sMax, setSMax] = useState();
@@ -177,15 +179,19 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
 		],
 	};
 
-
+	console.log("TESTTTTTT")
 
 	if (y1Values)
-		return <Chart
-			type='bar'
-			data={data}
-			options={options}
-			style={{ marginTop: '2.0rem', marginBottom: '5.0rem' }} />;
+		return (
+			<ChartStyle>
+				<Chart
+					type='bar'
+					data={data}
+					options={options}
+				/>;
+			</ChartStyle>
+		)
 }
 
 
-export default MultiTypeChart
+export default MultiTypeChart;

@@ -51,9 +51,9 @@ const StSpan = styled.span`
 `
 
 const InputField = styled.input`
-  border: 2px solid ${(props) => props.theme.colors.col10};
+  border: 2px solid ${(props) => props.theme.colors.col2};
   &:focus{
-    border: 1px solid ${(props) => props.theme.colors.col11};
+    border: 2px solid ${(props) => props.theme.colors.col1};
     background-color: ${(props) => props.theme.colors.white};
   };
   outline: none;
@@ -127,12 +127,8 @@ const Accordion = styled.div`
 
 const Accordion2 = styled.div`
 color: ${props => props.visible === true ? '#000' : '#fff'};
-/* border: 0.5px solid ${(props) => props.theme.colors.col3}; */
 border-radius: 0.15rem;
 background-image: linear-gradient(to left, #fff, ${(props) => props.theme.colors.col4});
-
-/* linear-gradient(to left, #fff, ${(props) => props.theme.colors.col4}); */
-
 box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
 &:hover {
   color: white;
@@ -149,9 +145,18 @@ font-size: 1.25rem;
 font-weight: 500;
 `
 
+const ChartStyle = styled.div`
+  margin-top: 2.0rem;
+  margin-bottom: 2.0rem;
+  padding: 0.25rem;
+  border: 2px solid;
+  border-color: ${props => props.theme.colors.col4};
+  border-radius: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 3.0px 5.0px 4.2px;
+`
 
 //---------------------------------------------------------
 
 export default globalStyles;
 
-export { ContentGroup, MainGroup, MainContent, PageTitle, InputField, LabelText, TitleH2, StP, StSpan, FormField, Accordion }
+export { ContentGroup, MainGroup, MainContent, PageTitle, InputField, LabelText, TitleH2, StP, StSpan, FormField, Accordion, ChartStyle }

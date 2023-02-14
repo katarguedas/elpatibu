@@ -73,7 +73,7 @@ const PlotMeteo = ({ itemMeteo, date }) => {
 	const xVal3 = dataNMDSet3.dateString;
 	const yVal3 = dataNMDSet3.values;
 
-
+// console.log("DATA:", yVal3)
 
 	const handleClick = () => {
 		if (weatherData === undefined) {
@@ -100,8 +100,14 @@ const PlotMeteo = ({ itemMeteo, date }) => {
 	//.................................................
 
 	return (
-		<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2.0rem' }} >
-			<div styled={{ padding: '5.0rem' }} >
+		<div style={{
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center',
+			marginTop: '2.0rem'
+		}}
+		>
+			<div styled={{ padding: '1.0rem' }} >
 				{
 					(!done) &&
 					<WeatherButton onClick={handleClick} >
@@ -126,7 +132,6 @@ const PlotMeteo = ({ itemMeteo, date }) => {
 					{active ?
 						weatherData &&
 						itemMeteo.items.map(e => (
-
 							<div key={e.id}>
 								{
 									e.name === 'headache' &&
@@ -162,25 +167,23 @@ const PlotMeteo = ({ itemMeteo, date }) => {
 								}
 							</div>
 						))
-						:
-						itemMeteo.items.map(e => (
-							<div key={e.id}>
-								{
-									e.name === 'headache' &&
-									<BarChartNMD xVal={xVal} yVal={yVal} name={e.label} />
-								}
-								{
-									e.name === 'fatigue' &&
-									<BarChartNMD xVal={xVal2} yVal={yVal2} name={e.label} />
-								}
-								{
-									e.name === 'joint pain' &&
-									<BarChartNMD xVal={xVal3} yVal={yVal3} name={e.label} />
-								}
-
-							</div>
-						))
-
+						:			
+								itemMeteo.items.map(e => (
+									<div key={e.id}>
+										{
+											e.name === 'headache' &&
+											<BarChartNMD xVal={xVal} yVal={yVal} name={e.label} />
+										}
+										{
+											e.name === 'fatigue' &&
+											<BarChartNMD xVal={xVal2} yVal={yVal2} name={e.label} />
+										}
+										{
+											e.name === 'joint pain' &&
+											<BarChartNMD xVal={xVal3} yVal={yVal3} name={e.label} />
+										}
+									</div>
+								))
 					}
 				</ChartsGroup>
 			}
@@ -196,7 +199,7 @@ export default PlotMeteo;
 
 
 const ChartsGroup = styled.div`
-  width: 80%;
+  width: 85%;
   @media (max-width: 1200px) {
     width: 90%;
   }
