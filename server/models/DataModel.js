@@ -27,9 +27,11 @@ const diarySchema = new mongoose.Schema({
 	id: String,
 	diaryName: String,
 	city: String,
-	date: [],
+	date: [Date],
+  timestamp: [Number],
 	groups: [groupSchema]
 });
+
 
 const Item = mongoose.model('Item', itemSchema)
 const Group = mongoose.model('Group', groupSchema)

@@ -10,12 +10,14 @@ import { ContentGroup, PageTitle } from "../styled/globalStyles"
 import { useNavigate } from "react-router"
 import { AuthButton } from "../styled/Buttons"
 
-//---------------------------------------------------------
+/******************************************************
+ * LOGIN Component
+ * @returns 
+ ******************/
 
 const Login = () => {
 
 	const { loginData, setLoginData, verifyUser, user } = useUserContext();
-
 	const [type, setType] = useState("password");
 
 	const navigate = useNavigate();
@@ -40,7 +42,6 @@ const Login = () => {
 		clearState()
 	}
 
-
 	const handleMouseEnter = (e) => {
 		e.preventDefault()
 		setType("text")
@@ -57,11 +58,11 @@ const Login = () => {
 	//............................................
 	useEffect(() => {
 		if (user) {
-			console.log("user", user)
 			navigate('/dashboard')
 		}
-	}, [user])
+	}, [user, navigate])
 
+	
 	//............................................
 
 	return (

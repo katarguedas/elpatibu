@@ -2,7 +2,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
 import { SendButton } from '../styled/Buttons';
-import { fullDate, todayDate } from '../utils/Date';
+import { fullDate, todayDateTs } from '../utils/Date';
 import { checkAllValuesToday } from '../utils/helperfunctions';
 import { useUserContext } from '../providers/userContext';
 import { useDataContext } from '../providers/dataContext';
@@ -16,12 +16,12 @@ import { DateTime } from 'luxon';
 import { theme } from '../themes/theme';
 
 
-/*******************************************************
+/*********************************************************************
  * Dashboard-Component
  * 
  * Shows next events from calendar and 
  * informs whether values have already been saved today.
- */
+ *********************************************************/
 
 const Dashboard = () => {
 
@@ -38,11 +38,13 @@ const Dashboard = () => {
 
 	useEffect(() => {
 		checkToken();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location])
 
+
 	/*******************************************************
-	 * Checks if userData is available. 
-	 * If yes, it fetches the diary from Backend.
+	 * Check if userData is available. 
+	 * If yes, fetche the diary from Backend.
 	 */
 	useEffect(() => {
 
@@ -52,12 +54,26 @@ const Dashboard = () => {
 					getDiaryFromBackend(userData.diaryId)
 			}
 		}
+
+		if ((diary) && (diary.date.length > 0)) {
+			if (typeof (diary.date[0]) === 'string') {
+				diary.date.forEach((e, i) => {
+					let tmp = DateTime.fromISO(e);
+					diary.date[i] = tmp.toMillis();
+				})
+			}
+		}
+
+		// console.log("....................... ", diary)
+
 	}, [])
 
-	/*******************************************************
+
+	/********************************************************************
  * Checks of events data are available in local storage. 
  * If no, it fetches the events from Backend.
- */
+ *************************************************/
+
 	useEffect(() => {
 		let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
 		if (!eventsArray) {
@@ -65,28 +81,29 @@ const Dashboard = () => {
 			eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
 		}
 		setEvents(eventsArray)
-		console.log("nextEvents:", nextEvents)
 	}, [])
 
 
-/***********************************
- * If events have changed, reprocess the nextEvents for Dashboard.
- */
+	/*****************************************************************
+	 * If events have changed, reprocess the nextEvents for Dashboard.
+	 */
+
 	useEffect(() => {
 		getNextEvents(events)
 	}, [events])
 
-/***********************************
- * If nextEvents exists,set done to true, 
- * this shows the nextEvents in Dashboard
- */
+	/***********************************
+	 * If nextEvents exists,set done to true, 
+	 * this shows the nextEvents in Dashboard
+	 */
+
 	useEffect(() => {
 		if (nextEvents) {
 			setDone(true);
 		}
-	}, [])
+	}, [nextEvents])
 
-	//........................
+	//***************************************************************
 
 	const handleStart = () => {
 		navigate('/CreateDiary')
@@ -94,7 +111,8 @@ const Dashboard = () => {
 
 
 	const space = '	';
-//------------------------------------------
+
+	//***************************************************************
 
 	if (user)
 		return (
@@ -106,7 +124,8 @@ const Dashboard = () => {
 						<StFullDay>
 							Heute ist {fullDate()}.
 						</StFullDay>
-						{userData &&
+						{
+							userData &&
 							<PageTitle style={{ color: theme.colors.col3 }} >
 								Hallo {userData.name},
 							</PageTitle>
@@ -122,16 +141,16 @@ const Dashboard = () => {
 							: <div>
 								<TitleH2 style={{ marginTop: '2.5rem', color: theme.colors.col3 }} >
 									{
-										diary?.date &&
-											diary?.date[diary.date.length - 1] === todayDate() ?
+										diary?.timestamp &&
+											diary?.timestamp[diary.timestamp.length - 1] === todayDateTs() ?
 											// <p style={{ color: theme.colors.col2 }} >
 											// 	Du hast heute bereits Daten eingetragen,
 											// </p>
-											
-												!checkAllValuesToday(editedGroups(), diary) ?
+
+											!checkAllValuesToday(editedGroups(), diary) ?
 												<p style={{ color: theme.colors.col2 }} >
-												Du hast heute bereits Daten eingetragen, allerdings nicht alle.</p>
-												: 
+													Du hast heute bereits Daten eingetragen, allerdings nicht alle.</p>
+												:
 												<p>Du hast heute bereits alle Daten eingetragen.</p>
 											:
 											<p style={{ color: theme.colors.col5 }} >
@@ -145,13 +164,17 @@ const Dashboard = () => {
 										done &&
 										nextEvents?.map(e => (
 											<EventItem key={e.id} >
-												<span>{e.title}:{space}</span>
-												<span>{DateTime.fromISO(e.start).toLocaleString(DateTime.DATE_HUGE)}</span>
+												<span>
+													{e.title}:{space}
+												</span>
+												<span>
+													{DateTime.fromISO(e.start).toLocaleString(DateTime.DATE_HUGE)}
+												</span>
 											</EventItem>
 										))}
 								</TitleH2>
 								<Item />
-								
+
 							</div>
 						}
 					</MainContent>
@@ -164,9 +187,9 @@ const Dashboard = () => {
 export default Dashboard;
 
 
-//---------------------------------------------------------
-// Styled-Components
-//---------------------------------------------------------
+/****************************************************************
+ *  Styled-components
+ ****************************************************************/
 
 
 const StFullDay = styled.div`

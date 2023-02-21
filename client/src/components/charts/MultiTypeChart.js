@@ -13,8 +13,8 @@ import { theme } from '../../themes/theme'
 
 const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, unit }) => {
 
-	console.log(y1Values, y2Values)
-	console.log(label2)
+	// console.log(y1Values, y2Values)
+	// console.log(label2)
 
 	const [sMin, setSMin] = useState();
 	const [sMax, setSMax] = useState();
@@ -32,7 +32,7 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
 		Legend
 	);
 
-	console.log(label2)
+	
 	useEffect(() => {
 		if (label2 === 'Relative Feuchtigkeit') {
 			setSMin(20)
@@ -46,13 +46,12 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
 		}
 	}, [])
 
-	console.log(name, sMax)
 
 	const color1 = theme.colors.col3;
 
-
 	const options = {
 		responsive: true,
+		maintainAspectRatio: false,
 		interaction: {
 			mode: 'index',
 			intersect: false,
@@ -179,7 +178,6 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
 		],
 	};
 
-	console.log("TESTTTTTT")
 
 	if (y1Values)
 		return (

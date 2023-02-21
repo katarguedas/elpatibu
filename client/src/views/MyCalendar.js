@@ -17,8 +17,11 @@ import { useUserContext } from '../providers/userContext';
 require('globalize/lib/cultures/globalize.culture.de');
 
 
-//---------------------------------------------------------
-
+/***********************************************************************
+ * Calendar Component which allows to save events.
+ * Future vents saved here will be shown in Dashboard.
+ * @returns 
+ *****************************/
 const MyCalendar = () => {
 
   const { saveEventInBackend, getEventsFromBackend, userData, LOCAL_STORAGE_EVENTS } = useUserContext();
@@ -34,22 +37,21 @@ const MyCalendar = () => {
   const [currentEvent, setCurrentEvent] = useState();
   const [loaded, setLoaded] = useState();
   const [deleted, setDeleted] = useState();
-  const [rerender, setRerender] = useState(false);
 
   const localizer = luxonLocalizer(DateTime, { firstDayOfWeek: 1 })
 
   //.................................
 
-
   useEffect(() => {
     let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
-    console.log(eventsArray)
+    // console.log(eventsArray)
     if (!eventsArray) {
       getEventsFromBackend(userData.id);
       eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
     }
     setEvents(eventsArray);
     setLoaded(true);
+    // eslint-disable-next-line
   }, [])
 
 
@@ -97,7 +99,6 @@ const MyCalendar = () => {
       ))
   }
 
-
   useEffect(() => {
     if ((loaded) && (events)) {
       setEvents([...events], events.map((e, i) => {
@@ -110,6 +111,7 @@ const MyCalendar = () => {
       }))
       setView(false)
     }
+    // eslint-disable-next-line
   }, [loaded])
 
 
@@ -117,6 +119,7 @@ const MyCalendar = () => {
     if (deleted) {
       setEvents(events.filter(e => (e.id !== currentEvent.id)))
     }
+    // eslint-disable-next-line
   }, [deleted])
 
 
@@ -168,9 +171,7 @@ const MyCalendar = () => {
         setView(false)
         openAnotherEvent(event)
       }
-    },
-    []
-  )
+    }, [], [view])
 
 
   const handleChange = e => {
@@ -235,7 +236,7 @@ const MyCalendar = () => {
   }
 
 
-  //.................................
+  //**************************************************** */
 
   return (
     <ContentGroup>
@@ -256,7 +257,6 @@ const MyCalendar = () => {
               startAccessor="start"
               endAccessor="end"
               onSelectEvent={handleSelectEvent}
-              // onClick={handleCloseEvent}
               onSelectSlot={handleSelectSlot}
               selectable
             />
@@ -296,9 +296,10 @@ const MyCalendar = () => {
 export default MyCalendar;
 
 
-//---------------------------------------------------------
-// Styled-Components
-//---------------------------------------------------------
+/****************************************************************
+ *  Styled-components
+ ****************************************************************/
+
 
 const Calendargroup = styled.div`
   margin: 2.0rem;

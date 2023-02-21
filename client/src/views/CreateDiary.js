@@ -16,14 +16,12 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { theme } from '../themes/theme';
-
 
 /********************************************************************************
  * Component for creating the individual diary
  * 
  * Uses diaryTemplate from the hook 'useTemplates'
- */
+ *****************************************************/
 
 const CreateDiary = () => {
 
@@ -39,7 +37,9 @@ const CreateDiary = () => {
   let location = useLocation();
   const navigate = useNavigate();
 
-  //............................................
+  /********************************************************************************
+   * UseEffects
+   *****************/
 
   useEffect(() => {
     if ((user) && (!userData))
@@ -71,9 +71,10 @@ const CreateDiary = () => {
       setDone(true);
       timing();
     }
-  }, [diaryIdSaved, diarySaved, setDiaryTemplate, setDiary]) //, diaryTemplate
+  }, [diaryIdSaved, diarySaved, setDiaryTemplate, setDiary])
 
   //.....................
+  //........................
 
   const timing = () => {
     setTimeout(() => { setCreated(false) }, 2000)
@@ -83,9 +84,9 @@ const CreateDiary = () => {
 
   const navToDiary = () => { navigate('/EditDiary') }
 
-  /*****************************
+  /************************************************************************************
    * if toggle is on, all groups will be open and all selectable values are visible and selectable.
-   */
+   *************/
 
   useEffect(() => {
     if (on === true) {
@@ -101,10 +102,10 @@ const CreateDiary = () => {
     }
   }, [on])
 
-  /*****************************
+  /*********************************************************************
    * if the state 'selectAll' ist true, all values will be selected.
    * Otherwise all values will be deselected.
-   */
+   *********************************************/
 
   useEffect(() => {
     if (diaryTemplate) {
@@ -139,7 +140,7 @@ const CreateDiary = () => {
     }))
   }
 
-  /*****************************
+  /*******************************************
    * Selection of individual values
    */
 
@@ -153,20 +154,24 @@ const CreateDiary = () => {
     )
   }
 
+  /*******************************************************************************
+   * if the current group is 'meteorosensitivity',  set 'check = true' to be able to check if user has put a city name.
+   * 
+   * @returns true or false, depending on the selection value of the diaryGroup
+   */
+
   const checkMeteo = () => {
-    console.log("diaryTemplate", diaryTemplate)
     let check = false;
     const index = diaryTemplate.groups.findIndex(e => e.name === 'meteorosensitivity')
     if (index) {
       diaryTemplate.groups[index].items.map(e => {
         if (e.selected)
           check = true;
-          return e;
+        return e;
       })
     }
-
-    console.log("check,", check)
-    console.log("Length of city:", diaryTemplate.city.length)
+    // console.log("check,", check)
+    // console.log("Length of city:", diaryTemplate.city.length)
 
     if ((check === true) && (diaryTemplate.city.length > 0))
       return true
@@ -176,7 +181,7 @@ const CreateDiary = () => {
       return true
   }
 
-  /*****************************
+  /************************************************************************
    * 
    * Calls 'createNewDiary' from useData-Hook to save the diary in backend
    */
@@ -197,7 +202,7 @@ const CreateDiary = () => {
     e.preventDefault();
   }
 
-  //-------------------------------
+  //************************************************************************
 
   return (
     <ContentGroup>
@@ -305,9 +310,9 @@ const CreateDiary = () => {
 export default CreateDiary;
 
 
-//---------------------------------------------------------
-// Styled-Components
-//---------------------------------------------------------
+/****************************************************************
+ *  Styled-components
+ ****************************************************************/
 
 
 const SwitchText = styled.span`

@@ -153,6 +153,16 @@ const ChartStyle = styled.div`
   border-color: ${props => props.theme.colors.col4};
   border-radius: 0.5rem;
   box-shadow: rgba(0, 0, 0, 0.2) 3.0px 5.0px 4.2px;
+  height: 560px;
+  @media (max-width: 1280px) {
+    height: 500px;
+  }
+  @media (max-width: 1024px) {
+    height: 480px;
+  }
+  @media (max-width: 960px) {
+    height: 410px;
+  }
 `
 
 //---------------------------------------------------------

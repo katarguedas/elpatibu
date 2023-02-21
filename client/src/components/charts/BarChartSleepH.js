@@ -12,9 +12,9 @@ import { theme } from '../../themes/theme'
 
 //----------------------------------------------------------------------
 
-const BarChartNMD = ({ xVal, yVal, name }) => {
+const BarChartSleepH = ({ xVal, yVal, name }) => {
 
-	// console.log( "name:",name, "x", xVal)
+	// console.log("x", xVal)
 	// console.log("y", yVal)
 
 	ChartJS.register(
@@ -39,41 +39,14 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 	})
 	// console.log(myData)
 
-
-	let bgcolor;
-
-	let colors = []
-	for (let i = 0; i < yVal.length; i++) {
-
-		switch (yVal[i]) {
-			case 1:
-				bgcolor = "#7dfd7d";
-				break;
-			case 2:
-				bgcolor = "#bafc50";
-				break;
-			case 3:
-				bgcolor = "#f2f53b";
-				break;
-			case 4:
-				bgcolor = "#f3bf4e";
-				break;
-			case 5:
-				bgcolor = '#f75b5b';
-				break;
-		}
-		colors[i] = bgcolor;
-	}
-
-
 	const data = {
 		labels: xVal,
 		datasets: [
 			{
 				// label: '',
 				data: myData,
-				borderColor: 'grey',
-				backgroundColor: colors,
+				borderColor: theme.colors.col3,
+				backgroundColor: theme.colors.col4,
 				borderRadius: 2,
 				tension: 0,
 				borderWidth: 0,
@@ -131,8 +104,8 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 				}
 			},
 			y: {
-				suggestedMin: 0,
-				suggestedMax: 5,
+				suggestedMin: 3,
+				suggestedMax: 9,
 				title: {
 					display: true,
 					text: name,
@@ -143,11 +116,7 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 				ticks: {
 					font: { size: 14 },
 					stepSize: 1,
-					display: true,
-					callback: function (value) {
-						let y = ['', 'keine', 'leichte', 'mittelstarke', 'starke', 'sehr starke'];
-						return [y[value | 0]]
-					}
+					display: true
 				},
 				grid: {
 					display: true
@@ -170,6 +139,4 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 
 
 
-export default BarChartNMD;
-
-
+export default BarChartSleepH;

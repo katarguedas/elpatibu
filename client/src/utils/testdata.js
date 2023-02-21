@@ -9,10 +9,7 @@ export const setDateRange = () => {
 	const dayS = '04';
 
 	const datumStrS = yearS + '-' + monthS + '-' + dayS + 'T12:00:00';
-	// console.log('datumStr', datumStrS)
 	const datumS = DateTime.fromISO(datumStrS)
-	// console.log('Startdatum', datumS)
-	// console.log('Startdatum, ts', datumS.ts)
 
 	const yearE = '2022';
 	const monthE = '12';
@@ -22,7 +19,6 @@ export const setDateRange = () => {
 	const datumE = DateTime.fromISO(datumStrE)
 
 	const oneday = 24 * 60 * 60 * 1000;
-	// console.log("24h in timestamp: ", oneday)
 
 	let lastDay = datumE.ts;
 	let currentDay = datumS.ts;
@@ -63,7 +59,7 @@ export const createTData = () => {
 
 //........................................
 
-export const createPData = () => {
+export const createP2Data = () => {
 
 	const tsArray = setDateRange()
 
@@ -72,8 +68,8 @@ export const createPData = () => {
 
 	for (let i = 0; i < tsArray.length; i++) {
 
-		pressureH.push(122 + Math.random() * 20);
-		pressureL.push(80 + Math.random() * 11);
+		pressureH.push(parseInt(118 + Math.random() * 20));
+		pressureL.push(parseInt(78 + Math.random() * 11));
 	}
 
 	const dataSet = {
@@ -82,6 +78,29 @@ export const createPData = () => {
 		pressureL: pressureL
 	}
 
+	// console.log('dataSet', dataSet)
+
+	return dataSet;
+
+}
+
+//----------------------------------------------
+
+export const createPData = () => {
+
+	const tsArray = setDateRange()
+
+	let pulse = [];
+
+	for (let i = 0; i < tsArray.length; i++) {
+
+		pulse.push(60 + Math.random() * 5);
+	}
+
+	const dataSet = {
+		tsArray: tsArray,
+		pulse: pulse,
+	}
 	// console.log('dataSet', dataSet)
 
 	return dataSet;
@@ -105,30 +124,45 @@ export const createWData = () => {
 		tsArray: tsArray,
 		weight: weight
 	}
-	// console.log('dataSet', dataSet)
+	// console.log('dataWset', dataSet)
 
 	return dataSet;
 }
 
 //-------------------------------------------------
-export const createNMData = () => {
-
-	let datestringArray = [];
+export const createSData = () => {
 
 	const tsArray = setDateRange()
+
+	let hours = [];
 	for (let i = 0; i < tsArray.length; i++) {
-		let date = DateTime.fromSeconds(tsArray[i] / 1000);
-		let day = date.day;
-		let month = date.month;
-		let year = date.year;
-		// console.log(day, month);
-		const dateStr = day + '.' + month + '.' + year;
-		datestringArray.push(dateStr)
+		hours.push(parseInt((6 + Math.random() * 1.5).toFixed(1)) + 0.5);
 	}
+	hours[3] = hours[3] + 1;
+	hours[6] = hours[6] + 0.5;
+	hours[22] = hours[22] - 0.5;
+	hours[13] = hours[13] + 0.5;
+	hours[11] = hours[11] - 1;
+	hours[25] = hours[25] - 0.5;
+	hours[19] = hours[19] - 1;
+	hours[11] = hours[11] - 1;
+
+	const dataSet = {
+		dateString: tsArray,
+		hours: hours
+	}
+
+	return dataSet;
+}
+//-------------------------------------------------
+export const createNMData = () => {
+
+	const tsArray = setDateRange();
+
 	let values = [];
 	let min = 1;
 	let max = 4;
-	for (let i = 0; i < datestringArray.length; i++) {
+	for (let i = 0; i < tsArray.length; i++) {
 		let x = Math.round((Math.random() * (max - min)) + min);
 		if (i === 6)
 			x = 5
@@ -136,42 +170,32 @@ export const createNMData = () => {
 			x = 1
 		values.push(x)
 	}
-	// console.log("dataStringArray: ", datestringArray)
 
 	const dataSet = {
-		dateString: datestringArray,
+		dateString: tsArray,
 		values: values
 	}
 	return dataSet
 }
 
+//----------------------------------------
 export const createNMData2 = () => {
 
-	let datestringArray = [];
+	const tsArray = setDateRange();
 
-	const tsArray = setDateRange()
-	for (let i = 0; i < tsArray.length; i++) {
-		let date = DateTime.fromSeconds(tsArray[i] / 1000);
-		let day = date.day;
-		let month = date.month;
-		let year = date.year;
-		// console.log(day, month);
-		const dateStr = day + '.' + month + '.' + year;
-		datestringArray.push(dateStr)
-	}
 	let values = [];
 	let min = 1;
 	let max = 4;
-	for (let i = 0; i < datestringArray.length; i++) {
+	for (let i = 0; i < tsArray.length; i++) {
 		let x = Math.round((Math.random() * (max - min)) + min);
-		if ((i === 9) || (i === 21) || (i === 1) || (i === 3) || (i === 4) || (i === 5) || (i === 6) || (i === 24) || (i === 23) || (i === 22) || (i === 27) || (i === 28) || (i === 29) || (i === 36))
+		if ((i === 9) || (i === 21) || (i === 1) || (i === 3) || (i === 4) || (i === 5) || (i === 6) || (i === 24) || (i === 23) || (i === 20) || (i === 27) || (i === 28) || (i === 29) || (i === 36))
 			x = 1
 		values.push(x)
 	}
 	// console.log("dataStringArray: ", datestringArray)
 
 	const dataSet = {
-		dateString: datestringArray,
+		dateString: tsArray,
 		values: values
 	}
 	return dataSet

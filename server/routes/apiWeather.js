@@ -1,25 +1,23 @@
 const express = require('express');
-
 const dotenv = require('dotenv')
 dotenv.config();
-
 const router = express.Router();
 
 
-//----middleware-----------------------------------------
+/************************************************************************
+ * MIDDLEWARE
+ ****************/
 
 router.use((req, res, next) => {
   // console.log('Time:', Date.now());
   next();
 })
 
-//---- ROUTES ---------------------------------------------
-
-//.............
+/************************************************************************
+ * ROUTES
+ ****************/
 
 router.get('/api/WeatherData', async (req, res) => {
-
-  console.log("bin drin, req:", req.query)
 
   const urlConst = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/history?";
   const lang = "de";
@@ -30,14 +28,11 @@ router.get('/api/WeatherData', async (req, res) => {
 
   let url = `${urlConst}&unitGroup=${unitGroup}&contentType=${contentType}&lang=${lang}&startDateTime=${req.query.start}&endDateTime=${req.query.end}&aggregateHours=${aggregateHours}&location=${req.query.city}&key=${key}`;
 
-  console.log("Stadt:", req.query.city, " start:", req.query.start, " Ende:", req.query.end);
-
+  // console.log("Stadt:", req.query.city, " start:", req.query.start, " Ende:", req.query.end);
 
   try {
     const response = await fetch(url);
     const data = await response.json();
-    // console.log(data)
-    console.log("data?", data.locations.Oberhausen)
     console.log("status:", response.status)
     res.status(200).send({status: 'ok', message: 'data found', data: data})
   } catch (error) {
@@ -45,9 +40,8 @@ router.get('/api/WeatherData', async (req, res) => {
   }
 })
 
-//-----------------------------------
+//******************************************* */
 
 module.exports = router;
 
-
-//-----------------------------------
+//-- END --|

@@ -1,12 +1,12 @@
-import { useDataContext } from '../providers/dataContext'
-import { SendButton } from './../styled/Buttons';
-import { todayDate } from '../utils/Date';
-import RadioInput from '../components/forms/RadioInput';
+import { useDataContext } from '../providers/dataContext';
 import { useUserContext } from '../providers/userContext';
-import { InputField, FormField, LabelText } from '../styled/globalStyles';
+import { SendButton } from './../styled/Buttons';
+import RadioInput from '../components/forms/RadioInput';
+import { todayDate, todayDateTs } from '../utils/Date';
 import { checkTs } from '../utils/helperfunctions';
 import { checkGroupsToday } from '../utils/helperfunctions';
 import { checkGroupXtoday } from '../utils/helperfunctions';
+import { InputField, FormField, LabelText } from '../styled/globalStyles';
 
 import React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -15,11 +15,15 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import styled from 'styled-components';
 
+/******************************************************************************
+ * This component is called from 'EditDiary' Component for each itemGroup.
+ * Here the user put the values into the diary for the current day.
+ * 
+ * @param {*} index is the index of the current itemGroup 
+ * @returns 
+ ******************************/
 
-//---------------------------------------------------------
-
-
-const GetData = ({ id, index }) => {
+const GetData = ({index }) => {
 
 	const { diary, setDiary, saveDataToBackend, getDiaryFromBackend, editedGroups } = useDataContext();
 	const { user, userData, checkToken } = useUserContext();
@@ -41,14 +45,18 @@ const GetData = ({ id, index }) => {
 	let location = useLocation();
 	const navigate = useNavigate();
 
-	const ts = todayDate();
+	const currentDate = todayDate();
+	const ts = todayDateTs();
 
-	//.................................................
+/***********************
+ * useEffects
+ ****************/
 
 	useEffect(() => {
 		checkToken();
 	}, [location])
 
+//.............................
 
 	useEffect(() => {
 		if ((user) && (!userData))
@@ -58,6 +66,7 @@ const GetData = ({ id, index }) => {
 	}, [])
 
 	//........................
+
 	useEffect(() => {
 
 		if (userData)
@@ -69,6 +78,7 @@ const GetData = ({ id, index }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
+	//.................................................
 
 	useEffect(() => {
 		if (!savedValues)
@@ -90,7 +100,8 @@ const GetData = ({ id, index }) => {
 			// heutiges Datum eintragen:
 			if ((update === false) && (saved !== true)) {
 				console.log('heutiges Datum wird eingetragen')
-				setDiary({ ...diary }, diary.date.push(ts))
+				setDiary({ ...diary }, diary.timestamp.push(ts)) 
+				setDiary({...diary}, diary.date.push(currentDate))
 			}
 
 			let val = null;
@@ -106,21 +117,21 @@ const GetData = ({ id, index }) => {
 
 				if (update === true) {
 					console.log('Aktualisiere die Daten')
-					const tsIndex = diary.date.findIndex(e => e === todayDate());
+					const tsIndex = diary.timestamp.findIndex(e => e === todayDateTs());
 					// Wurde ein neuer Wert eingegeben so überschreibe den alten, wenn vorhanden, sonst schreibe ihn ans Ende. Wurde kein neuer Wert eingegeben, dann setze ihn auf 'Null', falls noch nich vorhanden.
 					if (val !== null) {
-						// console.log('val', val)
-						if (diary.groups[index].items[i].values.length === diary.date.length) {
+						console.log('val', val)
+						if (diary.groups[index].items[i].values.length === diary.timestamp.length) {
 							setDiary({ ...diary }, diary.groups[index].items[i].values[tsIndex] = val)
 						}
 						else {
-							// console.log('val', val)
+							console.log('val', val)
 							setDiary({ ...diary }, diary.groups[index].items[i].values =
 								[...diary.groups[index].items[i].values, val])
 						}
 					} else if (val === null) {
 						console.log('val', val)
-						if (diary.groups[index].items[i].values.length < diary.date.length)
+						if (diary.groups[index].items[i].values.length < diary.timestamp.length)
 							setDiary({ ...diary }, diary.groups[index].items[i].values =
 								[...diary.groups[index].items[i].values, val])
 					}
@@ -143,7 +154,7 @@ const GetData = ({ id, index }) => {
 	useEffect(() => {
 		// console.log('BIN im saveDataToBackend-useEffect, saved: ', saved)
 		if (saved === true) {
-			saveDataToBackend(diary.id, diary.groups[index].id, diary.groups[index].items, ts, update);
+			saveDataToBackend(diary.id, diary.groups[index].id, diary.groups[index].items, currentDate, ts, update);
 			setDone(true)
 			setUpdate()
 			setSaved()
@@ -154,9 +165,7 @@ const GetData = ({ id, index }) => {
 
 	const handleSubmit = e => {
 
-		console.log(diary.date)
-
-		checkTs(diary.date, setUpdate);
+		checkTs(diary.timestamp, setUpdate);
 		e.preventDefault();
 
 		timing();
@@ -180,7 +189,7 @@ const GetData = ({ id, index }) => {
 
 		setData([...data,
 		{ name: e.target.name, value: parseFloat(e.target.value.replace(',','.')) }])
-		console.log("data", data)
+		// console.log("data", data)
 	}
 
 	//----------------------------

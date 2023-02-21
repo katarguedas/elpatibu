@@ -82,6 +82,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
 
 	const options = {
 		responsive: true,
+		maintainAspectRatio: false,
 		plugins: {
 			legend: {
 				display: true,
@@ -137,7 +138,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
 				// type: 'timeseries',
 				type: 'time',
 				time: {
-					unit: 'day',
+				  unit: 'day',
 					tooltipFormat: 'DD',
 				},
 				title: {
@@ -148,7 +149,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
 					padding: 10
 				},
 				ticks: {
-					font: { size: 16 },
+					font: { size: 15 },
 					maxRotation: 90,
 				},
 				grid: {
@@ -167,7 +168,7 @@ const TimeChartP2 = ({ xValues, y1Values, y2Values }) => {
 				},
 				ticks: {
 					font: { size: 16 },
-				}
+				},
 			}
 		}
 	};

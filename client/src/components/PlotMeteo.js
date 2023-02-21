@@ -1,9 +1,9 @@
 
 import BarChartNMD from './charts/BarChartNMD';
 import MultiTypeChart from './charts/MultiTypeChart';
-import { createNMData, createNMData2 } from '../utils/testdata';
-import { getDateStrFromTs, getStrFromTs } from '../utils/Date';
-import { WeatherButton } from './../styled/Buttons';
+import { createNMData, createNMData2, setDateRange } from '../utils/testdata';
+import { getDateStrFromTs, getdmStrFromTs } from '../utils/Date';
+import { WeatherButton, WeatherButton2 } from './../styled/Buttons';
 import { useDataContext } from '../providers/dataContext';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -11,79 +11,76 @@ import styled from 'styled-components';
 //----------------------------------------------------------
 
 
-const PlotMeteo = ({ itemMeteo, date }) => {
+const PlotMeteo = ({ itemMeteo }) => {
 
-	const { getWeatherData, weatherData, diary } = useDataContext()
+	const { getWeatherData, weatherData, diary, demo } = useDataContext()
 
 	const [active, setActive] = useState(false);
 	const [done, setDone] = useState(false);
 
 
+	let dataNMDSet = {};
+	let dataNMD2Set = {};
+	let dataNMD3Set = {};
 
 
-	let dataNMDSet = {
-		values: [],
-		dateString: []
-	};
-	if (itemMeteo.items[0].values.length > 30) {
-		dataNMDSet.values = itemMeteo.items[0].values;
-		for (let i = 0; i < diary.date.length - 1; i++) {
-			dataNMDSet.dateString.push(getStrFromTs(diary.date[i]))
+	if (itemMeteo.items[0].selected === true) {
+		if (demo === true) {
+			dataNMDSet = createNMData();
 		}
+		else {
+			dataNMDSet.values = itemMeteo.items[0].values;
+			dataNMDSet.dateString = [...diary.timestamp];
+		}
+		dataNMDSet.dateString.forEach((e, i) => {
+			dataNMDSet.dateString[i] = getdmStrFromTs(e);
+		})
 	}
-	else
-		dataNMDSet = createNMData();
+
+
+	if (itemMeteo.items[1].selected === true) {
+		if (demo === true) {
+			dataNMD2Set = createNMData2();
+		}
+		else {
+			dataNMD2Set.values = itemMeteo.items[1].values;
+			dataNMD2Set.dateString = [...diary.timestamp];
+		}
+		dataNMD2Set.dateString.forEach((e, i) => {
+			dataNMD2Set.dateString[i] = getdmStrFromTs(e);
+		})
+	}
+
+	if (itemMeteo.items[2].selected === true) {
+		if (demo === true) {
+			dataNMD3Set = createNMData2();
+		}
+		else {
+			dataNMD3Set.values = itemMeteo.items[2].values;
+			dataNMD3Set.dateString = [...diary.timestamp];
+		}
+		dataNMD3Set.dateString.forEach((e, i) => {
+			dataNMD3Set.dateString[i] = getdmStrFromTs(e);
+		})
+	}
 
 	//............
-
-	let dataNMDSet2 = {
-		values: [],
-		dateString: []
-	};
-	if (itemMeteo.items[2].values.length > 30) {
-		// console.log(itemMeteo.items[2].values)
-		dataNMDSet2.values = itemMeteo.items[2].values;
-		for (let i = 0; i < diary.date.length - 1; i++) {
-			dataNMDSet2.dateString.push(getStrFromTs(diary.date[i]))
-		}
-	}
-	else
-		dataNMDSet = createNMData2();
-
-	//............
-
-	let dataNMDSet3 = {
-		values: [],
-		dateString: []
-	};
-	if (itemMeteo.items[4].values.length > 30) {
-		dataNMDSet3.values = itemMeteo.items[4].values;
-		for (let i = 0; i < diary.date.length - 1; i++) {
-			dataNMDSet3.dateString.push(getStrFromTs(diary.date[i]))
-		}
-	}
-	else
-		dataNMDSet3 = createNMData2();
-
-
-	const xVal = dataNMDSet.dateString;
-	const yVal = dataNMDSet.values;
-	const xVal2 = dataNMDSet2.dateString;
-	const yVal2 = dataNMDSet2.values;
-	const xVal3 = dataNMDSet3.dateString;
-	const yVal3 = dataNMDSet3.values;
-
-// console.log("DATA:", yVal3)
 
 	const handleClick = () => {
 		if (weatherData === undefined) {
-			console.log(weatherData)
 			const city = diary.city;
-			const startDate = getDateStrFromTs(date[0]);
-			const endDate = getDateStrFromTs(date[date.length - 1]);
-			console.log("Wetterdaten holen")
-			getWeatherData(city, startDate, endDate);
-
+			if (demo) {
+				const tsArray = setDateRange();
+				const startDate = getDateStrFromTs(tsArray[0]);
+				const endDate = getDateStrFromTs(tsArray[tsArray.length - 1]);
+				getWeatherData(city, startDate, endDate);
+			} else {
+				const startDate = getDateStrFromTs(diary.timestamp[0]);
+				if (diary.timestamp.length > 1) {
+					const endDate = getDateStrFromTs(diary.timestamp[diary.timestamp.length - 2]);
+					getWeatherData(city, startDate, endDate);
+				}
+			}
 		}
 	}
 
@@ -109,7 +106,7 @@ const PlotMeteo = ({ itemMeteo, date }) => {
 		>
 			<div styled={{ padding: '1.0rem' }} >
 				{
-					(!done) &&
+					!done && !weatherData &&
 					<WeatherButton onClick={handleClick} >
 						Wetterdaten abrufen
 					</WeatherButton >
@@ -117,13 +114,13 @@ const PlotMeteo = ({ itemMeteo, date }) => {
 				{
 					weatherData &&
 					done &&
-					<WeatherButton onClick={handleClickActive} >
+					<WeatherButton2 onClick={handleClickActive} >
 						{
 							active ?
 								'Wetterdaten ausblenden'
 								: ' Wetterdaten einblenden'
 						}
-					</WeatherButton >
+					</WeatherButton2 >
 				}
 			</div>
 			{
@@ -136,9 +133,9 @@ const PlotMeteo = ({ itemMeteo, date }) => {
 								{
 									e.name === 'headache' &&
 									<MultiTypeChart
-										xValues={xVal}
+										xValues={dataNMDSet.dateString}
 										y1Values={weatherData[0].values}
-										y2Values={yVal}
+										y2Values={dataNMDSet.values}
 										labels={e.dateStr}
 										name={e.label}
 										label2={weatherData[0].label}
@@ -148,9 +145,9 @@ const PlotMeteo = ({ itemMeteo, date }) => {
 								{
 									e.name === 'fatigue' &&
 									<MultiTypeChart
-										xValues={xVal2}
+										xValues={dataNMD2Set.dateString}
 										y1Values={weatherData[0].values}
-										y2Values={yVal2}
+										y2Values={dataNMD2Set.values}
 										name={e.label}
 										label2={weatherData[0].label}
 										unit={weatherData[0].unit} />
@@ -158,32 +155,41 @@ const PlotMeteo = ({ itemMeteo, date }) => {
 								{
 									e.name === 'joint pain' &&
 									<MultiTypeChart
-										xValues={xVal3}
+										xValues={dataNMD3Set.dateString}
 										y1Values={weatherData[3].values}
-										y2Values={yVal3}
+										y2Values={dataNMD3Set.values}
 										name={e.label}
 										label2={weatherData[3].label}
 										unit={weatherData[3].unit} />
 								}
 							</div>
 						))
-						:			
-								itemMeteo.items.map(e => (
-									<div key={e.id}>
-										{
-											e.name === 'headache' &&
-											<BarChartNMD xVal={xVal} yVal={yVal} name={e.label} />
-										}
-										{
-											e.name === 'fatigue' &&
-											<BarChartNMD xVal={xVal2} yVal={yVal2} name={e.label} />
-										}
-										{
-											e.name === 'joint pain' &&
-											<BarChartNMD xVal={xVal3} yVal={yVal3} name={e.label} />
-										}
-									</div>
-								))
+						:
+						itemMeteo.items.map(e => (
+							<div key={e.id}>
+								{
+									e.name === 'headache' &&
+									<BarChartNMD
+										xVal={dataNMDSet.dateString}
+										yVal={dataNMDSet.values}
+										name={e.label} />
+								}
+								{
+									e.name === 'fatigue' &&
+									<BarChartNMD
+										xVal={dataNMD2Set.dateString}
+										yVal={dataNMD2Set.values}
+										name={e.label} />
+								}
+								{
+									e.name === 'joint pain' &&
+									<BarChartNMD
+										xVal={dataNMD3Set.dateString}
+										yVal={dataNMD3Set.values}
+										name={e.label} />
+								}
+							</div>
+						))
 					}
 				</ChartsGroup>
 			}

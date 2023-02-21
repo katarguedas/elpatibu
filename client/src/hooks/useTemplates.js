@@ -17,6 +17,7 @@ const useTemplates = () => {
 				diaryName: 'Tagebuch1',
 				city: '',
 				date: [],
+				timestamp: [],
 				groups: [
 					{
 						id: uuidv4(),

@@ -1,5 +1,6 @@
 import TimeChartW from '../components/charts/TimeChartW';
 import { createWData } from '../utils/testdata';
+import { getStrFromTs } from '../utils/Date';
 import { useDataContext } from '../providers/dataContext';
 import { useUserContext } from '../providers/userContext';
 import styled from 'styled-components';
@@ -10,25 +11,18 @@ import { useEffect, useState } from 'react';
 
 const PlotWeight = ({ itemWeight }) => {
 
-	const { diary } = useDataContext();
-	const { userData, getEventsFromBackend, timeCatArrays } = useUserContext();
-
-	const [showTherapie, setShowTherapie] = useState(false);
-
+	const { diary, demo } = useDataContext();
 
 	// bei fehlenden Daten in der Datenbank werden zu Test- und Vorführtzwecken welche generiert (createWData())
 
-	let dataWSet = {};
-	if (itemWeight.items[0].values.length > 30) {
-		// console.log("daten aus der Datembank")
-		dataWSet.weight = itemWeight.items[0].values;
-		dataWSet.tsArray = diary.date;
-	}
-	else
-		dataWSet = createWData();
 
-	const xValues = dataWSet.tsArray;
-	const yTValues = dataWSet.weight;
+	let dataWset = {};
+	if (demo) {
+		dataWset = createWData();
+	} else {
+		dataWset.tsArray = diary.timestamp;
+		dataWset.weight = itemWeight.items[0].values;
+	}
 
 	//............................
 
@@ -46,8 +40,8 @@ const PlotWeight = ({ itemWeight }) => {
 						{
 							itemWeight.items[0].selected &&
 							< TimeChartW
-								xValues={xValues}
-								yValues={yTValues}
+								xValues={dataWset.tsArray}
+								yValues={dataWset.weight}
 								titel={'Körpergewicht'}
 								name={itemWeight.items[0].label}
 								unit={itemWeight.items[0].unit}

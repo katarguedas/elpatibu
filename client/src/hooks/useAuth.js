@@ -176,8 +176,6 @@ const useAuth = () => {
 			setUser(decodedJwt.email)
 			setUserData({ name: decodedJwt.name, diaryId: decodedJwt.diaries })
 
-
-			console.log("user:", user)
 			if (decodedJwt.exp * 1000 > Date.now()) {
 				// console.log(decodedJwt.email)
 				// console.log("Zeit noch nicht abgelaufen. Refreshe den Zugangstoken.")
@@ -295,7 +293,7 @@ const useAuth = () => {
 	//----------------------------------------------------
 
 	const setTimeArrays = (events) => {
-		console.log("Hole Events nach Kategorien für die DIagramme", events)
+		// console.log("Hole Events nach Kategorien für die DIagramme", events)
 		if (events) {
 			events.map((e, i) => {
 				if (e.category === 'Therapie') {
@@ -354,7 +352,7 @@ const useAuth = () => {
 		await fetch('/api/getEvents?id=' + id, requestOptions)
 			.then(response => response.json())
 			.then(response => {
-				console.log("events aus dem Backend geholt", response.events)
+				// console.log("events aus dem Backend geholt", response.events)
 				localStorage.setItem(LOCAL_STORAGE_EVENTS, JSON.stringify(response.events))
 				// setEvents(response.events)
 				setTimeArrays(response.events)

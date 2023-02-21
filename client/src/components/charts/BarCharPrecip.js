@@ -120,7 +120,7 @@ const BarChartPrecip = ({ xVal, yVal, name }) => {
           text: name,
           font: { size: 18 },
           color: textColor,
-          padding: 20
+          padding: 10
         },
         ticks: {
           font: { size: 16 },

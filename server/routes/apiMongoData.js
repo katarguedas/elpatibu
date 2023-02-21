@@ -1,28 +1,29 @@
 const express = require('express')
-
-// const mongoose = require('mongoose')
-
 const { Diary } = require('../models/DataModel');
-
 const dotenv = require('dotenv');
 const { findOne, find } = require('../models/UserModel');
 dotenv.config()
 
 const router = express.Router();
 
-
-//----middleware-----------------------------------------
+/************************************************************************
+ * MIDDLEWARE
+ ****************/
 
 router.use((req, res, next) => {
   console.log('Time:', Date.now());
   next();
 })
 
-//---- ROUTES ---------------------------------------------
+/************************************************************************
+ * ROUTES
+**/
+
+/************************************************************************
+ * Save new diary 
+ ***************************/
 
 router.post('/api/newDiary', async (req, res) => {
-
-  console.log("body", req.body.date)
 
   try {
     const data = new Diary({
@@ -30,22 +31,24 @@ router.post('/api/newDiary', async (req, res) => {
       diaryName: req.body.diaryName,
       city: req.body.city,
       date: req.body.date,
+      timestamp: req.body.ts,
       groups: req.body.groups
     })
     data.save(function (err) {
       if (err) return handleError(err);
     });
 
-    console.log("data:", data)
     res.status(200).send({ status: "ok", message: "new diary created", data });
     return;
   } catch (error) {
-    console.log("error: ", error)
     res.status(400).send({ status: 'error', message: '', error })
   }
 })
 
-//.........................................................
+
+/*****************************************************************
+ * get diary
+ ***************************/
 
 router.get('/api/getDiary', async (req, res) => {
   console.log("id:", req.query.id)
@@ -60,17 +63,20 @@ router.get('/api/getDiary', async (req, res) => {
   }
 })
 
-//..............................................................
+/*****************************************************************
+ * Save data in the diary
+ *****************************/
 
 router.put('/api/saveData', async (req, res) => {
-console.log("body:", req.body)
+
   try {
     const response = await Diary.findOne({ id: req.body.id })
 
     if (response) {
       if (req.body.update === false) {
-        console.log("hier, bin drin, denn update steht auf false")
-        response.date.push(req.body.ts)
+
+        response.date.push(req.body.date)
+        response.timestamp.push(req.body.timestamp)
       }
 
       response.groups.map(e => {
@@ -88,11 +94,9 @@ console.log("body:", req.body)
     }
 
     response.save()
-    console.log("\n response: \n", response.groups[1].items[0].values)
 
     res.status(201).send({ status: '0k', message: 'saved data' })
   } catch (error) {
-    console.log("....................... \n nix gefunden")
     res.status(400).send({ status: 'error', message: "Daten nicht gefunden", error })
   }
 })
@@ -101,9 +105,49 @@ console.log("body:", req.body)
 
 
 
+// router.put('/api/savets', async (req, res) => {
+//   console.log(req.body)
 
-//.........................................................
+//   try {
+//     const response = await Diary.findOne({ id: req.body.id })
+//     if (response) {
+//       console.log("response gefunden", response)
+
+//       response.timestamp = [...req.body.timestamp]
+//       console.log("response mit Timestamp?", response)
+//       response.save()
+//     }
+//     console.log("\n response: \n", response.timestamp)
+//     res.status(201).send({ status: '0k', message: 'saved ts' })
+//   } catch (error) {
+//     console.log("....................... \n nix gefunden")
+//     res.status(400).send({ status: 'error', message: "Daten nicht gefunden", error })
+//   }
+// })
+
+// router.put('/api/savedatestr', async (req, res) => {
+//   console.log(req.body)
+
+//   try {
+//     const response = await Diary.findOne({ id: req.body.id })
+//     if (response) {
+//       console.log("response", response)
+
+//       response.date = [...req.body.date]
+//       console.log("response", response)
+//       response.save()
+//     }
+//     console.log("\n response: \n", response.date)
+//     res.status(201).send({ status: '0k', message: 'saved ts' })
+//   } catch (error) {
+//     console.log("....................... \n nix gefunden")
+//     res.status(400).send({ status: 'error', message: "Daten nicht gefunden", error })
+//   }
+// })
 
 
+//*****************************************************************
 
 module.exports = router;
+
+//-- END --|

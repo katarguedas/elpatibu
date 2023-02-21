@@ -1,11 +1,12 @@
+import { useEffect } from "react";
 import { useUserContext } from "../providers/userContext";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
+import { DateTime } from "luxon";
 
 
 //---------------------------------------------------------
-
 
 const useData = () => {
 
@@ -23,8 +24,84 @@ const useData = () => {
 	const [diarySaved, setDiarySaved] = useState();
 	const [diaryTemplate, setDiaryTemplate] = useState('');
 	const [diary, setDiary] = useState('');
+	const [closePanels, setClosePanels] = useState();
+	const [demo, setDemo] = useState(true);
 
-	//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+	//...................................................
+
+	// 	const savemydate = async (dateTs, id) => {
+	// 	let raw = JSON.stringify(
+	// 		{
+	// 			timestamp: dateTs,
+	// 			id: id
+	// 		}
+	// 	)
+
+	// 	let requestOptions = {
+	// 		method: 'PUT',
+	// 		headers: { "Content-Type": "application/json" },
+	// 		body: raw,
+	// 		redirect: 'follow'
+	// 	};
+
+	// 	await fetch('/api/savets', requestOptions)
+	// 	.then(response => response.json())
+	// 	.then(result => {
+	// 		console.log("result", result.message)
+	// 		console.log(result)
+	// 	})
+	// 	.catch(error => console.log('error', error))
+	// }
+
+
+	// const dateTs = [];
+	// if (diary) {
+	// 	diary.date.forEach((e, i) => {
+	// 		console.log(DateTime.fromISO(e))
+	// 		dateTs[i] = DateTime.fromISO(e).ts
+	// 	})
+	// 	console.log("mein dateTs:", dateTs)
+	// 	// savemydate(dateTs, diary.id)
+	// }
+
+
+
+
+	// const savemydate = async (dateStr, id) => {
+	// 	let raw = JSON.stringify(
+	// 		{
+	// 			date: dateStr,
+	// 			id: id
+	// 		}
+	// 	)
+
+	// 	let requestOptions = {
+	// 		method: 'PUT',
+	// 		headers: { "Content-Type": "application/json" },
+	// 		body: raw,
+	// 		redirect: 'follow'
+	// 	};
+
+	// 	await fetch('/api/savedatestr', requestOptions)
+	// 	.then(response => response.json())
+	// 	.then(result => {
+	// 		console.log("result", result.message)
+	// 		console.log(result)
+	// 	})
+	// 	.catch(error => console.log('error', error))
+	// }
+
+
+	// const dateStr = [];
+	// if (diary) {
+	// 	diary.timestamp.forEach((e, i) => {
+	// 		console.log(DateTime.fromSeconds(e / 1000).toISO())
+	// 		dateStr[i] = DateTime.fromSeconds(e / 1000).toISO()
+	// 	})
+	// 	console.log("mein dateStr:", dateStr)
+	// 	savemydate(dateStr, diary.id)
+	// }
+
 
 	// console.log(diary)
 
@@ -44,6 +121,7 @@ const useData = () => {
 			diaryName: diaryTemplate.diaryName,
 			city: diaryTemplate.city,
 			date: diaryTemplate.date,
+			timestamp: diaryTemplate.timestamp,
 			groups: diaryTemplate.groups
 		})
 
@@ -69,9 +147,20 @@ const useData = () => {
 
 	//................................................
 
-	const getDiaryFromBackend = async (id) => {
+	useEffect(() => {
+		console.log("!")
+		if (closePanels) {
+			setDiary({ ...diary }, diary.groups.map(e => {
+				e.visible = false;
+				console.log("VISIBLE:",e.visible)
+				return e;
+			}))
+		}
 
-		console.log("Aufruf der Routine getDiaryFromBackend")
+	}, [closePanels])
+
+	const getDiaryFromBackend = async (id) => {
+		// console.log("Aufruf der Routine getDiaryFromBackend")
 
 		let requestOptions = {
 			method: 'GET',
@@ -80,31 +169,27 @@ const useData = () => {
 		await fetch('/api/getDiary?id=' + id, requestOptions)
 			.then(response => response.json())
 			.then(response => {
-				// console.log("result", response.data)
 				setDiary(response.data)     // HIER GUCKEN!!!!
+				setClosePanels(true)
+				// console.log("DIARY", response.data)
 			})
 			.catch(error => console.log("error: ", error))
 	}
 
 	//................................................
 
-	const saveDataToBackend = async (id, groupId, items, ts, update) => {
-
-		// console.log(id)
-		// console.log(groupId)
-		console.log(ts)
-		console.log(update)
+	const saveDataToBackend = async (id, groupId, items, date, ts, update) => {
 
 		let raw = JSON.stringify(
 			{
 				id: id,
 				groupId: groupId,
 				items: items,
-				ts: ts,
+				date: date,
+				timestamp: ts,
 				update: update,
 			}
 		)
-		console.log("raw", raw)
 
 		let requestOptions = {
 			method: 'PUT',
@@ -125,7 +210,7 @@ const useData = () => {
 	//-------------------------------------------------------------
 
 
-	return [diary, setDiary, diaryTemplate, setDiaryTemplate, createNewDiary, getDiaryFromBackend, saveDataToBackend, tempData, setTempData, diarySaved];
+	return [diary, setDiary, diaryTemplate, setDiaryTemplate, createNewDiary, getDiaryFromBackend, saveDataToBackend, tempData, setTempData, diarySaved, demo, setDemo];
 
 }
 

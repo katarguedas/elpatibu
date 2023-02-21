@@ -2,7 +2,6 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
 import GetData from '../components/GetData'
-import { checkGroupToday } from '../utils/helperfunctions';
 import { useDataContext } from '../providers/dataContext';
 import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle } from '../styled/globalStyles'
 import { useUserContext } from '../providers/userContext';
@@ -18,7 +17,7 @@ import styled from 'styled-components';
 const EditDiary = () => {
 
   const { userData, checkToken } = useUserContext();
-  const { getDiaryFromBackend, editedGroups } = useDataContext();
+  const { getDiaryFromBackend } = useDataContext();
   const { diary } = useDataContext();
 
   const [edit, setEdit] = useState(false);
@@ -29,6 +28,7 @@ const EditDiary = () => {
 
   useEffect(() => {
     checkToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
 
 
@@ -73,7 +73,6 @@ const EditDiary = () => {
                     <GetData
                       id={e.id}
                       index={i}
-                    // savedGroupItems={savedValues.groups[i].items}
                     >
                     </GetData>
                   </StDiv>

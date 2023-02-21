@@ -1,10 +1,15 @@
-import { todayDate } from "./Date";
+import { todayDateTs } from "./Date";
 
-//--------------------------------------------------------
+
+/*********************************************************************
+ * check if the timestamp for today was already set today
+ * @param {*} diaryDate 
+ * @param {*} setUpdate 
+ *****************************/
 
 export const checkTs = (diaryDate, setUpdate) => {
 
-	const ts = todayDate();
+	const ts = todayDateTs();
 
 	if (diaryDate.length > 0) {
 		// checke, ob heutiges Datum bereits gespeichert
@@ -19,7 +24,11 @@ export const checkTs = (diaryDate, setUpdate) => {
 
 }
 
-//----------------------------------------------------------
+/***************************************************
+ * Function sorts the elements of an array
+ * @param {*} arr 
+ * @returns 
+ **********************/
 
 export const sortminmax = arr => {
 	console.log("events zum Sortieren", arr)
@@ -27,31 +36,33 @@ export const sortminmax = arr => {
 	return (resSort.sort(function (a, b) { return a - b })).reverse();
 }
 
-//--------------------------------------------------------
 
-export const sortTs = (tsArr, events) => {
-	let maxnum = null;
-	console.log(maxnum);
-
-	for (let i of tsArr) {
-		if (maxnum < i) {
-			maxnum = i;
-			console.log(maxnum);
-		}
-	}
-}
-
-//----------------------------------------------------------
 /**
+//  * 
+//  */
+
+// export const sortTs = (tsArr, events) => {
+// 	let maxnum = null;
+// 	console.log(maxnum);
+
+// 	for (let i of tsArr) {
+// 		if (maxnum < i) {
+// 			maxnum = i;
+// 			console.log(maxnum);
+// 		}
+// 	}
+// }
+
+/************************************************************************************
  * Checks if all for the diary selected values have been set today
  * @param {*} editedGroups 
  * @param {*} diary 
  * @returns true or false
- */
+ ********************************/
 
 export const checkAllValuesToday = (editedGroups, diary) => {
 
-	const today = todayDate();
+	const today = todayDateTs();
 	let savedAll = true;
 
 	const saveState = (saved) => {
@@ -61,34 +72,36 @@ export const checkAllValuesToday = (editedGroups, diary) => {
 
 	editedGroups = checkGroupsToday(editedGroups, diary);
 
-	if ((diary) && (diary.date.length > 0)) {
-		const lastTs = diary.date[diary.date.length - 1];
+	if ((diary) && (diary.timestamp.length > 0)) {
+		const lastTs = diary.timestamp[diary.timestamp.length - 1];
 		if (lastTs === today) {
 			diary.groups.map((e, i) => {
 				e.items.map((el, index) => {
 					if (el.selected)
 						saveState(editedGroups.groups[i].items[index].done)
+						return el;
 				})
+				return e;
 			})
 		}
 	}
-return savedAll;
+	return savedAll;
 }
 
-//-----------------------------------------------------------------
-/**
+/************************************************************************************
  * Checks if each value has been set today and updates the object editedGroups
  * @param {*} editedGroups 
  * @param {*} diary 
  * @returns editedGroups, which contains all groups and items and the information, if values have been set today (see editedGroups in useTemplates.js)
- */
+ ********************************/
+
 export const checkGroupsToday = (editedGroups, diary) => {
 
-	const today = todayDate();
+	const today = todayDateTs();
 
-	if ((diary) && (diary.date.length > 0)) {
-		const lastTs = diary.date[diary.date.length - 1];
-		const timeLength = diary.date.length;
+	if ((diary) && (diary.timestamp.length > 0)) {
+		const lastTs = diary.timestamp[diary.timestamp.length - 1];
+		const timeLength = diary.timestamp.length;
 		if (lastTs < today) {
 			console.log("noch gar keine Werte heute erfasst")
 		}
@@ -97,7 +110,6 @@ export const checkGroupsToday = (editedGroups, diary) => {
 			diary.groups.map((e, i) => {
 				e.items.forEach((el, index) => {
 					if (el.values) {
-						// console.log("test", timeLength, el.values.length, el.values[el.values.length - 1]);
 						if ((timeLength === el.values.length) &&
 							(el.values[el.values.length - 1] !== null) && (el.values[el.values.length - 1]))
 							editedGroups.groups[i].items[index].done = true;
@@ -111,15 +123,22 @@ export const checkGroupsToday = (editedGroups, diary) => {
 	return editedGroups;
 }
 
-//..................................................................
+
+/****************************************************************************
+ * check if the value of the diary was set today
+ * @param {*} editedGroups 
+ * @param {*} diary 
+ * @param {*} index 
+ * @returns the object 'editedGroups' which was edited insite the function
+ *****************************************************************************/
 
 export const checkGroupXtoday = (editedGroups, diary, index) => {
 
-	const today = todayDate();
-	
-	if ((diary) && (diary.date.length > 0)) {
-		const lastTs = diary.date[diary.date.length - 1];
-		const timeLength = diary.date.length;
+	const today = todayDateTs();
+
+	if ((diary) && (diary.timestamp.length > 0)) {
+		const lastTs = diary.timestamp[diary.timestamp.length - 1];
+		const timeLength = diary.timestamp.length;
 		if (lastTs < today) {
 			console.log("noch gar keine Werte heute erfasst")
 		}
@@ -139,4 +158,25 @@ export const checkGroupXtoday = (editedGroups, diary, index) => {
 	return editedGroups;
 }
 
-//-----------------------------------------------------------------
+/********************************************************************
+ * 
+ * @param {*} array 
+ * @returns the average of the given array values
+ *********************************************************/
+
+export const calcAverage = (array) => {
+	let sum = 0;
+	let nu = 0;
+
+	for (let i = 0; i < array.length; i++) {
+		if (typeof (array[i]) === 'number')
+			sum += array[i];
+		else
+			nu += 1;
+	}
+
+	console.log("sum:", sum, "nu", nu)
+	return sum / (array.length - nu);
+}
+
+//*******************************************************************

@@ -1,19 +1,16 @@
 const express = require('express')
-
-// const mongoose = require('mongoose');
 const User = require('../models/UserModel')
-
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 const cookieparser = require('cookie-parser');
-
 const dotenv = require('dotenv');
 dotenv.config()
 
 const router = express.Router();
 
-
-//----middleware-----------------------------------------
+/************************************************************************
+ * MIDDLEWARE
+ ****************/
 
 router.use((req, res, next) => {
   console.log('Time:', Date.now());
@@ -22,10 +19,13 @@ router.use((req, res, next) => {
 
 router.use(cookieparser());
 
-//----ROUTES---------------------------------------------
+/************************************************************************
+ * ROUTES
+ ********/
 
-
-//--- verify user -- LOGIN ------------------------------
+/*****************************************************************
+ * LOGIN, verify User 
+ ***************************/
 
 router.post('/api/login', async (req, res) => {
 
@@ -62,7 +62,6 @@ router.post('/api/login', async (req, res) => {
         // maxAge: 24 * 60 * 60 * 1000 // 1 day
         maxAge: 24 * 60 * 60 * 1000
       });
-
       res.status(200).send({ status: "ok", message: "user verified", access: accessToken });
       return;
     }
@@ -70,8 +69,10 @@ router.post('/api/login', async (req, res) => {
   }
 })
 
+/*****************************************************************
+ * Refresh Token
+ ******************/
 
-//--- refresh Token  -------------------------------------
 
 router.post('/api/refreshToken', async (req, res) => {
   // console.log("req", req.body)
@@ -114,10 +115,12 @@ router.post('/api/refreshToken', async (req, res) => {
 
 })
 
-//--- add user ------------------------------------------
+/*****************************************************************
+ * REGISTRY, Add User
+ *************************/
 
 router.post('/api/register', async (req, res) => {
-  console.log("test")
+
   const encryptedPassword = await bcrypt.hash(req.body.pwd, 10);
 
   try {
@@ -127,11 +130,11 @@ router.post('/api/register', async (req, res) => {
       name: req.body.name,
       pwd: encryptedPassword
     });
+
     res.status(200).send({ status: "ok", message: 'user created', result })
     return;
   } catch (error) {
     if (error.code === 11000) {
-      // console.log("existiert schon")
       res.status(400).send({ status: "1", message: 'User already exists', code: 11000, error })
       return;
     } else {
@@ -141,8 +144,9 @@ router.post('/api/register', async (req, res) => {
   }
 })
 
-//------------------------------------------------------
-
+/*****************************************************************
+ * Delete cookies
+ ******************/
 
 // Delete cookie
 router.get('/clear-cookie', (req, res) => {
@@ -150,7 +154,9 @@ router.get('/clear-cookie', (req, res) => {
 });
 
 
-//------------------------------------------------------
+/*****************************************************************
+ * Save diaryId
+ ******************/
 
 router.post('/api/saveDiaryId', async (req, res) => {
   console.log("bin im backend")
@@ -167,40 +173,39 @@ router.post('/api/saveDiaryId', async (req, res) => {
   }
 })
 
-//------------------------------------------------------
+/*****************************************************************
+ * Get events for calendar
+ *****************************/
 
 router.get('/api/getEvents', async (req, res) => {
 
   console.log("id:", req.query.id)
   try {
     const result = await User.findOne({ id: req.query.id })
-    // console.log(result)
-    // console.log("\n")
-    // console.log( "result.events",result.events)
-    //.....
     const events = result.events;
     res.status(200).send({ status: 'ok', message: 'found events', events })
   } catch (error) {
-    console.log(error)
     res.status(400).send({ status: 'error', error })
-    //....
   }
 })
 
-//------------------------------------------------------
+/*****************************************************************
+ * Save one event
+ ******************/
 
 router.post('/api/saveEvent', async (req, res) => {
-  console.log("body", req.body.event)
+
   try {
     const response = await User.findOneAndUpdate({ id: req.body.id }, { $push: { events: req.body.event } }, { new: true })
-    // console.log("response", response)
     res.status(200).send({ status: 'ok', message: 'event added', response })
   } catch (error) {
     res.status(400).send({ message: 'Error updating events', error })
   }
 })
 
-//------------------------------------------------------
+/*****************************************************************
+ * Delete one event
+ ********************/
 
 router.put('/api/deleteEvent', async (req, res) => {
   console.log("body:", req.body)
@@ -210,17 +215,12 @@ router.put('/api/deleteEvent', async (req, res) => {
 
     let index;
     response.events.map((e, i) => {
-      // console.log("eventId",req.body.eventId)
       if (e.id === req.body.eventId) {
-        // console.log("e.id:", e.id)
-        // console.log("gefunden!!!", e, i)
         index = i;
         return e;
       }
     })
-    // console.log("Index:", index)
     response.events.splice(index, 1)
-
     response.save()
 
     res.status(200).send({ status: 'ok', message: 'Event deleted', response })
@@ -229,10 +229,9 @@ router.put('/api/deleteEvent', async (req, res) => {
   }
 })
 
-//------------------------------------------------------
+//*****************************************************************
 
 module.exports = router;
-
 
 
 //-- END --|

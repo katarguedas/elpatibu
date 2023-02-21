@@ -25,6 +25,7 @@ const useWeatherAPI = () => {
   const getWeatherData = (city, startDate, endDate) => {
 
     console.log("city:", city, startDate)
+    console.log("city:", city, endDate)
 
     let data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_WEATHER));
     if (data === null)

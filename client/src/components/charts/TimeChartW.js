@@ -40,8 +40,7 @@ const TimeChartW = ({ xValues, yValues, titel, name, unit }) => {
 	const yMin = Math.round(Math.min(...yValues)) - 1;
 	const yMax = Math.round(Math.max(...yValues)) + 1;
 
-	console.log("MIN; MAX", yMin, yMax)
-
+	
 	let data;
 
 	data = {
@@ -57,7 +56,7 @@ const TimeChartW = ({ xValues, yValues, titel, name, unit }) => {
 				borderWidth: 1,
 				spanGaps: true,
 				connect: false,
-				pointStyle: 'circle',
+				pointStyle: 'rect',
 				pointBorderColor: '#000',
 				radius: 5,
 				stepped: false,
@@ -70,6 +69,7 @@ const TimeChartW = ({ xValues, yValues, titel, name, unit }) => {
 	let options;
 	options = {
 		responsive: true,
+		maintainAspectRatio: false,
 		plugins: {
 			legend: {
 				display: false
@@ -87,7 +87,6 @@ const TimeChartW = ({ xValues, yValues, titel, name, unit }) => {
 				time: {
 					unit: 'day',
 					tooltipFormat: 'DD',
-					// displayFormat: {day: "mm:dd"}
 				},
 				title: {
 					display: true,
@@ -97,7 +96,7 @@ const TimeChartW = ({ xValues, yValues, titel, name, unit }) => {
 					padding: 10
 				},
 				ticks: {
-					font: { size: 16 },
+					font: { size: 15 },
 					maxRotation: 90,
 				},
 				grid: {
@@ -126,15 +125,6 @@ const TimeChartW = ({ xValues, yValues, titel, name, unit }) => {
 	return (
 		<ChartStyle >
 			<Line 
-			// style={{
-			// 	marginTop: '3.0rem',
-			// 	marginBottom: '2.0rem',
-			// 	padding: '0.5rem',
-			// 	border: '2px solid',
-			// 	borderColor: theme.colors.col4,
-			// 	borderRadius: '0.5rem',
-			// 	boxShadow: 'rgba(0, 0, 0, 0.2) 3.0px 5.0px 4.2px'
-			// }}
 				options={options}
 				data={data}
 				redraw={true} />

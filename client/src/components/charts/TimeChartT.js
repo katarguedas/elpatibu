@@ -17,6 +17,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 	// console.log("x-", xValues)
 	// console.log("y", yValues)
 
+	
 	ChartJS.register(
 		CategoryScale,
 		LinearScale,
@@ -54,7 +55,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 	const [done, setDone] = useState();
 
 	// console.log("show Therapie:", showTherapie)
-	// console.log("first and last day", firstDay, lastDay, timeCatArrays)
+	console.log("first and last day", firstDay, lastDay, timeCatArrays)
 
 
 	const setYline = (yValue) => {
@@ -139,6 +140,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 			}
 		}
 		checkAnnotations();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showTherapie, done])
 
 
@@ -150,7 +152,6 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 
 	useEffect(() => {
 		setMyAnnotations(initState)
-		// console.log("myAnnotations", myAnnotations)
 	}, [showTherapie])
 
 	//...................
@@ -158,6 +159,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 	let options;
 	options = {
 		responsive: true,
+		maintainAspectRatio: false,
 		plugins: {
 			legend: {
 				display: false
@@ -179,9 +181,10 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 			x: {
 				type: 'time',
 				time: {
+					// parser: 'MM/DD/YYYY HH:mm',
 					unit: 'day',
 					tooltipFormat: 'DD',
-					// displayFormat: {day: "mm:dd"}
+					displayFormat: {day: "yyyy:mm:dd"}
 				},
 				title: {
 					display: true,
@@ -194,7 +197,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 				}
 				},
 				ticks: {
-					font: { size: 16 },
+					font: { size: 15 },
 					maxRotation: 90,
 				},
 				grid: {
