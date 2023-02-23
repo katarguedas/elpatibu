@@ -10,7 +10,7 @@ import { DateTime } from "luxon";
 
 const useData = () => {
 
-	const { saveDiaryIdInBackend, diaryIdSaved } = useUserContext()
+	const { saveDiaryIdInBackend, user } = useUserContext()
 	const [tempData, setTempData] = useState(
 		{
 			id: uuidv4(),
@@ -25,7 +25,13 @@ const useData = () => {
 	const [diaryTemplate, setDiaryTemplate] = useState('');
 	const [diary, setDiary] = useState('');
 	const [closePanels, setClosePanels] = useState();
-	const [demo, setDemo] = useState(true);
+
+	const [demo, setDemo] = useState(false);
+
+	useEffect(() => {
+		if(user === "gast@gast.de")
+		setDemo(true)
+	})
 
 	//...................................................
 
@@ -148,11 +154,10 @@ const useData = () => {
 	//................................................
 
 	useEffect(() => {
-		console.log("!")
-		if (closePanels) {
+		if (closePanels && diary) {
 			setDiary({ ...diary }, diary.groups.map(e => {
 				e.visible = false;
-				console.log("VISIBLE:",e.visible)
+				// console.log("VISIBLE:",e.visible)
 				return e;
 			}))
 		}

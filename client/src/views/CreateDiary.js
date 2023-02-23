@@ -16,6 +16,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
+import { theme } from '../themes/theme';
 
 /********************************************************************************
  * Component for creating the individual diary
@@ -25,7 +26,7 @@ import styled from 'styled-components';
 
 const CreateDiary = () => {
 
-  const { diaryTemplate, setDiaryTemplate, setDiary, createNewDiary, diarySaved, diaryInit } = useDataContext();
+  const { diaryTemplate, setDiaryTemplate, setDiary, createNewDiary, diarySaved, diaryInit, demo } = useDataContext();
   const { user, userData, checkToken, diaryIdSaved } = useUserContext();
 
   const [on, setOn] = useState();
@@ -33,6 +34,7 @@ const CreateDiary = () => {
   const [done, setDone] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [missingCity, setMissingCity] = useState(false);
+  const [demoText, setDemoText] = useState();
 
   let location = useLocation();
   const navigate = useNavigate();
@@ -58,7 +60,6 @@ const CreateDiary = () => {
     checkToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
-
 
   //.....................
 
@@ -187,12 +188,16 @@ const CreateDiary = () => {
    */
 
   const handleSendAndCreate = () => {
-    if (checkMeteo() === true) {
-      setMissingCity(false)
-      createNewDiary(diaryTemplate.id);
-    }
-    else {
-      setMissingCity(true)
+    if (!demo) {
+      if (checkMeteo() === true) {
+        setMissingCity(false)
+        createNewDiary(diaryTemplate.id);
+      }
+      else {
+        setMissingCity(true)
+      }
+    } else {
+      setDemoText('In der Demo-Version kannst Du kein Tagebuch anlegen.')
     }
   }
 
@@ -290,6 +295,10 @@ const CreateDiary = () => {
             (created === false) &&
             (done === false) &&
             <SendButton onClick={handleSendAndCreate} >erstellen</SendButton>
+          }
+          {
+            demo &&
+            <p style={{ fontWeight: '500', fontSize: '1.1rem' }} >{demoText}</p>
           }
           {created &&
             <p style={{ fontWeight: '500' }} >Tagebuch erfolgreich erstellt!</p>

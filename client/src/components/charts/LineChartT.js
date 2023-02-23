@@ -21,15 +21,18 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 import 'chartjs-adapter-luxon';
 
 
-//----------------------------------------------------------------------
+/***********************************************************
+ * Chart.js component 
+ * Chart type: Line Chart
+
+ * @returns Line chart
+ ***********************************************************/
 
 const LineChartT = ({ xValues, yValues, name, unit, titel, showTherapie }) => {
 
+  
   const { timeCatArrays, setTimeArrays, LOCAL_STORAGE_EVENTS } = useUserContext();
 
-  // console.log(".........", xValues)
-  // console.log("y", y1Values)
-  // console.log("y", y2Values)
 
   ChartJS.register(
     CategoryScale,
@@ -63,7 +66,9 @@ const LineChartT = ({ xValues, yValues, name, unit, titel, showTherapie }) => {
   const initState = [];
   const [done, setDone] = useState();
 
-  //.........................
+/************************************************
+ * some functions to crate annotations
+ */
 
   const setYline = (yValue) => {
     setMyAnnotations([
@@ -111,7 +116,7 @@ const LineChartT = ({ xValues, yValues, name, unit, titel, showTherapie }) => {
     setDone(true)
   }, [])
 
-  console.log("Therapietermine",timeCatArrays.therapie)
+  console.log("Therapietermine", timeCatArrays.therapie)
   if (timeCatArrays.therapie.length > 0) {
     console.log(timeCatArrays.therapie[2]);
     const tt = getStrFromTs(timeCatArrays.therapie[2])
@@ -120,6 +125,7 @@ const LineChartT = ({ xValues, yValues, name, unit, titel, showTherapie }) => {
     console.log("index Gefunden!", ind)
   }
 
+  
   useEffect(() => {
     setColorBoxes(colorArray, firstDay, lastDay, yMinArray, yMaxArray);
     setYline(39);
@@ -159,6 +165,9 @@ const LineChartT = ({ xValues, yValues, name, unit, titel, showTherapie }) => {
 
 
   const checkAnnotations = () => {
+    // wenn annotataions existieren, lasse nur die zu, die dem Type Object entsprechen.
+    // Grund: aus mir unbekanntem Grund werden annotations generiert, die nur aus einer 
+    // Zahl bestehen. Diese führen zu unerwünschten Effekten im Chart, also werden sie ausgeschlossen.
     if (myAnnotations.length > 0)
       setMyAnnotations(myAnnotations.filter(e => (typeof (e) === 'object')))
   }
@@ -169,10 +178,10 @@ const LineChartT = ({ xValues, yValues, name, unit, titel, showTherapie }) => {
     console.log("myAnnotations", myAnnotations)
   }, [showTherapie])
 
-  //...................
 
-  //-----------------------------------------------------------
-
+	/******************
+	 * Chart options
+	 ******************/
 
   const options = {
     responsive: true,
@@ -233,6 +242,9 @@ const LineChartT = ({ xValues, yValues, name, unit, titel, showTherapie }) => {
   };
 
 
+	/******************
+ * Chart data
+ ******************/
 
   const data = {
     labels: xValues,
@@ -254,7 +266,7 @@ const LineChartT = ({ xValues, yValues, name, unit, titel, showTherapie }) => {
     ],
   };
 
-  //....................................................................
+	//************************************************** */
 
   return (
     <ChartStyle >
@@ -265,5 +277,6 @@ const LineChartT = ({ xValues, yValues, name, unit, titel, showTherapie }) => {
     </ChartStyle>
   )
 };
+
 
 export default LineChartT;

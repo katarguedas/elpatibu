@@ -1,16 +1,30 @@
 import { ChartStyle } from '../../styled/globalStyles';
+import { theme } from '../../themes/theme';
+
 import React from 'react';
-import { Chart as ChartJS, CategoryScale, PointElement, Title, Tooltip, Legend, BarController, BarElement } from 'chart.js';
+import {
+	Chart as ChartJS,
+	CategoryScale,
+	PointElement,
+	Title,
+	Tooltip,
+	Legend,
+	BarController,
+	BarElement
+} from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import annotationPlugin from 'chartjs-plugin-annotation';
 
 import 'chartjs-adapter-luxon';
 
-import annotationPlugin from 'chartjs-plugin-annotation';
 
-import { theme } from '../../themes/theme'
-
-
-//----------------------------------------------------------------------
+/***********************************************************
+ * Chart.js component 
+ * Chart type: Bar Chart
+ * @param {*} xVal - labels for the x axis
+ * @param {*} yVal - values for the y axis 
+ * @returns Bar chart
+ ***********************************************************/
 
 const BarChartNMD = ({ xVal, yVal, name }) => {
 
@@ -32,13 +46,7 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 
 	const textColor = theme.colors.col3;
 
-	//...................
-
-	const myData = yVal.map((e, i) => {
-		return ({ x: xVal[i], y: e })
-	})
-	// console.log(myData)
-
+	//........................................
 
 	let bgcolor;
 
@@ -65,6 +73,14 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 		colors[i] = bgcolor;
 	}
 
+/******************
+ * Chart data
+ ******************/
+
+	const myData = yVal.map((e, i) => {
+		return ({ x: xVal[i], y: e })
+	})
+	// console.log(myData)
 
 	const data = {
 		labels: xVal,
@@ -89,6 +105,9 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 		],
 	};
 
+	/******************
+	 * Chart options
+	 ******************/
 
 	const options = {
 		responsive: true,
@@ -99,7 +118,6 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 				labels: {
 					font: { size: 14 }
 				}
-				// position: 'top',
 			},
 			title: {
 				display: true,
@@ -156,6 +174,8 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 		}
 	};
 
+	//************************************************** */
+
 	return (
 		<ChartStyle >
 			<Bar
@@ -168,8 +188,4 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 };
 
 
-
-
 export default BarChartNMD;
-
-

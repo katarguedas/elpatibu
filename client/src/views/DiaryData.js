@@ -11,7 +11,7 @@ import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle, StP } from 
 import { useUserContext } from '../providers/userContext';
 import { useDataContext } from '../providers/dataContext';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
 
@@ -23,8 +23,10 @@ import styled from 'styled-components';
 
 const DiaryData = () => {
 
-  const { userData, checkToken, getEventsFromBackend, LOCAL_STORAGE_EVENTS } = useUserContext();
+  const { userData, user, checkToken, getEventsFromBackend, LOCAL_STORAGE_EVENTS } = useUserContext();
   const { diary, setDiary, getDiaryFromBackend } = useDataContext();
+
+  const [gast, setGast] = useState(false);
 
   const location = useLocation();
 
@@ -66,6 +68,12 @@ const DiaryData = () => {
   //............................
 
   useEffect(() => {
+    if (user === 'gast@gast.de')
+      setGast(true)
+  })
+  //............................
+
+  useEffect(() => {
     let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
     if (!eventsArray) {
       getEventsFromBackend(userData.id);
@@ -88,6 +96,8 @@ const DiaryData = () => {
     }))
   }
 
+
+
   //*************************************************************************** */
 
   return (
@@ -99,7 +109,7 @@ const DiaryData = () => {
 
           <PageTitle> Ergebnisse Deiner bisher eingetragenen Daten</PageTitle>
           {
-            diary?.timestamp?.length < 2 ?
+            diary?.timestamp?.length < 2 && !gast ?
               <StP>
                 Um Ergebnisse sehen zu können, werden Daten für mindestens 2 Tage benötigt.<br />
                 Gebe heute und morgen Daten ein, dann wirst Du morgen Deine ersten Ergebnisse sehen.
@@ -107,7 +117,8 @@ const DiaryData = () => {
               : <p></p>
           }
           {
-            diary && diary.timestamp?.length > 1 &&
+            diary && 
+            (diary.timestamp?.length > 1) &&
             diary.groups.map((e, i) => (
               e.items.filter(e => e.selected === true).length > 0 &&
               <Items key={e.id} >

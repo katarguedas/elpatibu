@@ -1,25 +1,38 @@
 import { theme } from '../../themes/theme';
 import { ChartStyle } from '../../styled/globalStyles';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Filler, Tooltip, Legend, TimeScale, TimeSeriesScale } from 'chart.js';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Filler,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 import { Line } from 'react-chartjs-2';
-
 import annotationPlugin from 'chartjs-plugin-annotation';
+
 import 'chartjs-adapter-luxon';
 
-//----------------------------------------------------------------------
+/****************************************
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
 
 const TimeChartP = ({ xValues, yValues, titel, name, unit }) => {
 
   // console.log("x-", xValues)
   // console.log("y", yValues)
 
+
   ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
-    TimeScale,
-    TimeSeriesScale,
     LinearScale,
     annotationPlugin,
     Title,
@@ -31,7 +44,11 @@ const TimeChartP = ({ xValues, yValues, titel, name, unit }) => {
   //................................................
 
   const textColor = theme.colors.col3;
-  //...................
+
+
+  /******************
+ * Chart data
+ ******************/
 
   const myData = xValues.map((e, i) => {
     return ({ x: e, y: yValues[i] })
@@ -64,7 +81,9 @@ const TimeChartP = ({ xValues, yValues, titel, name, unit }) => {
     ],
   }
 
-  //...................
+  /******************
+   * Chart options
+   ******************/
 
   let options;
   options = {
@@ -121,7 +140,8 @@ const TimeChartP = ({ xValues, yValues, titel, name, unit }) => {
     // }
   };
 
-  //-------------------------------------------------------------
+  //************************************************** */
+
   return (
     <ChartStyle >
       <Line
