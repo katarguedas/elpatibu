@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-// var cors = require('cors')
+var cors = require('cors')
 const port = 3001
 
 const mongoose = require('mongoose');
@@ -21,7 +21,7 @@ const MONGO_URI = process.env.EXPRESS_MONGO_URI;
 //----middleware----------------------------------------
 
 app.use(express.json())
-// app.use(cors())
+app.use(cors())
 
 app.use(express.static(path.join(__dirname, "../client/build/")));
 
@@ -43,10 +43,9 @@ app.use(apiWeather);
 
 //------------------------------------------------------
 
-
-app.get('/', function(req,res) {
+app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
-})
+});
 
 
 app.listen(port, () => {

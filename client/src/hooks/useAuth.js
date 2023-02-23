@@ -94,7 +94,7 @@ const useAuth = () => {
 		await fetch("/api/login", requestOptions)
 			.then(response => response.json())
 			.then(response => {
-				// console.log(response)
+				console.log(response)
 
 				if ((response.status === 'error') && (response.message === 'Invalid password'))
 					alert("Falsches Passwort")

@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.27c750f8.css",
+    "main.js": "/static/js/main.08f91f17.js",
+    "static/media/Blutdruck.png": "/static/media/Blutdruck.f2d635704a31adb4e131.png",
+    "static/media/editData_02.png": "/static/media/editData_02.2b2d265388778598bed8.png",
+    "static/media/editData_01.png": "/static/media/editData_01.8b5d679319d021d96816.png",
+    "index.html": "/index.html",
+    "main.27c750f8.css.map": "/static/css/main.27c750f8.css.map",
+    "main.08f91f17.js.map": "/static/js/main.08f91f17.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.27c750f8.css",
+    "static/js/main.08f91f17.js"
+  ]
+}
