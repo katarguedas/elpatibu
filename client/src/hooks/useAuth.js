@@ -365,8 +365,8 @@ const useAuth = () => {
 
 	const saveEventInBackend = async (event) => {
 
-		console.log(event)
-		console.log(userData.id)
+		// console.log(event)
+		// console.log(userData.id)
 
 		const raw = JSON.stringify({
 			id: userData.id,

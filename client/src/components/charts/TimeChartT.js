@@ -55,7 +55,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 	const [done, setDone] = useState();
 
 	// console.log("show Therapie:", showTherapie)
-	console.log("first and last day", firstDay, lastDay, timeCatArrays)
+	// console.log("first and last day", firstDay, lastDay, timeCatArrays)
 
 
 	const setYline = (yValue) => {

@@ -103,10 +103,10 @@ export const checkGroupsToday = (editedGroups, diary) => {
 		const lastTs = diary.timestamp[diary.timestamp.length - 1];
 		const timeLength = diary.timestamp.length;
 		if (lastTs < today) {
-			console.log("noch gar keine Werte heute erfasst")
+			// console.log("noch gar keine Werte heute erfasst")
 		}
 		else if (lastTs === today) {
-			console.log("heute bereits Werte eigegeben")
+			// console.log("heute bereits Werte eigegeben")
 			diary.groups.map((e, i) => {
 				e.items.forEach((el, index) => {
 					if (el.values) {
@@ -175,7 +175,7 @@ export const calcAverage = (array) => {
 			nu += 1;
 	}
 
-	console.log("sum:", sum, "nu", nu)
+	// console.log("sum:", sum, "nu", nu)
 	return sum / (array.length - nu);
 }
 

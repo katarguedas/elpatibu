@@ -28,6 +28,9 @@ const MONGO_URI = process.env.EXPRESS_MONGO_URI;
 app.use(express.json())
 app.use(cors())
 
+// app.use(express.static(path.join(__dirname, "../client/build")));
+
+
 app.use(async function (req, res, next) {
   mongoose.set('strictQuery', true);
   try {
@@ -46,12 +49,15 @@ app.use(apiWeather);
 
 //------------------------------------------------------
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+// app.get('/', (req, res) => {
+//   res.send('Hello World!')
+// })
 
 
 
+// app.get('/', function(req,res) {
+//   res.sendFile(path.join(__dirname, '../client/build/index.html'));
+// })
 
 
 app.listen(port, () => {

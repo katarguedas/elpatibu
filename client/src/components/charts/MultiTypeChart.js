@@ -1,15 +1,30 @@
 import { ChartStyle } from '../../styled/globalStyles';
+import { theme } from '../../themes/theme';
+
 import React, { useEffect } from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, TimeSeriesScale } from 'chart.js';
+import {
+	Chart as ChartJS,
+	CategoryScale, LinearScale,
+	PointElement,
+	LineElement,
+	Title,
+	Tooltip,
+	Legend,
+} from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import 'chartjs-adapter-luxon';
 import { useState } from 'react';
 
-import { theme } from '../../themes/theme'
 
-// import annotationPlugin from 'chartjs-plugin-annotation';
-
-//---------------------------------------------------------------------
+/***********************************************************
+ * Chart.js component
+ * Chart type: Multi type chart (with 2 axis)
+ * @param {*} xValues - labels for the x axis 
+ * @param {*} y1Values - values for the y axis (like bar chart)
+ * @param {*} y2Values - values for the y axis (like line chart)
+ * @param {*} name - name to label the  y axis 
+ * @returns Line chart
+ *****************************************/
 
 const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, unit }) => {
 
@@ -25,14 +40,12 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
 		LinearScale,
 		PointElement,
 		LineElement,
-		TimeScale,
-		TimeSeriesScale,
 		Title,
 		Tooltip,
 		Legend
 	);
 
-	
+
 	useEffect(() => {
 		if (label2 === 'Relative Feuchtigkeit') {
 			setSMin(20)
@@ -48,6 +61,10 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
 
 
 	const color1 = theme.colors.col3;
+
+		/******************
+	 * Chart options
+	 ******************/
 
 	const options = {
 		responsive: true,
@@ -116,12 +133,6 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
 		}
 	};
 
-	const values1 = xValues.map((e, i) => {
-		return ({ x: e, y: y1Values[i] })
-	})
-	const values2 = xValues.map((e, i) => {
-		return ({ x: e, y: y2Values[i] })
-	})
 
 	//...........
 
@@ -150,6 +161,18 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
 		colors[i] = bgcolor;
 	}
 
+/******************
+ * Chart data
+ ******************/
+
+	const values1 = xValues.map((e, i) => {
+		return ({ x: e, y: y1Values[i] })
+	})
+	const values2 = xValues.map((e, i) => {
+		return ({ x: e, y: y2Values[i] })
+	})
+
+
 
 	const data = {
 		labels: labels,
@@ -168,7 +191,6 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
 			{
 				type: 'bar',
 				label: name,
-				// backgroundColor: color1,
 				backgroundColor: colors,
 				borderColor: 'grey',
 				data: values2,
@@ -177,6 +199,8 @@ const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, uni
 			},
 		],
 	};
+
+		//************************************************** */
 
 
 	if (y1Values)

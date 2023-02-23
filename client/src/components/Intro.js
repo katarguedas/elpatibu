@@ -3,9 +3,10 @@ import { AuthButton } from '../styled/Buttons';
 import editData_01 from '../pictures/editData_01.png';
 import editData_02 from '../pictures/editData_02.png';
 import Blutdruck from '../pictures/Blutdruck.png';
-import create from '../pictures/create.png';
 import { useNavigate } from 'react-router';
 
+import { TbArrowBigRight } from "react-icons/tb";
+import { theme } from '../themes/theme';
 
 //---------------------------------------------------------
 
@@ -35,17 +36,27 @@ const Intro = () => {
           <div style={{ marginBottom: '1.0rem', marginTop: '2.0rem' }} >
             Registriere Dich noch heute und erstelle Dein individuelles Patienten-Tagebuch
           </div>
-          {/* <img style={{ border: '1px solid #000', borderRadius: '0.5rem' }}
-            src={create} alt="" /> */}
-          <AuthButton onClick={ handleClickRegister }
-            style={{
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              height: '3.5rem',
-              marginBottom: '3.0rem'
-            }} >
-            Jetzt registrieren
-          </AuthButton>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center'
+          }} >
+            <TbArrowBigRight
+              style={{
+                justifyItems: 'center',
+                color: theme.colors.col5
+              }}
+            />
+            <AuthButton onClick={handleClickRegister}
+              style={{
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                height: '3.5rem',
+                // marginBottom: '3.0rem'
+              }} >
+              Jetzt registrieren
+            </AuthButton>
+          </div>
 
         </Step>
         <Step>
@@ -63,7 +74,7 @@ const Intro = () => {
         <Step>
           <span style={{ fontWeight: '700' }} >Schritt 3</span>
           <div style={{ marginTop: '2.0rem' }}  >
-            Betrachte Deinen Genesungsprozess in Diagrammen
+            Betrachte Deinen Genesungsprozess oder Gesundheitsverlauf in Diagrammen
           </div>
           <img style={{ marginTop: '2.0rem', border: '1px solid #000', borderRadius: '0.5rem' }}
             src={Blutdruck} alt="" />

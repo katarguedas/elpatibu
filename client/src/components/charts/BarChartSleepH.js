@@ -1,16 +1,30 @@
 import { ChartStyle } from '../../styled/globalStyles';
+import { theme } from '../../themes/theme'
+
 import React from 'react';
-import { Chart as ChartJS, CategoryScale, PointElement, Title, Tooltip, Legend, BarController, BarElement } from 'chart.js';
+import {
+	Chart as ChartJS,
+	CategoryScale,
+	PointElement,
+	Title,
+	Tooltip,
+	Legend,
+	BarController,
+	BarElement
+} from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import annotationPlugin from 'chartjs-plugin-annotation';
 
 import 'chartjs-adapter-luxon';
 
-import annotationPlugin from 'chartjs-plugin-annotation';
 
-import { theme } from '../../themes/theme'
-
-
-//----------------------------------------------------------------------
+/***********************************************************
+ * Chart.js component 
+ * Chart type: Bar Chart
+ * @param {*} xVal - labels for the x axis
+ *            yVal - values for the y axis 
+ * @returns Bar chart
+ ***********************************************************/
 
 const BarChartSleepH = ({ xVal, yVal, name }) => {
 
@@ -62,6 +76,9 @@ const BarChartSleepH = ({ xVal, yVal, name }) => {
 		],
 	};
 
+	/******************
+	 * Chart options
+	 ******************/
 
 	const options = {
 		responsive: true,
@@ -72,7 +89,6 @@ const BarChartSleepH = ({ xVal, yVal, name }) => {
 				labels: {
 					font: { size: 14 }
 				}
-				// position: 'top',
 			},
 			title: {
 				display: true,
@@ -124,6 +140,8 @@ const BarChartSleepH = ({ xVal, yVal, name }) => {
 			}
 		}
 	};
+
+		//************************************************** */
 
 	return (
 		<ChartStyle >
