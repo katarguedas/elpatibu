@@ -43,14 +43,10 @@ app.use(apiWeather);
 
 //------------------------------------------------------
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World!')
-// })
 
 app.get('/', function(req,res) {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 })
-
 
 
 app.listen(port, () => {
