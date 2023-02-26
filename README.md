@@ -25,3 +25,6 @@ Consuming REST APIs in this React application is done using the Fetch API.
 -	More options for the charts that shows Wetterfühligkeit,
 -	Possibility to create more than one diary,
 -	Impementation of another date and time picker in the calendar feature
+
+#### .
+With the following guest access you can get an insight about the funcionality of hte application: username: gast(at)gast.de password: gast
