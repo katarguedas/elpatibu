@@ -1,19 +1,19 @@
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import NavBar from '../components/NavBar';
-import { SendButton } from '../styled/Buttons';
-import { fullDate, todayDateTs } from '../utils/Date';
-import { checkAllValuesToday } from '../utils/helperfunctions';
-import { useUserContext } from '../providers/userContext';
-import { useDataContext } from '../providers/dataContext';
-import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2 } from '../styled/globalStyles';
+import Header from '../Header';
+import Footer from '../Footer';
+import NavBar from '../NavBar';
+import { SendButton } from '../../styled/Buttons';
+import { fullDate, todayDateTs } from '../../utils/Date';
+import { checkAllValuesToday } from '../../utils/helperfunctions';
+import { useUserContext } from '../../providers/userContext';
+import { useDataContext } from '../../providers/dataContext';
+import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2 } from '../../styled/globalStyles';
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { DateTime } from 'luxon';
-import { theme } from '../themes/theme';
+import { theme } from '../../themes/theme';
 
 
 /*********************************************************************

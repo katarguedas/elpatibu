@@ -79,7 +79,7 @@ export const checkAllValuesToday = (editedGroups, diary) => {
 				e.items.map((el, index) => {
 					if (el.selected)
 						saveState(editedGroups.groups[i].items[index].done)
-						return el;
+					return el;
 				})
 				return e;
 			})
@@ -177,6 +177,27 @@ export const calcAverage = (array) => {
 
 	// console.log("sum:", sum, "nu", nu)
 	return sum / (array.length - nu);
+}
+
+
+/********************************************************************
+ * 
+ * @param {*} array 
+ * @returns yMin and yMax value for the y-Axis of a chart
+ *********************************************************/
+
+export const getYminMax = (yValues, rm = 0) => {
+
+	const yMinArray = yValues.map(y => {
+		return Math.round(Math.min(...y.filter(value => typeof value === 'number'))) - rm;
+	})
+	const yMaxArray = yValues.map(y => {
+		return Math.round(Math.max(...y.filter(value => typeof value === 'number'))) + rm;
+	})
+	const yMin = (Math.min(...yMinArray))
+	const yMax = Math.max(...yMaxArray)
+
+	return { yMin, yMax }
 }
 
 //*******************************************************************

@@ -19,6 +19,8 @@ router.use((req, res, next) => {
 
 router.get('/api/WeatherData', async (req, res) => {
 
+  console.log("im backend")
+
   const urlConst = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/history?";
   const lang = "de";
   const contentType = "json";
@@ -28,8 +30,6 @@ router.get('/api/WeatherData', async (req, res) => {
 
   let url = `${urlConst}&unitGroup=${unitGroup}&contentType=${contentType}&lang=${lang}&startDateTime=${req.query.start}&endDateTime=${req.query.end}&aggregateHours=${aggregateHours}&location=${req.query.city}&key=${key}`;
 
-  // console.log("Stadt:", req.query.city, " start:", req.query.start, " Ende:", req.query.end);
-
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -37,6 +37,7 @@ router.get('/api/WeatherData', async (req, res) => {
     res.status(200).send({status: 'ok', message: 'data found', data: data})
   } catch (error) {
     console.log("Error, weather data couldn't be fetched", error)
+    return "Error, weather data couldn't be fetched"
   }
 })
 

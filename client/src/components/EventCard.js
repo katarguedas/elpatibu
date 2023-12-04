@@ -14,12 +14,6 @@ const EventCard = ({ setView, event, setDeleted }) => {
   const [events, setEvents] = useState();
   const [date, setDate] = useState();
 
-
-  // console.log("view", view)
-  // console.log("event", event)
-  // console.log("events", events)
-
-
   const prepareDate = (string) => {
     if (string) {
       let hh, min;
@@ -46,10 +40,8 @@ const EventCard = ({ setView, event, setDeleted }) => {
 
   useEffect(() => {
     if (events) {
-      console.log("events", events)
       events.map(e => {
         if (e.id === event.id) {
-          console.log("gefunden!", e.start)
           setDate(e.start)
           prepareDate(e.start)
         }

@@ -28,8 +28,6 @@ import 'chartjs-adapter-luxon';
 
 const BarChartNMD = ({ xVal, yVal, name }) => {
 
-	// console.log( "name:",name, "x", xVal)
-	// console.log("y", yVal)
 
 	ChartJS.register(
 		CategoryScale,
@@ -69,18 +67,36 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 			case 5:
 				bgcolor = '#f75b5b';
 				break;
+			default:
+				bgcolor = theme.colors.col4;
 		}
 		colors[i] = bgcolor;
 	}
 
-/******************
- * Chart data
- ******************/
+	/******************
+	 * Chart data
+	 ******************/
 
 	const myData = yVal.map((e, i) => {
 		return ({ x: xVal[i], y: e })
 	})
-	// console.log(myData)
+
+	let suggestedMinY = 0;
+	let suggestedMaxY = 5;
+
+	if (Math.min(yVal) > 0) {
+		suggestedMinY = Math.round(Math.min(yVal)) - 1;
+	}
+
+	if (Math.max(yVal) > 5) {
+		suggestedMaxY = Math.round(Math.max(yVal)) + 1;
+	}
+
+
+	const callbackFn = function (value) {
+		let y = ['', 'keine', 'leichte', 'mittelstarke', 'starke', 'sehr starke'];
+		return [y[value | 0]]
+	}
 
 	const data = {
 		labels: xVal,
@@ -149,8 +165,8 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 				}
 			},
 			y: {
-				suggestedMin: 0,
-				suggestedMax: 5,
+				suggestedMin: suggestedMinY,
+				suggestedMax: suggestedMaxY,
 				title: {
 					display: true,
 					text: name,
@@ -162,10 +178,7 @@ const BarChartNMD = ({ xVal, yVal, name }) => {
 					font: { size: 14 },
 					stepSize: 1,
 					display: true,
-					callback: function (value) {
-						let y = ['', 'keine', 'leichte', 'mittelstarke', 'starke', 'sehr starke'];
-						return [y[value | 0]]
-					}
+					callback: !name.includes('Stunden') ? callbackFn : undefined
 				},
 				grid: {
 					display: true

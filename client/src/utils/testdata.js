@@ -50,7 +50,7 @@ export const createTData = () => {
 
 	const dataSet = {
 		tsArray: tsArray,
-		temperature: temperature
+		temperature: [temperature]
 	}
 	// console.log('dataSet', dataSet)
 
@@ -74,8 +74,7 @@ export const createP2Data = () => {
 
 	const dataSet = {
 		tsArray: tsArray,
-		pressureH: pressureH,
-		pressureL: pressureL
+		pressure: [pressureH, pressureL]
 	}
 
 	// console.log('dataSet', dataSet)
@@ -99,7 +98,7 @@ export const createPData = () => {
 
 	const dataSet = {
 		tsArray: tsArray,
-		pulse: pulse,
+		pulse: [pulse],
 	}
 	// console.log('dataSet', dataSet)
 
@@ -122,7 +121,7 @@ export const createWData = () => {
 
 	const dataSet = {
 		tsArray: tsArray,
-		weight: weight
+		weight: [weight]
 	}
 	// console.log('dataWset', dataSet)
 

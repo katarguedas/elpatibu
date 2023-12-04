@@ -1,8 +1,8 @@
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import RegisterForm from '../components/forms/RegisterForm'
-import { ContentGroup, PageTitle } from '../styled/globalStyles'
-import { useUserContext } from '../providers/userContext'
+import Header from '../Header'
+import Footer from '../Footer'
+import RegisterForm from '../forms/RegisterForm'
+import { ContentGroup, PageTitle } from '../../styled/globalStyles'
+import { useUserContext } from '../../providers/userContext'
 
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
@@ -31,11 +31,9 @@ const Register = () => {
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		console.log(uuidv4())
 		addUser();
 
 		clearState()
-		console.log(regMessage)
 	}
 
 	const handleMouseEnter = (e) => {
@@ -50,7 +48,6 @@ const Register = () => {
 
 	useEffect(() => {
 		if (flag === 0) {
-			console.log('flag', flag)
 			const timer = setTimeout(() => {navigate('/login')}, 3000);
 			return () => {
 				clearTimeout(timer)

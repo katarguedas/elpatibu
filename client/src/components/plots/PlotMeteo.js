@@ -1,10 +1,11 @@
 
-import BarChartNMD from './charts/BarChartNMD';
-import MultiTypeChart from './charts/MultiTypeChart';
-import { createNMData, createNMData2, setDateRange } from '../utils/testdata';
-import { getDateStrFromTs, getdmStrFromTs } from '../utils/Date';
-import { WeatherButton, WeatherButton2 } from './../styled/Buttons';
-import { useDataContext } from '../providers/dataContext';
+import BarChartNMD from '../charts/BarChartNMD';
+import MultiTypeChart from '../charts/MultiTypeChart';
+import { PlotSection } from '../../styled/globalStyles';
+import { createNMData, createNMData2, setDateRange } from '../../utils/testdata';
+import { getDateStrFromTs, getdmStrFromTs } from '../../utils/Date';
+import { WeatherButton, WeatherButton2 } from '../../styled/Buttons';
+import { useDataContext } from '../../providers/dataContext';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -97,13 +98,7 @@ const PlotMeteo = ({ itemMeteo }) => {
 	//.................................................
 
 	return (
-		<div style={{
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-			marginTop: '2.0rem'
-		}}
-		>
+		<PlotSection>
 			<div styled={{ padding: '1.0rem' }} >
 				{
 					!done && !weatherData &&
@@ -111,8 +106,7 @@ const PlotMeteo = ({ itemMeteo }) => {
 						Wetterdaten abrufen
 					</WeatherButton >
 				}
-				{
-					weatherData &&
+				{weatherData &&
 					done &&
 					<WeatherButton2 onClick={handleClickActive} >
 						{
@@ -194,7 +188,7 @@ const PlotMeteo = ({ itemMeteo }) => {
 				</ChartsGroup>
 			}
 
-		</div >
+		</PlotSection >
 	)
 }
 

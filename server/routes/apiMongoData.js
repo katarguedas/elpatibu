@@ -1,7 +1,6 @@
 const express = require('express')
 const { Diary } = require('../models/DataModel');
 const dotenv = require('dotenv');
-const { findOne, find } = require('../models/UserModel');
 dotenv.config()
 
 const router = express.Router();
@@ -55,7 +54,6 @@ router.get('/api/getDiary', async (req, res) => {
 
   try {
     const result = await Diary.findOne({ id: req.query.id })
-    // console.log("res", result)
     return res.status(200).send({ status: 'ok', message: 'Diary found', data: result });
   } catch (error) {
     res.status(400).send({ status: 'error', error })
@@ -101,50 +99,6 @@ router.put('/api/saveData', async (req, res) => {
   }
 })
 
-
-//............................................................
-
-
-
-// router.put('/api/savets', async (req, res) => {
-//   console.log(req.body)
-
-//   try {
-//     const response = await Diary.findOne({ id: req.body.id })
-//     if (response) {
-//       console.log("response gefunden", response)
-
-//       response.timestamp = [...req.body.timestamp]
-//       console.log("response mit Timestamp?", response)
-//       response.save()
-//     }
-//     console.log("\n response: \n", response.timestamp)
-//     res.status(201).send({ status: '0k', message: 'saved ts' })
-//   } catch (error) {
-//     console.log("....................... \n nix gefunden")
-//     res.status(400).send({ status: 'error', message: "Daten nicht gefunden", error })
-//   }
-// })
-
-// router.put('/api/savedatestr', async (req, res) => {
-//   console.log(req.body)
-
-//   try {
-//     const response = await Diary.findOne({ id: req.body.id })
-//     if (response) {
-//       console.log("response", response)
-
-//       response.date = [...req.body.date]
-//       console.log("response", response)
-//       response.save()
-//     }
-//     console.log("\n response: \n", response.date)
-//     res.status(201).send({ status: '0k', message: 'saved ts' })
-//   } catch (error) {
-//     console.log("....................... \n nix gefunden")
-//     res.status(400).send({ status: 'error', message: "Daten nicht gefunden", error })
-//   }
-// })
 
 
 //*****************************************************************

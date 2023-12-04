@@ -1,22 +1,22 @@
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import NavBar from '../components/NavBar';
-import SwitchToggle from '../components/SwitchToggle';
-import Panel from '../components/Panel';
-import { FormField } from '../styled/globalStyles';
-import { SendButton } from '../styled/Buttons';
-import { StBiDownArrow, StBiRightArrow } from '../styled/Icons';
+import Header from '../Header';
+import Footer from '../Footer';
+import NavBar from '../NavBar';
+import SwitchToggle from '../SwitchToggle';
+import Panel from '../Panel';
+import { FormField } from '../../styled/globalStyles';
+import { SendButton } from '../../styled/Buttons';
+import { StBiDownArrow, StBiRightArrow } from '../../styled/Icons';
 import { BiSquare, BiCheckSquare } from 'react-icons/bi';
-import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2, StP, Accordion } from '../styled/globalStyles';
+import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2, StP, Accordion } from '../../styled/globalStyles';
 
-import { useDataContext } from '../providers/dataContext';
-import { useUserContext } from '../providers/userContext';
+import { useDataContext } from '../../providers/dataContext';
+import { useUserContext } from '../../providers/userContext';
 
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { theme } from '../themes/theme';
+import { theme } from '../../themes/theme';
 
 /********************************************************************************
  * Component for creating the individual diary

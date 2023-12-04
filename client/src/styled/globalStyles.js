@@ -80,8 +80,8 @@ const LabelText = styled.div`
 
 const Accordion = styled.div`
   ${(props) => {
-      if(props.visible === true) {
-        return `
+    if (props.visible === true) {
+      return `
           background-color: black;
           background: linear-gradient(to left, #fff, #C5E1CD);
           color: #1B5A6C;
@@ -101,8 +101,8 @@ const Accordion = styled.div`
              color: black;
           }
         `;
-      } else {
-        return `
+    } else {
+      return `
           background-color: white;
           background: linear-gradient(to left, #fff, #C5E1CD);
           color: #1B5A6C;
@@ -145,6 +145,21 @@ font-size: 1.25rem;
 font-weight: 500;
 `
 
+const PlotSection = styled.section`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 2.0rem;
+
+  width: 85%;
+			@media (max-width: 1200px) {
+				width: 90%;
+  }
+			@media (max-width: 768px) {
+				width: 100%;
+  }
+`
+
 const ChartStyle = styled.div`
   margin-top: 2.0rem;
   margin-bottom: 2.0rem;
@@ -169,4 +184,4 @@ const ChartStyle = styled.div`
 
 export default globalStyles;
 
-export { ContentGroup, MainGroup, MainContent, PageTitle, InputField, LabelText, TitleH2, StP, StSpan, FormField, Accordion, ChartStyle }
+export { ContentGroup, MainGroup, MainContent, PageTitle, InputField, LabelText, TitleH2, StP, StSpan, FormField, Accordion, PlotSection, ChartStyle }

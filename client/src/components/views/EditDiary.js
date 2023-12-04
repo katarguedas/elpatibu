@@ -1,10 +1,10 @@
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import NavBar from '../components/NavBar';
-import GetData from '../components/GetData'
-import { useDataContext } from '../providers/dataContext';
-import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle } from '../styled/globalStyles'
-import { useUserContext } from '../providers/userContext';
+import Header from '../Header';
+import Footer from '../Footer';
+import NavBar from '../NavBar';
+import GetData from '../GetData'
+import { useDataContext } from '../../providers/dataContext';
+import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle } from '../../styled/globalStyles'
+import { useUserContext } from '../../providers/userContext';
 
 import { useLocation } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';

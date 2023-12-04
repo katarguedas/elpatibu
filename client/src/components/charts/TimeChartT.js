@@ -1,4 +1,5 @@
 import { theme } from '../../themes/theme';
+import { getYminMax } from '../../utils/helperfunctions';
 import { useUserContext } from '../../providers/userContext';
 import { ChartStyle } from '../../styled/globalStyles';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Filler, Tooltip, Legend, TimeScale, TimeSeriesScale } from 'chart.js';
@@ -12,12 +13,8 @@ import { useEffect, useState } from 'react';
 
 const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 
-	const { timeCatArrays, LOCAL_STORAGE_EVENTS, setTimeArrays } = useUserContext();
+	const { timeCatArrays, LOCAL_STORAGE_EVENTS, searchTimeArrays } = useUserContext();
 
-	// console.log("x-", xValues)
-	// console.log("y", yValues)
-
-	
 	ChartJS.register(
 		CategoryScale,
 		LinearScale,
@@ -49,13 +46,11 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 	const yMinArray = [36, 37.5, 38, 39];
 	const yMaxArray = [37.5, 38, 39, 40];
 
-	
+
 	const [myAnnotations, setMyAnnotations] = useState([]);
-	const initState = [];
 	const [done, setDone] = useState();
 
-	// console.log("show Therapie:", showTherapie)
-	// console.log("first and last day", firstDay, lastDay, timeCatArrays)
+	const yMinMaxValue = getYminMax(yValues, 1);
 
 
 	const setYline = (yValue) => {
@@ -82,7 +77,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 	const setColorBoxes = (colorArray, xMin, xMax, yMinArray, yMaxArray) => {
 
 		colorArray.map((e, i) => {
-			setMyAnnotations([
+			return setMyAnnotations([
 				...myAnnotations, myAnnotations.push({
 					type: 'box',
 					xMin: xMin,
@@ -97,13 +92,12 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 	}
 
 	useEffect(() => {
-		let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
+		// let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
 		if (!timeCatArrays) {
-			setTimeArrays(eventsArray)
+			searchTimeArrays( JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS)))
 		}
 		setDone(true)
-	}, [])
-
+	}, [timeCatArrays, searchTimeArrays,LOCAL_STORAGE_EVENTS])
 
 
 	useEffect(() => {
@@ -111,11 +105,11 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 		setYline(39);
 
 		if (showTherapie === true) {
+			console.log("asdfasd",timeCatArrays)
 			if (timeCatArrays.therapie.length > 0) {
 				console.log("es gibt therapietermine zum Plotten")
 				timeCatArrays.therapie.map((e, i) => {
 					if ((firstDay < timeCatArrays.therapie[i]) && (timeCatArrays.therapie[i] < lastDay)) {
-						console.log("myAnnotations mit TherapieLines")
 						setMyAnnotations([...myAnnotations, myAnnotations.push({
 							id: 'line_' + timeCatArrays.therapie[i],
 							type: 'line',
@@ -151,12 +145,46 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 
 
 	useEffect(() => {
-		setMyAnnotations(initState)
+		if (!showTherapie)
+			setMyAnnotations([])
 	}, [showTherapie])
+
+
 
 	//...................
 
+	let myData = [];
+
+	myData = xValues.map((e, i) => {
+		return ({ x: e, y: yValues[0][i] })
+	})
+
+
+	let data;
+
+	data = {
+		// labels, //nur bei type: Line
+		datasets: [
+			{
+				data: myData,
+				fill: false,
+				borderColor: theme.colors.col3,
+				backgroundColor: theme.colors.col2,
+				tension: 0,
+				borderWidth: 1,
+				spanGaps: true,
+				connect: false,
+				pointStyle: 'circle',
+				pointBorderColor: '#000',
+				radius: 5,
+				stepped: false,
+			}
+		],
+	}
+
+// ---------------------------------------------
 	let options;
+	
 	options = {
 		responsive: true,
 		maintainAspectRatio: false,
@@ -184,7 +212,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 					// parser: 'MM/DD/YYYY HH:mm',
 					unit: 'day',
 					tooltipFormat: 'DD',
-					displayFormat: {day: "yyyy:mm:dd"}
+					displayFormat: { day: "yyyy:mm:dd" }
 				},
 				title: {
 					display: true,
@@ -194,7 +222,7 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 					padding: {
 						top: 10,
 						bottom: 10
-				}
+					}
 				},
 				ticks: {
 					font: { size: 15 },
@@ -205,6 +233,8 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 				}
 			},
 			y: {
+				min: 36,
+				max: yMinMaxValue.yMax,
 				title: {
 					display: true,
 					text: name + ' [' + unit + ']',
@@ -219,50 +249,18 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 		},
 		layout: {
 			padding: 10
-	}
+		}
 		// }
 	};
 
 
-	//...................
-
-	const myData = xValues.map((e, i) => {
-		return ({ x: e, y: yValues[i] })
-	})
-	// console.log(myData)
-
-
-	let data;
-
-		data = {
-			// labels, //nur bei type: Line
-			datasets: [
-				{
-					// label: 'Körpertemperatur',
-					data: myData,
-					fill: false,
-					borderColor: theme.colors.col3,
-					backgroundColor: theme.colors.col2,
-					tension: 0,
-					borderWidth: 1,
-					spanGaps: true,
-					connect: false,
-					pointStyle: 'circle',
-					pointBorderColor: '#000',
-					radius: 5,
-					stepped: false,
-				}
-			],
-		}
-
-
-//-------------------------------------------------------------
+	//-------------------------------------------------------------
 	return (
 		<ChartStyle >
-				<Line 
-					options={options} 
-					data={data} 
-					redraw={true} />
+			<Line
+				options={options}
+				data={data}
+				redraw={true} />
 		</ChartStyle>
 	)
 };

@@ -1,14 +1,14 @@
-import Header from "../components/Header"
-import Footer from '../components/Footer'
-import LoginForm from "../components/forms/LoginForm"
-import { useUserContext } from "../providers/userContext"
+import Header from "../Header"
+import Footer from '../Footer'
+import LoginForm from "../forms/LoginForm"
+import { useUserContext } from "../../providers/userContext"
 
 import { useEffect, useState } from "react"
 
 import styled from "styled-components"
-import { ContentGroup, PageTitle } from "../styled/globalStyles"
+import { ContentGroup, PageTitle } from "../../styled/globalStyles"
 import { useNavigate } from "react-router"
-import { AuthButton } from "../styled/Buttons"
+import { AuthButton } from "../../styled/Buttons"
 
 /******************************************************
  * LOGIN Component

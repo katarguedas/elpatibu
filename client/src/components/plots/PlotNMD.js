@@ -1,12 +1,13 @@
-import BarChartNMD from './charts/BarChartNMD';
-import { createNMData, createNMData2 } from '../utils/testdata';
-import { getStrFromTs, getdmStrFromTs } from '../utils/Date';
-import { useDataContext } from '../providers/dataContext';
+import BarChartNMD from '../charts/BarChartNMD';
+import { PlotSection } from '../../styled/globalStyles';
+import { createNMData2 } from '../../utils/testdata';
+import { getdmStrFromTs } from '../../utils/Date';
+import { useDataContext } from '../../providers/dataContext';
 import styled from 'styled-components';
 
 //----------------------------------------------------------
 
-const PlotSymptoms = ({ itemSymptoms }) => {
+const PlotNMD = ({ itemsGroup }) => {
 
 	const { diary, demo } = useDataContext()
 
@@ -17,14 +18,12 @@ const PlotSymptoms = ({ itemSymptoms }) => {
 		dateString.forEach((e, i) => {
 			dateString[i] = getdmStrFromTs(e);
 		})
-		// console.log("date", dateString);
 	}
 
 	let dataNMDSet = {};
 
 	if (demo === true) {
-		dataNMDSet = createNMData();
-		console.log("data", dataNMDSet)
+		dataNMDSet = createNMData2();
 		dataNMDSet.dateString.forEach((e, i) => {
 			dataNMDSet.dateString[i] = getdmStrFromTs(e);
 		})
@@ -33,29 +32,24 @@ const PlotSymptoms = ({ itemSymptoms }) => {
 	//.................................................
 
 	return (
-		<div style={{
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-			marginTop: '2.0rem'
-		}} >
+		<PlotSection>
 			<ChartsGroup >
 				{
 					demo ?
-						itemSymptoms.items.map(e => (
+						itemsGroup.items.map(e => (
 							e.selected &&
 							<BarChartNMD
-							key={e.id}
+								key={e.id}
 								xVal={dataNMDSet.dateString}
 								yVal={dataNMDSet.values}
 								name={e.label}
 							/>
 						))
 						:
-						itemSymptoms.items.map(e => (
+						itemsGroup.items.map(e => (
 							e.selected &&
 							<BarChartNMD
-							key = {e.id}
+								key={e.id}
 								xVal={dateString}
 								yVal={e.values}
 								name={e.label}
@@ -63,11 +57,11 @@ const PlotSymptoms = ({ itemSymptoms }) => {
 						))
 				}
 			</ChartsGroup>
-		</div>
+		</PlotSection>
 	)
 }
 
-export default PlotSymptoms;
+export default PlotNMD;
 
 
 //-------------------------------------------------------------------------

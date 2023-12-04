@@ -1,6 +1,20 @@
+import getAnnotations from './annotations';
+import { getYminMax } from '../../utils/helperfunctions';
 import { theme } from '../../themes/theme';
 import { ChartStyle } from '../../styled/globalStyles';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Filler, Tooltip, Legend, TimeScale, TimeSeriesScale } from 'chart.js';
+import {
+	Chart as ChartJS,
+	CategoryScale,
+	LinearScale,
+	PointElement,
+	LineElement,
+	Title,
+	Filler,
+	Tooltip,
+	Legend,
+	TimeScale,
+	TimeSeriesScale
+} from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
 import annotationPlugin from 'chartjs-plugin-annotation';
@@ -8,10 +22,7 @@ import 'chartjs-adapter-luxon';
 
 //----------------------------------------------------------------------
 
-const TimeChartW = ({ xValues, yValues, titel, name, unit }) => {
-
-	// console.log("x-", xValues)
-	// console.log("y", yValues)
+const TimeChart = ({ xValues, yValues, titel, name, unit, rm, identifier }) => {
 
 	ChartJS.register(
 		CategoryScale,
@@ -31,40 +42,53 @@ const TimeChartW = ({ xValues, yValues, titel, name, unit }) => {
 	//................................................
 
 	const textColor = theme.colors.col3;
-	//...................
+	const bgColor = [theme.colors.col5, theme.colors.col2, theme.colors.col1, theme.colors.col4]
 
-	const myData = xValues.map((e, i) => {
-		return ({ x: e, y: yValues[i] })
+	const yMinMaxValue = getYminMax(yValues, rm);
+	const annotations = getAnnotations(identifier);
+
+	/******************
+ * Chart data
+ ******************/
+
+	let myData = [];
+
+	myData = yValues.map((y) => {
+		const data = xValues.map((e, i) => {
+			return ({ x: e, y: y[i] })
+		})
+		return data;
 	})
 
-	const yMin = Math.round(Math.min(...yValues)) - 1;
-	const yMax = Math.round(Math.max(...yValues)) + 1;
+	// xValues.map(x=>console.log(new Date(x)))
 
-	
+
 	let data;
 
+	const datasetArray = myData.map((data, index) => {
+		return {
+			data: data,
+			fill: false,
+			borderColor: bgColor[index],
+			backgroundColor: bgColor[index],
+			tension: 0,
+			borderWidth: 1,
+			spanGaps: true,
+			connect: false,
+			pointStyle: 'circle',
+			pointBorderColor: '#000',
+			radius: 5,
+			stepped: false,
+		}
+	})
+
 	data = {
-		// labels, //nur bei type: Line
-		datasets: [
-			{
-				// label: 'Körpergewicht',
-				data: myData,
-				fill: false,
-				borderColor: theme.colors.col3,
-				backgroundColor: theme.colors.col2,
-				tension: 0,
-				borderWidth: 1,
-				spanGaps: true,
-				connect: false,
-				pointStyle: 'rect',
-				pointBorderColor: '#000',
-				radius: 5,
-				stepped: false,
-			}
-		],
+		datasets: datasetArray,
 	}
 
-	//...................
+	/******************
+	 * Chart options
+	 ******************/
 
 	let options;
 	options = {
@@ -80,6 +104,7 @@ const TimeChartW = ({ xValues, yValues, titel, name, unit }) => {
 				font: { size: 22 },
 				color: textColor
 			},
+			annotation: annotations
 		},
 		scales: {
 			x: {
@@ -104,8 +129,8 @@ const TimeChartW = ({ xValues, yValues, titel, name, unit }) => {
 				}
 			},
 			y: {
-				min: yMin,
-				max: yMax,
+				min: yMinMaxValue.yMin,
+				max: yMinMaxValue.yMax,
 				title: {
 					display: true,
 					text: name + ' [' + unit + ']',
@@ -121,16 +146,18 @@ const TimeChartW = ({ xValues, yValues, titel, name, unit }) => {
 		// }
 	};
 
+
 	//-------------------------------------------------------------
 	return (
 		<ChartStyle >
-			<Line 
+			<Line
 				options={options}
 				data={data}
-				redraw={true} />
+				redraw={true}
+			/>
 		</ChartStyle>
 	)
 };
 
 
-export default TimeChartW;
+export default TimeChart;

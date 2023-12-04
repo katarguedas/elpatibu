@@ -1,17 +1,11 @@
-import LineChartT from '../components/charts/LineChartT';
-import TimeChartT from '../components/charts/TimeChartT';
-import TimeChartP2 from '../components/charts/TimeChartP2';
-import TimeChartP from './charts/TimeChartP';
-import LineChartP2 from './charts/LineChartP2';
-import { createTData, createP2Data, createPData } from '../utils/testdata';
-import { getStrFromTs } from '../utils/Date';
-import { StSpan } from '../styled/globalStyles';
-import { useDataContext } from '../providers/dataContext';
-import { useUserContext } from '../providers/userContext';
+import TimeChartT from '../charts/TimeChartT';
+import TimeChart from '../charts/TimeChart';
+import { createTData, createP2Data, createPData } from '../../utils/testdata';
+import { StSpan, PlotSection } from '../../styled/globalStyles';
+import { useDataContext } from '../../providers/dataContext';
 import styled from 'styled-components';
 import { BiSquare, BiCheckSquare } from "react-icons/bi";
-import { useEffect, useState } from 'react';
-import { DateTime } from "luxon";
+import { useState } from 'react';
 
 //----------------------------------------------------------
 
@@ -19,65 +13,45 @@ import { DateTime } from "luxon";
 const PlotVital = ({ itemVital }) => {
 
 	const { diary, demo } = useDataContext();
-	const { userData, getEventsFromBackend, timeCatArrays } = useUserContext();
 
 	const [showTherapie, setShowTherapie] = useState(false);
 
-	// console.log("DIARY.date", diary)
-	// console.log("timeCatArrays", timeCatArrays)
-
 	// bei fehlenden Daten in der Datenbank werden zu Test- und Vorführtzwecken welche generiert (createTData(), createPData();)
 
-	let dataTSet = {};
+	let dataTSet = {
+		tsArray: [],
+		temperature: []
+	};
 	if (demo) {
 		dataTSet = createTData();
 	}
 	else {
-		dataTSet.temperature = itemVital.items[0].values;
-		// console.log("22222", typeof(diary.timestamp[0]), diary.timestamp[0])
-		dataTSet.tsArray =[...diary.timestamp];
-		// console.log(dataTSet.tsArray)
-
-		// dataTSet.tsArray.forEach((e, i) => {
-		// 	console.log(typeof(e), e, DateTime.fromISO(e))
-		// 	dataTSet.tsArray[i] = (DateTime.fromISO(e).ts)
-		// })
+		dataTSet.temperature = [itemVital.items[0].values];
+		dataTSet.tsArray = [...diary.timestamp];
 	}
 
-	// console.log("dataTSet",dataTSet)
-	// console.log("tsArray",dataTSet.tsArray)
-
-	// const xValues = [...dataTSet.tsArray];
-	// console.log("XVALUES", xValues)
-	// const yTValues = dataTSet.temperature;
-
-
-	let dataP2Set = {};
+	let dataP2Set = {
+		tsArray: [],
+		pressure: []
+	};
 	if (demo) {
 		dataP2Set = createP2Data();
 	} else {
-		dataP2Set.pressureH = itemVital.items[1].values;
-		dataP2Set.pressureL = itemVital.items[2].values;
+		dataP2Set.pressure.push(itemVital.items[1].values)
+		dataP2Set.pressure.push(itemVital.items[2].values)
 		dataP2Set.tsArray = diary.timestamp;
 	}
 
-	// const yP1Values = dataPSet.pressureH;
-	// const yP2Values = dataPSet.pressureL;
-
-	// let dateStr = dataTSet.tsArray;
-	// // console.log("tsARray", dataTSet.tsArray)
-	// dateStr.forEach((e, i) => {
-	// 	dateStr[i] = getStrFromTs(e);
-	// })
-
-	let dataPSet = {};
+	let dataPSet = {
+		tsArray: [],
+		pulse: []
+	};
 	if (demo) {
 		dataPSet = createPData();
 	} else {
-		dataPSet.pulse = itemVital.items[3].values;
+		dataPSet.pulse = [itemVital.items[3].values];
 		dataPSet.tsArray = diary.timestamp;
 	}
-	// console.log("pulse",dataPSet.pulse)
 
 	//..................................
 
@@ -88,12 +62,7 @@ const PlotVital = ({ itemVital }) => {
 	//............................
 
 	return (
-		<div style={{
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-			marginTop: '2.0rem'
-		}} >
+		<PlotSection >
 			{
 				itemVital.items.filter(e => e.selected === true).length > 0 &&
 				<ChartsGroup>
@@ -126,24 +95,27 @@ const PlotVital = ({ itemVital }) => {
 						{
 							itemVital.items[1].selected && itemVital.items[2].selected &&
 							<div>
-								<TimeChartP2
+								<TimeChart
 									xValues={dataP2Set.tsArray}
-									y1Values={dataP2Set.pressureH}
-									y2Values={dataP2Set.pressureL}
+									yValues={dataP2Set.pressure}
 									name={itemVital.items[2].label}
 									unit={itemVital.items[2].unit}
+									title="asdfad"
+									rm={15}
+									identifier='P2'
 								/>
 							</div>
 						}
 						{
 							itemVital.items[3].selected &&
 							<div>
-								<TimeChartP
+								<TimeChart
 									xValues={dataPSet.tsArray}
-									yValues={dataPSet.pulse}
+									yValues={[dataPSet.pulse]}
 									titel={'Puls'}
 									name={itemVital.items[3].label}
 									unit={itemVital.items[3].unit}
+									rm={-6}
 								/>
 							</div>
 						}
@@ -152,7 +124,7 @@ const PlotVital = ({ itemVital }) => {
 
 			}
 
-		</div >
+		</PlotSection >
 	)
 }
 

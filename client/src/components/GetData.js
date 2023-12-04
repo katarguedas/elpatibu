@@ -113,24 +113,19 @@ const GetData = ({index }) => {
 						val = element.value;
 					return val;
 				})
-				// console.log('val', val)
 
 				if (update === true) {
-					console.log('Aktualisiere die Daten')
 					const tsIndex = diary.timestamp.findIndex(e => e === todayDateTs());
 					// Wurde ein neuer Wert eingegeben so überschreibe den alten, wenn vorhanden, sonst schreibe ihn ans Ende. Wurde kein neuer Wert eingegeben, dann setze ihn auf 'Null', falls noch nich vorhanden.
 					if (val !== null) {
-						console.log('val', val)
 						if (diary.groups[index].items[i].values.length === diary.timestamp.length) {
 							setDiary({ ...diary }, diary.groups[index].items[i].values[tsIndex] = val)
 						}
 						else {
-							console.log('val', val)
 							setDiary({ ...diary }, diary.groups[index].items[i].values =
 								[...diary.groups[index].items[i].values, val])
 						}
 					} else if (val === null) {
-						console.log('val', val)
 						if (diary.groups[index].items[i].values.length < diary.timestamp.length)
 							setDiary({ ...diary }, diary.groups[index].items[i].values =
 								[...diary.groups[index].items[i].values, val])
@@ -139,7 +134,6 @@ const GetData = ({index }) => {
 				} else if (update === false) {
 
 					// neuen Wert eintragen:
-					// console.log('neuer Wert für:', diary.groups[index].items[i].name)
 					setDiary({ ...diary },
 						diary.groups[index].items[i].values =
 						[...diary.groups[index].items[i].values, val])
@@ -152,7 +146,6 @@ const GetData = ({index }) => {
 	//-----------------------------------------
 
 	useEffect(() => {
-		// console.log('BIN im saveDataToBackend-useEffect, saved: ', saved)
 		if (saved === true) {
 			saveDataToBackend(diary.id, diary.groups[index].id, diary.groups[index].items, currentDate, ts, update);
 			setDone(true)
@@ -189,7 +182,6 @@ const GetData = ({index }) => {
 
 		setData([...data,
 		{ name: e.target.name, value: parseFloat(e.target.value.replace(',','.')) }])
-		// console.log("data", data)
 	}
 
 	//----------------------------

@@ -24,9 +24,6 @@ const useWeatherAPI = () => {
 
   const getWeatherData = (city, startDate, endDate) => {
 
-    console.log("city:", city, startDate)
-    console.log("city:", city, endDate)
-
     let data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_WEATHER));
     if (data === null)
       getWeatherDataFromBackend(city, startDate, endDate)
@@ -38,10 +35,7 @@ const useWeatherAPI = () => {
 
     let data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_WEATHER));
 
-    console.log(data)
-
     if ((data) && (city)) {
-      console.log("weatherdata abgerufen", data.locations[city].values)
       const dataNames = ['date', 'dateStr', 'sealevelpressure', 'maxt', 'precip', 'humidity'];
       const length = data.locations[city].values.length
       let date = [];
@@ -83,7 +77,6 @@ const useWeatherAPI = () => {
     let requestOptions = {
       method: 'GET',
     };
-    console.log("city", city)
 
     await fetch('/api/WeatherData?city=' + city + '&start=' + startDate + '&end=' + endDate, requestOptions)
       .then(response => response.json())
@@ -93,7 +86,7 @@ const useWeatherAPI = () => {
         convertWeatherData(city)
       })
 
-      .catch(error => console.log("error: ", error))
+      .catch(error => console.log("something went wrong: ", error))
   }
 
   return [LOCAL_STORAGE_WEATHER, getWeatherDataFromBackend, weatherData, getWeatherData]

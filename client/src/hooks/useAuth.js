@@ -1,5 +1,4 @@
 import { fullDate } from '../utils/Date';
-import { setTimeArrays } from './../utils/helperfunctions'
 import { useState, useEffect } from "react";
 import { DateTime } from "luxon";
 import jwt_decode from "jwt-decode";
@@ -9,7 +8,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const useAuth = () => {
-
 
 	const [token, setToken] = useState();
 	const [user, setUser] = useState('');
@@ -29,7 +27,6 @@ const useAuth = () => {
 	const [regMessage, setRegMessage] = useState('')
 	const [flag, setFlag] = useState(999)
 	const [diaryIdSaved, setDiaryIdSaved] = useState(false);
-	const [events, setEvents] = useState('');
 	const [nextEvents, setNextEvents] = useState([]);
 	const [timeCatArrays, setTimeCatArrays] = useState({
 		arzttermin: [],
@@ -56,7 +53,6 @@ const useAuth = () => {
 				setUser(decodedJwt.email);
 				setUserData({ name: decodedJwt.name, id: decodedJwt.id, diaryId: decodedJwt.diaries })
 				setToken(ls.access)
-				
 			}
 		}
 	}, [])
@@ -94,13 +90,10 @@ const useAuth = () => {
 		await fetch("/api/login", requestOptions)
 			.then(response => response.json())
 			.then(response => {
-				console.log(response)
-
 				if ((response.status === 'error') && (response.message === 'Invalid password'))
 					alert("Falsches Passwort")
 				else if ((response.status === 'error') && (response.message === 'Invalid user'))
 					alert("User mit diesem Namen exisitert nicht")
-
 
 				localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(response))
 
@@ -266,12 +259,10 @@ const useAuth = () => {
 	//----------------------------------------------------------
 
 	const saveDiaryIdInBackend = async (id) => {
-		console.log(id)
 		let raw = JSON.stringify({
 			email: user,
 			diaryId: id
 		})
-		// console.log("raw", raw)
 
 		let requestOptions = {
 			method: 'POST',
@@ -282,8 +273,6 @@ const useAuth = () => {
 		await fetch('api/saveDiaryId', requestOptions)
 			.then(response => response.json())
 			.then(response => {
-				console.log(response)
-				console.log("id gespeichert")
 				setDiaryIdSaved(true)   // Funktioniert nicht. WARUM????
 
 			})
@@ -292,9 +281,10 @@ const useAuth = () => {
 
 	//----------------------------------------------------
 
-	const setTimeArrays = (events) => {
-		// console.log("Hole Events nach Kategorien für die DIagramme", events)
+	const searchTimeArrays = (events) => {
+		// console.log("Hole Events nach Kategorien für die Diagramme", events)
 		if (events) {
+			console.log("Es gibt events")
 			events.map((e, i) => {
 				if (e.category === 'Therapie') {
 					setTimeCatArrays({ ...timeCatArrays }, 
@@ -305,6 +295,7 @@ const useAuth = () => {
 						timeCatArrays.arzttermin.push(DateTime.fromISO(e.end).ts))
 					return (e)
 				}
+				return null
 			})
 		}
 	}
@@ -352,10 +343,8 @@ const useAuth = () => {
 		await fetch('/api/getEvents?id=' + id, requestOptions)
 			.then(response => response.json())
 			.then(response => {
-				// console.log("events aus dem Backend geholt", response.events)
 				localStorage.setItem(LOCAL_STORAGE_EVENTS, JSON.stringify(response.events))
-				// setEvents(response.events)
-				setTimeArrays(response.events)
+				searchTimeArrays(response.events)
 				getNextEvents(response.events)
 			})
 			.catch(error => console.log("error: ", error))
@@ -364,9 +353,6 @@ const useAuth = () => {
 	//----------------------------------------------------
 
 	const saveEventInBackend = async (event) => {
-
-		// console.log(event)
-		// console.log(userData.id)
 
 		const raw = JSON.stringify({
 			id: userData.id,
@@ -428,7 +414,7 @@ const useAuth = () => {
 
 	//-----------------------------------------------------------------
 
-	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, timeCatArrays, setTimeArrays, nextEvents, setNextEvents, LOCAL_STORAGE_EVENTS, deleteEvent, deleteEventInBackend, getNextEvents];
+	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, timeCatArrays, searchTimeArrays, nextEvents, setNextEvents, LOCAL_STORAGE_EVENTS, deleteEvent, deleteEventInBackend, getNextEvents];
 
 }
 

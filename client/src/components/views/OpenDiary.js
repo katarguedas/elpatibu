@@ -1,16 +1,16 @@
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import NavBar from '../components/NavBar'
-import { DiaryButton } from '../styled/Buttons';
-import { StGiChart, StBiListPlus, StGiFountainPen } from '../styled/Icons'
-import { useUserContext } from '../providers/userContext';
-import { useDataContext } from '../providers/dataContext';
+import Header from '../Header'
+import Footer from '../Footer'
+import NavBar from '../NavBar'
+import { DiaryButton } from '../../styled/Buttons';
+import { StGiChart, StBiListPlus, StGiFountainPen } from '../../styled/Icons'
+import { useUserContext } from '../../providers/userContext';
+import { useDataContext } from '../../providers/dataContext';
 
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react'
 
 import styled from 'styled-components'
-import { ContentGroup, MainGroup, MainContent, PageTitle } from '../styled/globalStyles'
+import { ContentGroup, MainGroup, MainContent, PageTitle } from '../../styled/globalStyles'
 
 //---------------------------------------------------------
 

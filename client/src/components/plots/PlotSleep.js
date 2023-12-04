@@ -1,13 +1,12 @@
-import BarChartSleepH from '../components/charts/BarChartSleepH';
-import BarChartNMD from './charts/BarChartNMD';
-import { createSData } from '../utils/testdata';
-import { useDataContext } from '../providers/dataContext';
+import BarChartNMD from '../charts/BarChartNMD';
+import { createSData } from '../../utils/testdata';
+import { useDataContext } from '../../providers/dataContext';
 import styled from 'styled-components';
-import { createNMData } from '../utils/testdata';
-import { getdmStrFromTs } from '../utils/Date';
-import { calcAverage } from '../utils/helperfunctions';
-import { StP } from '../styled/globalStyles';
-import { theme } from '../themes/theme';
+import { createNMData } from '../../utils/testdata';
+import { getdmStrFromTs } from '../../utils/Date';
+import { calcAverage } from '../../utils/helperfunctions';
+import { StP, PlotSection } from '../../styled/globalStyles';
+import { theme } from '../../themes/theme';
 
 //----------------------------------------------------------
 
@@ -64,13 +63,7 @@ const PlotSleep = ({ itemSleep }) => {
 
 
 	return (
-		<div style={{
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-			marginTop: '2.0rem'
-		}} >
-
+		<PlotSection>
 			<ChartsGroup >
 				<StP style={{
 					fontWeight: '500',
@@ -84,7 +77,7 @@ const PlotSleep = ({ itemSleep }) => {
 				</StP>
 				{diary &&
 					itemSleep.items[0].selected &&
-					<BarChartSleepH
+					<BarChartNMD
 						xVal={dataSset.dateString}
 						yVal={dataSset.hours}
 						name={itemSleep.items[0].label} />
@@ -105,10 +98,9 @@ const PlotSleep = ({ itemSleep }) => {
 						name={itemSleep.items[2].label}
 					/>
 				}
-
 			</ChartsGroup>
 
-		</div >
+		</PlotSection >
 	)
 }
 

@@ -1,15 +1,15 @@
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import NavBar from '../components/NavBar';
-import PlotVital from '../components/PlotVital';
-import PlotMeteo from '../components/PlotMeteo';
-import PlotWeight from '../components/PlotWeight';
-import PlotSleep from '../components/PlotSleep';
-import PlotNMD from '../components/PlotNMD';
-import { StBiDownArrow, StBiRightArrow } from '../styled/Icons';
-import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle, StP } from '../styled/globalStyles';
-import { useUserContext } from '../providers/userContext';
-import { useDataContext } from '../providers/dataContext';
+import Header from '../Header';
+import Footer from '../Footer';
+import NavBar from '../NavBar';
+import PlotVital from '../plots/PlotVital';
+import PlotMeteo from '../plots/PlotMeteo';
+import PlotWeight from '../plots/PlotWeight';
+import PlotSleep from '../plots/PlotSleep';
+import PlotNMD from '../plots/PlotNMD';
+import { StBiDownArrow, StBiRightArrow } from '../../styled/Icons';
+import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle, StP } from '../../styled/globalStyles';
+import { useUserContext } from '../../providers/userContext';
+import { useDataContext } from '../../providers/dataContext';
 
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';

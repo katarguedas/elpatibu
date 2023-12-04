@@ -28,9 +28,6 @@ import { useState } from 'react';
 
 const MultiTypeChart = ({ xValues, y1Values, y2Values, labels, name, label2, unit }) => {
 
-	// console.log(y1Values, y2Values)
-	// console.log(label2)
-
 	const [sMin, setSMin] = useState();
 	const [sMax, setSMax] = useState();
 	const [TitleName, setTitleName] = useState();

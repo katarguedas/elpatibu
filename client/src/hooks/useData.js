@@ -31,7 +31,7 @@ const useData = () => {
 	useEffect(() => {
 		if(user === "gast@gast.de")
 		setDemo(true)
-	})
+	},[user])
 
 	//...................................................
 
@@ -185,6 +185,7 @@ const useData = () => {
 
 	const saveDataToBackend = async (id, groupId, items, date, ts, update) => {
 
+		console.log("ITEMS: ", items)
 		let raw = JSON.stringify(
 			{
 				id: id,

@@ -208,7 +208,6 @@ router.post('/api/saveEvent', async (req, res) => {
  ********************/
 
 router.put('/api/deleteEvent', async (req, res) => {
-  console.log("body:", req.body)
 
   try {
     const response = await User.findOne({ id: req.body.userId })

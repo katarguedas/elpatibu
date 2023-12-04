@@ -1,12 +1,13 @@
-import BarChartNMD from './charts/BarChartNMD';
-import { createNMData2 } from '../utils/testdata';
-import { getdmStrFromTs } from '../utils/Date';
-import { useDataContext } from '../providers/dataContext';
+import BarChartNMD from '../charts/BarChartNMD';
+import { PlotSection } from '../../styled/globalStyles';
+import { createNMData } from '../../utils/testdata';
+import { getdmStrFromTs } from '../../utils/Date';
+import { useDataContext } from '../../providers/dataContext';
 import styled from 'styled-components';
 
 //----------------------------------------------------------
 
-const PlotNMD = ({ itemsGroup }) => {
+const PlotSymptoms = ({ itemSymptoms }) => {
 
 	const { diary, demo } = useDataContext()
 
@@ -17,12 +18,14 @@ const PlotNMD = ({ itemsGroup }) => {
 		dateString.forEach((e, i) => {
 			dateString[i] = getdmStrFromTs(e);
 		})
+		// console.log("date", dateString);
 	}
 
 	let dataNMDSet = {};
 
 	if (demo === true) {
-		dataNMDSet = createNMData2();
+		dataNMDSet = createNMData();
+		console.log("data", dataNMDSet)
 		dataNMDSet.dateString.forEach((e, i) => {
 			dataNMDSet.dateString[i] = getdmStrFromTs(e);
 		})
@@ -31,29 +34,24 @@ const PlotNMD = ({ itemsGroup }) => {
 	//.................................................
 
 	return (
-		<div style={{
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-			marginTop: '2.0rem'
-		}} >
+		<PlotSection>
 			<ChartsGroup >
 				{
 					demo ?
-          itemsGroup.items.map(e => (
+						itemSymptoms.items.map(e => (
 							e.selected &&
 							<BarChartNMD
-							key={e.id}
+								key={e.id}
 								xVal={dataNMDSet.dateString}
 								yVal={dataNMDSet.values}
 								name={e.label}
 							/>
 						))
 						:
-						itemsGroup.items.map(e => (
+						itemSymptoms.items.map(e => (
 							e.selected &&
 							<BarChartNMD
-							key = {e.id}
+								key={e.id}
 								xVal={dateString}
 								yVal={e.values}
 								name={e.label}
@@ -61,11 +59,11 @@ const PlotNMD = ({ itemsGroup }) => {
 						))
 				}
 			</ChartsGroup>
-		</div>
+		</PlotSection>
 	)
 }
 
-export default PlotNMD;
+export default PlotSymptoms;
 
 
 //-------------------------------------------------------------------------

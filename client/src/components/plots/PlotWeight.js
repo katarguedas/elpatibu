@@ -1,10 +1,8 @@
-import TimeChartW from '../components/charts/TimeChartW';
-import { createWData } from '../utils/testdata';
-import { getStrFromTs } from '../utils/Date';
-import { useDataContext } from '../providers/dataContext';
-import { useUserContext } from '../providers/userContext';
+import TimeChart from '../charts/TimeChart';
+import { PlotSection } from '../../styled/globalStyles';
+import { createWData } from '../../utils/testdata';
+import { useDataContext } from '../../providers/dataContext';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
 
 //----------------------------------------------------------
 
@@ -16,41 +14,40 @@ const PlotWeight = ({ itemWeight }) => {
 	// bei fehlenden Daten in der Datenbank werden zu Test- und Vorführtzwecken welche generiert (createWData())
 
 
-	let dataWset = {};
+	let dataWset = {
+		tsArray: [],
+		weight: []
+	};
 	if (demo) {
 		dataWset = createWData();
 	} else {
 		dataWset.tsArray = diary.timestamp;
-		dataWset.weight = itemWeight.items[0].values;
+		dataWset.weight = [itemWeight.items[0].values];
 	}
 
 	//............................
 
 	return (
-		<div style={{
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-			marginTop: '2.0rem'
-		}} >
+		<PlotSection >
 			{
 				itemWeight.items.filter(e => e.selected === true).length > 0 &&
 				<ChartsGroup>
 					<div  >
 						{
 							itemWeight.items[0].selected &&
-							< TimeChartW
+							< TimeChart
 								xValues={dataWset.tsArray}
 								yValues={dataWset.weight}
 								titel={'Körpergewicht'}
 								name={itemWeight.items[0].label}
 								unit={itemWeight.items[0].unit}
+								rm={1}
 							/>
 						}
 					</div>
 				</ChartsGroup>
 			}
-		</div >
+		</PlotSection >
 	)
 }
 
