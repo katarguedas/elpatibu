@@ -8,12 +8,14 @@ import { Line } from 'react-chartjs-2';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import 'chartjs-adapter-luxon';
 import { useEffect, useState } from 'react';
+import useEvents from '../../hooks/useEvents';
 
 //----------------------------------------------------------------------
 
 const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 
-	const { timeCatArrays, LOCAL_STORAGE_EVENTS, searchTimeArrays } = useUserContext();
+	const { timeCatArrays, searchTimeArrays } = useEvents();
+	const {  LOCAL_STORAGE_EVENTS } = useUserContext();
 
 	ChartJS.register(
 		CategoryScale,
@@ -105,7 +107,6 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 		setYline(39);
 
 		if (showTherapie === true) {
-			console.log("asdfasd",timeCatArrays)
 			if (timeCatArrays.therapie.length > 0) {
 				console.log("es gibt therapietermine zum Plotten")
 				timeCatArrays.therapie.map((e, i) => {

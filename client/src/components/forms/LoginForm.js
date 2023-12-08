@@ -1,9 +1,9 @@
 import { useUserContext } from "../../providers/userContext";
 import { SendButton } from "../../styled/Buttons";
-
+import Input from './Input';
 import { RxEyeOpen } from "react-icons/rx";
 import styled from 'styled-components';
-import { InputField, LabelText, FormField } from "../../styled/globalStyles";
+import { StyledLabelText, StyledFormField } from "../../styled/globalStyles";
 
 //---------------------------------------------------------
 
@@ -12,10 +12,10 @@ const LoginForm = ({ handleSubmit, handleChange, handleMouseEnter, handleMouseLe
 	const { loginData } = useUserContext();
 
 	return (
-		<FormField onSubmit={handleSubmit}>
+		<StyledFormField onSubmit={handleSubmit}>
 			<InputLabel >
-				<LabelText>E-Mail:</LabelText>
-				<InputField
+				<StyledLabelText>E-Mail:</StyledLabelText>
+				<Input
 					type="text"
 					name={'email'}
 					required
@@ -24,8 +24,8 @@ const LoginForm = ({ handleSubmit, handleChange, handleMouseEnter, handleMouseLe
 				/>
 			</InputLabel>
 			<InputLabel  >
-				<LabelText>Passwort:</LabelText>
-				<InputField
+				<StyledLabelText>Passwort:</StyledLabelText>
+				<Input
 					type={type}
 					name={'pwd'}
 					required
@@ -40,7 +40,7 @@ const LoginForm = ({ handleSubmit, handleChange, handleMouseEnter, handleMouseLe
 				</EyeGroup>
 			</InputLabel>
 			<SendButton type="submit">senden</SendButton>
-		</FormField>
+		</StyledFormField>
 
 	)
 }

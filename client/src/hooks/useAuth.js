@@ -1,6 +1,4 @@
-import { fullDate } from '../utils/Date';
-import { useState, useEffect } from "react";
-import { DateTime } from "luxon";
+import { useState, useEffect, useCallback } from "react";
 import jwt_decode from "jwt-decode";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -27,13 +25,6 @@ const useAuth = () => {
 	const [regMessage, setRegMessage] = useState('')
 	const [flag, setFlag] = useState(999)
 	const [diaryIdSaved, setDiaryIdSaved] = useState(false);
-	const [nextEvents, setNextEvents] = useState([]);
-	const [timeCatArrays, setTimeCatArrays] = useState({
-		arzttermin: [],
-		therapie: [],
-		untersuchung: [],
-		sonstiges: []
-	});
 
 	const LOCAL_STORAGE_KEY = process.env.REACT_APP_LOCAL_STORAGE_KEY;
 	const LOCAL_STORAGE_WEATHER = process.env.REACT_APP_LOCAL_STORAGE_WEATHER;
@@ -42,14 +33,13 @@ const useAuth = () => {
 
 	//---------------------------------------------------------
 
-
 	useEffect(() => {
 		if (!user) {
 			const ls = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
 
 			if (ls !== null) {
 				const decodedJwt = jwt_decode(ls.access)
-				
+
 				setUser(decodedJwt.email);
 				setUserData({ name: decodedJwt.name, id: decodedJwt.id, diaryId: decodedJwt.diaries })
 				setToken(ls.access)
@@ -61,12 +51,6 @@ const useAuth = () => {
 	useEffect(() => {
 		if ((user) && (!userData))
 			checkToken();
-	}, [])
-
-
-	useEffect(() => {
-		if (userData)
-			getEventsFromBackend(userData.id);
 	}, [])
 
 	//---------------------------------------------------------
@@ -109,7 +93,6 @@ const useAuth = () => {
 					diaryId: jwtDecoded.diaries
 				})
 
-				// console.log("UserData:", jwtDecoded)
 				console.log("user hat sich eingeloggt")
 			})
 			.catch(error => {
@@ -139,7 +122,6 @@ const useAuth = () => {
 			await fetch('/api/refreshToken', requestOptions)
 				.then(response => response.json())
 				.then(response => {
-					// console.log("response", response)
 					localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(response))
 
 					setToken(response.access)
@@ -160,17 +142,16 @@ const useAuth = () => {
 
 	//---------------------------------------------------------
 
-	const checkToken = () => {
+	const checkToken = useCallback(() => {
 
 		const lsToken = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
-
+		console.log("useAuth checkToken erneut ausgeführt")
 		if (lsToken !== null) {
 			const decodedJwt = jwt_decode(lsToken.access)
 			setUser(decodedJwt.email)
 			setUserData({ name: decodedJwt.name, diaryId: decodedJwt.diaries })
 
 			if (decodedJwt.exp * 1000 > Date.now()) {
-				// console.log(decodedJwt.email)
 				// console.log("Zeit noch nicht abgelaufen. Refreshe den Zugangstoken.")
 				refreshToken(decodedJwt.email);
 			} else {
@@ -182,7 +163,7 @@ const useAuth = () => {
 			console.log("Logout");
 			logout();
 		}
-	}
+	}, []);
 
 	//---------------------------------------------------------
 
@@ -217,7 +198,6 @@ const useAuth = () => {
 		var myHeaders = new Headers();
 		myHeaders.append("Content-Type", "application/json");
 
-		// console.log("id", registerData.id)
 		const credentials = JSON.stringify({
 			"id": uuidv4(),
 			"email": registerData.email,
@@ -279,142 +259,10 @@ const useAuth = () => {
 			.catch(error => console.log("error: ", error))
 	}
 
-	//----------------------------------------------------
-
-	const searchTimeArrays = (events) => {
-		// console.log("Hole Events nach Kategorien für die Diagramme", events)
-		if (events) {
-			console.log("Es gibt events")
-			events.map((e, i) => {
-				if (e.category === 'Therapie') {
-					setTimeCatArrays({ ...timeCatArrays }, 
-						timeCatArrays.therapie.push(DateTime.fromISO(e.end).ts))
-					return (e)
-				} else if (e.category === 'Arzttermin') {
-					setTimeCatArrays({ ...timeCatArrays }, 
-						timeCatArrays.arzttermin.push(DateTime.fromISO(e.end).ts))
-					return (e)
-				}
-				return null
-			})
-		}
-	}
-
-	//-------------------
-
-	const clearTimeCatArrays = () => {
-		setTimeCatArrays({ ...timeCatArrays }, timeCatArrays.arzttermin = [], timeCatArrays.therapie = [], timeCatArrays.untersuchung = [], timeCatArrays.sonstiges = [])
-	}
-
-	//-------------------
-
-	const getNextEvents = (events) => {
-		let array = [];
-		if (events) {
-			const today = DateTime.local(fullDate());
-
-			array = events.filter(e => {
-				if (DateTime.fromISO(e.start).ts > today.ts) {
-					return e
-				}
-			})
-		}
-		for (let i = 0; i < array.length; i++)
-			array[i].time = DateTime.fromISO(array[i].start).ts
-
-		const sortedArray = array.sort((a, b) => {
-			// console.log(a.time)
-			return a.time - b.time;
-		});
-		// console.log(sortedArray)
-		if (sortedArray.length > 0)
-			setNextEvents(sortedArray)
-	}
-
-	//-----------------------
-
-	const getEventsFromBackend = async (id) => {
-
-		clearTimeCatArrays();
-		let requestOptions = {
-			method: 'GET',
-		};
-
-		await fetch('/api/getEvents?id=' + id, requestOptions)
-			.then(response => response.json())
-			.then(response => {
-				localStorage.setItem(LOCAL_STORAGE_EVENTS, JSON.stringify(response.events))
-				searchTimeArrays(response.events)
-				getNextEvents(response.events)
-			})
-			.catch(error => console.log("error: ", error))
-	}
-
-	//----------------------------------------------------
-
-	const saveEventInBackend = async (event) => {
-
-		const raw = JSON.stringify({
-			id: userData.id,
-			event: event
-		})
-
-		let requestOptions = {
-			method: 'POST',
-			headers: { "Content-Type": "application/json" },
-			body: raw,
-			redirect: 'follow'
-		};
-
-		await fetch('/api/saveEvent', requestOptions)
-			.then(response => response.json()
-			.then(response => console.log(response)))
-
-			.catch(error => console.log("error:", error))
-	}
-
-	//---------------------------------------
-
-	const deleteEvent = (userId, eventId) => {
-		const eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS));
-		localStorage.removeItem(LOCAL_STORAGE_EVENTS);
-		const newArray = eventsArray.filter(e => (e.id !== eventId));
-		console.log(newArray);
-		localStorage.setItem(LOCAL_STORAGE_EVENTS, JSON.stringify(newArray));
-
-		deleteEventInBackend(userId, eventId);
-		return(true)
-	}
-
-	//........................................
-	const deleteEventInBackend = async (userId, eventId) => {
-
-		let raw = JSON.stringify(
-			{
-				userId: userId,
-				eventId: eventId
-			}
-		)
-		console.log("raw", raw)
-
-		let requestOptions = {
-			method: 'PUT',
-			headers: { "Content-Type": "application/json" },
-			body: raw,
-			redirect: 'follow'
-		};
-
-		await fetch('/api/deleteEvent', requestOptions)
-			.then(response => response.json())
-			.then(response => console.log(response))
-
-			.catch(error => console.log("error:", error))
-	}
-
-
 	//-----------------------------------------------------------------
 
-	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved, getEventsFromBackend, saveEventInBackend, timeCatArrays, searchTimeArrays, nextEvents, setNextEvents, LOCAL_STORAGE_EVENTS, deleteEvent, deleteEventInBackend, getNextEvents];
+	return [LOCAL_STORAGE_KEY, user, setUser, userData, setUserData, token, setToken, loginData, setLoginData, registerData, setRegisterData, addUser, regMessage, flag, setFlag, verifyUser, logout, checkToken, saveDiaryIdInBackend, diaryIdSaved,
+		LOCAL_STORAGE_EVENTS,];
 
 }
 

@@ -8,6 +8,7 @@ import OpenDiary from './components/views/OpenDiary';
 import Login from './components/views/Login';
 import Register from './components/views/Register';
 import { useUserContext } from './providers/userContext';
+
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 
@@ -17,6 +18,8 @@ import './App.css';
 function App() {
 
   const { user } = useUserContext()
+
+
 
   return (
     <div className="App">

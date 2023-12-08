@@ -3,7 +3,7 @@ import Footer from '../Footer';
 import NavBar from '../NavBar';
 import SwitchToggle from '../SwitchToggle';
 import Panel from '../Panel';
-import { FormField } from '../../styled/globalStyles';
+import { StyledFormField } from '../../styled/globalStyles';
 import { SendButton } from '../../styled/Buttons';
 import { StBiDownArrow, StBiRightArrow } from '../../styled/Icons';
 import { BiSquare, BiCheckSquare } from 'react-icons/bi';
@@ -54,12 +54,12 @@ const CreateDiary = () => {
 
   //.....................
 
-  useEffect(() => {
-    if (!user)
-      navigate('/login');
-    checkToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location])
+  // useEffect(() => {
+  //   if (!user)
+  //     navigate('/login');
+  //   checkToken();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [location])
 
   //.....................
 
@@ -273,7 +273,7 @@ const CreateDiary = () => {
             (done === false) &&
             <div>
               <StP> Gebe Deinem Tagebuch bitte einen Namen: </StP>
-              <FormField onSubmit={handleSubmit} >
+              <StyledFormField onSubmit={handleSubmit} >
                 <input
                   style={{
                     marginLeft: '1.5rem',
@@ -283,7 +283,7 @@ const CreateDiary = () => {
                   onChange={(e) =>
                     setDiaryTemplate({ ...diaryTemplate, diaryName: e.target.value })}
                 />
-              </FormField>
+              </StyledFormField>
             </div>
           }
           {

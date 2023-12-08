@@ -1,12 +1,13 @@
 import { useDataContext } from '../providers/dataContext';
 import { useUserContext } from '../providers/userContext';
 import { SendButton } from './../styled/Buttons';
-import RadioInput from '../components/forms/RadioInput';
+import RadioInputForm from '../components/forms/RadioInputForm';
 import { todayDate, todayDateTs } from '../utils/Date';
 import { checkTs } from '../utils/helperfunctions';
 import { checkGroupsToday } from '../utils/helperfunctions';
 import { checkGroupXtoday } from '../utils/helperfunctions';
-import { InputField, FormField, LabelText } from '../styled/globalStyles';
+import { StyledFormField, StyledLabelText } from '../styled/globalStyles';
+import Input from './forms/Input';
 
 import React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -23,7 +24,7 @@ import styled from 'styled-components';
  * @returns 
  ******************************/
 
-const GetData = ({index }) => {
+const GetData = ({ index }) => {
 
 	const { diary, setDiary, saveDataToBackend, getDiaryFromBackend, editedGroups } = useDataContext();
 	const { user, userData, checkToken } = useUserContext();
@@ -32,51 +33,37 @@ const GetData = ({index }) => {
 	const [done, setDone] = useState(false);
 	const [update, setUpdate] = useState();
 	const [savedValues, setsavedValues] = useState();
-
 	const [data, setData] = useState([
 		{
 			name: '',
 			value: ''
 		}
 	])
-
 	const inputRefs = useRef([]);
 
-	let location = useLocation();
+	// let location = useLocation();
 	const navigate = useNavigate();
-
 	const currentDate = todayDate();
 	const ts = todayDateTs();
 
-/***********************
- * useEffects
- ****************/
-
-	useEffect(() => {
+	if ((user) && (!userData)) {
 		checkToken();
-	}, [location])
+	}
+	if (!user) {
+		navigate('/login');
+	}
+	if (userData && !diary && userData.diaryId) {
+		getDiaryFromBackend(userData.diaryId)
+	}
 
-//.............................
+	/***********************
+	 * useEffects
+	 ****************/
 
-	useEffect(() => {
-		if ((user) && (!userData))
-			checkToken();
-		if (!user)
-			navigate('/login');
-	}, [])
+	// useEffect(() => {
+	// 	checkToken();
+	// }, [location])
 
-	//........................
-
-	useEffect(() => {
-
-		if (userData)
-			if (!diary) {
-				if (userData.diaryId) {
-					getDiaryFromBackend(userData.diaryId)
-				}
-			}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
 
 	//.................................................
 
@@ -87,12 +74,6 @@ const GetData = ({index }) => {
 			setsavedValues(checkGroupXtoday(savedValues, diary, index))
 	}, [], [update])
 
-	//......................................
-
-	useEffect(() => {
-		// console.log('update?', update)
-	}, [update])
-
 	//---------------------------------------------
 
 	useEffect(() => {
@@ -100,8 +81,8 @@ const GetData = ({index }) => {
 			// heutiges Datum eintragen:
 			if ((update === false) && (saved !== true)) {
 				console.log('heutiges Datum wird eingetragen')
-				setDiary({ ...diary }, diary.timestamp.push(ts)) 
-				setDiary({...diary}, diary.date.push(currentDate))
+				setDiary({ ...diary }, diary.timestamp.push(ts))
+				setDiary({ ...diary }, diary.date.push(currentDate))
 			}
 
 			let val = null;
@@ -109,8 +90,9 @@ const GetData = ({index }) => {
 			diary.groups[index].items.map((el, i) => {
 				val = null;
 				data.map(element => {
-					if (element.name === el.name)
+					if (element.name === el.name) {
 						val = element.value;
+					}
 					return val;
 				})
 
@@ -156,32 +138,24 @@ const GetData = ({index }) => {
 
 	//.....................................
 
-	const handleSubmit = e => {
-
+	const handleSubmit = event => {
 		checkTs(diary.timestamp, setUpdate);
-		e.preventDefault();
+		event.preventDefault();
 
-		timing();
-		if (inputRefs)
-			inputRefs.current.map(e => {
-				e.value = '';
-			})
+		if (inputRefs) {
+			setTimeout(() => {
+				inputRefs.current.forEach(event => event.value = '')
+			}, 3000)
+		}
 	}
 
-	//......................
 
-	const timing = () => {
-		setTimeout(() => {
-			// setSaved(false);
-		}, 3000)
-	}
-
-	//......................................
-
-	const handleChange = (e) => {
-
+	const handleChange = (event) => {
 		setData([...data,
-		{ name: e.target.name, value: parseFloat(e.target.value.replace(',','.')) }])
+		{
+			name: event.target.name,
+			value: parseFloat(event.target.value.replace(',', '.'))
+		}])
 	}
 
 	//----------------------------
@@ -191,45 +165,47 @@ const GetData = ({index }) => {
 			<div style={{ flexGrow: '1' }}  >
 			</div>
 			{
-				<FormField onSubmit={handleSubmit} style={{ flexGrow: '2' }} >
+				<StyledFormField onSubmit={handleSubmit} style={{ flexGrow: '2' }} >
 					{diary.groups[index].items.map((e, i) => (
 						e.selected ?
 							e.measurable ?
-								<InputLabelH key={e.id} >
-									<StLabelText>{e.label}</StLabelText>
-									<StInputField
-										id={e.id}
-										ref={el => inputRefs.current[i] = el}
-										type='text'
+								<StyledInputLabelH key={e.id} >
+									<StyledLabelTextM>
+										{e.label}
+									</StyledLabelTextM>
+									<Input
 										name={e.name}
+										id={e.id}
+										type='text'
 										onChange={(e) => handleChange(e, index, i)}
-									>
-									</StInputField>
+										ref={el => inputRefs.current[i] = el}
+										text
+									/>
 									{e.unit}
 									{
 										(savedValues?.groups[index].items[i].done === true) ?
-											<StBiCheckS />
+											<StyledBiCheckS />
 											: null
 									}
-								</InputLabelH >
+								</StyledInputLabelH >
 								:
-								<InputLabelV key={e.id} >
-									<StLabelText style={{ width: '100%', margin: '0.75rem' }} >
+								<StyledInputLabelV key={e.id} >
+									<StyledLabelTextM2  >
 										{e.label}
-									</StLabelText>
-									<RadioInput
+									</StyledLabelTextM2>
+									<RadioInputForm
 										item={e}
 										itemIndex={i}
 										data={data}
 										setData={setData}
 									>
-									</RadioInput>
+									</RadioInputForm>
 									{
 										(savedValues?.groups[index].items[i].done === true) ?
-											<StBiCheckS />
+											<StyledBiCheckS />
 											: null
 									}
-								</InputLabelV>
+								</StyledInputLabelV>
 							: null
 					))}
 					{
@@ -238,11 +214,10 @@ const GetData = ({index }) => {
 					}
 					{
 						done === true ?
-							<StBiCheckM style={{ marginLeft: 'auto', marginRight: 'auto' }} />
-							:
+							<StyledBiCheckM /> :
 							<SendButton type="submit" >senden</SendButton>
 					}
-				</FormField>
+				</StyledFormField>
 			}
 		</div >
 	)
@@ -256,19 +231,11 @@ export default GetData;
 //--------------------------------------------------------------------
 
 
-const StInputField = styled(InputField)`
-  width: 100px;
-  height: 2.0rem;
-  margin: 0.25rem 1.0rem 0.5rem 0.5rem;
-  /* position: relative; */
-  /* right: 40px; */
-`
-
-const InputLabelH = styled.label`
+const StyledInputLabelH = styled.label`
   display: inline-flex;
   margin: 0.25rem 0.25rem 0.25rem 0.25rem;
 `
-const InputLabelV = styled.label`
+const StyledInputLabelV = styled.label`
   display: flex;
   flex-wrap: wrap;
   margin: 0.5rem 0.25rem 0.25rem 0.25rem;
@@ -277,21 +244,25 @@ const InputLabelV = styled.label`
 	border: 1px solid #9e9a9a;
 `
 
-const StLabelText = styled(LabelText)`
+const StyledLabelTextM = styled(StyledLabelText)`
   width: 270px;
-  font-weight: 500;
-  height: 1.45rem;
-  font-size: 1.15rem;
 `
 
-const StBiCheckM = styled(BiCheck)`
+const StyledLabelTextM2 = styled(StyledLabelText)`
+	width: 100%;
+	margin: 0.5rem;
+	padding-bottom: 0.75rem;
+	border-bottom: solid 1px black;
+`
+
+const StyledBiCheckM = styled(BiCheck)`
 font-size: 3.0rem;
 font-weight: 500;
 color: #01ac01;
 margin: 1.0rem auto 0 auto;
 `
 
-const StBiCheckS = styled(BiCheck)`
+const StyledBiCheckS = styled(BiCheck)`
 font-size: 2.0rem;
 color: #01ac01;
 margin-right: 0.5rem;

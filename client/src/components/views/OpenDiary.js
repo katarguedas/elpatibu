@@ -16,7 +16,7 @@ import { ContentGroup, MainGroup, MainContent, PageTitle } from '../../styled/gl
 
 const OpenDiary = () => {
 
-	const { userData, timeCatArrays } = useUserContext();
+	const { userData } = useUserContext();
 	const { diary, getDiaryFromBackend } = useDataContext();
 
 	const navigate = useNavigate();

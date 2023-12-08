@@ -1,4 +1,5 @@
-import { LabelText, InputField } from "../../styled/globalStyles";
+import { StyledLabelText } from "../../styled/globalStyles";
+import Input from './Input';
 import { theme } from '../../themes/theme';
 import styled from "styled-components";
 import { useEffect } from "react";
@@ -19,29 +20,28 @@ const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, star
 					onClick={handleClose}
 					style={{ position: 'absolute', top: '0.75rem', right: '1.0rem', fontSize: '1.5rem' }} />
 			</div>
-			<div><LabelText style={{ display: 'flex', flexDirection: 'column', margin: '0.75rem', marginBottom: '1.75rem' }}  >
+			<div><StyledLabelText style={{ display: 'flex', flexDirection: 'column', margin: '0.75rem', marginBottom: '1.75rem' }}  >
 				Titel
-				<InputField
+				<Input
 					type="text"
-					// value={value}
 					onChange={handleChange} />
-			</LabelText>
+			</StyledLabelText>
 			</div>
 			<div>
-				<LabelText style={{ display: 'inline-flex', margin: '0.75rem', marginRight: '1.25rem' }} >
+				<StyledLabelText style={{ display: 'inline-flex', margin: '0.75rem', marginRight: '1.25rem' }} >
 					ganztägig
-					<InputField
+					<Input
 						style={{ marginLeft: '0.5rem' }}
 						type="checkbox"
 						onChange={handleCheckbox} />
-				</LabelText>
+				</StyledLabelText>
 			</div >
 			{
 				allday ?
 					<div
 						style={{ display: 'flex', flexDirection: 'row' }}
 					>
-						<LabelText style={{ marginBottom: '0.75rem', marginLeft: '0.75rem' }}
+						<StyledLabelText style={{ marginBottom: '0.75rem', marginLeft: '0.75rem' }}
 						>
 							Beginn
 							<input
@@ -49,15 +49,15 @@ const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, star
 								type="date"
 								onChange={handleStartDate}
 							/>
-						</LabelText>
+						</StyledLabelText>
 
-						<LabelText style={{ marginBottom: '0.75rem', marginLeft: '4.5rem' }} >
+						<StyledLabelText style={{ marginBottom: '0.75rem', marginLeft: '4.5rem' }} >
 							Ende
 							<input style={{ padding: '0.1rem' }}
 								type="date"
 								onChange={handleEndDate}
 							/>
-						</LabelText>
+						</StyledLabelText>
 					</div>
 					:
 					<div
@@ -65,7 +65,7 @@ const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, star
 							display: 'flex', flexDirection: 'row',
 						}}
 					>
-						<LabelText style={{ marginBottom: '0.75rem', marginLeft: '0.75rem' }}
+						<StyledLabelText style={{ marginBottom: '0.75rem', marginLeft: '0.75rem' }}
 						>
 							Beginn
 							<input
@@ -73,9 +73,9 @@ const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, star
 								type="datetime-local"
 								onChange={handleStartDate}
 							/>
-						</LabelText>
+						</StyledLabelText>
 
-						<LabelText style={{ marginBottom: '0.75em', marginLeft: '4.5rem' }} >
+						<StyledLabelText style={{ marginBottom: '0.75em', marginLeft: '4.5rem' }} >
 							Ende
 							<input
 								style={{ padding: '0.1rem' }}
@@ -83,13 +83,13 @@ const CalendarInputCard = ({ handleChange, handleCheckbox, handleStartDate, star
 								step="300"
 								onChange={handleEndDate}
 							/>
-						</LabelText>
+						</StyledLabelText>
 					</div>
 			}
 			<Selection>
-				<LabelText htmlFor="cars">
+				<StyledLabelText htmlFor="cars">
 					Kategorie
-				</LabelText>
+				</StyledLabelText>
 				<StSelect
 					style={{ padding: '0.1rem', fontSize: '0.9rem', width: '12.0rem' }}
 					name="category"

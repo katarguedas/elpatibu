@@ -50,28 +50,16 @@ const StSpan = styled.span`
   margin: 0 0 0.25rem 0.5rem;
 `
 
-const InputField = styled.input`
-  border: 2px solid ${(props) => props.theme.colors.col2};
-  &:focus{
-    border: 2px solid ${(props) => props.theme.colors.col1};
-    background-color: ${(props) => props.theme.colors.white};
-  };
-  outline: none;
-  border-radius: 0.25rem;
-  height: 1.75rem;
-  font-size: 1.15rem;
-  padding: 0.15rem;
-  width: 240px;
-`
 
-const FormField = styled.form`
+
+const StyledFormField = styled.form`
   display: flex;
   flex-direction: column;
   margin-bottom: 4.0rem;
   box-sizing: border-box;
 `
 
-const LabelText = styled.div`
+const StyledLabelText = styled.div`
   width: 110px;
   font-weight: 500;
   height: 1.45rem;
@@ -125,25 +113,25 @@ const Accordion = styled.div`
   }}
 `;
 
-const Accordion2 = styled.div`
-color: ${props => props.visible === true ? '#000' : '#fff'};
-border-radius: 0.15rem;
-background-image: linear-gradient(to left, #fff, ${(props) => props.theme.colors.col4});
-box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
-&:hover {
-  color: white;
-  background-image: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col5});
-}
-:active{
-  background-color: #fff;
-  color: black;
-  background-image: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col1});
-}
-padding: 0.5rem 0.75rem 0.5rem 1.5rem;
-margin: 0.5rem 1.5rem;
-font-size: 1.25rem;
-font-weight: 500;
-`
+// const Accordion2 = styled.div`
+// color: ${props => props.visible === true ? '#000' : '#fff'};
+// border-radius: 0.15rem;
+// background-image: linear-gradient(to left, #fff, ${(props) => props.theme.colors.col4});
+// box-shadow: rgba(0, 0, 0, 0.25) 3.0px 3.0px 4.2px;
+// &:hover {
+//   color: white;
+//   background-image: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col5});
+// }
+// :active{
+//   background-color: #fff;
+//   color: black;
+//   background-image: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col1});
+// }
+// padding: 0.5rem 0.75rem 0.5rem 1.5rem;
+// margin: 0.5rem 1.5rem;
+// font-size: 1.25rem;
+// font-weight: 500;
+// `
 
 const PlotSection = styled.section`
 	display: flex;
@@ -184,4 +172,4 @@ const ChartStyle = styled.div`
 
 export default globalStyles;
 
-export { ContentGroup, MainGroup, MainContent, PageTitle, InputField, LabelText, TitleH2, StP, StSpan, FormField, Accordion, PlotSection, ChartStyle }
+export { ContentGroup, MainGroup, MainContent, PageTitle, StyledLabelText, TitleH2, StP, StSpan, StyledFormField, Accordion, PlotSection, ChartStyle }

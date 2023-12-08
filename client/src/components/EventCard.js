@@ -4,12 +4,14 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { BiStreetView } from "react-icons/bi";
 import { BiWindowClose } from "react-icons/bi";
+import useEvents from '../hooks/useEvents';
 
 //----------------------------------------------------
 
 const EventCard = ({ setView, event, setDeleted }) => {
 
-  const { LOCAL_STORAGE_EVENTS, getEventsFromBackend, userData, deleteEvent } = useUserContext();
+  const { deleteEvent } = useEvents();
+  const { LOCAL_STORAGE_EVENTS, getEventsFromBackend, userData } = useUserContext();
 
   const [events, setEvents] = useState();
   const [date, setDate] = useState();

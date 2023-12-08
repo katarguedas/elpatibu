@@ -2,8 +2,8 @@ import { BiSquare, BiCheckSquare, BiInfoCircle } from 'react-icons/bi';
 import { SendButton } from '../styled/Buttons';
 import { theme } from '../themes/theme'
 import { useDataContext } from '../providers/dataContext';
-import { InputField, FormField } from '../styled/globalStyles';
-
+import { StyledFormField } from '../styled/globalStyles';
+import Input from './forms/Input';
 import { useRef, useState } from 'react';
 import 'react-tooltip/dist/react-tooltip.css';
 
@@ -49,7 +49,7 @@ const Panel = ({ itemGroup, handleSelect }) => {
       {
         itemGroup.name === 'meteorosensitivity' &&
 
-        <FormField style={{
+        <StyledFormField style={{
           display: 'flex',
           flexDirection: 'row',
           marginBottom: '1.0rem'
@@ -67,7 +67,7 @@ const Panel = ({ itemGroup, handleSelect }) => {
             </BiInfoCircle>
             {
               (!done) &&
-              <InputField
+              <Input
                 style={{
                   marginLeft: '1.0rem',
                   width: '200px'
@@ -90,7 +90,7 @@ const Panel = ({ itemGroup, handleSelect }) => {
               :
               <StBiCheck />
           }
-        </FormField>
+        </StyledFormField>
       }
     </StPanel>
   );

@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styled from 'styled-components';
 import { useUserContext } from '../../providers/userContext';
+import useEvents from '../../hooks/useEvents'
 
 require('globalize/lib/cultures/globalize.culture.de');
 
@@ -24,7 +25,8 @@ require('globalize/lib/cultures/globalize.culture.de');
  *****************************/
 const MyCalendar = () => {
 
-  const { saveEventInBackend, getEventsFromBackend, userData, LOCAL_STORAGE_EVENTS } = useUserContext();
+  const { saveEventInBackend } = useEvents();
+  const { getEventsFromBackend, userData, LOCAL_STORAGE_EVENTS } = useUserContext();
 
   const [events, setEvents] = useState();
   const [value, setValue] = useState();
@@ -105,7 +107,6 @@ const MyCalendar = () => {
         if (typeof (e.start) === 'string') {
           e.start = dateNoAllday2(e.start)
           e.end = dateNoAllday2(e.end)
-          console.log(e.start)
           return e;
         }
       }))

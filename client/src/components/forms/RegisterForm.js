@@ -1,7 +1,7 @@
 import { useUserContext } from "../../providers/userContext";
 import { SendButton } from "../../styled/Buttons";
-import { InputField, LabelText, FormField } from "../../styled/globalStyles";
-
+import { StyledLabelText, StyledFormField } from "../../styled/globalStyles";
+import Input from './Input';
 import { RxEyeOpen } from "react-icons/rx";
 import styled from 'styled-components';
 
@@ -13,10 +13,10 @@ const RegisterForm = ({ handleSubmit, handleChange, handleMouseEnter, handleMous
 	const { registerData } = useUserContext();
 
 	return (
-		<FormField onSubmit={handleSubmit}>
+		<StyledFormField onSubmit={handleSubmit}>
 			<RegisterLabel >
-				<LabelText>Name:</LabelText>
-				<InputField
+				<StyledLabelText>Name:</StyledLabelText>
+				<Input
 					type="text"
 					name={'name'}
 					required
@@ -25,8 +25,8 @@ const RegisterForm = ({ handleSubmit, handleChange, handleMouseEnter, handleMous
 				/>
 			</RegisterLabel>
 			<RegisterLabel >
-				<LabelText>E-Mail:</LabelText>
-				<InputField
+				<StyledLabelText>E-Mail:</StyledLabelText>
+				<Input
 					type="text"
 					name={'email'}
 					required
@@ -35,8 +35,8 @@ const RegisterForm = ({ handleSubmit, handleChange, handleMouseEnter, handleMous
 				/>
 			</RegisterLabel>
 			<RegisterLabel  >
-				<LabelText>Passwort:</LabelText>
-				<InputField
+				<StyledLabelText>Passwort:</StyledLabelText>
+				<Input
 					type={type}
 					name={'pwd'}
 					required
@@ -52,7 +52,7 @@ const RegisterForm = ({ handleSubmit, handleChange, handleMouseEnter, handleMous
 			</RegisterLabel>
 
 			<SendButton type="submit">senden</SendButton>
-		</FormField>
+		</StyledFormField>
 
 	)
 }

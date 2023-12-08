@@ -14,6 +14,7 @@ import { useDataContext } from '../../providers/dataContext';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
+import useEvents from '../../hooks/useEvents';
 
 
 /*******************************************************************************
@@ -23,6 +24,7 @@ import styled from 'styled-components';
 
 const DiaryData = () => {
 
+  const { events } = useEvents();
   const { userData, user, checkToken, getEventsFromBackend, LOCAL_STORAGE_EVENTS } = useUserContext();
   const { diary, setDiary, getDiaryFromBackend } = useDataContext();
 
@@ -48,6 +50,12 @@ const DiaryData = () => {
           getDiaryFromBackend(userData.diaryId);
         }
       }
+      if (diary) {
+        setDiary({ ...diary }, diary.groups.map(e => {
+          e.visible = false;
+          return e;
+        }))
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -56,13 +64,12 @@ const DiaryData = () => {
 
 
   useEffect(() => {
-    if (diary) {
-      setDiary({ ...diary }, diary.groups.map(e => {
-        e.visible = false;
-        // console.log(e.visible)
-        return e;
-      }))
-    }
+    // if (diary) {
+    //   setDiary({ ...diary }, diary.groups.map(e => {
+    //     e.visible = false;
+    //     return e;
+    //   }))
+    // }
   }, [])
 
   //............................
@@ -70,7 +77,7 @@ const DiaryData = () => {
   useEffect(() => {
     if (user === 'gast@gast.de')
       setGast(true)
-  })
+  },[user])
   //............................
 
   useEffect(() => {
