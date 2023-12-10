@@ -33,83 +33,6 @@ const useData = () => {
 		setDemo(true)
 	},[user])
 
-	//...................................................
-
-	// 	const savemydate = async (dateTs, id) => {
-	// 	let raw = JSON.stringify(
-	// 		{
-	// 			timestamp: dateTs,
-	// 			id: id
-	// 		}
-	// 	)
-
-	// 	let requestOptions = {
-	// 		method: 'PUT',
-	// 		headers: { "Content-Type": "application/json" },
-	// 		body: raw,
-	// 		redirect: 'follow'
-	// 	};
-
-	// 	await fetch('/api/savets', requestOptions)
-	// 	.then(response => response.json())
-	// 	.then(result => {
-	// 		console.log("result", result.message)
-	// 		console.log(result)
-	// 	})
-	// 	.catch(error => console.log('error', error))
-	// }
-
-
-	// const dateTs = [];
-	// if (diary) {
-	// 	diary.date.forEach((e, i) => {
-	// 		console.log(DateTime.fromISO(e))
-	// 		dateTs[i] = DateTime.fromISO(e).ts
-	// 	})
-	// 	console.log("mein dateTs:", dateTs)
-	// 	// savemydate(dateTs, diary.id)
-	// }
-
-
-
-
-	// const savemydate = async (dateStr, id) => {
-	// 	let raw = JSON.stringify(
-	// 		{
-	// 			date: dateStr,
-	// 			id: id
-	// 		}
-	// 	)
-
-	// 	let requestOptions = {
-	// 		method: 'PUT',
-	// 		headers: { "Content-Type": "application/json" },
-	// 		body: raw,
-	// 		redirect: 'follow'
-	// 	};
-
-	// 	await fetch('/api/savedatestr', requestOptions)
-	// 	.then(response => response.json())
-	// 	.then(result => {
-	// 		console.log("result", result.message)
-	// 		console.log(result)
-	// 	})
-	// 	.catch(error => console.log('error', error))
-	// }
-
-
-	// const dateStr = [];
-	// if (diary) {
-	// 	diary.timestamp.forEach((e, i) => {
-	// 		console.log(DateTime.fromSeconds(e / 1000).toISO())
-	// 		dateStr[i] = DateTime.fromSeconds(e / 1000).toISO()
-	// 	})
-	// 	console.log("mein dateStr:", dateStr)
-	// 	savemydate(dateStr, diary.id)
-	// }
-
-
-	// console.log(diary)
 
 	const createNewDiary = (diaryId) => {
 		if (diaryId) {
@@ -140,7 +63,6 @@ const useData = () => {
 		await fetch('/api/newDiary', requestOptions)
 			.then(response => response.json())
 			.then(response => {
-				console.log(response.data)
 				console.log("diary wird im backend gespeichert")
 				if (response.status = "ok") {
 					setDiarySaved(true) // Funktioniert nicht. 
@@ -157,7 +79,6 @@ const useData = () => {
 		if (closePanels && diary) {
 			setDiary({ ...diary }, diary.groups.map(e => {
 				e.visible = false;
-				// console.log("VISIBLE:",e.visible)
 				return e;
 			}))
 		}
@@ -176,7 +97,6 @@ const useData = () => {
 			.then(response => {
 				setDiary(response.data)     // HIER GUCKEN!!!!
 				setClosePanels(true)
-				// console.log("DIARY", response.data)
 			})
 			.catch(error => console.log("error: ", error))
 	}
@@ -185,7 +105,6 @@ const useData = () => {
 
 	const saveDataToBackend = async (id, groupId, items, date, ts, update) => {
 
-		console.log("ITEMS: ", items)
 		let raw = JSON.stringify(
 			{
 				id: id,
@@ -207,8 +126,8 @@ const useData = () => {
 		await fetch('/api/saveData', requestOptions)
 			.then(response => response.json())
 			.then(result => {
-				console.log("result", result.message)
-				console.log(result)
+				// console.log("result", result.message)
+				// console.log(result)
 			})
 			.catch(error => console.log('error', error))
 	}

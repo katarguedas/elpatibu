@@ -1,15 +1,16 @@
 import Header from '../Header';
 import Footer from '../Footer';
 import NavBar from '../NavBar';
-import GetData from '../GetData'
+import GetData from '../GetData';
+import { todayDateTs } from '../../utils/Date';
 import { useDataContext } from '../../providers/dataContext';
-import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle } from '../../styled/globalStyles'
+import { StyledContentGroup, StyledMainGroup, StyledMainContent, Accordion, PageTitle } from '../../styled/globalStyles'
 import { useUserContext } from '../../providers/userContext';
 
 import { useLocation } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { BiRightArrow, BiDownArrow } from 'react-icons/bi';
-
+import { theme } from '../../themes/theme'
 import styled from 'styled-components';
 
 //---------------------------------------------------------
@@ -20,7 +21,7 @@ const EditDiary = () => {
   const { getDiaryFromBackend } = useDataContext();
   const { diary } = useDataContext();
 
-  const [edit, setEdit] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
 
   let location = useLocation();
 
@@ -45,31 +46,54 @@ const EditDiary = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleClick = () => {
-    setEdit(!edit);
+  const handleClick = (index) => {
+    setEditIndex(prev => {
+      if (prev === index) {
+        return null
+      } else {
+        return index
+      }
+    });
   }
+
+  //!checkAllValuesToday(editedGroups(), diary)
+  const today = todayDateTs();
+  let diaryTsToday = 0;
+  if (diary) {
+    diaryTsToday = diary.timestamp[diary.timestamp.length - 1];
+  }
+
 
   //..........................
 
   return (
-    <ContentGroup>
+    <StyledContentGroup>
       <Header />
-      <MainGroup>
+      <StyledMainGroup>
         <NavBar />
-        <MainContent>
+        <StyledMainContent>
           <PageTitle>Hier kannst Du neue Daten eingeben</PageTitle>
           {
             diary &&
             diary.groups.map((e, i) => (
               e.items.filter(e => e.selected === true).length > 0 &&
-              <Items key={e.id} >
-                <EAccordion visible={edit} onClick={handleClick}>
+              <div key={e.id} >
+
+                <StyledEAccordion
+                  visible={editIndex}
+                  valuesExist={e.items.findIndex(item =>
+                    (!(diaryTsToday === today)) ||
+                      ((item.values.length === diary.timestamp.length) &&
+                      (item.values[item.values.length - 1] === null)) ||
+                    (item.values.length < diary.timestamp.length))}
+                  onClick={() => handleClick(i)}
+                >
                   {
-                    edit ? <StBiDownArrow /> : <StBiRightArrow />
+                    editIndex !== null ? <StBiDownArrow /> : <StBiRightArrow />
                   }
                   {e.label}
-                </EAccordion>
-                {edit &&
+                </StyledEAccordion>
+                {editIndex !== null && i === editIndex &&
                   <StDiv>
                     <GetData
                       id={e.id}
@@ -78,13 +102,13 @@ const EditDiary = () => {
                     </GetData>
                   </StDiv>
                 }
-              </Items>
+              </div>
             ))
           }
-        </MainContent>
-      </MainGroup>
+        </StyledMainContent>
+      </StyledMainGroup>
       <Footer />
-    </ContentGroup>
+    </StyledContentGroup>
   )
 }
 
@@ -95,32 +119,43 @@ export default EditDiary;
 // Styled-Components
 //---------------------------------------------------------
 
-const EAccordion = styled(Accordion)`
-  background: linear-gradient(to left, #fff, ${(props) => props.theme.colors.col5});
-  color: white;
-  &:hover {
-  color: white;
-  background: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col3});
-}
-`
+const StyledEAccordion = styled(Accordion)`
+${(props) => {
+    if (props.valuesExist === -1) {
+      return `
+      background: linear-gradient(to left, #fff, ${theme.colors.col1});
+      color: ${theme.colors.col3};
+      &:hover {
+        color: white;
+        background: linear-gradient(to left  , #fff, ${theme.colors.col3});
+      }
+      `
+    } else {
+      return `
+      background: linear-gradient(to left, #fff, ${theme.colors.col5});
+      color: white;
+      &:hover {
+        color: white;
+        background: linear-gradient(to left  , #fff, ${theme.colors.col3});
+        }
+      `
+    }
+  }}
+  `;
 
 const StBiRightArrow = styled(BiRightArrow)`
-  font-size: 1.0rem;
-  margin-right: 0.5rem;
-`
+font-size: 1.0rem;
+margin-right: 0.5rem;
+`;
 
 const StBiDownArrow = styled(BiDownArrow)`
-  font-size: 1.0rem;
-  margin-right: 0.5rem;
+font-size: 1.0rem;
+margin-right: 0.5rem;
 `
 
-const Items = styled.div`
-  margin-bottom: 0;
-`
-
-const StDiv = styled.div` 
-  flex-direction: column;
-  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
-  margin: 1.25rem;
-  font-size: 1.15rem;
+const StDiv = styled.div`
+flex-direction: column;
+padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+margin: 1.25rem;
+font-size: 1.15rem;
 `

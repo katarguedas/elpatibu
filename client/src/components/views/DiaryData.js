@@ -7,7 +7,7 @@ import PlotWeight from '../plots/PlotWeight';
 import PlotSleep from '../plots/PlotSleep';
 import PlotNMD from '../plots/PlotNMD';
 import { StBiDownArrow, StBiRightArrow } from '../../styled/Icons';
-import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle, StP } from '../../styled/globalStyles';
+import { StyledContentGroup, StyledMainGroup, StyledMainContent, Accordion, PageTitle, StP } from '../../styled/globalStyles';
 import { useUserContext } from '../../providers/userContext';
 import { useDataContext } from '../../providers/dataContext';
 
@@ -24,8 +24,7 @@ import useEvents from '../../hooks/useEvents';
 
 const DiaryData = () => {
 
-  const { events } = useEvents();
-  const { userData, user, checkToken, getEventsFromBackend, LOCAL_STORAGE_EVENTS } = useUserContext();
+  const { userData, user, checkToken } = useUserContext();
   const { diary, setDiary, getDiaryFromBackend } = useDataContext();
 
   const [gast, setGast] = useState(false);
@@ -40,6 +39,11 @@ const DiaryData = () => {
     checkToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
+
+  useEffect(() => {
+		if ((user) && (!userData))
+			checkToken();
+	}, [])
 
   //............................
 
@@ -62,32 +66,10 @@ const DiaryData = () => {
 
   //............................
 
-
-  useEffect(() => {
-    // if (diary) {
-    //   setDiary({ ...diary }, diary.groups.map(e => {
-    //     e.visible = false;
-    //     return e;
-    //   }))
-    // }
-  }, [])
-
-  //............................
-
   useEffect(() => {
     if (user === 'gast@gast.de')
       setGast(true)
-  },[user])
-  //............................
-
-  useEffect(() => {
-    let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
-    if (!eventsArray) {
-      getEventsFromBackend(userData.id);
-      eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
-    }
-    // setEvents(eventsArray)
-  }, [])
+  }, [user])
 
 
   /************************************************************************************
@@ -103,16 +85,14 @@ const DiaryData = () => {
     }))
   }
 
-
-
   //*************************************************************************** */
 
   return (
-    <ContentGroup>
+    <StyledContentGroup>
       <Header />
-      <MainGroup>
+      <StyledMainGroup>
         <NavBar />
-        <MainContent>
+        <StyledMainContent>
 
           <PageTitle> Ergebnisse Deiner bisher eingetragenen Daten</PageTitle>
           {
@@ -124,13 +104,13 @@ const DiaryData = () => {
               : <p></p>
           }
           {
-            diary && 
+            diary &&
             (diary.timestamp?.length > 1) &&
             diary.groups.map((e, i) => (
               e.items.filter(e => e.selected === true).length > 0 &&
-              <Items key={e.id} >
+              <div key={e.id} >
 
-                {<DAccordion
+                <StyledDAccordion
                   visible={e.visible}
                   onClick={() => handleClick(diary.groups[i].id)}
                 >
@@ -141,7 +121,7 @@ const DiaryData = () => {
                     e.visible && <StBiDownArrow />
                   }
                   {e.label}
-                </DAccordion>}
+                </StyledDAccordion>
                 <ResultGroup >
                   {
                     e.visible === true &&
@@ -179,14 +159,14 @@ const DiaryData = () => {
                     <PlotNMD itemsGroup={e} />
                   }
                 </ResultGroup>
-              </Items>
+              </div>
             ))
           }
 
-        </MainContent>
-      </MainGroup>
+        </StyledMainContent>
+      </StyledMainGroup>
       <Footer />
-    </ContentGroup>
+    </StyledContentGroup>
   )
 }
 
@@ -197,17 +177,13 @@ export default DiaryData;
  ****************************************************************/
 
 
-const DAccordion = styled(Accordion)`
+const StyledDAccordion = styled(Accordion)`
   background: linear-gradient(to left, #fff, #578F8C);
   color: white;
   &:hover {
   color: white;
   background: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col3});
 }
-`
-
-const Items = styled.div`
-  margin-bottom: 0;
 `
 
 const ResultGroup = styled.div`

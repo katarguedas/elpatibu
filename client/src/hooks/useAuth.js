@@ -93,7 +93,7 @@ const useAuth = () => {
 					diaryId: jwtDecoded.diaries
 				})
 
-				console.log("user hat sich eingeloggt")
+				console.log("user hat sich eingeloggt. IserId: ", jwtDecoded.id)
 			})
 			.catch(error => {
 				console.log('error', error)
@@ -151,6 +151,7 @@ const useAuth = () => {
 			setUser(decodedJwt.email)
 			setUserData({ name: decodedJwt.name, diaryId: decodedJwt.diaries })
 
+			console.log("decodedJwt.exp: ", decodedJwt.exp, new Date(decodedJwt.exp * 1000))
 			if (decodedJwt.exp * 1000 > Date.now()) {
 				// console.log("Zeit noch nicht abgelaufen. Refreshe den Zugangstoken.")
 				refreshToken(decodedJwt.email);

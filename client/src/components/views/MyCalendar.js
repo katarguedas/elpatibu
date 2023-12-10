@@ -4,7 +4,7 @@ import NavBar from '../NavBar';
 import CalendarInputCard from '../forms/CalendarInputCard';
 import EventCard from '../EventCard';
 import { NewEventButton } from '../../styled/Buttons';
-import { ContentGroup, MainGroup, MainContent, PageTitle } from '../../styled/globalStyles';
+import { StyledContentGroup, StyledMainGroup, StyledMainContent, PageTitle } from '../../styled/globalStyles';
 import { theme } from '../../themes/theme';
 import React, { useState, useCallback, useEffect } from 'react';
 import { Calendar, luxonLocalizer } from 'react-big-calendar';
@@ -236,11 +236,11 @@ const MyCalendar = () => {
   //**************************************************** */
 
   return (
-    <ContentGroup>
+    <StyledContentGroup>
       <Header />
-      <MainGroup>
+      <StyledMainGroup>
         <NavBar />
-        <MainContent>
+        <StyledMainContent>
           <PageTitle>Kalender</PageTitle>
 
           <Calendargroup>
@@ -283,10 +283,10 @@ const MyCalendar = () => {
               }
             </div>
           </Calendargroup>
-        </MainContent>
-      </MainGroup>
+        </StyledMainContent>
+      </StyledMainGroup>
       <Footer />
-    </ContentGroup>
+    </StyledContentGroup>
   )
 }
 

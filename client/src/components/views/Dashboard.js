@@ -7,9 +7,9 @@ import { checkAllValuesToday } from '../../utils/helperfunctions';
 import { useUserContext } from '../../providers/userContext';
 import { useDataContext } from '../../providers/dataContext';
 import useEvents from '../../hooks/useEvents';
-import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2 } from '../../styled/globalStyles';
+import { StyledContentGroup, StyledMainGroup, StyledMainContent, PageTitle, TitleH2 } from '../../styled/globalStyles';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -24,58 +24,23 @@ import { theme } from '../../themes/theme';
  * informs whether values have already been saved today.
  *********************************************************/
 
-
-
 const Dashboard = () => {
 
 	const { nextEvents } = useEvents();
-	const { user, userData, checkToken} = useUserContext();
+	const { user, userData, checkToken } = useUserContext();
 	const { getDiaryFromBackend, diary, editedGroups } = useDataContext();
-
-	// const [events, setEvents] = useState();
-	// const [searchedEvents, setSearchedEvents] = useState();
-	// const [done, setDone] = useState();
 
 
 	let location = useLocation();
 	const navigate = useNavigate();
 
-//------------------------------------
-
-
-	// const getComingEvents = () => {
-	// 	let array = [];
-
-	// 	if (events) {
-	// 		const today = DateTime.local(fullDate());
-
-	// 		array = events.filter(e => {
-	// 			if (DateTime.fromISO(e.start).ts > today.ts) {
-	// 				return e
-	// 			}
-	// 		})
-	// 	}
-	// 	for (let i = 0; i < array.length; i++) {
-	// 		array[i].time = DateTime.fromISO(array[i].start).ts
-	// 	}
-
-	// 	const sortedArray = array.sort((a, b) => {
-	// 		return a.time - b.time;
-	// 	});
-	// 	if (sortedArray.length > 0) {
-	// 		setSearchedEvents(sortedArray)
-	// 		return sortedArray;
-	// 	} else {
-	// 		return [];
-	// 	}
-	// }
 
 	//........................
 
-	// useEffect(() => {
-	// 	checkToken();
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [location])
+	useEffect(() => {
+		checkToken();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [location])
 
 
 	/*******************************************************
@@ -99,63 +64,21 @@ const Dashboard = () => {
 		}
 	}
 
-	/********************************************************************
- * Checks of events data are available in local storage. 
- * If no, it fetches the events from Backend.
- *************************************************/
-
-	// useEffect(() => {
-	// 	let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
-	// 	if (!eventsArray) {
-	// 		getEventsFromBackend(userData.id);
-	// 		eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
-	// 	}
-	// 	setEvents(eventsArray)
-	// }, [])
-
-
-	/*****************************************************************
-	 * If events have changed, reprocess the nextEvents for Dashboard.
-	 */
-
-	// useEffect(() => {
-	// 	getNextEvents(events)
-	// }, [events])
-	// useEffect(() => {
-	// 	getComingEvents();
-	// }, [events])
-
-
-	/***********************************
-	 * If nextEvents exists,set done to true, 
-	 * this shows the nextEvents in Dashboard
-	 */
-
-	// useEffect(() => {
-	// 	if (nextEvents) {
-	// 		setDone(true);
-	// 	}
-	// }, [nextEvents])
-
-	//***************************************************************
 
 	const handleStart = () => {
 		navigate('/CreateDiary')
 	}
 
 
-	const space = '	';
-
-	console.log("nextEvents",nextEvents)
 
 	let eventList = (<></>);
 	if (nextEvents && nextEvents.length > 0) {
-		 eventList =
+		eventList =
 			<>
 				{nextEvents.map(e => (
 					<EventItem key={e.id} >
 						<span>
-							{e.title}:{space}
+							{e.title}
 						</span>
 						<span>
 							{DateTime.fromISO(e.start).toLocaleString(DateTime.DATE_HUGE)}
@@ -170,11 +93,11 @@ const Dashboard = () => {
 
 	if (user)
 		return (
-			<ContentGroup>
+			<StyledContentGroup>
 				<Header />
-				<MainGroup>
+				<StyledMainGroup>
 					<NavBar />
-					<MainContent>
+					<StyledMainContent>
 						<StFullDay>
 							Heute ist {fullDate()}.
 						</StFullDay>
@@ -232,10 +155,10 @@ const Dashboard = () => {
 
 							</div>
 						}
-					</MainContent>
-				</MainGroup>
+					</StyledMainContent>
+				</StyledMainGroup>
 				<Footer />
-			</ContentGroup>
+			</StyledContentGroup>
 		)
 }
 

@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react'
 
 import styled from 'styled-components'
-import { ContentGroup, MainGroup, MainContent, PageTitle } from '../../styled/globalStyles'
+import { StyledContentGroup, StyledMainGroup, StyledMainContent, PageTitle } from '../../styled/globalStyles'
 
 //---------------------------------------------------------
 
@@ -52,11 +52,11 @@ const OpenDiary = () => {
 	//-----------------------------
 
 	return (
-		<ContentGroup>
+		<StyledContentGroup>
 			<Header />
-			<MainGroup>
+			<StyledMainGroup>
 				<NavBar />
-				<MainContent>
+				<StyledMainContent>
 					<PageTitle>Dein persönliches Patienten-Tagebuch</PageTitle>
 					<ButtonField>
 						<DiaryButton onClick={handleEdit}>
@@ -69,10 +69,10 @@ const OpenDiary = () => {
 						>
 							<StBiListPlus />Werte hinzufügen</DiaryButton>
 					</ButtonField>
-				</MainContent>
-			</MainGroup>
+				</StyledMainContent>
+			</StyledMainGroup>
 			<Footer />
-		</ContentGroup >
+		</StyledContentGroup >
 	)
 }
 

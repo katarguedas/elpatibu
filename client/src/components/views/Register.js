@@ -1,7 +1,7 @@
 import Header from '../Header'
 import Footer from '../Footer'
 import RegisterForm from '../forms/RegisterForm'
-import { ContentGroup, PageTitle } from '../../styled/globalStyles'
+import { StyledContentGroup, PageTitle } from '../../styled/globalStyles'
 import { useUserContext } from '../../providers/userContext'
 
 import { useEffect, useState } from 'react'
@@ -48,7 +48,7 @@ const Register = () => {
 
 	useEffect(() => {
 		if (flag === 0) {
-			const timer = setTimeout(() => {navigate('/login')}, 3000);
+			const timer = setTimeout(() => { navigate('/login') }, 3000);
 			return () => {
 				clearTimeout(timer)
 				setFlag(999)
@@ -57,9 +57,9 @@ const Register = () => {
 	}, [flag])
 
 	//-----------------------------------------------------
-	
+
 	return (
-		<ContentGroup>
+		<StyledContentGroup>
 			<Header />
 			<PageTitle>Registrieren</PageTitle>
 			<RegisterGroup>
@@ -80,7 +80,7 @@ const Register = () => {
 			</RegisterGroup>
 
 			<Footer />
-		</ContentGroup>
+		</StyledContentGroup>
 	)
 }
 

@@ -5,18 +5,18 @@ import Intro from '../Intro'
 import React from "react"
 
 // import styled from "styled-component"
-import {ContentGroup} from '../../styled/globalStyles'
+import { StyledContentGroup } from '../../styled/globalStyles'
 
 //---------------------------------------------------------
 
 const LandingPage = () => {
 
 	return (
-		<ContentGroup>
+		<StyledContentGroup>
 			<Header />
 			<Intro />
 			<Footer />
-		</ContentGroup>
+		</StyledContentGroup>
 	)
 }
 
