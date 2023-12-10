@@ -55,7 +55,6 @@ const StSpan = styled.span`
 const StyledFormField = styled.form`
   display: flex;
   flex-direction: column;
-  margin-bottom: 4.0rem;
   box-sizing: border-box;
 `
 

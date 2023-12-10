@@ -62,32 +62,10 @@ const DiaryData = () => {
 
   //............................
 
-
-  useEffect(() => {
-    // if (diary) {
-    //   setDiary({ ...diary }, diary.groups.map(e => {
-    //     e.visible = false;
-    //     return e;
-    //   }))
-    // }
-  }, [])
-
-  //............................
-
   useEffect(() => {
     if (user === 'gast@gast.de')
       setGast(true)
-  },[user])
-  //............................
-
-  useEffect(() => {
-    let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
-    if (!eventsArray) {
-      getEventsFromBackend(userData.id);
-      eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
-    }
-    // setEvents(eventsArray)
-  }, [])
+  }, [user])
 
 
   /************************************************************************************
@@ -102,8 +80,6 @@ const DiaryData = () => {
       return e;
     }))
   }
-
-
 
   //*************************************************************************** */
 
@@ -124,13 +100,13 @@ const DiaryData = () => {
               : <p></p>
           }
           {
-            diary && 
+            diary &&
             (diary.timestamp?.length > 1) &&
             diary.groups.map((e, i) => (
               e.items.filter(e => e.selected === true).length > 0 &&
-              <Items key={e.id} >
+              <div key={e.id} >
 
-                {<DAccordion
+                <StyledDAccordion
                   visible={e.visible}
                   onClick={() => handleClick(diary.groups[i].id)}
                 >
@@ -141,7 +117,7 @@ const DiaryData = () => {
                     e.visible && <StBiDownArrow />
                   }
                   {e.label}
-                </DAccordion>}
+                </StyledDAccordion>
                 <ResultGroup >
                   {
                     e.visible === true &&
@@ -179,7 +155,7 @@ const DiaryData = () => {
                     <PlotNMD itemsGroup={e} />
                   }
                 </ResultGroup>
-              </Items>
+              </div>
             ))
           }
 
@@ -197,17 +173,13 @@ export default DiaryData;
  ****************************************************************/
 
 
-const DAccordion = styled(Accordion)`
+const StyledDAccordion = styled(Accordion)`
   background: linear-gradient(to left, #fff, #578F8C);
   color: white;
   &:hover {
   color: white;
   background: linear-gradient(to left  , #fff, ${(props) => props.theme.colors.col3});
 }
-`
-
-const Items = styled.div`
-  margin-bottom: 0;
 `
 
 const ResultGroup = styled.div`

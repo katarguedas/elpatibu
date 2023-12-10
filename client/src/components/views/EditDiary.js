@@ -20,7 +20,7 @@ const EditDiary = () => {
   const { getDiaryFromBackend } = useDataContext();
   const { diary } = useDataContext();
 
-  const [edit, setEdit] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
 
   let location = useLocation();
 
@@ -45,9 +45,16 @@ const EditDiary = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleClick = () => {
-    setEdit(!edit);
+  const handleClick = (index) => {
+    setEditIndex(prev => {
+      if (prev === index) {
+        return null
+      } else {
+        return index
+      }
+    });
   }
+
 
   //..........................
 
@@ -62,14 +69,18 @@ const EditDiary = () => {
             diary &&
             diary.groups.map((e, i) => (
               e.items.filter(e => e.selected === true).length > 0 &&
-              <Items key={e.id} >
-                <EAccordion visible={edit} onClick={handleClick}>
+              <div key={e.id} >
+
+                <StyledEAccordion
+                  visible={editIndex}
+                  onClick={() => handleClick(i)}
+                >
                   {
-                    edit ? <StBiDownArrow /> : <StBiRightArrow />
+                    editIndex !== null ? <StBiDownArrow /> : <StBiRightArrow />
                   }
                   {e.label}
-                </EAccordion>
-                {edit &&
+                </StyledEAccordion>
+                {editIndex !== null && i === editIndex &&
                   <StDiv>
                     <GetData
                       id={e.id}
@@ -78,7 +89,7 @@ const EditDiary = () => {
                     </GetData>
                   </StDiv>
                 }
-              </Items>
+              </div>
             ))
           }
         </MainContent>
@@ -95,7 +106,7 @@ export default EditDiary;
 // Styled-Components
 //---------------------------------------------------------
 
-const EAccordion = styled(Accordion)`
+const StyledEAccordion = styled(Accordion)`
   background: linear-gradient(to left, #fff, ${(props) => props.theme.colors.col5});
   color: white;
   &:hover {
@@ -112,10 +123,6 @@ const StBiRightArrow = styled(BiRightArrow)`
 const StBiDownArrow = styled(BiDownArrow)`
   font-size: 1.0rem;
   margin-right: 0.5rem;
-`
-
-const Items = styled.div`
-  margin-bottom: 0;
 `
 
 const StDiv = styled.div` 

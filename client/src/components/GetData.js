@@ -12,7 +12,7 @@ import Input from './forms/Input';
 import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { BiCheck } from 'react-icons/bi';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 
@@ -41,7 +41,6 @@ const GetData = ({ index }) => {
 	])
 	const inputRefs = useRef([]);
 
-	// let location = useLocation();
 	const navigate = useNavigate();
 	const currentDate = todayDate();
 	const ts = todayDateTs();
@@ -59,13 +58,6 @@ const GetData = ({ index }) => {
 	/***********************
 	 * useEffects
 	 ****************/
-
-	// useEffect(() => {
-	// 	checkToken();
-	// }, [location])
-
-
-	//.................................................
 
 	useEffect(() => {
 		if (!savedValues)
@@ -165,7 +157,10 @@ const GetData = ({ index }) => {
 			<div style={{ flexGrow: '1' }}  >
 			</div>
 			{
-				<StyledFormField onSubmit={handleSubmit} style={{ flexGrow: '2' }} >
+				<StyledFormField
+					onSubmit={handleSubmit}
+					style={{ flexGrow: '2' }}
+				>
 					{diary.groups[index].items.map((e, i) => (
 						e.selected ?
 							e.measurable ?
