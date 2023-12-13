@@ -70,11 +70,15 @@ const useEvents = () => {
 
   //............................................
 
+  /**
+   * Checks of events data are available in local storage. 
+ * If no, it fetches the events from Backend.
+   */
 
   useEffect(() => {
     if (userData) {
       let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
-      if (!eventsArray) {
+      if (!eventsArray || eventsArray.length === 0) {
         getEventsFromBackend(userData.id);
       } else {
         searchTimeArrays(eventsArray)

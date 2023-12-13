@@ -63,7 +63,6 @@ const useData = () => {
 		await fetch('/api/newDiary', requestOptions)
 			.then(response => response.json())
 			.then(response => {
-				console.log(response.data)
 				console.log("diary wird im backend gespeichert")
 				if (response.status = "ok") {
 					setDiarySaved(true) // Funktioniert nicht. 
@@ -80,7 +79,6 @@ const useData = () => {
 		if (closePanels && diary) {
 			setDiary({ ...diary }, diary.groups.map(e => {
 				e.visible = false;
-				// console.log("VISIBLE:",e.visible)
 				return e;
 			}))
 		}
@@ -99,7 +97,6 @@ const useData = () => {
 			.then(response => {
 				setDiary(response.data)     // HIER GUCKEN!!!!
 				setClosePanels(true)
-				// console.log("DIARY", response.data)
 			})
 			.catch(error => console.log("error: ", error))
 	}
@@ -108,7 +105,6 @@ const useData = () => {
 
 	const saveDataToBackend = async (id, groupId, items, date, ts, update) => {
 
-		console.log("ITEMS: ", items)
 		let raw = JSON.stringify(
 			{
 				id: id,
@@ -130,8 +126,8 @@ const useData = () => {
 		await fetch('/api/saveData', requestOptions)
 			.then(response => response.json())
 			.then(result => {
-				console.log("result", result.message)
-				console.log(result)
+				// console.log("result", result.message)
+				// console.log(result)
 			})
 			.catch(error => console.log('error', error))
 	}

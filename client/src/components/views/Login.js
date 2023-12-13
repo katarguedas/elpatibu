@@ -6,7 +6,7 @@ import { useUserContext } from "../../providers/userContext"
 import { useEffect, useState } from "react"
 
 import styled from "styled-components"
-import { ContentGroup, PageTitle } from "../../styled/globalStyles"
+import { StyledContentGroup, PageTitle } from "../../styled/globalStyles"
 import { useNavigate } from "react-router"
 import { AuthButton } from "../../styled/Buttons"
 
@@ -62,11 +62,11 @@ const Login = () => {
 		}
 	}, [user, navigate])
 
-	
+
 	//............................................
 
 	return (
-		<ContentGroup>
+		<StyledContentGroup>
 			<Header />
 			<PageTitle>Anmelden</PageTitle>
 			<LoginGroup >
@@ -88,7 +88,7 @@ const Login = () => {
 				</div>
 			</LoginGroup>
 			<Footer />
-		</ContentGroup>
+		</StyledContentGroup>
 	)
 }
 

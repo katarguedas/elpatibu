@@ -45,7 +45,7 @@ router.post('/api/login', async (req, res) => {
           diaries: user.diaries
         }, process.env.EXPRESS_ACCESS_JWT_KEY,
         {
-          expiresIn: '20m'
+          expiresIn: '15m'
         }
       );
       const refreshToken = jwt.sign(
@@ -75,7 +75,6 @@ router.post('/api/login', async (req, res) => {
 
 
 router.post('/api/refreshToken', async (req, res) => {
-  // console.log("req", req.body)
 
   const user = await User.findOne({ email: req.body.email })
 
@@ -85,7 +84,7 @@ router.post('/api/refreshToken', async (req, res) => {
   } else {
     if (req.cookies?.jwt) {
       const refreshToken = req.cookies.jwt;
-      // console.log("refreshToken", refreshToken)
+      console.log("Token wird refreshed")
 
       jwt.verify(refreshToken, process.env.EXPRESS_REFRESH_TOKEN_KEY, err => {
         if (err) {
@@ -102,7 +101,7 @@ router.post('/api/refreshToken', async (req, res) => {
           },
             process.env.EXPRESS_ACCESS_JWT_KEY,
             {
-              expiresIn: '20m',
+              expiresIn: '15m',
             });
           return res.status(200).send({ status: 'ok', message: 'authorized', access: accessToken });
         }

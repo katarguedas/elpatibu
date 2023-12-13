@@ -7,7 +7,7 @@ import { StyledFormField } from '../../styled/globalStyles';
 import { SendButton } from '../../styled/Buttons';
 import { StBiDownArrow, StBiRightArrow } from '../../styled/Icons';
 import { BiSquare, BiCheckSquare } from 'react-icons/bi';
-import { ContentGroup, MainGroup, MainContent, PageTitle, TitleH2, StP, Accordion } from '../../styled/globalStyles';
+import { StyledContentGroup, StyledMainGroup, StyledMainContent, PageTitle, TitleH2, StP, Accordion } from '../../styled/globalStyles';
 
 import { useDataContext } from '../../providers/dataContext';
 import { useUserContext } from '../../providers/userContext';
@@ -210,11 +210,11 @@ const CreateDiary = () => {
   //************************************************************************
 
   return (
-    <ContentGroup>
+    <StyledContentGroup>
       <Header />
-      <MainGroup>
+      <StyledMainGroup>
         <NavBar />
-        <MainContent>
+        <StyledMainContent>
           <PageTitle>Neues Tagebuch</PageTitle>
           <TitleH2>
             Erstelle Dein individuelles Patienten-Tagebuch
@@ -308,10 +308,10 @@ const CreateDiary = () => {
             <SendButton onClick={navToDiary} >zum Tagebuch</SendButton>
           }
 
-        </MainContent>
-      </MainGroup>
+        </StyledMainContent>
+      </StyledMainGroup>
       <Footer />
-    </ContentGroup >
+    </StyledContentGroup >
   )
 }
 

@@ -7,7 +7,7 @@ import PlotWeight from '../plots/PlotWeight';
 import PlotSleep from '../plots/PlotSleep';
 import PlotNMD from '../plots/PlotNMD';
 import { StBiDownArrow, StBiRightArrow } from '../../styled/Icons';
-import { ContentGroup, MainGroup, MainContent, Accordion, PageTitle, StP } from '../../styled/globalStyles';
+import { StyledContentGroup, StyledMainGroup, StyledMainContent, Accordion, PageTitle, StP } from '../../styled/globalStyles';
 import { useUserContext } from '../../providers/userContext';
 import { useDataContext } from '../../providers/dataContext';
 
@@ -24,8 +24,7 @@ import useEvents from '../../hooks/useEvents';
 
 const DiaryData = () => {
 
-  const { events } = useEvents();
-  const { userData, user, checkToken, getEventsFromBackend, LOCAL_STORAGE_EVENTS } = useUserContext();
+  const { userData, user, checkToken } = useUserContext();
   const { diary, setDiary, getDiaryFromBackend } = useDataContext();
 
   const [gast, setGast] = useState(false);
@@ -40,6 +39,11 @@ const DiaryData = () => {
     checkToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
+
+  useEffect(() => {
+		if ((user) && (!userData))
+			checkToken();
+	}, [])
 
   //............................
 
@@ -84,11 +88,11 @@ const DiaryData = () => {
   //*************************************************************************** */
 
   return (
-    <ContentGroup>
+    <StyledContentGroup>
       <Header />
-      <MainGroup>
+      <StyledMainGroup>
         <NavBar />
-        <MainContent>
+        <StyledMainContent>
 
           <PageTitle> Ergebnisse Deiner bisher eingetragenen Daten</PageTitle>
           {
@@ -159,10 +163,10 @@ const DiaryData = () => {
             ))
           }
 
-        </MainContent>
-      </MainGroup>
+        </StyledMainContent>
+      </StyledMainGroup>
       <Footer />
-    </ContentGroup>
+    </StyledContentGroup>
   )
 }
 

@@ -287,7 +287,7 @@ const useTemplates = () => {
 								values: []
 							},
 							{
-								name: 'appetiteLoss,',
+								name: 'appetiteLoss',
 								id: uuidv4(),
 								label: 'Appetitlosigkeit',
 								unit: '-',
