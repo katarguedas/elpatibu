@@ -1,25 +1,25 @@
 import { AuthButton } from "../styled/Buttons";
 import Logo from '../components/Logo'
 
-import { useUserContext } from "../providers/userContext";
-
 import React from "react"
 import { useNavigate } from 'react-router-dom';
-
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import {logout} from '../store/authActions';
+import { authActions } from '../store/authSlice';
 
 //---------------------------------------------------------
 
 const Header = () => {
 
-	const { user, setUser, logout } = useUserContext();
+	const dispatch = useDispatch();
+	const loginStatus = useSelector(state => state.auth.loginStatus);
 
 	const navigate = useNavigate();
 
 	const hanadleLogout = () => {
-		console.log("logout")
-		logout();
-		setUser(!user)
+		logout(dispatch);
+		dispatch(authActions.changeLoginStatus({loginStatus:false}));
 		navigate('/welcome');
 	}
 
@@ -32,11 +32,10 @@ const Header = () => {
 	}
 
 
-
 	return (
 		<HeaderGroup>
 			{
-				user ?
+				loginStatus ?
 					<StyledHeader>
 						<Logo />
 						<ButtonGroup>

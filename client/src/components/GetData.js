@@ -1,5 +1,4 @@
 import { useDataContext } from '../providers/dataContext';
-import { useUserContext } from '../providers/userContext';
 import { SendButton } from './../styled/Buttons';
 import RadioInputForm from '../components/forms/RadioInputForm';
 import { todayDate, todayDateTs } from '../utils/Date';
@@ -14,6 +13,9 @@ import { useEffect, useRef, useState } from 'react';
 import { BiCheck } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { checkToken } from '../store/authActions';
+
 import styled from 'styled-components';
 
 /******************************************************************************
@@ -26,8 +28,11 @@ import styled from 'styled-components';
 
 const GetData = ({ index }) => {
 
+	const dispatch = useDispatch();
+	const userData = useSelector(state => state.auth.userData);
+	const loginStatus = useSelector(state => state.auth.loginStatus);
+
 	const { diary, setDiary, saveDataToBackend, getDiaryFromBackend, editedGroups } = useDataContext();
-	const { user, userData, checkToken } = useUserContext();
 
 	const [saved, setSaved] = useState();
 	const [done, setDone] = useState(false);
@@ -45,13 +50,21 @@ const GetData = ({ index }) => {
 	const currentDate = todayDate();
 	const ts = todayDateTs();
 
-	if ((user) && (!userData)) {
-		checkToken();
-	}
-	if (!user) {
-		navigate('/login');
-	}
-	if (userData && !diary && userData.diaryId) {
+
+
+	useEffect(() => {
+		dispatch(checkToken());
+	}, [dispatch])
+
+
+	useEffect(() => {
+		if (!loginStatus) {
+			navigate('/login');
+		}
+	}, [loginStatus, dispatch, navigate])
+
+	
+	if (userData.id !== '' && !diary && userData.diaryId !== '') {
 		getDiaryFromBackend(userData.diaryId)
 	}
 
@@ -131,15 +144,19 @@ const GetData = ({ index }) => {
 	//.....................................
 
 	const handleSubmit = event => {
-		checkTs(diary.timestamp, setUpdate);
 		event.preventDefault();
+		checkTs(diary.timestamp, setUpdate);
 
 		if (inputRefs) {
-			setTimeout(() => {
+			const timer = setTimeout(() => {
 				inputRefs.current.forEach(event => event.value = '')
-			}, 3000)
+			}, 500);
+			return () => {
+				clearTimeout(timer);
+			}
 		}
 	}
+
 
 
 	const handleChange = (event) => {

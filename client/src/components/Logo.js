@@ -1,16 +1,17 @@
 import styled from 'styled-components';
-import { useUserContext } from '../providers/userContext';
 import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
 //---------------------------------------------------------
 
 
 const Logo = () => {
 
+	const loginStatus = useSelector(state => state.auth.loginStatus);
+
 	const navigate = useNavigate();
-	const { user } = useUserContext();
 
 	const handleClickLogo = () => {
-		if (user)
+		if (loginStatus)
 			navigate('/dashboard')
 		else
 			navigate('/welcome')

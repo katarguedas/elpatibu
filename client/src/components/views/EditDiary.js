@@ -5,37 +5,46 @@ import GetData from '../GetData';
 import { todayDateTs } from '../../utils/Date';
 import { useDataContext } from '../../providers/dataContext';
 import { StyledContentGroup, StyledMainGroup, StyledMainContent, Accordion, PageTitle } from '../../styled/globalStyles'
-import { useUserContext } from '../../providers/userContext';
 
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { BiRightArrow, BiDownArrow } from 'react-icons/bi';
 import { theme } from '../../themes/theme'
 import styled from 'styled-components';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { checkToken } from '../../store/authActions';
+
 //---------------------------------------------------------
 
 const EditDiary = () => {
 
-  const { userData, checkToken } = useUserContext();
+  const dispatch = useDispatch();
+  const userData = useSelector(state => state.auth.userData);
+  const loginStatus = useSelector(state => state.auth.loginStatus);
+
+
   const { getDiaryFromBackend } = useDataContext();
   const { diary } = useDataContext();
 
   const [editIndex, setEditIndex] = useState(null);
 
-  let location = useLocation();
-
+  const navigate = useNavigate();
 
   //........................
-
   useEffect(() => {
-    checkToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location])
+      dispatch(checkToken());
+  }, [dispatch])
 
 
   useEffect(() => {
-    if (userData) {
+    if (!loginStatus) {
+      navigate('/login');
+    }
+  }, [loginStatus, dispatch, navigate])
+
+  useEffect(() => {
+    if (userData.id !== '') {
       if (!diary) {
         if (userData.diaryId) {
           console.log('noch kein Diary da, schau nach, ob was im Backend ist')
@@ -83,7 +92,7 @@ const EditDiary = () => {
                   visible={editIndex}
                   valuesExist={e.items.findIndex(item =>
                     (!(diaryTsToday === today)) ||
-                      ((item.values.length === diary.timestamp.length) &&
+                    ((item.values.length === diary.timestamp.length) &&
                       (item.values[item.values.length - 1] === null)) ||
                     (item.values.length < diary.timestamp.length))}
                   onClick={() => handleClick(i)}

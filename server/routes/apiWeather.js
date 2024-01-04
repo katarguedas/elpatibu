@@ -19,8 +19,6 @@ router.use((req, res, next) => {
 
 router.get('/api/WeatherData', async (req, res) => {
 
-  console.log("im backend")
-
   const urlConst = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/history?";
   const lang = "de";
   const contentType = "json";

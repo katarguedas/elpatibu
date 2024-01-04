@@ -25,7 +25,6 @@ const PlotSymptoms = ({ itemSymptoms }) => {
 
 	if (demo === true) {
 		dataNMDSet = createNMData();
-		console.log("data", dataNMDSet)
 		dataNMDSet.dateString.forEach((e, i) => {
 			dataNMDSet.dateString[i] = getdmStrFromTs(e);
 		})

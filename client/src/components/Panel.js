@@ -85,7 +85,7 @@ const Panel = ({ itemGroup, handleSelect }) => {
               <SendButton
                 style={{ backgroundColor: color }}
                 type="submit" >
-                Ort speichern
+                speichern
               </SendButton>
               :
               <StBiCheck />

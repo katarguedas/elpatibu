@@ -1,6 +1,5 @@
 import { theme } from '../../themes/theme';
 import { getYminMax } from '../../utils/helperfunctions';
-import { useUserContext } from '../../providers/userContext';
 import { ChartStyle } from '../../styled/globalStyles';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Filler, Tooltip, Legend, TimeScale, TimeSeriesScale } from 'chart.js';
 import { Line } from 'react-chartjs-2';
@@ -8,14 +7,16 @@ import { Line } from 'react-chartjs-2';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import 'chartjs-adapter-luxon';
 import { useEffect, useState } from 'react';
-import useEvents from '../../hooks/useEvents';
+import { useSelector } from 'react-redux';
+import { fetchEvents } from '../../store/eventsActions';
+
+import { LOCAL_STORAGE_EVENTS } from '../../store/eventsSlice';
 
 //----------------------------------------------------------------------
 
 const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 
-	const { timeCatArrays, searchTimeArrays } = useEvents();
-	const {  LOCAL_STORAGE_EVENTS } = useUserContext();
+	const categoryEvents = useSelector(state => state.events.categorySortedEvents);
 
 	ChartJS.register(
 		CategoryScale,
@@ -95,11 +96,11 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 
 	useEffect(() => {
 		// let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
-		if (!timeCatArrays) {
-			searchTimeArrays( JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS)))
+		if (!categoryEvents) {
+			fetchEvents( JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS)))
 		}
 		setDone(true)
-	}, [timeCatArrays, searchTimeArrays,LOCAL_STORAGE_EVENTS])
+	}, [categoryEvents, LOCAL_STORAGE_EVENTS])
 
 
 	useEffect(() => {
@@ -107,12 +108,12 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 		setYline(39);
 
 		if (showTherapie === true) {
-			if (timeCatArrays.therapie.length > 0) {
+			if (categoryEvents.therapie.length > 0) {
 				console.log("es gibt therapietermine zum Plotten")
-				timeCatArrays.therapie.map((e, i) => {
-					if ((firstDay < timeCatArrays.therapie[i]) && (timeCatArrays.therapie[i] < lastDay)) {
+				categoryEvents.therapie.map((e, i) => {
+					if ((firstDay < categoryEvents.therapie[i]) && (categoryEvents.therapie[i] < lastDay)) {
 						setMyAnnotations([...myAnnotations, myAnnotations.push({
-							id: 'line_' + timeCatArrays.therapie[i],
+							id: 'line_' + categoryEvents.therapie[i],
 							type: 'line',
 							label: {
 								display: true,
@@ -124,8 +125,8 @@ const TimeChartT = ({ xValues, yValues, titel, name, unit, showTherapie }) => {
 								backgroundColor: theme.colors.col3,
 								color: '#fff'
 							},
-							xMin: timeCatArrays.therapie[i],
-							xMax: timeCatArrays.therapie[i],
+							xMin: categoryEvents.therapie[i],
+							xMax: categoryEvents.therapie[i],
 							backgroundColor: 'red',
 							borderWidth: 2
 						})

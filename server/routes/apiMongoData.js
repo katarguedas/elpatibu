@@ -10,7 +10,7 @@ const router = express.Router();
  ****************/
 
 router.use((req, res, next) => {
-  console.log('Time:', Date.now());
+  // console.log('Time:', Date.now());
   next();
 })
 
@@ -50,7 +50,6 @@ router.post('/api/newDiary', async (req, res) => {
  ***************************/
 
 router.get('/api/getDiary', async (req, res) => {
-  // console.log("diary id:", req.query.id)
 
   try {
     const result = await Diary.findOne({ id: req.query.id })

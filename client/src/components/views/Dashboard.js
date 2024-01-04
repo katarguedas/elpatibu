@@ -1,20 +1,27 @@
+
 import Header from '../Header';
 import Footer from '../Footer';
 import NavBar from '../NavBar';
 import { SendButton } from '../../styled/Buttons';
-import { fullDate, todayDateTs } from '../../utils/Date';
-import { checkAllValuesToday } from '../../utils/helperfunctions';
-import { useUserContext } from '../../providers/userContext';
-import { useDataContext } from '../../providers/dataContext';
-import useEvents from '../../hooks/useEvents';
 import { StyledContentGroup, StyledMainGroup, StyledMainContent, PageTitle, TitleH2 } from '../../styled/globalStyles';
+import { theme } from '../../themes/theme';
 
 import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 
-import styled from 'styled-components';
 import { DateTime } from 'luxon';
-import { theme } from '../../themes/theme';
+import styled from 'styled-components';
+
+import { checkToken } from '../../store/authActions';
+import { fetchEvents } from '../../store/eventsActions';
+import { eventsActions } from '../../store/eventsSlice';
+import { getNextEvents } from '../../store/eventsActions';
+
+import { fullDate, todayDateTs } from '../../utils/Date';
+import { checkAllValuesToday } from '../../utils/helperfunctions';
+
+import { useDataContext } from '../../providers/dataContext';
 
 
 /*********************************************************************
@@ -26,29 +33,45 @@ import { theme } from '../../themes/theme';
 
 const Dashboard = () => {
 
-	const { nextEvents } = useEvents();
-	const { user, userData, checkToken } = useUserContext();
+	const dispatch = useDispatch();
+	const loginStatus = useSelector(state => state.auth.loginStatus);
+	const userData = useSelector(state => state.auth.userData);
+	const events = useSelector(state => state.events.events)
+	const nextEvents = useSelector(state => state.events.nextEvents)
 	const { getDiaryFromBackend, diary, editedGroups } = useDataContext();
 
-
-	let location = useLocation();
 	const navigate = useNavigate();
-
 
 	//........................
 
+  useEffect(() => {
+      dispatch(checkToken());
+  }, [dispatch])
+
+
 	useEffect(() => {
-		checkToken();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [location])
+		if (!loginStatus) {
+      navigate('/login');
+    }
+  }, [loginStatus, dispatch, navigate])
+
+
+	
+	useEffect(() => {
+		if ((!events || events?.length === 0) && userData.id !== '') {
+			dispatch(fetchEvents(userData.id));
+		}
+		dispatch(eventsActions.saveNextEvents(
+			{ events: getNextEvents(events) }));
+	}, [])
 
 
 	/*******************************************************
-	 * Check if userData is available. 
+	 * Check if userData.id is available. 
 	 * If yes, fetche the diary from Backend.
 	 */
 
-	if (userData) {
+	if (userData.id !=='') {
 		if (!diary) {
 			if (userData.diaryId)
 				getDiaryFromBackend(userData.diaryId)
@@ -70,19 +93,18 @@ const Dashboard = () => {
 	}
 
 
-
 	let eventList = (<></>);
 	if (nextEvents && nextEvents.length > 0) {
 		eventList =
 			<>
 				{nextEvents.map(e => (
 					<EventItem key={e.id} >
-						<span>
+						<EventItemColLeft>
 							{e.title}
-						</span>
-						<span>
+						</EventItemColLeft>
+						<EventItemColRight >
 							{DateTime.fromISO(e.start).toLocaleString(DateTime.DATE_HUGE)}
-						</span>
+						</EventItemColRight>
 					</EventItem>
 				))}
 			</>
@@ -91,7 +113,7 @@ const Dashboard = () => {
 
 	//***************************************************************
 
-	if (user)
+	if (userData.id !== '')
 		return (
 			<StyledContentGroup>
 				<Header />
@@ -102,7 +124,7 @@ const Dashboard = () => {
 							Heute ist {fullDate()}.
 						</StFullDay>
 						{
-							userData &&
+							userData.id !== '' &&
 							<PageTitle style={{ color: theme.colors.col3 }} >
 								Hallo {userData.name},
 							</PageTitle>
@@ -134,21 +156,7 @@ const Dashboard = () => {
 								<TitleH2 style={{ color: theme.colors.col3, marginTop: '3.0rem' }} >
 									Deine nächsten Termine
 									{
-										// done &&
-										// nextEvents?.map(e => (
-										// searchedEvents && searchedEvents.length > 0 &&
 										<div>{eventList}</div>
-
-										// searchedEvents?.map(e => (
-										// 	<EventItem key={e.id} >
-										// 		<span>
-										// 			{e.title}:{space}
-										// 		</span>
-										// 		<span>
-										// 			{DateTime.fromISO(e.start).toLocaleString(DateTime.DATE_HUGE)}
-										// 		</span>
-										// 	</EventItem>
-										// ))
 									}
 								</TitleH2>
 								<Item />
@@ -184,9 +192,16 @@ const Item = styled.div`
 const EventItem = styled.div`
   display: flex;
 	flex-direction: row;
-	justify-content: space-between; 
-	width: 27rem;
+	width: 30rem;
 	margin-left: 3.0rem; 
 	font-weight: 400; 
 	font-size: 1.25rem;
+`
+
+const EventItemColLeft = styled.span`
+  width: 12.0rem;
+  justify-content: flex-start;
+`
+const EventItemColRight = styled.span`
+  justify-content: flex-end;
 `

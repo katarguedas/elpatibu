@@ -1,4 +1,3 @@
-import { useUserContext } from "../../providers/userContext";
 import { SendButton } from "../../styled/Buttons";
 import { StyledLabelText, StyledFormField } from "../../styled/globalStyles";
 import Input from './Input';
@@ -8,9 +7,14 @@ import styled from 'styled-components';
 
 //---------------------------------------------------------
 
-const RegisterForm = ({ handleSubmit, handleChange, handleMouseEnter, handleMouseLeave, type }) => {
+const RegisterForm = ({
+	handleSubmit,
+	handleChange,
+	handleMouseEnter,
+	handleMouseLeave,
+	registerData,
+	type }) => {
 
-	const { registerData } = useUserContext();
 
 	return (
 		<StyledFormField onSubmit={handleSubmit}>

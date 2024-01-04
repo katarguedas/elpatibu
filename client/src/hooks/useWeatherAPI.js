@@ -54,7 +54,6 @@ const useWeatherAPI = () => {
       }
       const allWeatherDataIneed = [date, dateStr, sealevelpressure, maxt, precip, humidity];
       for (let i = 2; i < dataNames.length; i++) {
-        console.log(data.columns[dataNames[i]].unit)
         temp[i - 2] =
         {
           unit: data.columns[dataNames[i]].unit,
@@ -81,7 +80,6 @@ const useWeatherAPI = () => {
     await fetch('/api/WeatherData?city=' + city + '&start=' + startDate + '&end=' + endDate, requestOptions)
       .then(response => response.json())
       .then(response => {
-        console.log("response", response.data)
         localStorage.setItem(LOCAL_STORAGE_WEATHER, JSON.stringify(response.data))
         convertWeatherData(city)
       })

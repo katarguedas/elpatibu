@@ -1,4 +1,3 @@
-import { useUserContext } from "../../providers/userContext";
 import { SendButton } from "../../styled/Buttons";
 import Input from './Input';
 import { RxEyeOpen } from "react-icons/rx";
@@ -7,9 +6,14 @@ import { StyledLabelText, StyledFormField } from "../../styled/globalStyles";
 
 //---------------------------------------------------------
 
-const LoginForm = ({ handleSubmit, handleChange, handleMouseEnter, handleMouseLeave, type }) => {
-
-	const { loginData } = useUserContext();
+const LoginForm = ({
+	handleSubmit,
+	handleChange,
+	handleMouseEnter,
+	handleMouseLeave,
+	loginData,
+	type
+}) => {
 
 	return (
 		<StyledFormField onSubmit={handleSubmit}>

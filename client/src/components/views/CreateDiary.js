@@ -10,13 +10,14 @@ import { BiSquare, BiCheckSquare } from 'react-icons/bi';
 import { StyledContentGroup, StyledMainGroup, StyledMainContent, PageTitle, TitleH2, StP, Accordion } from '../../styled/globalStyles';
 
 import { useDataContext } from '../../providers/dataContext';
-import { useUserContext } from '../../providers/userContext';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { checkToken } from '../../store/authActions';
 
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { theme } from '../../themes/theme';
 
 /********************************************************************************
  * Component for creating the individual diary
@@ -26,9 +27,12 @@ import { theme } from '../../themes/theme';
 
 const CreateDiary = () => {
 
-  const { diaryTemplate, setDiaryTemplate, setDiary, createNewDiary, diarySaved, diaryInit, demo } = useDataContext();
-  const { user, userData, checkToken, diaryIdSaved } = useUserContext();
+  const dispatch = useDispatch();
+  const userData = useSelector(state => state.auth.userData);
+  const loginStatus = useSelector(state => state.auth.loginStatus);
 
+
+  const { diaryTemplate, setDiaryTemplate, setDiary, createNewDiary, diarySaved, diaryInit, demo } = useDataContext();
   const [on, setOn] = useState();
   const [created, setCreated] = useState(false);
   const [done, setDone] = useState(false);
@@ -36,7 +40,6 @@ const CreateDiary = () => {
   const [missingCity, setMissingCity] = useState(false);
   const [demoText, setDemoText] = useState();
 
-  let location = useLocation();
   const navigate = useNavigate();
 
   /********************************************************************************
@@ -44,41 +47,38 @@ const CreateDiary = () => {
    *****************/
 
   useEffect(() => {
-    if ((user) && (!userData))
-      checkToken();
-    if (!user)
-      navigate('/login');
+    dispatch(checkToken());
     setDiaryTemplate(diaryInit)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+}, [dispatch])
+
+
+useEffect(() => {
+  if (!loginStatus) {
+    navigate('/login');
+  }
+}, [loginStatus, dispatch, navigate])
 
   //.....................
 
-  // useEffect(() => {
-  //   if (!user)
-  //     navigate('/login');
-  //   checkToken();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [location])
-
-  //.....................
 
   useEffect(() => {
-    if ((diaryIdSaved) && (diarySaved)) {
+    if ((userData.diaryId) && (created)) {
       const tempDiary = diaryTemplate;
       setDiary(tempDiary);
       setDiaryTemplate('');
-      setCreated(true);
       setDone(true);
       timing();
     }
-  }, [diaryIdSaved, diarySaved, setDiaryTemplate, setDiary])
+  }, [created, setDiaryTemplate, setDiary])
 
   //.....................
   //........................
 
   const timing = () => {
-    setTimeout(() => { setCreated(false) }, 2000)
+    setTimeout(() => {
+      setCreated(false);
+      // setDone(false);
+    }, 2500)
   }
 
   //.....................
@@ -171,9 +171,7 @@ const CreateDiary = () => {
         return e;
       })
     }
-    // console.log("check,", check)
-    // console.log("Length of city:", diaryTemplate.city.length)
-
+  
     if ((check === true) && (diaryTemplate.city.length > 0))
       return true
     else if ((check === true) && (diaryTemplate.city.length === 0))
@@ -191,7 +189,7 @@ const CreateDiary = () => {
     if (!demo) {
       if (checkMeteo() === true) {
         setMissingCity(false)
-        createNewDiary(diaryTemplate.id);
+        createNewDiary(diaryTemplate.id, setCreated);
       }
       else {
         setMissingCity(true)
@@ -274,12 +272,7 @@ const CreateDiary = () => {
             <div>
               <StP> Gebe Deinem Tagebuch bitte einen Namen: </StP>
               <StyledFormField onSubmit={handleSubmit} >
-                <input
-                  style={{
-                    marginLeft: '1.5rem',
-                    width: '200px',
-                    height: '1.75rem'
-                  }}
+                <StyledDiaryNameInput
                   onChange={(e) =>
                     setDiaryTemplate({ ...diaryTemplate, diaryName: e.target.value })}
                 />
@@ -292,8 +285,8 @@ const CreateDiary = () => {
               Dafür benötige ich Deinen Wohnort. </p>
           }
           {
-            (created === false) &&
-            (done === false) &&
+            !created &&
+            !done &&
             <SendButton onClick={handleSendAndCreate} >erstellen</SendButton>
           }
           {
@@ -303,7 +296,7 @@ const CreateDiary = () => {
           {created &&
             <p style={{ fontWeight: '500' }} >Tagebuch erfolgreich erstellt!</p>
           }
-          {(created === false) &&
+          {!created &&
             done &&
             <SendButton onClick={navToDiary} >zum Tagebuch</SendButton>
           }
@@ -347,3 +340,10 @@ const StBiCheckSquare = styled(BiCheckSquare)`
   font-size: 1.5rem;
   margin: 0.5rem 0.5rem 0.5rem 2.5rem;
 `
+
+const StyledDiaryNameInput = styled.input`
+  margin-left: 1.5rem;
+  width: 200px;
+  height: 1.75rem;
+`
+

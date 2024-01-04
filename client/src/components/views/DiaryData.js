@@ -8,48 +8,51 @@ import PlotSleep from '../plots/PlotSleep';
 import PlotNMD from '../plots/PlotNMD';
 import { StBiDownArrow, StBiRightArrow } from '../../styled/Icons';
 import { StyledContentGroup, StyledMainGroup, StyledMainContent, Accordion, PageTitle, StP } from '../../styled/globalStyles';
-import { useUserContext } from '../../providers/userContext';
 import { useDataContext } from '../../providers/dataContext';
 
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import {  useNavigate } from 'react-router';
 import styled from 'styled-components';
-import useEvents from '../../hooks/useEvents';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { checkToken } from '../../store/authActions';
+
 
 
 /*******************************************************************************
  * Shows data in charts calling 'Plot' Components.
  * @returns 
  *************************************************/
-
+ 
 const DiaryData = () => {
 
-  const { userData, user, checkToken } = useUserContext();
+  const dispatch = useDispatch();
+  const userData = useSelector(state => state.auth.userData);
+  const loginStatus = useSelector(state => state.auth.loginStatus);
+
   const { diary, setDiary, getDiaryFromBackend } = useDataContext();
 
   const [gast, setGast] = useState(false);
 
-  const location = useLocation();
+  const navigate = useNavigate();
 
-  /*******************************************************************
-   * useEffects
-   *****************/
 
   useEffect(() => {
-    checkToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location])
+      dispatch(checkToken());
+  }, [dispatch])
+
 
   useEffect(() => {
-		if ((user) && (!userData))
-			checkToken();
-	}, [])
-
+    if (!loginStatus) {
+      navigate('/login');
+    }
+  }, [loginStatus, dispatch, navigate])
   //............................
 
   useEffect(() => {
-    if (userData) {
-      if (!diary) {
+
+    if (userData.id !=='') {
+      if (!diary || diary.id !== userData.diaryId) {
         if (userData.diaryId) {
           getDiaryFromBackend(userData.diaryId);
         }
@@ -61,15 +64,16 @@ const DiaryData = () => {
         }))
       }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   //............................
 
   useEffect(() => {
-    if (user === 'gast@gast.de')
+    if (userData.id === 'gast@gast.de')
       setGast(true)
-  }, [user])
+  }, [userData.id])
 
 
   /************************************************************************************
@@ -108,7 +112,7 @@ const DiaryData = () => {
             (diary.timestamp?.length > 1) &&
             diary.groups.map((e, i) => (
               e.items.filter(e => e.selected === true).length > 0 &&
-              <div key={e.id} >
+              <div key={e.id} style={{marginLeft: '0', paddingLeft: '0'}}>
 
                 <StyledDAccordion
                   visible={e.visible}

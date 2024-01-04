@@ -3,7 +3,6 @@ import Footer from '../Footer'
 import NavBar from '../NavBar'
 import { DiaryButton } from '../../styled/Buttons';
 import { StGiChart, StBiListPlus, StGiFountainPen } from '../../styled/Icons'
-import { useUserContext } from '../../providers/userContext';
 import { useDataContext } from '../../providers/dataContext';
 
 import { useNavigate } from 'react-router-dom';
@@ -11,20 +10,37 @@ import React, { useEffect } from 'react'
 
 import styled from 'styled-components'
 import { StyledContentGroup, StyledMainGroup, StyledMainContent, PageTitle } from '../../styled/globalStyles'
+import { useSelector } from 'react-redux';
+import { checkToken } from '../../store/authActions';
+import { useDispatch } from 'react-redux';
 
 //---------------------------------------------------------
 
 const OpenDiary = () => {
 
-	const { userData } = useUserContext();
+	const dispatch = useDispatch();
+	const userData = useSelector(state => state.auth.userData);
+	const loginStatus = useSelector(state => state.auth.loginStatus);
+
 	const { diary, getDiaryFromBackend } = useDataContext();
 
 	const navigate = useNavigate();
 
 	//----------------------------
+  useEffect(() => {
+      dispatch(checkToken());
+  }, [dispatch])
+
+
+  useEffect(() => {
+    if (!loginStatus) {
+      navigate('/login');
+    }
+  }, [loginStatus, dispatch, navigate])
+
 
 	useEffect(() => {
-		if (userData) {
+		if (userData !== '') {
 			if (!diary) {
 				if (userData.diaryId) {
 					console.log('noch kein Diary da, schau nach, ob was im Backend ist')

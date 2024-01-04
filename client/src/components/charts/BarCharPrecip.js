@@ -15,9 +15,6 @@ import { theme } from '../../themes/theme'
 
 const BarChartPrecip = ({ xVal, yVal, name }) => {
 
-  // console.log("x", xVal)
-  // console.log("y", yVal)
-
   ChartJS.register(
     CategoryScale,
     PointElement,
@@ -32,16 +29,15 @@ const BarChartPrecip = ({ xVal, yVal, name }) => {
   //................................................
 
 
-
   const color1 = theme.colors.col11;
   const color2 = theme.colors.col15;
   const textColor = theme.colors.col11;
 
-  const bgreen = ['rgba(146, 250, 61, 0.3)']
-  const bgyellow = ['rgba(238, 252, 48, 0.2)']
-  const bgorange = ['rgba(248, 194, 16, 0.3)']
-  const bgred = ['rgba(250, 97, 36, 0.3)']
-  const test = ['rgba(225, 248, 18, 0.425)']
+  // const bgreen = ['rgba(146, 250, 61, 0.3)']
+  // const bgyellow = ['rgba(238, 252, 48, 0.2)']
+  // const bgorange = ['rgba(248, 194, 16, 0.3)']
+  // const bgred = ['rgba(250, 97, 36, 0.3)']
+  // const test = ['rgba(225, 248, 18, 0.425)']
 
   //...................
 
@@ -49,9 +45,6 @@ const BarChartPrecip = ({ xVal, yVal, name }) => {
   const myData = xVal.map((e, i) => {
     return ({ x: e, y: yVal[i] })
   })
-  // console.log(myData)
-
-
 
   const data = {
     labels: xVal,

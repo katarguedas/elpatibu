@@ -6,17 +6,21 @@ import EventCard from '../EventCard';
 import { NewEventButton } from '../../styled/Buttons';
 import { StyledContentGroup, StyledMainGroup, StyledMainContent, PageTitle } from '../../styled/globalStyles';
 import { theme } from '../../themes/theme';
+import { useNavigate } from 'react-router';
 import React, { useState, useCallback, useEffect } from 'react';
 import { Calendar, luxonLocalizer } from 'react-big-calendar';
 import { DateTime } from 'luxon';
 import { v4 as uuidv4 } from 'uuid';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styled from 'styled-components';
-import { useUserContext } from '../../providers/userContext';
-import useEvents from '../../hooks/useEvents'
+import { useDispatch, useSelector } from 'react-redux';
+
+
+import { eventsActions } from '../../store/eventsSlice';
+import { deleteEventInBackend, fetchEvents, saveEventInBackend } from '../../store/eventsActions';
+import { checkToken } from '../../store/authActions';
 
 require('globalize/lib/cultures/globalize.culture.de');
-
 
 /***********************************************************************
  * Calendar Component which allows to save events.
@@ -25,10 +29,14 @@ require('globalize/lib/cultures/globalize.culture.de');
  *****************************/
 const MyCalendar = () => {
 
-  const { saveEventInBackend } = useEvents();
-  const { getEventsFromBackend, userData, LOCAL_STORAGE_EVENTS } = useUserContext();
+  const dispatch = useDispatch();
+  const userData = useSelector(state => state.auth.userData);
+  const events = useSelector(state => state.events.events);
+  const loginStatus = useSelector(state => state.auth.loginStatus);
 
-  const [events, setEvents] = useState();
+  const navigate = useNavigate();
+
+  const [calendarEvents, setCalendarEvents] = useState();
   const [value, setValue] = useState();
   const [open, setOpen] = useState();
   const [view, setView] = useState();
@@ -45,83 +53,107 @@ const MyCalendar = () => {
   //.................................
 
   useEffect(() => {
-    let eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
-    // console.log(eventsArray)
-    if (!eventsArray) {
-      getEventsFromBackend(userData.id);
-      eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
+      dispatch(checkToken());
+  }, [dispatch])
+
+
+	useEffect(() => {
+		if (!loginStatus) {
+      navigate('/login');
     }
-    setEvents(eventsArray);
-    setLoaded(true);
-    // eslint-disable-next-line
+  }, [loginStatus, dispatch, navigate])
+
+
+  useEffect(() => {
+    if ((!events || events?.length === 0) && userData.id !== '') {
+      dispatch(fetchEvents(userData.id));
+    }
+    if (events && !calendarEvents) {
+      setCalendarEvents(events);
+      setLoaded(true);
+    }
   }, [])
 
 
   const dateAllday = (str, flag) => {
+    console.log("str: ", str)
     if (flag === 1) //startDatum
-      // return (new Date(yyyy, mm, dd, 1, 0, 0)):
+      // return (new Date(yyyy, mm, dd, 1, 0, 0).toString):
       return (
-        new Date(
+        (new Date(
           str.slice(0, 4),
           str.slice(5, 7) - 1,
           str.slice(8, 10),
-          1, 0, 0))
+          1, 0, 0)).toISOString())
     else if (flag === 2)   //EndDatum
-      // return (new Date(yyyy, mm, dd, 23, 59, 0)):
+      // return (new Date(yyyy, mm, dd, 23, 59, 0).toString):
       return (
-        new Date(
+        (new Date(
           str.slice(0, 4),
           str.slice(5, 7) - 1,
           str.slice(8, 10),
-          23, 59, 0))
+          23, 59, 0)).toISOString())
   }
 
 
   const dateNoAllday = str => {
-    // return (new Date(yyyy, mm, dd, hh, min, 0)):
+    // return (new Date(yyyy, mm, dd, hh, min, 0).toString):
     return (
-      new Date(
+      (new Date(
         str.slice(0, 4),
         str.slice(5, 7) - 1,
         str.slice(8, 10),
         str.slice(11, 13),
         str.slice(14, 17), 0
-      ))
+      )).toISOString())
   }
 
   const dateNoAllday2 = str => {
     // console.log(yyyy, mm, dd, hh, min, 0):
     return (
-      new Date(
+      (new Date(
         str.slice(0, 4),
         str.slice(5, 7) - 1,
         str.slice(8, 10),
         str.slice(11, 13),
         str.slice(14, 16), 0
-      ))
+      )))
+  }
+
+  const updateCalendarEvents = () => {
+    var eventsCopy = JSON.parse(JSON.stringify(events));
+    // console.log("update calendarevents. events: ", eventsCopy)
+    setCalendarEvents([...eventsCopy], eventsCopy.map((e) => {
+      if (typeof (e.start) === 'string') {
+        e.start = dateNoAllday2(e.start)
+        e.end = dateNoAllday2(e.end)
+        return e;
+      }
+    }));
   }
 
   useEffect(() => {
-    if ((loaded) && (events)) {
-      setEvents([...events], events.map((e, i) => {
-        if (typeof (e.start) === 'string') {
-          e.start = dateNoAllday2(e.start)
-          e.end = dateNoAllday2(e.end)
-          return e;
-        }
-      }))
+    updateCalendarEvents();
+  },[events])
+
+  useEffect(() => {
+    if ((loaded) && (calendarEvents)) {
+      updateCalendarEvents();
       setView(false)
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaded])
 
 
   useEffect(() => {
     if (deleted) {
-      setEvents(events.filter(e => (e.id !== currentEvent.id)))
+      const res = dispatch(deleteEventInBackend(userData.id, currentEvent.id));
+      if (res) {
+        dispatch(eventsActions.removeEvent({ id: currentEvent.id }));
+       setLoaded(true);
+      }
     }
-    // eslint-disable-next-line
-  }, [deleted])
+  }, [deleted, dispatch])
 
 
   const handleSelectSlot = () => {
@@ -129,14 +161,12 @@ const MyCalendar = () => {
     setOpen(false)
   }
 
-  const handleNewEvent = useCallback(
-    ({ start, end }) => {
-      setStartDate(start)
-      setStartDate(end)
-      setView(false)
-      setOpen(true)
-    },
-  )
+  const handleNewEvent = ({ start, end }) => {
+    setStartDate(start)
+    setStartDate(end)
+    setView(false)
+    setOpen(true)
+  }
 
 
   const eventStyleGetter = (event, start, end, isSelected) => {
@@ -172,7 +202,7 @@ const MyCalendar = () => {
         setView(false)
         openAnotherEvent(event)
       }
-    }, [], [view])
+    }, [view])
 
 
   const handleChange = e => {
@@ -185,16 +215,25 @@ const MyCalendar = () => {
 
 
   const handleStartDate = e => {
+    console.log("allday?", allday)
+    if (allday === true) {
+      const dateValue = dateAllday(e.target.value, 1);
+      console.log("Noch ein VERSUCH: ", dateValue)
+      setStartDate(prevDate => {
+        return dateValue
+      });
+    }
+    else {
+      const dateValue = dateNoAllday(e.target.value);
 
-    if (allday === true)
-      setStartDate(dateAllday(e.target.value, 1))
-    else
-      setStartDate(dateNoAllday(e.target.value))
+      setStartDate(prevDate => {
+        return dateValue
+      });
+    }
   }
 
 
   const handleEndDate = e => {
-
     if (allday === true)
       setEndDate(dateAllday(e.target.value, 2))
     else {
@@ -213,6 +252,7 @@ const MyCalendar = () => {
   const handleSubmit = (e) => {
     setOpen(false)
     e.preventDefault();
+
     const newEvent = {
       id: uuidv4(),
       title: value,
@@ -223,13 +263,10 @@ const MyCalendar = () => {
       category: cat
     }
 
-    setEvents([...events, newEvent]);
-    saveEventInBackend(newEvent);
-    setLoaded(false);
-    localStorage.removeItem(LOCAL_STORAGE_EVENTS);
-    getEventsFromBackend(userData.id);
-    if (events)
-      setLoaded(true);
+    const res = dispatch(saveEventInBackend(newEvent, userData.id));
+    if (res) {
+      dispatch(eventsActions.saveEvent({ event: newEvent }));
+    }
   }
 
 
@@ -249,13 +286,14 @@ const MyCalendar = () => {
             </NewEventButton>
             <Calendar
               eventPropGetter={eventStyleGetter}
-              events={events}
+              events={calendarEvents}
               localizer={localizer}
               startAccessor="start"
               endAccessor="end"
               onSelectEvent={handleSelectEvent}
               onSelectSlot={handleSelectSlot}
               selectable
+              style={{ height: 500 }}
             />
             <div>
               {open &&
@@ -300,5 +338,5 @@ export default MyCalendar;
 
 const Calendargroup = styled.div`
   margin: 2.0rem;
-  height: 600px;
+  /* height: 500px; */
 `

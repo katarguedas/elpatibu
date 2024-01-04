@@ -45,7 +45,7 @@ router.post('/api/login', async (req, res) => {
           diaries: user.diaries
         }, process.env.EXPRESS_ACCESS_JWT_KEY,
         {
-          expiresIn: '15m'
+          expiresIn: '5m'
         }
       );
       const refreshToken = jwt.sign(
@@ -53,14 +53,16 @@ router.post('/api/login', async (req, res) => {
           email: user.email
         }, process.env.EXPRESS_REFRESH_TOKEN_KEY,
         {
-          expiresIn: '24h'
+          expiresIn: '1m'
+          // expiresIn: '24h'
         });
       // Assigning refresh token in http-only cookie 
       res.cookie('jwt', refreshToken, {
         httpOnly: true,
         sameSite: 'None', secure: true,
         // maxAge: 24 * 60 * 60 * 1000 // 1 day
-        maxAge: 24 * 60 * 60 * 1000
+        // maxAge: 24 * 60 * 60 * 1000
+        maxAge: 1 * 60 * 1000
       });
       res.status(200).send({ status: "ok", message: "user verified", access: accessToken });
       return;
@@ -78,13 +80,14 @@ router.post('/api/refreshToken', async (req, res) => {
 
   const user = await User.findOne({ email: req.body.email })
 
+  console.log("Refreshe Token!")
 
   if (!user) {
     res.status(400).send({ status: "error", message: "Invalid user" })
   } else {
     if (req.cookies?.jwt) {
       const refreshToken = req.cookies.jwt;
-      console.log("Token wird refreshed")
+      // console.log("Token wird refreshed")
 
       jwt.verify(refreshToken, process.env.EXPRESS_REFRESH_TOKEN_KEY, err => {
         if (err) {
@@ -101,7 +104,7 @@ router.post('/api/refreshToken', async (req, res) => {
           },
             process.env.EXPRESS_ACCESS_JWT_KEY,
             {
-              expiresIn: '15m',
+              expiresIn: '1m',
             });
           return res.status(200).send({ status: 'ok', message: 'authorized', access: accessToken });
         }
@@ -158,10 +161,8 @@ router.get('/clear-cookie', (req, res) => {
  ******************/
 
 router.post('/api/saveDiaryId', async (req, res) => {
-  console.log("bin im backend")
 
-  console.log("body", req.body)
-  try {
+    try {
     const result = await User.findOneAndUpdate({ email: req.body.email }, { diaries: req.body.diaryId }, { new: true })
     // console.log("\n result:", result)
     res.status(200).send({ status: 'OK', message: 'saved diaryId', result })
@@ -178,7 +179,6 @@ router.post('/api/saveDiaryId', async (req, res) => {
 
 router.get('/api/getEvents', async (req, res) => {
 
-  console.log("id:", req.query.id)
   try {
     const result = await User.findOne({ id: req.query.id })
     const events = result.events;

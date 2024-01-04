@@ -1,17 +1,18 @@
-import { useUserContext } from "../providers/userContext";
-import { theme } from '../themes/theme'
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { BiStreetView } from "react-icons/bi";
 import { BiWindowClose } from "react-icons/bi";
-import useEvents from '../hooks/useEvents';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchEvents, deleteEventInBackend } from '../store/eventsActions';
 
 //----------------------------------------------------
+import { LOCAL_STORAGE_EVENTS } from '../store/eventsSlice';
+
 
 const EventCard = ({ setView, event, setDeleted }) => {
 
-  const { deleteEvent } = useEvents();
-  const { LOCAL_STORAGE_EVENTS, getEventsFromBackend, userData } = useUserContext();
+  const dispatch = useDispatch();
+  const userData = useSelector(state => state.auth.userData);
+
 
   const [events, setEvents] = useState();
   const [date, setDate] = useState();
@@ -35,7 +36,7 @@ const EventCard = ({ setView, event, setDeleted }) => {
   useEffect(() => {
     const eventsArray = JSON.parse(localStorage.getItem(LOCAL_STORAGE_EVENTS))
     if (!eventsArray) {
-      getEventsFromBackend(userData.id);
+      dispatch(fetchEvents(userData.id));
     }
     setEvents(eventsArray);
   }, [])
@@ -49,11 +50,12 @@ const EventCard = ({ setView, event, setDeleted }) => {
         }
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events, event])
 
 
   const handleClick = () => {
-    if (deleteEvent(userData.id, event.id)) {
+    if (deleteEventInBackend(userData.id, event.id)) {
       setDeleted(true);
       setView(false);
     }

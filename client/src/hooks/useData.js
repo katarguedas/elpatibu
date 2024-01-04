@@ -1,16 +1,17 @@
 import { useEffect } from "react";
-import { useUserContext } from "../providers/userContext";
 
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { DateTime } from "luxon";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { saveDiaryIdInBackend } from '../store/authActions';
 
 //---------------------------------------------------------
 
 const useData = () => {
 
-	const { saveDiaryIdInBackend, user } = useUserContext()
+	const dispatch = useDispatch();
+	const userData = useSelector(state => state.auth.userData);
+
 	const [tempData, setTempData] = useState(
 		{
 			id: uuidv4(),
@@ -29,21 +30,21 @@ const useData = () => {
 	const [demo, setDemo] = useState(false);
 
 	useEffect(() => {
-		if(user === "gast@gast.de")
+		if(userData.id === "gast@gast.de")
 		setDemo(true)
-	},[user])
+	},[userData.id])
 
 
-	const createNewDiary = (diaryId) => {
+	const createNewDiary = (diaryId, setCreated) => {
 		if (diaryId) {
-			newDiaryInBackend();
-			saveDiaryIdInBackend(diaryTemplate.id);
+			newDiaryInBackend(setCreated);
+			dispatch(saveDiaryIdInBackend(diaryTemplate.id));
 		}
 	}
 
 	//................................................
 
-	const newDiaryInBackend = async () => {
+	const newDiaryInBackend = async (setCreated) => {
 
 		let raw = JSON.stringify({
 			id: diaryTemplate.id,
@@ -63,9 +64,10 @@ const useData = () => {
 		await fetch('/api/newDiary', requestOptions)
 			.then(response => response.json())
 			.then(response => {
-				console.log("diary wird im backend gespeichert")
+				// console.log("diary wird im backend gespeichert", response)
 				if (response.status = "ok") {
-					setDiarySaved(true) // Funktioniert nicht. 
+					setCreated(true);
+					setDiarySaved(true)  
 				}
 				return;
 			})
